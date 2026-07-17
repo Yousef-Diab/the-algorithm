@@ -72,7 +72,7 @@ This project is a personal study aid that reorganises the above material into an
 
 ## Roadmap / future to-do
 
-- [ ] **Refactor for expandability.** The course is a single hand-edited file. Before adding whole new sections (2022 Mentorship, Fear.ing's models), factor content and rendering apart so new lessons/sections drop in with minimal friction (see `CLAUDE.md` → *Future direction*).
+- [ ] **Refactor for expandability.** The course is a single hand-edited file. Before adding the next section (the 2022 Mentorship), factor content and rendering apart so new lessons/sections drop in with minimal friction (see `CLAUDE.md` → *Future direction*).
 - [ ] Keep the project **AI-development friendly** — predictable conventions, one obvious place to change each thing, verifiable with a headless check.
 - [ ] **Section 2 — ICT 2022 Mentorship** as its transcripts/notes become available.
 - Section 3 (Fear.ing's own models) is **out of scope** — his proprietary material stays private.
