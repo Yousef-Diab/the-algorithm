@@ -53,6 +53,13 @@
   .crumb{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:10px}
   .lesson-hero h2{font-size:32px;line-height:1.2;font-weight:650}
   .lesson-hero .desc{color:var(--muted);margin-top:10px;font-size:15px;max-width:640px}
+  .lesson-video{display:inline-flex;align-items:center;gap:9px;margin:-8px 0 28px;padding:9px 15px;
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    color:var(--text);text-decoration:none;font-size:13.5px;font-weight:550;transition:border-color .15s,background .15s}
+  .lesson-video:hover{background:var(--panel2);border-color:var(--red)}
+  .lesson-video .lv-ico{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+    min-width:22px;border-radius:6px;background:var(--red);color:#fff;font-size:10px}
+  .lesson-video .lv-sub{color:var(--muted);font-weight:400}
 
   /* ---------- content blocks ---------- */
   .lesson h3{font-size:20px;margin:34px 0 12px;color:var(--accent2)}
@@ -1791,6 +1798,17 @@ const QUIZZES = {
  ]
 };
 
+/* ---------- lesson videos (id -> YouTube URL of the original video) ----------
+   Rule: every lesson opens with a link to its source video. Fill each URL below.
+   Empty string = no link rendered (graceful, like a missing image count). */
+const VIDEOS = {
+  "m1-01":"", "m1-02":"", "m1-03":"", "m1-04":"", "m1-05":"", "m1-06":"", "m1-07":"", "m1-08":"",
+  "m2-01":"", "m2-02":"", "m2-03":"", "m2-04":"", "m2-05":"", "m2-06":"", "m2-07":"", "m2-08":"",
+  "m3-01":"", "m3-02":"", "m3-03":"", "m3-04":"", "m3-05":"", "m3-06":"", "m3-07":"", "m3-08":"",
+  "m4-01":"", "m4-02":"", "m4-03":"", "m4-04":"", "m4-05":"", "m4-06":"", "m4-07":"", "m4-08":"",
+  "m4-09":"", "m4-10":"", "m4-11":"", "m4-12":"", "m4-13":"", "m4-14":""
+};
+
 /* ---------- captions ---------- */
 const CAPTION = slug => "Chart from the notes";
 
@@ -1807,6 +1825,19 @@ const store = {
   get quiz(){ try{return JSON.parse(localStorage.getItem('ict-quiz')||'{}')}catch(e){return{}} },
   set quiz(v){ localStorage.setItem('ict-quiz', JSON.stringify(v)); }
 };
+
+/* ---------- render lesson videos (at the top of each lesson) ---------- */
+document.querySelectorAll('.lesson').forEach(sec=>{
+  const url = VIDEOS[sec.id];
+  if(!url) return;
+  const hero = sec.querySelector('.lesson-hero');
+  if(!hero) return;
+  const a = document.createElement('a');
+  a.className = 'lesson-video';
+  a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+  a.innerHTML = '<span class="lv-ico">▶</span><span>Watch the original video <span class="lv-sub">· on YouTube</span></span>';
+  hero.insertAdjacentElement('afterend', a);
+});
 
 /* ---------- render figures ---------- */
 document.querySelectorAll('.fig-slot').forEach(slot=>{

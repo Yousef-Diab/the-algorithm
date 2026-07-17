@@ -28,7 +28,7 @@ Everything is **one self-contained file**: `index.html` (served at <https://yous
 2. **`<body>`** — the app shell (`#sidebar`, `#main`, `#lightbox`) and every lesson as a `<section class="lesson">`.
 3. **Three `<script>` blocks** at the end:
    - **Block 1 — `MONTHS`**: month metadata (`id`, `title`, `desc`) for nav and home cards.
-   - **Block 2 — data**: `IMG_COUNTS` (slug → number of chart images) and `QUIZZES` (lesson id → questions).
+   - **Block 2 — data**: `IMG_COUNTS` (slug → number of chart images), `QUIZZES` (lesson id → questions), and `VIDEOS` (lesson id → source YouTube URL).
    - **Block 3 — app logic**: derives `SLUG_BY_ID` and `LESSONS` from the DOM, then wires figures, lightbox, flip cards, quizzes, nav, footer buttons, home cards and hash routing. **This block rarely needs to change** — most edits are content + the two data objects.
 
 Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
@@ -63,6 +63,8 @@ Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
 
 **Images:** `images/{slug}-{NN}.png`, `NN` zero-padded from `01`. `IMG_COUNTS[slug]` = how many exist. A missing image auto-removes its `<figure>` (`img.onerror`), so a wrong count fails gracefully but should still be correct. Galleries render when count > 2.
 
+**Lesson video (rule):** every lesson opens with a link to its source video. Set `VIDEOS["mX-NN"] = "https://…"` (keyed by lesson **id**, not slug). The JS injects a `.lesson-video` link right after that lesson's `.lesson-hero` — no HTML edit needed. An empty string renders nothing (graceful, like a missing image count). Use the **real** source video URL only; never invent one (see §1). It opens in a new tab (external link, so it doesn't break the offline property until clicked).
+
 **Quiz object shape:**
 
 ```js
@@ -87,8 +89,9 @@ Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
 |------|------|
 | Enrich a lesson | The `<section>` content only. Leave `.fig-slot`, `.quiz`, `.lesson-footer` untouched. |
 | Add/upgrade a quiz | The `QUIZZES` object entry for that lesson id. |
+| Set/change a lesson's video | The `VIDEOS[id]` entry (real source URL). Renders at the top automatically. |
 | Add charts to a lesson | Drop `images/{slug}-{NN}.png` files, then bump `IMG_COUNTS[slug]`. |
-| Add a new lesson | New `<section>` (correct id/slug/`data-month`) **+** a `QUIZZES` entry **+** `IMG_COUNTS` entry. Nav/footer/cards update automatically. |
+| Add a new lesson | New `<section>` (correct id/slug/`data-month`) **+** a `QUIZZES` entry **+** `IMG_COUNTS` entry **+** a `VIDEOS` entry. Nav/footer/cards update automatically. |
 | Add a new month | Append to `MONTHS`, then add its lessons as above. |
 | Restyle | `:root` tokens first; component classes second. |
 
