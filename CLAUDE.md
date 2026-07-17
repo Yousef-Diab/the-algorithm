@@ -20,7 +20,7 @@ If a request seems to need outside knowledge, say so instead of quietly adding i
 
 ## 2. Architecture (current state)
 
-Everything is **one self-contained file**: `the-algorithm.html`. No build step, no external requests, no dependencies. Structure, top to bottom:
+Everything is **one self-contained file**: `index.html` (served at <https://yousef-diab.github.io/the-algorithm/> via GitHub Pages). No build step, no external requests, no dependencies. Structure, top to bottom:
 
 1. **`<head>` → `<style>`** — all CSS.
    - `:root { … }` holds design tokens (colors, spacing, type). **Change tokens here, not per-element.**

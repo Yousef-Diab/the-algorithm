@@ -2,6 +2,8 @@
 
 > *Learning to read how price is really delivered.*
 
+**▶ [Open the course live](https://yousef-diab.github.io/the-algorithm/)**
+
 A self-contained, interactive course built from **Fear.ing's** trading material — his Notion notes (with their charts) and the original **ICT (Inner Circle Trader)** video transcripts. The name nods to ICT's *interbank price delivery algorithm*: the idea that price isn't random, but delivered to engineer liquidity.
 
 The scope grows over time. Planned sections:
@@ -18,7 +20,7 @@ Everything lives in one HTML file that runs offline in any modern browser. No bu
 
 | Path | What it is |
 |------|-----------|
-| `the-algorithm.html` | The entire course — markup, styles, data and app logic in one file. |
+| `index.html` | The entire course — markup, styles, data and app logic in one file. |
 | `images/` | Chart images scraped from the notes, named `{slug}-{NN}.png` (e.g. `m4-03-orderblocks-07.png`). |
 | `transcripts/` | Source ICT video transcripts, organised `Month 1` … `Month 4`. **Git-ignored** (local source material only). |
 | `.claude/` | Claude Code local settings. |
@@ -37,22 +39,17 @@ Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note c
 
 ## Using the course
 
-Just open the file:
+**Online:** just open **<https://yousef-diab.github.io/the-algorithm/>** — nothing to install.
 
-```text
-# double-click, or:
-start the-algorithm.html            # Windows
-```
+**Offline:** clone the repo and open `index.html` in any browser (keep it next to the `images/` folder, since charts load from there).
 
-Features:
+What you get:
 
 - **Sidebar navigation** grouped by month, with per-month completion counts.
 - **Lesson quizzes** that grade instantly and explain every answer.
 - **Chart galleries** with a click-to-zoom lightbox.
 - **Flip cards** for definitions.
 - **Progress tracking** saved in the browser via `localStorage` (keys `ict-done`, `ict-quiz`). Clearing site data resets progress.
-
-Because images load from the `images/` folder, keep the HTML file and the `images/` folder together.
 
 ---
 
