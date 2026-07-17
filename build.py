@@ -13,7 +13,7 @@ Content model (one predictable edit point per change):
 IMG_COUNTS is DERIVED here by counting images/<slug>-NN.png, so there is no
 manual image-count table to keep in sync.
 """
-import re, pathlib
+import re, sys, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent
 ENGINE = ROOT / "engine"
@@ -23,6 +23,45 @@ OUT = ROOT / "index.html"
 
 def read(p):
     return p.read_text(encoding="utf-8")
+
+# --- validation: fail fast with clear messages on common authoring slips ---
+_id_re = re.compile(r'id="([^"]+)"')
+_quiz_re = re.compile(r'data-quiz="([^"]+)"')
+_dataslug_re = re.compile(r'data-slug="([^"]+)"')
+
+def validate(all_lessons):
+    """Collect every problem, then abort if any are errors. Warnings don't abort."""
+    errors, warnings, seen_ids = [], [], {}
+    for _s, ldir in all_lessons:
+        lid = ldir.name
+        rel = ldir.relative_to(ROOT)
+        lh = ldir / "lesson.html"
+        if not lh.exists():
+            errors.append(f"{rel}: missing lesson.html"); continue
+        html = read(lh)
+        m = _id_re.search(html)
+        if not m:
+            errors.append(f'{rel}/lesson.html: no id="…" on the <section>')
+        elif m.group(1) != lid:
+            errors.append(f'{rel}: folder id "{lid}" != lesson.html id="{m.group(1)}"')
+        q = _quiz_re.search(html)
+        if q and q.group(1) != lid:
+            errors.append(f'{rel}: data-quiz="{q.group(1)}" should equal the lesson id "{lid}"')
+        if lid in seen_ids:
+            errors.append(f'duplicate lesson id "{lid}" ({rel} and {seen_ids[lid]})')
+        seen_ids[lid] = rel
+        if not (ldir / "quiz.js").exists():
+            warnings.append(f"{rel}: no quiz.js (lesson will render without a quiz)")
+        for slug in _dataslug_re.findall(html):
+            if not list(IMAGES.glob(f"{slug}-*.png")):
+                warnings.append(f'{rel}: data-slug="{slug}" has no images/{slug}-NN.png (no charts render)')
+    for w in warnings:
+        print(f"  warning: {w}")
+    if errors:
+        print("\nBUILD ABORTED - fix these:", file=sys.stderr)
+        for e in errors:
+            print(f"  error: {e}", file=sys.stderr)
+        sys.exit(1)
 
 # --- sections in order (s1-ict-core, then s2-..., ...) --------------------
 sections = sorted(d for d in CONTENT.iterdir() if d.is_dir())
@@ -37,6 +76,8 @@ def lessons_for(section):
     return out
 
 all_lessons = [(s, l) for s in sections for l in lessons_for(s)]
+
+validate(all_lessons)
 
 # --- assemble body --------------------------------------------------------
 parts = [read(ENGINE / "head.html"),
@@ -85,7 +126,8 @@ quiz_block = "\n".join(quiz_lines).rstrip(",")
 vid_lines = []
 for _s, ldir in all_lessons:
     lid = ldir.name
-    url = read(ldir / "video.txt").strip()
+    vf = ldir / "video.txt"
+    url = read(vf).strip() if vf.exists() else ""
     vid_lines.append(f' "{lid}":"{url}",')
 vid_block = "\n".join(vid_lines).rstrip(",")
 
