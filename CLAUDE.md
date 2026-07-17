@@ -76,6 +76,12 @@ Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
 
 `a` is the 0-based index of the correct option. Keep 4 options. Explanations should quote/paraphrase the source.
 
+**Quiz-authoring rules (so answers aren't guessable):**
+
+- **Position is handled for you** — the renderer Fisher-Yates *shuffles* each question's options on load, so the `a` index no longer sets the on-screen position. Don't try to fix a "good" position; just mark the correct one with `a`.
+- **Balance option lengths.** The correct answer must *not* be conspicuously the longest — keep all four options comparable in length (aim within ~5 characters). Trim the correct option to a concise phrase and flesh out terse distractors into plausible, clearly-wrong statements. Push the nuance/citation into `e`, not the option text.
+- Distractors don't need to be source-traceable (they're wrong on purpose), but the **correct option + `e` must stay traceable** to the notes/transcript (see §1).
+
 **Reusable content components** (already styled — reuse, don't reinvent):
 `.callout`, `.callout.rule`, `.callout.warn` (with a `<span class="tag">Label</span>`), `.kv` (definition rows), `.flip-row` + `.flip` (flip cards), `<h3>` sub-headers, `<ul>`/`<ol>`.
 
