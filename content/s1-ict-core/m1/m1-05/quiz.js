@@ -1,0 +1,6 @@
+[
+  {q:"Where does ICT sell — and where do other disciplines sell?",o:["ICT at 50%, others at 62%","ICT at 62–79%, others at 50%","Both at 79%","Neither uses retracements"],a:1,e:"The 50% touch alone isn't enough — sell in the 62–79% OTE zone, at a premium. If price only reaches EQ and sells off, that's a missed opportunity — let it go."},
+  {q:"What makes a turtle soup sell high probability?",o:["Simply any old high being broken","Above EQ while taking an old high","A sudden spike in the volume","A doji printing at the high"],a:1,e:"At a premium plus taking buy stops above an old high — that's really good probabilities. Target the established lows below."},
+  {q:"Which swings do you anchor the fib to?",o:["Any swing","Only clear, obvious swings","The largest ever","Every 3-candle swing"],a:1,e:"If it looks sloppy or questionable, don't measure it. Obvious price swings are the ones we use."},
+  {q:"Do you need a directional bias to trade?",o:["Yes, you always do","No — know how to trade a range","Only on the higher timeframe","Only when clearly trending"],a:1,e:"Ranges are always there — trending, consolidating or reversing — and you don't need a breakout to make money. In long consolidations this is your go-to."}
+ ]

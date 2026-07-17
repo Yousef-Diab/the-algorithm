@@ -1,0 +1,6 @@
+[
+  {q:"Which gap is the best?",o:["Just any Sunday gap","A breakaway gap from a discount","A gap after a long rally","A midday session gap"],a:1,e:"Gap up from discount after a decline = breakaway gap = strength. A gap after a rally is an exhaustion gap / capitulation."},
+  {q:"How do you treat the empty gap itself?",o:["Just ignore it","As its own candle (H/L/O/C)","As a single price line","As a simple wick"],a:1,e:"Define its high, low, mean threshold, open and close and treat the vacuum block like any orderblock candle; risk is defined between two reference points → more leverage for the same % exposure."},
+  {q:"A gap forms after ~10am NY. What's likely?",o:["It fills right in immediately","It stays open → an FVG for later","Price simply reverses hard","The session then closes"],a:1,e:"Time-of-day sensitive: an early-NY (8:30) gap likely fills same day; a 10–11am gap likely stays open as an FVG for later."},
+  {q:"After the gap closes and price rallies, what's the warning sign?",o:["Making a fresh new high","Return below the first up close","Just a normal small pullback","A jump in the higher volume"],a:1,e:"Both sides have been delivered — there's no reason to return below that close. If it does, the trade is suspect; take profit."}
+ ]

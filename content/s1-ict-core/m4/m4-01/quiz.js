@@ -1,0 +1,6 @@
+[
+  {q:"What is the #1 driver of currency?",o:["GDP","Interest rates","Employment","Equities"],a:1,e:"Interest rates are the single most influential driving force behind market moves — 'what makes the whole world go round.'"},
+  {q:"What three markets make up the interest rate triad?",o:["The 2yr, 20yr and 30yr","30yr bond, 10yr note, 5yr note","Fed funds, LIBOR and SOFR","Just gold, oil and dollar"],a:1,e:"The 30-year bond (long-term), 10-year note (intermediate) and 5-year note (short-term) — overlaid and compared on barchart.com."},
+  {q:"What does a failure swing in the triad reveal?",o:["Nothing useful at all","Smart money participation","Just a data error","Only retail sentiment"],a:1,e:"You only need one of the three to break the pattern; that failure swing shows large volume shifting real supply/demand — an interest rate shift."},
+  {q:"What combination is the 'green light' for a high-probability trade?",o:["Two indicators crossing over","Triad divergence at a PD array","A simple trendline break","A scheduled news release"],a:1,e:"With a predetermined dollar bias, a divergence among the three rates (30/10/5yr) while price sits at an orderblock/pool/void/FVG confirms smart money is behind it. No divergence → pass. Reverse for dollar shorts."}
+ ]

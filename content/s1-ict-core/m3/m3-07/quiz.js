@@ -1,0 +1,6 @@
+[
+  {q:"What are trendlines, per the notes?",o:["An edge","Opinions — no edge","Institutional levels","Support"],a:1,e:"Trendlines = opinions, no edge. If everyone draws the same line and everyone can't win, the majority must be wrong."},
+  {q:"On a declining/bearish trendline, where do the buy stops rest?",o:["Below point 1","Above point 2","At the apex only","There are none"],a:1,e:"Buy stops rest above the 2nd high (point 2); sell stops rest below point 2 on a rising line — that liquidity pool is the real target, not the line."},
+  {q:"Where does ICT look for the trade against a trendline?",o:["Right at the first touch","OB/turtle soup above point 2","Right at the fifth touch","Below the trendline only"],a:1,e:"When bearish at a HTF PD array, aim for the high between point 2 and point 3 where the buy stops live; find an orderblock or turtle soup there before a 'clean' 3rd touch ever prints."},
+  {q:"Why does the triangle / wedge work the same way?",o:["It simply doesn't at all","Stops stack on both sides","It's a pure continuation only","It has no stops at all"],a:1,e:"The triangle is the same trap — the converging trendlines just cluster buy stops above and sell stops below the apex so the breakout can be raided."}
+ ]
