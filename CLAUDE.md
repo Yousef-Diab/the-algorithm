@@ -129,14 +129,19 @@ Rendering is still **data-driven**: lessons declare *slots* (`.fig-slot`, `.quiz
 
 ## 5. Verification
 
-**First run `python build.py`** (regenerates `index.html` from source). Then confirm the course still works with a headless Playwright pass (Python). Check:
+**Just run `python verify.py`.** It rebuilds `index.html` from source, then loads it in headless Chromium and checks — against counts derived from `content/`, nothing hard-coded — that:
 
-- all `section.lesson` (minus `home`) are present,
-- every `<img>` resolves (`naturalWidth > 0`, none `complete && naturalWidth===0`),
-- quizzes render and grade on click,
-- zero console/page JS errors.
+- every lesson in `content/` is present in the page,
+- every chart image resolves (no broken `.fig img`),
+- every quiz renders 4 options, shuffles, and grades on click,
+- a video link renders for each lesson with a non-empty `video.txt`,
+- there are zero console/page JS errors.
 
-A throwaway script in the session scratchpad is fine; don't commit test scripts to the repo. Load the HTML via a `file://` URI. Note that only the **active** lesson section is visible (`.visible`), so to test a specific lesson, set `location.hash` or drive the quiz nodes directly in JS rather than mouse-clicking hidden elements.
+It exits non-zero and lists the problems on any failure. Requires Playwright once: `pip install playwright && python -m playwright install chromium`.
+
+`verify.py` and `build.py` are **committed project tooling** — keep them. The "don't commit scripts" habit applies only to *throwaway exploration* scripts (put those in the scratchpad). **CI** (`.github/workflows/ci.yml`) runs `build.py` on every PR, **fails if the committed `index.html` is out of sync with `content/`**, then runs `verify.py` — so a stale artifact or a runtime regression can't merge.
+
+When writing an ad-hoc browser check, remember only the **active** lesson section is visible (`.visible`); `verify.py` works around this by adding `.visible` to every lesson before checking.
 
 ---
 
@@ -157,6 +162,6 @@ Principles to preserve going forward:
 - **Keep it dependency-light and offline-capable.** The built `index.html` must stay a single "just open it" file. Python-only build; no npm/bundler, no runtime fetches.
 - **One place per concern.** Adding a lesson touches exactly one folder (§4) — keep it that way.
 - **Preserve the content principle** (§1) — provenance to the source material must survive any change.
-- **Keep the verification loop** (§5: build → Playwright) working end-to-end.
+- **Keep the verification loop** working end-to-end — `python verify.py` locally, enforced by CI (§5). Update `verify.py` if you add a new content type or slot.
 
-Possible next steps when they earn their keep: nesting `MONTHS` under sections in `app.js` for a section switcher in the UI; a tiny `--check` mode in `build.py` that fails if `index.html` is stale vs source (guards against someone hand-editing the artifact).
+Possible next steps when they earn their keep: nesting `MONTHS` under sections in `app.js` for a section switcher in the UI; having CI **build and deploy** Pages from `content/` so `index.html` no longer needs committing at all (removes the "did you rebuild?" step entirely).

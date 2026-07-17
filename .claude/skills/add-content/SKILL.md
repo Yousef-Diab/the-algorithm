@@ -100,20 +100,16 @@ sibling folders under `content/` and sort alphabetically, so prefix with an ordi
 ## Build + verify (always, after any change)
 
 ```bash
-python build.py          # regenerates index.html from content/ + engine/
+python verify.py         # rebuilds index.html, then headless-checks the whole course
 ```
-Expect it to report the lesson/quiz counts and exit 0. If `build.py` prints a
-validation error (id mismatch, missing quiz, orphan slug), fix the source and rebuild.
+This runs `build.py` (which validates ids/quizzes/slugs and aborts on errors) and then
+loads the built `index.html` in headless Chromium: every `content/` lesson present,
+charts load, quizzes render/shuffle/grade, video links present, zero JS errors. It
+prints the counts and exits 0 on success, or lists the problems and exits non-zero.
 
-Then a headless Playwright pass over the built `index.html` (throwaway script in the
-scratchpad — don't commit it). Confirm:
-- all `section.lesson` (minus `home`) present and the new id(s) appear,
-- every `<img>` resolves (`naturalWidth > 0`),
-- quizzes render and grade on click,
-- zero console/page JS errors.
-
-Load via a `file://` URI. Only the **active** lesson is visible (`.visible`), so set
-`location.hash` or drive the quiz nodes in JS rather than clicking hidden elements.
+One-time setup if needed: `pip install playwright && python -m playwright install chromium`.
+The same check runs in CI on every PR, so don't skip it. (You rarely need a throwaway
+browser script — `verify.py` is the harness; keep any one-off exploration in the scratchpad.)
 
 ## Commit note
 
