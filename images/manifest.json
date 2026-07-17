@@ -1,0 +1,331 @@
+{
+  "m1-01-elements-of-a-trade-setup": [
+    "m1-01-elements-of-a-trade-setup-01.png",
+    "m1-01-elements-of-a-trade-setup-02.png",
+    "m1-01-elements-of-a-trade-setup-03.png",
+    "m1-01-elements-of-a-trade-setup-04.png",
+    "m1-01-elements-of-a-trade-setup-05.png",
+    "m1-01-elements-of-a-trade-setup-06.png",
+    "m1-01-elements-of-a-trade-setup-07.png",
+    "m1-01-elements-of-a-trade-setup-08.png"
+  ],
+  "m1-02-how-market-makers-condition-the-market": [
+    "m1-02-how-market-makers-condition-the-market-01.png",
+    "m1-02-how-market-makers-condition-the-market-02.png",
+    "m1-02-how-market-makers-condition-the-market-03.png",
+    "m1-02-how-market-makers-condition-the-market-04.png"
+  ],
+  "m1-03-what-to-focus-on-right-now": [
+    "m1-03-what-to-focus-on-right-now-01.png"
+  ],
+  "m1-04-equilibrium-vs-discount": [],
+  "m1-05-equilibrium-vs-premium": [],
+  "m1-06-fair-valuation": [],
+  "m1-07-liquidity-runs": [
+    "m1-07-liquidity-runs-01.png",
+    "m1-07-liquidity-runs-02.png",
+    "m1-07-liquidity-runs-03.png",
+    "m1-07-liquidity-runs-04.png",
+    "m1-07-liquidity-runs-05.png"
+  ],
+  "m1-08-impulse-price-swings-market-protraction": [],
+  "m2-01-growing-small-accounts": [
+    "m2-01-growing-small-accounts-01.png",
+    "m2-01-growing-small-accounts-02.png",
+    "m2-01-growing-small-accounts-03.png",
+    "m2-01-growing-small-accounts-04.png"
+  ],
+  "m2-02-framing-low-risk-trade-setups": [
+    "m2-02-framing-low-risk-trade-setups-01.png",
+    "m2-02-framing-low-risk-trade-setups-02.png",
+    "m2-02-framing-low-risk-trade-setups-03.png",
+    "m2-02-framing-low-risk-trade-setups-04.png"
+  ],
+  "m2-03-how-traders-make-10-percent-per-month": [],
+  "m2-04-no-fear-of-losing": [
+    "m2-04-no-fear-of-losing-01.png",
+    "m2-04-no-fear-of-losing-02.png",
+    "m2-04-no-fear-of-losing-03.png",
+    "m2-04-no-fear-of-losing-04.png",
+    "m2-04-no-fear-of-losing-05.png"
+  ],
+  "m2-05-how-to-mitigate-losing-trades-effectively": [],
+  "m2-06-secrets-to-selecting-high-reward-setups": [
+    "m2-06-secrets-to-selecting-high-reward-setups-01.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-02.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-03.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-04.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-05.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-06.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-07.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-08.png",
+    "m2-06-secrets-to-selecting-high-reward-setups-09.png"
+  ],
+  "m2-07-market-maker-trap-false-flag": [
+    "m2-07-market-maker-trap-false-flag-01.png",
+    "m2-07-market-maker-trap-false-flag-02.png",
+    "m2-07-market-maker-trap-false-flag-03.png",
+    "m2-07-market-maker-trap-false-flag-04.png",
+    "m2-07-market-maker-trap-false-flag-05.png"
+  ],
+  "m2-08-market-maker-trap-false-breakouts": [
+    "m2-08-market-maker-trap-false-breakouts-01.png",
+    "m2-08-market-maker-trap-false-breakouts-02.png",
+    "m2-08-market-maker-trap-false-breakouts-03.png",
+    "m2-08-market-maker-trap-false-breakouts-04.png"
+  ],
+  "m3-01-timeframe-selection-defining-setups": [
+    "m3-01-timeframe-selection-defining-setups-01.png",
+    "m3-01-timeframe-selection-defining-setups-02.png",
+    "m3-01-timeframe-selection-defining-setups-03.png",
+    "m3-01-timeframe-selection-defining-setups-04.png",
+    "m3-01-timeframe-selection-defining-setups-05.png",
+    "m3-01-timeframe-selection-defining-setups-06.png",
+    "m3-01-timeframe-selection-defining-setups-07.png",
+    "m3-01-timeframe-selection-defining-setups-08.png"
+  ],
+  "m3-02-institutional-order-flow": [
+    "m3-02-institutional-order-flow-01.png",
+    "m3-02-institutional-order-flow-02.png",
+    "m3-02-institutional-order-flow-03.png",
+    "m3-02-institutional-order-flow-04.png",
+    "m3-02-institutional-order-flow-05.png",
+    "m3-02-institutional-order-flow-06.png",
+    "m3-02-institutional-order-flow-07.png",
+    "m3-02-institutional-order-flow-08.png",
+    "m3-02-institutional-order-flow-09.png"
+  ],
+  "m3-03-institutional-sponsorship": [
+    "m3-03-institutional-sponsorship-01.png",
+    "m3-03-institutional-sponsorship-02.png",
+    "m3-03-institutional-sponsorship-03.png",
+    "m3-03-institutional-sponsorship-04.png",
+    "m3-03-institutional-sponsorship-05.png",
+    "m3-03-institutional-sponsorship-06.png",
+    "m3-03-institutional-sponsorship-07.png",
+    "m3-03-institutional-sponsorship-08.png",
+    "m3-03-institutional-sponsorship-09.png",
+    "m3-03-institutional-sponsorship-10.png",
+    "m3-03-institutional-sponsorship-11.png",
+    "m3-03-institutional-sponsorship-12.png",
+    "m3-03-institutional-sponsorship-13.png",
+    "m3-03-institutional-sponsorship-14.png",
+    "m3-03-institutional-sponsorship-15.png",
+    "m3-03-institutional-sponsorship-16.png",
+    "m3-03-institutional-sponsorship-17.png",
+    "m3-03-institutional-sponsorship-18.png",
+    "m3-03-institutional-sponsorship-19.png",
+    "m3-03-institutional-sponsorship-20.png",
+    "m3-03-institutional-sponsorship-21.png",
+    "m3-03-institutional-sponsorship-22.png",
+    "m3-03-institutional-sponsorship-23.png"
+  ],
+  "m3-04-anticipatory-skill-development": [
+    "m3-04-anticipatory-skill-development-01.png",
+    "m3-04-anticipatory-skill-development-02.png",
+    "m3-04-anticipatory-skill-development-03.png",
+    "m3-04-anticipatory-skill-development-04.png",
+    "m3-04-anticipatory-skill-development-05.png",
+    "m3-04-anticipatory-skill-development-06.png",
+    "m3-04-anticipatory-skill-development-07.png",
+    "m3-04-anticipatory-skill-development-08.png",
+    "m3-04-anticipatory-skill-development-09.png",
+    "m3-04-anticipatory-skill-development-10.png"
+  ],
+  "m3-05-institutional-market-structure": [
+    "m3-05-institutional-market-structure-01.png",
+    "m3-05-institutional-market-structure-02.png",
+    "m3-05-institutional-market-structure-03.png",
+    "m3-05-institutional-market-structure-04.png",
+    "m3-05-institutional-market-structure-05.png",
+    "m3-05-institutional-market-structure-06.png",
+    "m3-05-institutional-market-structure-07.png",
+    "m3-05-institutional-market-structure-08.png",
+    "m3-05-institutional-market-structure-09.png",
+    "m3-05-institutional-market-structure-10.png",
+    "m3-05-institutional-market-structure-11.png",
+    "m3-05-institutional-market-structure-12.png",
+    "m3-05-institutional-market-structure-13.png",
+    "m3-05-institutional-market-structure-14.png"
+  ],
+  "m3-06-macro-economic-to-micro-technical": [
+    "m3-06-macro-economic-to-micro-technical-01.png",
+    "m3-06-macro-economic-to-micro-technical-02.png",
+    "m3-06-macro-economic-to-micro-technical-03.png"
+  ],
+  "m3-08-market-maker-trap-head-shoulders": [
+    "m3-08-market-maker-trap-head-shoulders-01.png",
+    "m3-08-market-maker-trap-head-shoulders-02.png",
+    "m3-08-market-maker-trap-head-shoulders-03.png",
+    "m3-08-market-maker-trap-head-shoulders-04.png",
+    "m3-08-market-maker-trap-head-shoulders-05.png",
+    "m3-08-market-maker-trap-head-shoulders-06.png",
+    "m3-08-market-maker-trap-head-shoulders-07.png",
+    "m3-08-market-maker-trap-head-shoulders-08.png",
+    "m3-08-market-maker-trap-head-shoulders-09.png",
+    "m3-08-market-maker-trap-head-shoulders-10.png",
+    "m3-08-market-maker-trap-head-shoulders-11.png"
+  ],
+  "m4-01-interest-rate-effects-on-currency-trades": [
+    "m4-01-interest-rate-effects-on-currency-trades-01.png",
+    "m4-01-interest-rate-effects-on-currency-trades-02.png",
+    "m4-01-interest-rate-effects-on-currency-trades-03.png",
+    "m4-01-interest-rate-effects-on-currency-trades-04.png",
+    "m4-01-interest-rate-effects-on-currency-trades-05.png",
+    "m4-01-interest-rate-effects-on-currency-trades-06.png",
+    "m4-01-interest-rate-effects-on-currency-trades-07.png",
+    "m4-01-interest-rate-effects-on-currency-trades-08.png",
+    "m4-01-interest-rate-effects-on-currency-trades-09.png",
+    "m4-01-interest-rate-effects-on-currency-trades-10.png",
+    "m4-01-interest-rate-effects-on-currency-trades-11.png"
+  ],
+  "m4-02-reinforcing-liquidity-concepts-price-delivery": [
+    "m4-02-reinforcing-liquidity-concepts-price-delivery-01.png",
+    "m4-02-reinforcing-liquidity-concepts-price-delivery-02.png",
+    "m4-02-reinforcing-liquidity-concepts-price-delivery-03.png",
+    "m4-02-reinforcing-liquidity-concepts-price-delivery-04.png",
+    "m4-02-reinforcing-liquidity-concepts-price-delivery-05.png"
+  ],
+  "m4-03-orderblocks": [
+    "m4-03-orderblocks-01.png",
+    "m4-03-orderblocks-02.png",
+    "m4-03-orderblocks-03.png",
+    "m4-03-orderblocks-04.png",
+    "m4-03-orderblocks-05.png",
+    "m4-03-orderblocks-06.png",
+    "m4-03-orderblocks-07.png",
+    "m4-03-orderblocks-08.png",
+    "m4-03-orderblocks-09.png",
+    "m4-03-orderblocks-10.png",
+    "m4-03-orderblocks-11.png",
+    "m4-03-orderblocks-12.png",
+    "m4-03-orderblocks-13.png",
+    "m4-03-orderblocks-14.png",
+    "m4-03-orderblocks-15.png",
+    "m4-03-orderblocks-16.png",
+    "m4-03-orderblocks-17.png",
+    "m4-03-orderblocks-18.png",
+    "m4-03-orderblocks-19.png",
+    "m4-03-orderblocks-20.png"
+  ],
+  "m4-04-mitigation-blocks": [
+    "m4-04-mitigation-blocks-01.png",
+    "m4-04-mitigation-blocks-02.png",
+    "m4-04-mitigation-blocks-03.png",
+    "m4-04-mitigation-blocks-04.png",
+    "m4-04-mitigation-blocks-05.png",
+    "m4-04-mitigation-blocks-06.png",
+    "m4-04-mitigation-blocks-07.png",
+    "m4-04-mitigation-blocks-08.png",
+    "m4-04-mitigation-blocks-09.png",
+    "m4-04-mitigation-blocks-10.png",
+    "m4-04-mitigation-blocks-11.png",
+    "m4-04-mitigation-blocks-12.png",
+    "m4-04-mitigation-blocks-13.png",
+    "m4-04-mitigation-blocks-14.png",
+    "m4-04-mitigation-blocks-15.png"
+  ],
+  "m4-05-ict-breaker-block": [
+    "m4-05-ict-breaker-block-01.png",
+    "m4-05-ict-breaker-block-02.png",
+    "m4-05-ict-breaker-block-03.png",
+    "m4-05-ict-breaker-block-04.png",
+    "m4-05-ict-breaker-block-05.png",
+    "m4-05-ict-breaker-block-06.png",
+    "m4-05-ict-breaker-block-07.png",
+    "m4-05-ict-breaker-block-08.png",
+    "m4-05-ict-breaker-block-09.png",
+    "m4-05-ict-breaker-block-10.png",
+    "m4-05-ict-breaker-block-11.png",
+    "m4-05-ict-breaker-block-12.png",
+    "m4-05-ict-breaker-block-13.png",
+    "m4-05-ict-breaker-block-14.png",
+    "m4-05-ict-breaker-block-15.png"
+  ],
+  "m4-06-ict-rejection-block": [
+    "m4-06-ict-rejection-block-01.png",
+    "m4-06-ict-rejection-block-02.png",
+    "m4-06-ict-rejection-block-03.png",
+    "m4-06-ict-rejection-block-04.png",
+    "m4-06-ict-rejection-block-05.png",
+    "m4-06-ict-rejection-block-06.png",
+    "m4-06-ict-rejection-block-07.png",
+    "m4-06-ict-rejection-block-08.png",
+    "m4-06-ict-rejection-block-09.png",
+    "m4-06-ict-rejection-block-10.png",
+    "m4-06-ict-rejection-block-11.png",
+    "m4-06-ict-rejection-block-12.png",
+    "m4-06-ict-rejection-block-13.png"
+  ],
+  "m4-07-reclaimed-ict-orderblock": [
+    "m4-07-reclaimed-ict-orderblock-01.png",
+    "m4-07-reclaimed-ict-orderblock-02.png",
+    "m4-07-reclaimed-ict-orderblock-03.png",
+    "m4-07-reclaimed-ict-orderblock-04.png",
+    "m4-07-reclaimed-ict-orderblock-05.png"
+  ],
+  "m4-08-ict-propulsion-block": [
+    "m4-08-ict-propulsion-block-01.png",
+    "m4-08-ict-propulsion-block-02.png",
+    "m4-08-ict-propulsion-block-03.png",
+    "m4-08-ict-propulsion-block-04.png",
+    "m4-08-ict-propulsion-block-05.png"
+  ],
+  "m4-09-ict-vacuum-block": [
+    "m4-09-ict-vacuum-block-01.png",
+    "m4-09-ict-vacuum-block-02.png",
+    "m4-09-ict-vacuum-block-03.png",
+    "m4-09-ict-vacuum-block-04.png",
+    "m4-09-ict-vacuum-block-05.png",
+    "m4-09-ict-vacuum-block-06.png"
+  ],
+  "m4-10-liquidity-pools": [
+    "m4-10-liquidity-pools-01.png",
+    "m4-10-liquidity-pools-02.png",
+    "m4-10-liquidity-pools-03.png",
+    "m4-10-liquidity-pools-04.png",
+    "m4-10-liquidity-pools-05.png"
+  ],
+  "m4-11-liquidity-voids": [
+    "m4-11-liquidity-voids-01.png",
+    "m4-11-liquidity-voids-02.png",
+    "m4-11-liquidity-voids-03.png",
+    "m4-11-liquidity-voids-04.png",
+    "m4-11-liquidity-voids-05.png",
+    "m4-11-liquidity-voids-06.png",
+    "m4-11-liquidity-voids-07.png",
+    "m4-11-liquidity-voids-08.png"
+  ],
+  "m4-12-ict-fair-value-gaps-fvg": [
+    "m4-12-ict-fair-value-gaps-fvg-01.png",
+    "m4-12-ict-fair-value-gaps-fvg-02.png",
+    "m4-12-ict-fair-value-gaps-fvg-03.png",
+    "m4-12-ict-fair-value-gaps-fvg-04.png",
+    "m4-12-ict-fair-value-gaps-fvg-05.png",
+    "m4-12-ict-fair-value-gaps-fvg-06.png"
+  ],
+  "m4-13-divergence-phantoms": [
+    "m4-13-divergence-phantoms-01.png",
+    "m4-13-divergence-phantoms-02.png"
+  ],
+  "m4-14-double-bottom-double-top": [
+    "m4-14-double-bottom-double-top-01.png",
+    "m4-14-double-bottom-double-top-02.png",
+    "m4-14-double-bottom-double-top-03.png"
+  ],
+  "m3-07-market-maker-trap-trendline-phantoms": [
+    "m3-07-market-maker-trap-trendline-phantoms-01.png",
+    "m3-07-market-maker-trap-trendline-phantoms-02.png",
+    "m3-07-market-maker-trap-trendline-phantoms-03.png",
+    "m3-07-market-maker-trap-trendline-phantoms-04.png",
+    "m3-07-market-maker-trap-trendline-phantoms-05.png",
+    "m3-07-market-maker-trap-trendline-phantoms-06.png",
+    "m3-07-market-maker-trap-trendline-phantoms-07.png",
+    "m3-07-market-maker-trap-trendline-phantoms-08.png",
+    "m3-07-market-maker-trap-trendline-phantoms-09.png",
+    "m3-07-market-maker-trap-trendline-phantoms-10.png",
+    "m3-07-market-maker-trap-trendline-phantoms-11.png",
+    "m3-07-market-maker-trap-trendline-phantoms-12.png",
+    "m3-07-market-maker-trap-trendline-phantoms-13.png"
+  ]
+}

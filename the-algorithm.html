@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICT Core Content — Interactive Course</title>
+<style>
+  :root{
+    --bg:#0b0e14; --bg2:#11151f; --panel:#161b28; --panel2:#1c2333;
+    --border:#232b3d; --text:#d7dce6; --muted:#8a93a6; --dim:#5c6478;
+    --accent:#4f8cff; --accent2:#7aa5ff; --gold:#e8b45a; --green:#43c78b; --red:#e2606c;
+    --radius:12px;
+    --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.65}
+
+  /* ---------- layout ---------- */
+  #app{display:flex;min-height:100vh}
+  #sidebar{width:320px;min-width:320px;background:var(--bg2);border-right:1px solid var(--border);
+    height:100vh;position:sticky;top:0;overflow-y:auto;padding:0 0 40px}
+  #main{flex:1;min-width:0;padding:0 0 80px}
+  .inner{max-width:880px;margin:0 auto;padding:0 32px}
+
+  /* ---------- sidebar ---------- */
+  .brand{padding:22px 20px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:5}
+  .brand h1{font-size:17px;letter-spacing:.4px}
+  .brand h1 span{color:var(--gold)}
+  .brand .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .progress-wrap{margin-top:12px}
+  .progress-bar{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:3px;transition:width .4s}
+  .progress-label{font-size:11px;color:var(--muted);margin-top:5px}
+  .month-group{margin-top:6px}
+  .month-head{display:flex;align-items:center;justify-content:space-between;padding:12px 20px 6px;cursor:pointer;user-select:none}
+  .month-head h2{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold)}
+  .month-head .count{font-size:11px;color:var(--dim)}
+  .nav-lesson{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;font-size:13.5px;color:var(--muted);
+    border-left:3px solid transparent;transition:background .15s,color .15s}
+  .nav-lesson:hover{background:var(--panel);color:var(--text)}
+  .nav-lesson.active{background:var(--panel);color:var(--text);border-left-color:var(--accent)}
+  .nav-lesson .dot{width:16px;height:16px;min-width:16px;border-radius:50%;border:1.5px solid var(--dim);
+    display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent}
+  .nav-lesson.done .dot{background:var(--green);border-color:var(--green);color:#08130d}
+  .nav-lesson .n{color:var(--dim);font-size:11px;min-width:16px}
+
+  /* ---------- lesson header ---------- */
+  .lesson{display:none;animation:fadeIn .35s ease}
+  .lesson.visible{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .lesson-hero{padding:44px 0 26px;border-bottom:1px solid var(--border);margin-bottom:28px}
+  .crumb{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:10px}
+  .lesson-hero h2{font-size:32px;line-height:1.2;font-weight:650}
+  .lesson-hero .desc{color:var(--muted);margin-top:10px;font-size:15px;max-width:640px}
+
+  /* ---------- content blocks ---------- */
+  .lesson h3{font-size:20px;margin:34px 0 12px;color:var(--accent2)}
+  .lesson h4{font-size:16px;margin:24px 0 8px;color:var(--gold)}
+  .lesson p{margin:10px 0;color:var(--text)}
+  .lesson ul,.lesson ol{margin:10px 0 10px 22px}
+  .lesson li{margin:6px 0}
+  .lesson strong{color:#fff}
+  .callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);
+    border-radius:var(--radius);padding:14px 18px;margin:18px 0;font-size:15px}
+  .callout.rule{border-left-color:var(--gold)}
+  .callout.warn{border-left-color:var(--red)}
+  .callout .tag{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:1.3px;
+    color:var(--accent);margin-bottom:6px;font-weight:700}
+  .callout.rule .tag{color:var(--gold)}
+  .callout.warn .tag{color:var(--red)}
+  .kv{display:grid;grid-template-columns:150px 1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:18px 0;font-size:14.5px}
+  .kv>div{padding:9px 14px;border-bottom:1px solid var(--border)}
+  .kv>div:nth-child(odd){background:var(--panel);color:var(--gold);font-weight:600}
+  .kv>div:nth-last-child(-n+2){border-bottom:none}
+
+  /* flip cards for definitions */
+  .flip-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+  .flip{perspective:900px;height:150px;cursor:pointer}
+  .flip-in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .flip.flipped .flip-in{transform:rotateY(180deg)}
+  .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;font-size:14px}
+  .flip-front{background:var(--panel2);border:1px solid var(--border);font-weight:650;color:var(--accent2)}
+  .flip-back{background:var(--panel);border:1px solid var(--accent);transform:rotateY(180deg);color:var(--text);font-size:13px}
+  .flip-hint{font-size:11px;color:var(--dim);text-align:center;margin-top:-8px;margin-bottom:14px}
+
+  /* ---------- images ---------- */
+  .fig{margin:20px 0}
+  .fig img{max-width:100%;border-radius:var(--radius);border:1px solid var(--border);cursor:zoom-in;display:block;transition:transform .2s}
+  .fig img:hover{transform:scale(1.005)}
+  .fig figcaption{font-size:12.5px;color:var(--muted);margin-top:7px}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:18px 0}
+  .gallery .fig{margin:0}
+  .gallery img{height:160px;width:100%;object-fit:cover;object-position:top left}
+  #lightbox{position:fixed;inset:0;background:rgba(5,7,12,.94);display:none;align-items:center;justify-content:center;z-index:100;cursor:zoom-out;flex-direction:column;gap:10px}
+  #lightbox.open{display:flex}
+  #lightbox img{max-width:94vw;max-height:88vh;border-radius:8px}
+  #lightbox .lb-cap{color:var(--muted);font-size:13px}
+
+  /* ---------- quiz ---------- */
+  .quiz{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:34px 0 10px}
+  .quiz h3{margin:0 0 4px;color:var(--gold);font-size:18px}
+  .quiz .q-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+  .q{margin:18px 0}
+  .q .q-text{font-weight:600;margin-bottom:10px}
+  .q .opt{display:block;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    padding:10px 14px;border-radius:8px;margin:6px 0;cursor:pointer;font-size:14.5px;font-family:var(--font);transition:border-color .15s,background .15s}
+  .q .opt:hover{border-color:var(--accent)}
+  .q .opt.correct{border-color:var(--green);background:rgba(67,199,139,.12)}
+  .q .opt.wrong{border-color:var(--red);background:rgba(226,96,108,.12)}
+  .q .opt:disabled{cursor:default;opacity:.85}
+  .q .expl{display:none;font-size:13.5px;color:var(--muted);margin-top:8px;padding:10px 12px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--green)}
+  .q .expl.show{display:block}
+
+  /* ---------- footer nav ---------- */
+  .lesson-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:36px;padding-top:22px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:10px 18px;border-radius:9px;
+    cursor:pointer;font-size:14px;font-family:var(--font);transition:border-color .15s,background .15s}
+  .btn:hover{border-color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  .btn.primary:hover{background:var(--accent2)}
+  .btn.done-btn.marked{background:var(--green);border-color:var(--green);color:#08130d;font-weight:700}
+
+  /* ---------- home ---------- */
+  #home .hero{padding:64px 0 30px}
+  #home .hero h2{font-size:42px;line-height:1.15;font-weight:700}
+  #home .hero h2 em{font-style:normal;color:var(--gold)}
+  #home .hero p{color:var(--muted);margin-top:14px;max-width:600px;font-size:16.5px}
+  .month-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:26px 0}
+  .mcard{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:border-color .15s,transform .15s}
+  .mcard:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .mcard .m-num{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+  .mcard h3{margin:6px 0 8px;font-size:17px;color:var(--text)}
+  .mcard p{font-size:13px;color:var(--muted)}
+  .mcard .m-prog{font-size:11.5px;color:var(--dim);margin-top:12px}
+  .notice{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:8px 0 40px;font-size:14px;color:var(--muted)}
+  .notice b{color:var(--gold)}
+
+  /* mobile */
+  #menu-toggle{display:none;position:fixed;top:14px;left:14px;z-index:60;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:15px}
+  @media(max-width:900px){
+    #sidebar{position:fixed;left:0;top:0;z-index:50;transform:translateX(-100%);transition:transform .25s;width:300px;min-width:300px}
+    #sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.6)}
+    #menu-toggle{display:block}
+    .inner{padding:0 18px}
+    #main{padding-top:52px}
+    .lesson-hero h2{font-size:25px}
+  }
+  ::-webkit-scrollbar{width:9px}
+  ::-webkit-scrollbar-thumb{background:var(--panel2);border-radius:5px}
+  ::-webkit-scrollbar-track{background:transparent}
+</style>
+</head>
+<body>
+<button id="menu-toggle">☰ Lessons</button>
+<div id="app">
+  <nav id="sidebar">
+    <div class="brand">
+      <h1>ICT <span>Core Content</span></h1>
+      <div class="sub">Interactive course · built from your Notion notes</div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+        <div class="progress-label" id="prog-label">0 / 38 lessons complete</div>
+      </div>
+    </div>
+    <div id="nav-list"></div>
+  </nav>
+
+  <main id="main">
+    <div class="inner">
+
+<!-- ================= HOME ================= -->
+<section class="lesson" id="home" data-title="Welcome">
+  <div class="hero">
+    <h2>Master the <em>ICT Core Content</em><br>from your own notes.</h2>
+    <p>38 lessons across 4 months — market maker templates, equilibrium &amp; fair valuation, liquidity, institutional order flow, PD arrays, and the market maker traps. Every word in this course comes from your Notion notes; every chart is pulled from them.</p>
+  </div>
+  <div class="month-cards" id="month-cards"></div>
+  <div class="notice"><b>How to use this course:</b> work through the lessons in order — the material builds month over month. Flip the concept cards, study every chart (click to zoom), then take the lesson check. Your progress and quiz answers are saved in your browser automatically.</div>
+</section>
+
+<!-- ================= MONTH 1 ================= -->
+
+<section class="lesson" id="m1-01" data-title="Elements Of A Trade Setup" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 1</div>
+    <h2>Elements Of A Trade Setup</h2>
+    <div class="desc">The two primary concerns behind every setup: the framework price is operating in, and the reference points institutional order flow leaves behind.</div>
+  </div>
+
+  <h3>Primary Concern A — Context / Framework</h3>
+  <p>What makes an idea favorable for a trade? Not an indicator, not a support &amp; resistance level — there has to be something that builds a <strong>reason</strong> to want the trade. Price is always in <strong>one</strong> of these four conditions:</p>
+  <div class="flip-row">
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Expansion</div><div class="flip-face flip-back">Price moves quickly from a level of equilibrium — the market makers reveal their intended repricing model.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Retracement</div><div class="flip-face flip-back">Price moves back inside the recently created price range — repricing to levels not efficiently traded, for fair value.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Reversal</div><div class="flip-face flip-back">Price moves opposite to the current direction — the market makers have run a level of stops; a significant move should unfold in the new direction.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Consolidation</div><div class="flip-face flip-back">Price moves inside a clear range with no willingness to go significantly higher or lower — orders are building on both sides. Expect a new expansion near term.</div></div></div>
+  </div>
+  <div class="flip-hint">Click a card to flip it</div>
+
+  <div class="callout"><span class="tag">The interbank algo</span>Price for currencies is ~90% delivered by <strong>electronic algorithms</strong> — the interbank price delivery algorithm. There is no auction market anymore; it's a price engine, and it's highly manipulated — especially foreign exchange. Because of that, the <strong>fingerprints are easy to see</strong> once you understand the operations and conditions it functions in. And there's no such thing as the market "doing nothing" in a consolidation — it's <strong>accumulating orders</strong>.</div>
+
+  <div class="callout rule"><span class="tag">Rule</span>All moves start from a consolidation. The market maker keeps price in a defined range until there's enough money on both the upper and lower end — <strong>whichever side has the most money to be absorbed, that's the direction it moves</strong>. We don't always know which it is, so we <strong>always wait for the first expansion</strong> — that gives us all the insight we need. Sometimes it expands too far to do anything with: then wait for the retracement or the next consolidation. That's normal — you're not going to catch every move.</div>
+
+  <div class="fig-slot" data-slug="m1-01-elements-of-a-trade-setup"></div>
+
+  <h3>Primary Concern B — Pairing Each Condition With An ICT Tool</h3>
+  <p>Each condition couples directly with a specific reference point in institutional order flow:</p>
+  <div class="kv">
+    <div>Expansion</div><div><strong>Orderblock</strong> — when price leaves a level quickly, don't chase; wait for price to come back to the orderblock the market makers left at or near equilibrium (the down candle right before the up move)</div>
+    <div>Retracement</div><div><strong>Fair value gaps &amp; liquidity voids</strong> — quick runs up/down leave gaps that price wants to come back into and close in</div>
+    <div>Reversal</div><div><strong>Liquidity pools</strong> — just above an old high and just below an old low; price runs just past those levels, rejects, and goes the other way (turtle soups &amp; false breaks)</div>
+    <div>Consolidation</div><div><strong>Equilibrium</strong> — the halfway point of the range, defined by the <strong>bodies</strong> of the candles, not the wicks; wait for the impulse swing away from it</div>
+  </div>
+
+  <div class="callout"><span class="tag">One setup is enough</span>One of these conditions will become your <strong>bread and butter</strong>. Some traders will trust the equilibrium, some the orderblock, some the void. You don't need all of them — <strong>find one element, couple it with an ICT tool, and wait for those conditions</strong>. You won't get a trade every day, but you can get a couple every week. (Watch four major pairs with one condition and you'd find a trade every day — but that comes later.) Go through your charts and outline the examples that already happened on the left side.</div>
+
+  <div class="quiz" data-quiz="m1-01"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-02" data-title="How Market Makers Condition The Market" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 2</div>
+    <h2>How Market Makers Condition The Market</h2>
+    <div class="desc">A small group moves the markets — and they run price through repeating daily and weekly templates.</div>
+  </div>
+
+  <h3>The Market Efficiency Paradigm</h3>
+  <p>Retail believes its sheer vastness drives price — supply &amp; demand, trendlines, moving average crossovers. <strong>That's a facade.</strong> A small circle of traders — <strong>the banks</strong> — is the actual drive shaft that makes the markets go around. They are the <strong>liquidity provider; everyone else is liquidity</strong>. The markets are always efficient — but efficient for the smart money, not for the speculators.</p>
+  <div class="callout warn"><span class="tag">Paradigm shift</span>You are not trading against a person anymore — it's a computer program that delivers price, and it knows human behavior because it's always been the same: <strong>fear and greed</strong>. Your stop getting run, the move that "looked exactly like it was going up" but came all the way down first — that's not your broker, it's the interbank feed. Are you a lamb or a lion? Leave the herd; the small circle doesn't draw attention to itself — it just quietly does its thing.</div>
+
+  <h3>The Daily Template</h3>
+  <p>Every day the interbank price delivery algorithm runs the same generic, systematic structure — expansion, retracement, reversal, consolidation applied to <strong>time of day</strong>:</p>
+  <div class="kv">
+    <div>Asian range</div><div>Consolidation = price equilibrium — the day starts here, orders build</div>
+    <div>After midnight NY</div><div>Manipulation — the <strong>Judas swing</strong>, always by way of some news event/driver at or just before it; on a buy day it drops down making the <strong>false move for the low</strong></div>
+    <div>London open</div><div>Reversal — the classic scenario: it shoots down, runs the stops, makes the <strong>higher low of the day</strong>, then range expansion into 5:00 AM NY</div>
+    <div>5:00–8:00 AM NY</div><div>Consolidation</div>
+    <div>8:00–8:30 AM NY</div><div>Retracement (the news injection window)</div>
+    <div>New York session</div><div>Reversal or another expansion — the range makes the rest of the day into 10:00–11:00 AM NY</div>
+    <div>10–11 AM / London close</div><div>Reversal</div>
+    <div>After</div><div>Consolidation — ending the true day</div>
+  </div>
+
+  <h3>The Rules of Conditions</h3>
+  <div class="callout rule"><span class="tag">Rules — the algo has only a few options</span>
+    <ul>
+      <li>A consolidation <strong>always</strong> goes to an expansion. It can't retrace — it hasn't moved anywhere; it can't reverse — it has to come out of the consolidation first.</li>
+      <li>From expansion it goes to a retracement <em>or</em> a reversal — retracing means coming back to the <strong>orderblock it just left behind, recapitalizing it</strong>, then making another leg in the same direction.</li>
+      <li>A consolidation can <strong>NEVER</strong> go directly into a reversal or retracement.</li>
+      <li>Consolidation → expansion never goes directly into another consolidation.</li>
+      <li>After a reversal there'll be another expansion, then back to consolidation.</li>
+    </ul>
+  </div>
+  <p>When you see a consolidation or holding pattern, think: <strong>the next leg is an explosive move — an impulse price swing</strong>. These processes are time sensitive, day sensitive, and intermarket related — when one market is being held while a correlated one is let run (why the EuroPound matters when trading fiber or cable), that's where the trade is setting up.</p>
+
+  <h3>The Weekly Template</h3>
+  <p>The same repeating format plays out across the weekly range:</p>
+  <div class="kv">
+    <div>Sunday open</div><div>Consolidation</div>
+    <div>Monday</div><div>Expansion</div>
+    <div>Tuesday (or Monday)</div><div>Reversal</div>
+    <div>Wednesday</div><div>Another expansion</div>
+    <div>Midweek</div><div>Consolidation</div>
+    <div>Friday</div><div>Reverse or retrace</div>
+  </div>
+  <div class="callout"><span class="tag">Key idea</span>With the higher-timeframe directional premise understood, this price delivery model repeats over and over — it's very generic, it will not break, and it will not stop working. It doesn't matter what timeframe you're looking at; the daily range just makes it easy to study every single day.</div>
+
+  <div class="fig-slot" data-slug="m1-02-how-market-makers-condition-the-market"></div>
+
+  <div class="quiz" data-quiz="m1-02"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-03" data-title="What To Focus On Right Now" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 3</div>
+    <h2>What To Focus On Right Now</h2>
+    <div class="desc">Build the daily price-action log habit and resist the urge to forecast.</div>
+  </div>
+
+  <h3>Two Perspectives — Who Is The Victim?</h3>
+  <p>The <strong>uninformed money</strong> doesn't acknowledge that smart money exists; its perspective is that <strong>indicators are the answer</strong> — that overbought/oversold is the precursor to a move ("indicator-itis"). If you're new and not infected with that yet, you actually have the advantage. The <strong>smart money perspective</strong> is that of the liquidity provider: everyone else <em>is</em> liquidity — in the form of <strong>buy stops, sell stops and pending orders above and below the most recent highs and lows</strong>. 90% of traders lose; a huge new pool of liquidity enters the market every single day.</p>
+  <div class="callout"><span class="tag">Who sets price</span>Currency is owned by the bank — the central bank sets the value of that bank note, at any time, at any price they want (look at the Swiss franc when the euro was de-pegged: instantaneous wipeout). We don't vilify the market maker and we don't vilify retail — we just think in terms of <strong>efficiency</strong>, and price is slanted to lace the pockets of the smart money.</div>
+
+  <h3>Daily Price Action Logs — Start Here</h3>
+  <p>Come in with <strong>no previous knowledge</strong> — go back to square one, even if you've made money before (if anything outside institutional order flow led to your profitability, it was coincidence). The very first thing: create a <strong>daily price action log with price charts</strong>, with this much data displayed per timeframe:</p>
+  <div class="kv">
+    <div>Daily chart</div><div>12 months of data — no less than 9; not multiple years</div>
+    <div>4-hour chart</div><div>3 months</div>
+    <div>60-minute chart</div><div>At least 3 weeks — the bellwether chart for a day trader, like their "daily"</div>
+    <div>15-minute chart</div><div>3–4 days</div>
+  </div>
+
+  <h3>What To Note On The Charts</h3>
+  <ul>
+    <li>Where price has shown a <strong>quick movement from a specific level</strong> — those big candles will be influential later.</li>
+    <li><strong>Recent highs and lows that haven't been retested</strong> — they'll influence future price delivery.</li>
+    <li><strong>Clean highs</strong> (two equal highs in close proximity): buy stops build above them and the market usually comes back up and runs through that. <strong>Equal lows</strong>: a big area for sell stops — the market has a willingness to go down and test that liquidity.</li>
+    <li>What <strong>day</strong> the weekly high/low forms, and what <strong>time of day / killzone</strong> (London or New York) — it lends to prognostication.</li>
+    <li>The <strong>daily high and daily low of every single trading day</strong>, and when they form. Note previous day's high/low and draw them out to 0 GMT.</li>
+  </ul>
+  <p>Work the levels top-down: mark them on the daily, drop to the 4-hour — the same levels transpose immediately and more highs/lows become visible — then the hourly (which defines the weekly range), then a separate 15-minute chart covering the last 3–4 days.</p>
+
+  <div class="callout rule"><span class="tag">Process rules</span>
+    <ul>
+      <li><strong>One currency pair</strong> — and pick one apart from the pound and euro, since the mentorship uses those; you want a unique perspective you arrived at yourself.</li>
+      <li>Keep the annotated level-charts <strong>separate</strong> from the executable chart — don't let charts get too busy.</li>
+      <li>Three charts total: the <strong>executable</strong>, the <strong>15-minute MTF</strong>, and the <strong>HTF</strong>.</li>
+      <li><strong>Resist the urge to forecast</strong> price movements — that's not for this stage; it only leads to frustration.</li>
+      <li>Never marry your analysis — if real-time price stops making sense for your expected conditions, you need the flexibility to switch gears or go to the sidelines. We don't know direction with certainty; we know <strong>probabilities</strong>.</li>
+      <li>Do it <strong>every single trading day</strong> — even after 23 years, ICT still keeps these logs. It's what professionals do.</li>
+    </ul>
+  </div>
+  <div class="callout"><span class="tag">Why it works — example from the notes</span>Wednesday ran through Tuesday's high (~9790), didn't continue, sold off — all the way down to Tuesday's low, breached it by a pip or two, then consolidated. Thursday traded inside Wednesday's range, sold off just below its low, consolidated. Friday rolled straight up through Thursday's high and ran out all the stops resting above Wednesday's high — the weekly high. The previous days' highs and lows <em>are</em> the reference points.</div>
+
+  <div class="fig-slot" data-slug="m1-03-what-to-focus-on-right-now"></div>
+
+  <div class="quiz" data-quiz="m1-03"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-04" data-title="Equilibrium Vs. Discount" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 4</div>
+    <h2>Equilibrium Vs. Discount</h2>
+    <div class="desc">The fib means nothing by itself — it only matters when displacement defines the swing, and price returns to equilibrium or better.</div>
+  </div>
+
+  <h3>The Fib Has No Magic</h3>
+  <p>Fibonacci has no significance by itself — any other time it will fail you. The 62–79% levels work only because they're <strong>measuring how far the current price range has been</strong> — the foundations behind price action cause the indicator to work, never the other way around. Price alone — the open, high, low and close — gives you everything: direction, entries and exits.</p>
+
+  <h3>Defining the Swing</h3>
+  <ul>
+    <li>First you need <strong>movement</strong>: an impulsive price swing means <strong>displacement</strong> — someone with a lot of money and strong conviction has entered. Banks accumulate at the lows, then keep offering price higher as long as they find buyers.</li>
+    <li>A swing high is <strong>3 candles</strong> — a high with a lower candle on the left and a lower candle on the right. Then you wait for the <strong>4th candle to be lower</strong> than the highest one — only then do you start waiting for equilibrium.</li>
+    <li>Only fib <strong>pure, obvious swings</strong> — and don't count the Sunday candle (MT4/Forex LTD shows it; it's a non-event).</li>
+    <li>Keep the same range as long as its <strong>low is not violated</strong>; once an old high is taken, re-draw the fib on the new, larger price leg — the <strong>parent price swing</strong> currently being traded in.</li>
+    <li>Use the swing that <strong>showed reaction</strong> — the leg that moved away from an area you expected it to move from.</li>
+  </ul>
+
+  <h3>Equilibrium → Discount → Explosion</h3>
+  <div class="callout rule"><span class="tag">Rules</span>
+    <ul>
+      <li><strong>Equilibrium = fair market value</strong> — the 50% of the impulse swing. On the banking level the market is <em>permitted</em> to be bought at EQ or less. <strong>It cannot be bought above it — they won't come in, they won't do it.</strong></li>
+      <li>Best buys come at equilibrium <strong>or less</strong>. Anything below EQ is a <strong>discount</strong>.</li>
+      <li>Markets <strong>do not sustain discount prices very long</strong> when the underlying tone is bullish — expect a very dynamic, explosive move away. That's your built-in relative strength study: if orders are really there, price <strong>reacts immediately</strong> at the level.</li>
+      <li><strong>OTE — the optimal trade entry sweet spot: 62%, 70.5%, 79%</strong> retracement. Below equilibrium into OTE = the highest probable degree of bullishness.</li>
+      <li>If price blows through OTE / 62 / 79 while you're still bullish → don't panic, <strong>find the low it just blew out and expect the turtle soup buy there</strong> — then you're buying at a really deep discount.</li>
+    </ul>
+  </div>
+
+  <h3>Turtle Soup — The Stop Run</h3>
+  <p>If conditions are bullish and a low gets swept, that's when you anticipate a <strong>turtle soup</strong> — a false breakout below the low. Why do market makers run price below old lows? Because tripping the <strong>sell stops injects sellers — counterparties to their buy orders</strong>. Once it hits the level, the orders go hot and it explodes upward. It only needs to breach by a little; it should reject <strong>immediately</strong>. This is also how you answer "will it keep going lower?" — if it already took the stops out, it's probably done reaching.</p>
+
+  <h3>Exits — Where the Market Makers Distribute</h3>
+  <ul>
+    <li>Take profits <strong>above an old high — any old high</strong>, it doesn't have to be the oldest one. If it gives you two chances and you hold for more, that's greed.</li>
+    <li>Market makers only allow price to retrace so that <strong>buy stops build above an old high — that's how they engineer liquidity</strong>. Those buy stops become market orders to buy, and smart money sells its accumulated longs to them. That's all institutional order flow is: the storyline between the highs and the lows.</li>
+    <li>Intraday, markets reach for stops in grades of <strong>10 and 20 pips above a high</strong>.</li>
+    <li>Consolidations form at equilibrium — then expansion goes hunting the liquidity above (the buy stops over the clean/equal highs you marked).</li>
+  </ul>
+
+  <div class="callout warn"><span class="tag">Reality check</span>Sometimes EQ gets hit and it fails — you'll take losses; it's not going to be perfect. On a daily chart you get roughly <strong>one really good high-odds opportunity per week</strong>. Traders that make money professionally are not chasing everything — they know exactly what they're waiting for. The example moves in the notes ran 140→300+ pips from these entries.</div>
+
+  <div class="quiz" data-quiz="m1-04"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-05" data-title="Equilibrium Vs. Premium" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 5</div>
+    <h2>Equilibrium Vs. Premium</h2>
+    <div class="desc">Selling is not the mirror of buying at EQ — sell from 62% or higher, in premium.</div>
+  </div>
+
+  <p>Everything here is diametrically opposed to equilibrium vs. discount. A <strong>premium</strong> means price is at a really high level <strong>relative to its current trading range</strong> — you don't need overbought/oversold indicators to classify it; you just need the current range, and anything above the 50% level starts going into premium.</p>
+
+  <h3>Selling Rules</h3>
+  <div class="callout rule"><span class="tag">Rules</span>
+    <ul>
+      <li>Anchor the fib from the <strong>high down to the low</strong> of the impulse swing. After a swing low forms (3 candles), watch the <strong>4th candle show willingness to go higher</strong> — then wait for the retracement up.</li>
+      <li>Price must at least touch equilibrium — but 50% alone is <strong>not where ICT sells</strong>. Other disciplines sell the 50; sell in the <strong>62–79% zone (OTE for sells)</strong>, at a premium.</li>
+      <li>If price only reaches EQ and immediately sells off — that's a <strong>missed opportunity</strong>. Let those price legs go without you.</li>
+      <li>Only fib <strong>pure, clear, discernible swings</strong> — if it looks sloppy or questionable, skip it.</li>
+      <li>Keep re-anchoring to the newest high→low ranges as they form — anchoring to the wrong swing hides the real OTE.</li>
+    </ul>
+  </div>
+
+  <h3>Turtle Soup Sells</h3>
+  <p>When price goes above equilibrium <strong>and takes out an old high at the same time</strong> — running the stops while in premium — that's really good in terms of probabilities: a <strong>turtle soup sell</strong>. Target the lows already established in the marketplace: take first profit below the first low, then the next low (aim ~10 pips below a range low, plus a few pips for spread).</p>
+
+  <div class="callout warn"><span class="tag">Stop-outs happen</span>Sometimes it runs right through your OTE and takes your stop — even twice in a row. <strong>Do not try to avoid it; it's going to happen.</strong> If you're stopped, look for the next old high to be breached while still above 50% — that's the next turtle soup sell scenario.</div>
+
+  <div class="callout"><span class="tag">Key idea</span>You don't need a bias — you need to know <strong>how to trade inside a range</strong>. Ranges are always there, whether the market is trending, consolidating or reversing, and you don't need a breakout to make money. If the market is in a long consolidation, this is your <strong>go-to</strong>: trade turtle soups, or premium and discount. Professional traders sell at premium prices — you own a car, you don't sell it at a discount. And there's no better place to sell than above an old high, because there are <strong>willing buyers right there in the form of buy stops</strong>.</div>
+
+  <p>Even on the daily chart these setups run 70–100+ pips — this is for those who can't day trade. The concepts are universal across timeframes.</p>
+
+  <div class="quiz" data-quiz="m1-05"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-06" data-title="Fair Valuation" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 6</div>
+    <h2>Fair Valuation</h2>
+    <div class="desc">Equilibrium is fair value. The strongest clue to direction is which swing broke most recently — then think from the smart-money point of view.</div>
+  </div>
+
+  <h3>Two Perspectives of Fair Value</h3>
+  <div class="flip-row">
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">1. Equilibrium</div><div class="flip-face flip-back">Fair value as the equal-distance midpoint of a defined high-to-low range.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">2. Market Maker<br>Fair Value</div><div class="flip-face flip-back">The valuation at which market makers accumulate or liquidate their positions — not what retail calls fair.</div></div></div>
+  </div>
+  <div class="flip-hint">Click a card to flip it</div>
+
+  <h3>Voids, Gaps &amp; Where Fair Value Lives</h3>
+  <ul>
+    <li>A <strong>liquidity void</strong>: sudden movement with large ranges, very little wicks, quick — price spent very little time at those levels. It will want to trade back up into that area and <strong>close it in</strong> later (not always immediately).</li>
+    <li>A <strong>fair value gap</strong>: the range between the two up candles bracketing a down move — nothing filled in there, only one-way movement. Define it by the <strong>bodies</strong>.</li>
+    <li>Where price only moved one way, no real buying (or selling) occurred — the market runs back up to close in the range where only selling took place.</li>
+  </ul>
+
+  <h3>At Equilibrium, Which Way?</h3>
+  <div class="callout rule"><span class="tag">Rule</span>At equilibrium the market can go <strong>either way</strong>. The easiest way to determine the probable direction: <strong>where did market structure break most recently — a swing high or a swing low?</strong> If it broke a swing high and came back down to EQ, the highest probability is long.</div>
+
+  <h3>Stacking the Overlap</h3>
+  <p>High-probability fair valuation is an <strong>overlap of factors</strong>:</p>
+  <ol>
+    <li>The <strong>total (parent) range</strong> — are you in the lower third? That's a deep discount.</li>
+    <li>The <strong>equilibrium of the most recent smaller range</strong> — below it is discount.</li>
+    <li>An institutional reference — e.g. the <strong>bullish orderblock</strong> (down candle before the move up through a short-term high) being hit at the same time as EQ.</li>
+  </ol>
+  <p>That confluence is where market makers <strong>build a net long book</strong>. They accumulate at a deep discount and liquidate at what retail sees as premium — <strong>it's fair value to the market maker to liquidate there</strong>. Price chasers buying up there are buying at a premium; the void being filled is where smart money scales out, wick by wick.</p>
+
+  <div class="callout"><span class="tag">The cycle</span>Markets move from <strong>buy stops to sell stops and sell stops to buy stops</strong>, and from <strong>fair value → discount → premium → fair value</strong>. Are we at a discount, a premium, or fair value? Those combined give you the clues: are they accumulating, manipulating, or distributing?</div>
+
+  <div class="callout"><span class="tag">Confirmations from the notes</span>
+    <ul>
+      <li>If a turtle soup takes out buy stops and wants to go lower, it should go lower <strong>quickly</strong> — if it just sits in a sideways consolidation instead, it's building equilibrium again and pointing higher.</li>
+      <li>We <strong>don't play the breakout game — we anticipate the breakout</strong>: price action gives clues about which side the consolidation breaks.</li>
+      <li>Real example: the AUDUSD weekly call at <strong>7665</strong> — placed ~10 pips below where price was ultimately expected to reach (the FVG above), so the exit fills before the level.</li>
+      <li>Buying deep discounts: <strong>scale some out</strong> — you don't know if it only fills the void and then goes lower.</li>
+    </ul>
+  </div>
+
+  <div class="callout warn"><span class="tag">Discipline</span>If you mess up or miss a move, do not worry about it — these phenomena repeat almost daily. Don't look at the market with the retail mindset; ask "<strong>I am the bank, where's the most efficient price level for me to unload my longs or shorts?</strong>"</div>
+
+  <div class="quiz" data-quiz="m1-06"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-07" data-title="Liquidity Runs" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 7</div>
+    <h2>Liquidity Runs</h2>
+    <div class="desc">Liquidity is the orders resting above old highs and below old lows — but not all runs are equal.</div>
+  </div>
+
+  <p><strong>Liquidity</strong> (formally): the degree to which an asset can be quickly bought or sold without dramatically affecting its price. In ICT terms it's simpler: <strong>buy orders and sell orders</strong>.</p>
+
+  <h3>The Story of the Stops</h3>
+  <p>A short taken at a swing high is profitable as price falls — its <strong>buy stop rests just above that high</strong> (often right at it). A long from a low has its <strong>sell stop below the low</strong>. The market tends to find an interest in going back to where that large body of interest rests. So we're not looking for patterns for the sake of patterns — we're looking at <strong>where existing orders reside</strong>: liquidity above old highs, liquidity below old lows. It's just that simple, and it removes the retail, indicator-leaning perspective entirely — no bias relative to anything except price itself.</p>
+
+  <div class="flip-row">
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">High Resistance<br>Liquidity Run</div><div class="flip-face flip-back">Lots of peaks and troughs in the way — old lows as resistance, old highs as stop clusters. Least probable; avoid it.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Low Resistance<br>Liquidity Run</div><div class="flip-face flip-back">A sharp one-way move with very little retracement — price cuts through like a hot knife through butter.</div></div></div>
+  </div>
+  <div class="flip-hint">Click a card to flip it</div>
+
+  <h3>High Resistance — Why You Avoid It</h3>
+  <ul>
+    <li>To run an old high, price must fight through every old low (standard resistance) and every intermediate high on the way — those stops are <strong>highly defended</strong>.</li>
+    <li>Generally only a sharp injection of volatility — <strong>non-farm payroll, FOMC, a black swan</strong> — cuts through that kind of price action.</li>
+    <li>This is the element of price action to trade <strong>least frequently</strong>.</li>
+  </ul>
+
+  <h3>Low Resistance — The Easiest Trading There Is</h3>
+  <ul>
+    <li>After a sharp one-way decline breaks an old low, the run back up through the <strong>short-term highs</strong> created on the way down is <strong>low resistance</strong> — buy stops sit above every one of them, and each retracement sets up the next drive through.</li>
+    <li>The low-resistance zone is defined from the broken low back up to where the drop began. Once price returns to the level of the old broken low, <strong>the probabilities fall off precipitously — it becomes a high resistance run</strong> for anything beyond it.</li>
+    <li>Reverse it for the sell side: consolidation → expansion up breaking a short-term high → the fall back down through that one-sided run is low resistance, with sell-stop liquidity below every short-term low (and bottom-chasers building it up).</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Rules</span>
+    <ul>
+      <li>The more price action there is around a level, the more that level is being <strong>defended on an institutional price model</strong>.</li>
+      <li>Trade <strong>away</strong> from defended levels — that puts you in sync with institutional order flow, and your trades find very low resistance in the form of profitable exits and <strong>very little drawdown</strong>.</li>
+      <li>Old highs kept intact flip the field: every rally into them is high resistance, which makes the runs on the lows below <strong>low resistance</strong> — that's your bearish bias, and vice versa.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m1-07-liquidity-runs"></div>
+
+  <div class="quiz" data-quiz="m1-07"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m1-08" data-title="Impulse Price Swings & Market Protraction" data-month="m1">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 8</div>
+    <h2>Impulse Price Swings &amp; Market Protraction</h2>
+    <div class="desc">Three protraction moves per 24 hours — the manipulation that seeks liquidity before the real move.</div>
+  </div>
+
+  <h3>Impulse Price Swings</h3>
+  <p>When you look at price action, think in terms of <strong>impulse price swings</strong> — high down to a low, up to a high, down to a low, over and over. Inside the impulse swings is where the detail lives. But there are smaller, more specific impulse swings with far more influence: the ones that are <strong>manipulative</strong>.</p>
+
+  <h3>Market Protraction</h3>
+  <p><strong>Protraction is a time-sensitive impulse price swing</strong> — a small move that is highly sensitive to the time of day, designed and intended for <strong>manipulation only</strong>. It runs <strong>counter to the major direction</strong> you'll see after that time of day: if it moves higher at the protraction time, think the opposite direction. Its design is to fake out those who chase the initial move — to draw participants onto the wrong side, or to reach for liquidity (e.g. clearing out lows before the rally).</p>
+
+  <h3>The 3 Protraction Times (per 24h)</h3>
+  <div class="kv">
+    <div>0 GMT (8 PM NY)</div><div>One small move away right at the day's delineation — Asia isn't that influential beyond this</div>
+    <div>After midnight NY</div><div>The London protraction — the <strong>Judas swing</strong>: a false initial move (a false rally to sell into when bearish)</div>
+    <div>After 7 AM NY</div><div>The New York protraction — if London moved lower, expect the retracement higher that entices buyers, then the reversal. <strong>It has to happen after 7 o'clock.</strong></div>
+  </div>
+
+  <div class="callout"><span class="tag">Blending it with Month 1</span>Measure the impulse swing down, wait for the retracement above equilibrium into the <strong>62% premium</strong> — sell there expecting the run below the old lows (find them in previous days). After an impulse swing, the protraction phase reaches into a premium/discount level, then the next expansion takes out the stops below the equal lows. Use this for <strong>session drills</strong> — it builds context for your practice and your anticipatory price skills.</div>
+
+  <p><em>Tip from the notes: hold Ctrl and tap Y (on the platform) to add the vertical 0 GMT delineations so you can see the time-sensitive swings.</em></p>
+
+  <div class="quiz" data-quiz="m1-08"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<!-- ================= MONTH 2 ================= -->
+
+<section class="lesson" id="m2-01" data-title="Growing Small Accounts" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 1</div>
+    <h2>Growing Small Accounts</h2>
+    <div class="desc">Compounding takes time — respect risk over reward and let selectivity do the heavy lifting.</div>
+  </div>
+
+  <h3>What to Avoid</h3>
+  <ul>
+    <li><strong>Rushing massive gains</strong> — in pips or percent. Pips are a trophy thing for Twitter/Instagram; <strong>percent returns</strong> are what build consistent wealth, and you don't even need high percentages.</li>
+    <li><strong>Large risk</strong> in hopes of equally large returns — it's a misnomer that you need a lot of money and a lot of risk. Forex is not the lottery.</li>
+    <li><strong>Assuming small risk won't grow the account</strong> — compound interest is the missing element. Even $100 grows exponentially over time if you submit to it, and nothing says you can't add funds once you're confident.</li>
+    <li><strong>Sacrificing equity to poor planning</strong> — you need consistent parameters and well-defined low-risk setups: ideally <strong>2% risk, no more, as a new trader</strong>.</li>
+  </ul>
+
+  <h3>The Reality of Reward-to-Risk vs. Accuracy</h3>
+  <p>Greed puts you into the trade; once you're in, it transfers into fear. Learn to respect the <strong>risk side</strong> before you execute — nobody goes broke taking profits; they go broke taking too much risk.</p>
+  <div class="kv">
+    <div>75% accuracy</div><div>Very little RR needed per $1 risked</div>
+    <div>50/50</div><div>$1 for $1</div>
+    <div>40%</div><div>~$1.50 per $1</div>
+    <div>25–33%</div><div>Minimum $2–3 per $1 — <strong>at 3:1 you can be wrong 75% of the time and still be net profitable</strong></div>
+  </div>
+  <p>As your accuracy grows while you keep hunting 3:1 trades, your equity grows <strong>exponentially</strong> — and you never demanded high accuracy.</p>
+
+  <div class="callout rule"><span class="tag">Rules</span>
+    <ul>
+      <li>Identify setups that permit <strong>3R or higher</strong>; frame them so a loss has little impact.</li>
+      <li><strong>Drawdown is the most important thing</strong> — it hurts you psychologically and monetarily. Avoid large drawdown; that "King Kong feeling" after big wins is what precedes the fall.</li>
+      <li>Know your profit targets and where price should be drawn to <strong>before</strong> entry.</li>
+      <li>Banks trade off <strong>daily levels</strong> — that's where institutional sponsorship is.</li>
+    </ul>
+  </div>
+
+  <h3>The 6% Per Month Model</h3>
+  <p>Focus on <strong>6% of equity compounding per month — it doubles your money every year</strong>, whatever your account size. It only takes <strong>20 pips per week</strong>, 1.5% risk, and a 1:1 ratio — and those setups form every single trading day (that doesn't mean trade every day: highly selective conditions only). A $1,000 account risks $15 a trade — a loss you can absorb without taking it out on anyone.</p>
+  <p>The easiest 6% setups form on the <strong>daily chart orderblock</strong>: the down candle before the move up; the body's open-to-high = the fair value gap. Wait for price to return, add ~5 pips spread to the limit order, stop 20 pips below (under the middle of the down candle), then <strong>graduate your exits</strong>: take half at the first multiple (banking 0.75%), stop to breakeven after the second multiple, scale the rest at the logical liquidity levels — the buy stops you mapped in advance. One setup like that framed on the daily is a <strong>5:1, one-shot-one-kill</strong>.</p>
+  <div class="callout"><span class="tag">Perspective</span>ICT's stated average goal: <strong>50–75 pips a week</strong> (a shown month: 10 trades, 51.8-pip average win, 518 pips). A 50% month is possible but <strong>not a standard — do not expect it</strong>. And $1,000 at 6%/month compounds past $2,000 in a year — and past <strong>$1,000,000 in 10 years</strong> without adding a penny. Where will you be ten years from now?</div>
+
+  <div class="fig-slot" data-slug="m2-01-growing-small-accounts"></div>
+
+  <div class="quiz" data-quiz="m2-01"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-02" data-title="Framing Low Risk Trade Setups" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 2</div>
+    <h2>Framing Low Risk Trade Setups</h2>
+    <div class="desc">Select on the higher timeframe, execute on the lower — that's how the stop gets small without the idea getting weak.</div>
+  </div>
+
+  <ul>
+    <li>Select setups on <strong>higher timeframe charts</strong> — that's the primary function of a high-odds trade. The HTF gives the directional bias, the institutional order flow, and the framing of the buy or sell idea.</li>
+    <li>Why? Because <strong>large institutions and banks analyze markets on a daily, weekly and monthly basis</strong> — without that view you limit your exposure to high-probability setups.</li>
+    <li>HTF setups form <strong>slowly and provide ample time to plan</strong> — you don't need to be a day trader; jobs, businesses and life don't stop you from trading these.</li>
+    <li>The HTF has <strong>more influence on price</strong>, so focus there — then <strong>transpose the HTF levels to lower timeframe charts</strong> to reduce the overall pip exposure of the stop. Smaller stop = lower risk by default.</li>
+  </ul>
+
+  <h3>The Refinement Ladder (Aussie Case Study)</h3>
+  <p>Same setup, three levels of refinement — the daily bullish orderblock at <strong>7512</strong>, with an old low violated down into it (sell stops taken into a level where <strong>banks have bought before</strong>):</p>
+  <div class="kv">
+    <div>1-hour</div><div>Entry 7542 at the OB, stop 20 pips below the mean threshold</div>
+    <div>15-minute</div><div>The refined OB off the level: buyer at 7520, stop 7507 — <strong>17 pips</strong>, and buying far lower</div>
+    <div>5-minute</div><div>The violated down candle at the level itself: entry ~7515 (level + spread), stop 7507 — <strong>under 10 pips</strong>; 3R is reached before price even hits the 1-hour entry</div>
+  </div>
+  <p>With ~8 pips of risk, you're at a <strong>multiple of 3R before the 5-minute buy stops are even taken</strong> — the same move that gives the hourly trader 1:1 gives you 3:1.</p>
+
+  <div class="callout warn"><span class="tag">Warnings</span>
+    <ul>
+      <li>Breaking old lows alone is <strong>not</strong> a reason to expect a reversal — you need the HTF premise: <em>why</em> should there be buying below that old low? Because the daily level is an old bullish orderblock.</li>
+      <li>Ultra-short stops require understanding <strong>what you're doing and why price should respond at the level</strong> — you can't just slap tight stops on without the price-action reasoning.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m2-02-framing-low-risk-trade-setups"></div>
+
+  <div class="quiz" data-quiz="m2-02"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-03" data-title="How Traders Make 10% Per Month" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 3</div>
+    <h2>How Traders Make 10% Per Month</h2>
+    <div class="desc">Small risk makes the money — at levels the institutions sponsor.</div>
+  </div>
+
+  <p>Continuing the Aussie 7512 case study: framed with 2% risk and the refined 5-minute stop, the trade pays out in stages against the liquidity pools mapped in advance:</p>
+  <ul>
+    <li>Take <strong>half off at 3:1</strong> — the buy stops don't even have to be blown out yet. That banks <strong>3%</strong> on the trade with under 10 pips of risk.</li>
+    <li>The remaining half aims at the <strong>higher-grade liquidity pools</strong> — the 15-minute buy stops paid <strong>9R</strong>, the hourly pool <strong>15R</strong>.</li>
+    <li>The potential range was ~100 pips. <strong>You don't need the absolute high or low — the lion's share is enough.</strong> Even collapsing the runner at half the range tacks on 21%+ for the month; the full range nets 46%+. If all you ever got was the 3:1 first objective, that alone is over 10% per month.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">The real secret</span><strong>It's not having big risk that makes the money — it's having small risk.</strong> Frame trades on levels that should see <strong>institutional sponsorship</strong> — the banks propel price higher or lower off daily, weekly and monthly chart levels, because <strong>that's where the real orders are</strong>. It has nothing to do with your indicators or your supply-and-demand theory.</div>
+
+  <div class="callout"><span class="tag">Pay yourself</span>Pay the trader — <strong>take partials</strong>. Anyone who tells you taking partials before the final objective is a weakness does not make money consistently. You don't know if your trade is going to pay in full, but once you've banked 3:1 you're already living in an environment that pays exceedingly well — and the second portion of the trade will always make more than the first. Don't be binary, all-or-nothing. 10% per month compounded is over <strong>300% per year</strong> — no fund manager will raise their hand to do that for you.</div>
+
+  <div class="quiz" data-quiz="m2-03"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-04" data-title="No Fear Of Losing" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 4</div>
+    <h2>No Fear Of Losing</h2>
+    <div class="desc">1% risk makes millionaires. Accuracy comes with experience — the fear leaves when the risk is right.</div>
+  </div>
+
+  <h3>What Fear of Losing Does</h3>
+  <ul>
+    <li>Staying concerned about taking a loss promotes <strong>fear-based decision-making</strong> — it keeps your focus on the adverse and fosters <strong>trade paralysis</strong> (the inability to execute efficiently).</li>
+    <li>Equity managed by traders who cannot take a loss <strong>can't profit long-term</strong>. Losing is inevitable.</li>
+    <li>The professional equity manager understands: <strong>losses are costs of doing business</strong>. Over a long career your loss column will be very long — and it doesn't remove the profitability.</li>
+  </ul>
+
+  <h3>Framing the Trade</h3>
+  <ul>
+    <li>The bullish orderblock's <strong>high-to-open defines the fair value gap — the most probable support</strong>.</li>
+    <li>The <strong>mean threshold</strong> = the middle of the down candle; you don't want it violated <strong>on a closing basis</strong>.</li>
+    <li>A simple <strong>20-pip stop</strong> easily frames 3:1 and 5:1 reward multiples against the old high above.</li>
+    <li>Position sizing: 1% of $5,000 = $50; divide by your stop (e.g. 25 pips) for your dollar-per-pip leverage.</li>
+  </ul>
+
+  <h3>The Math That Kills the Fear ($5,000 account, 10 trades/month)</h3>
+  <div class="kv">
+    <div>30% acc · 3:1 · 1%</div><div>+2% month — marginal, but 2%/month compounded is an <strong>astronomical return for managed funds</strong></div>
+    <div>30% acc · 5:1 · 1%</div><div>+8% month — losing 70% of your trades</div>
+    <div>30% acc · 5:1 · 2%</div><div>+15% month</div>
+    <div>40% acc · 5:1 · 2%</div><div>+28% month — from just a 10% accuracy increase</div>
+    <div>50% acc · 5:1 · 2%</div><div>+40% month</div>
+    <div>50% acc · 5:1 · 1%</div><div><strong>+20% month — the optimal trading goal</strong></div>
+  </div>
+  <div class="callout rule"><span class="tag">Key lines</span>
+    <ul>
+      <li><strong>One percent makes millionaires.</strong> 2% is the industry standard — you're doing half of it.</li>
+      <li>You can afford to be <strong>wrong half the time</strong> with 5:1 framing and 1% risk. You'll never need to demand better than 50/50 — accuracy increases <strong>by default</strong> with experience.</li>
+      <li>Large funds target 1–2% per month (20–28%/year) — millions of dollars would love someone who delivers that. You don't need astronomical returns to manage money.</li>
+      <li>There is <strong>no fear justified in taking losses</strong> — it's all part of your job as an equity manager.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m2-04-no-fear-of-losing"></div>
+
+  <div class="quiz" data-quiz="m2-04"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-05" data-title="How To Mitigate Losing Trades Effectively" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 5</div>
+    <h2>How To Mitigate Losing Trades Effectively</h2>
+    <div class="desc">The rule after a loss: cut the risk in half on the next attempt at the same idea.</div>
+  </div>
+
+  <h3>The Scenario</h3>
+  <p>You go long at the orderblock but place your stop just below the <strong>mean threshold</strong> — too tight — and get swept out for a full loss. The trade idea hasn't unraveled; <strong>you were just inaccurate in where the stop was placed</strong>. When a new down candle forms and price trades above it, that <strong>authorizes any return to it as a buying opportunity</strong> — re-enter at the top of that candle, but this time put the stop <strong>below the entire orderblock</strong> and allow more movement against you.</p>
+
+  <h3>The Half-Risk Rule</h3>
+  <div class="callout rule"><span class="tag">Rules</span>
+    <ul>
+      <li>Go back in with <strong>one half the position size of the initial loss</strong>: lost 2% → next trade 1%; lost 1% → 0.5%.</li>
+      <li>At a multiple of <strong>R2 with half the risk, the initial loss is fully mitigated</strong> — and you didn't even need price to take the old highs.</li>
+      <li>As a developing trader, <strong>take it off there</strong>. Get back to even, relax, regroup. Especially late in the week: if it's Thursday or Friday and the market offers your loss back — take it, close the week flat. <strong>Do not go into the weekend with a net loss</strong> if the market presents the opportunity.</li>
+      <li>Next stage of development: instead of closing, <strong>lock the stop at the mitigation point</strong> — never permit price to take you back below the equity high you had before the drawdown. At R3 you've made a new net gain on the same idea.</li>
+      <li>One trade doesn't have to erase all your losses — it can come back over several setups.</li>
+    </ul>
+  </div>
+
+  <div class="callout warn"><span class="tag">Why reduce, not increase</span><strong>Equity preservation is the number one rule of this game.</strong> How do you know that first loss isn't the beginning of a 10-trade losing string? Keeping the same risk — or worse, increasing it — is throwing good money after bad; it builds toxic thinking, beats you down emotionally, and grows into the fear-based trading we're avoiding. The rushed urge to "get it back on the next trade" is exactly the emotion that loses. You mitigate losses by <strong>reducing</strong> risk and having the patience to let R2 arrive.</div>
+
+  <div class="quiz" data-quiz="m2-05"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-06" data-title="Secrets To Selecting High Reward Setups" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 6</div>
+    <h2>Secrets To Selecting High Reward Setups</h2>
+    <div class="desc">Process-oriented thinking, a binary defined narrative, and seven things in agreement.</div>
+  </div>
+
+  <h3>Process-Oriented Thinking</h3>
+  <ul>
+    <li>Efficiency in trading comes by way of <strong>process-oriented thinking</strong> — not reactionary or impulsive thinking, which leads to rushing entries prematurely. Professional traders are not in a rush to put money to work.</li>
+    <li>Decisions must be <strong>binary</strong> — do X or do Y, black or white, like a flow chart. Without that structure, a vacuum forms where emotional, psychological and impulsive trading creeps in.</li>
+    <li>You want your trading to be <strong>boring</strong> — monotonous, mundane, routine. Emotions are only allowed on the weekend after a smashing week.</li>
+    <li>Your trading plan is <strong>uniquely yours</strong> — you can't copy someone else, and you're not trying to share it with anybody. Nobody else's opinion of your model matters.</li>
+  </ul>
+
+  <h3>The Three Perspectives — 7 Things In Agreement</h3>
+  <div class="kv">
+    <div>Big picture (2 of 4)</div><div><strong>Macro analysis</strong> (inflationary vs deflationary), <strong>interest rate analysis</strong> (trends, unexpected changes, differentials/carry), <strong>intermarket analysis</strong> (CRB commodities vs USDX — usually inverse), <strong>seasonal influences</strong></div>
+    <div>Intermediate (2 of 3)</div><div><strong>Top-down analysis</strong> (monthly/weekly/daily key levels — only one timeframe needed), <strong>COT data</strong> (commercials at 12-month / 4-year extremes = likely hedging change), <strong>market sentiment</strong> (extreme bullish/bearish — the <em>least</em> significant of the three)</div>
+    <div>Short-term (1 from each)</div><div><strong>Correlation analysis</strong> (USDX SMT / correlated-pair SMT — the "cracking correlation"), <strong>time &amp; price theory</strong> (quarterly effect, monthly effect, weekly range, daily range / power of three, time of day), <strong>IPDA</strong> (institutional order flow — where the liquidity is and why the market will seek it)</div>
+  </div>
+  <div class="callout rule"><span class="tag">The count</span>2 + 2 + 3 = <strong>seven things in agreement</strong>, across all three perspectives aligned in the same direction = a high reward trade setup. This isn't execution or entry — it's the framework that makes the trade high reward. The entry signal is the <strong>least of your concerns</strong>.</div>
+
+  <div class="callout"><span class="tag">Rhythm &amp; timing</span>
+    <ul>
+      <li>The big picture and intermediate perspectives are set <strong>on the weekend</strong>; the intermediate can shift mid-week (Tuesday/Wednesday); the <strong>short-term perspective changes day by day</strong>.</li>
+      <li>The <strong>quarterly effect</strong>: every 3–4 months a new price shift — a trending market tends to consolidate or reverse over the next quarter.</li>
+      <li><strong>Intraday charts have no influence over price</strong> — they only reflect what the monthly, weekly and daily charts arrive at. Those three timeframes are what make markets move; funds do their work on monthly/weekly and execute on the daily.</li>
+      <li>ICT defines himself as a <strong>weekly range trader</strong> — one shot one kill, capturing the lion's share of the weekly range.</li>
+      <li>Your losses will come mostly from the <strong>short-term perspective</strong> — forcing something, or the market being in transition. Trades framed on the HTF premise generally serve you well.</li>
+      <li>Smart money isn't always returning to its own orders (as supply &amp; demand teaches) — it seeks <strong>where existing orders are</strong>: old highs for buy stops, old lows for sell stops — a forced injection of liquidity to be counterparty to their book.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m2-06-secrets-to-selecting-high-reward-setups"></div>
+
+  <div class="quiz" data-quiz="m2-06"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-07" data-title="Market Maker Trap: False Flag" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 7</div>
+    <h2>Market Maker Trap — False Flag</h2>
+    <div class="desc">Flag patterns are consistent in continuations — but they form at trend ends, where the trap springs.</div>
+  </div>
+
+  <h3>The Classic Pattern — and the Trap</h3>
+  <p>A bull flag: an impulse leg up (the <strong>flagpole</strong>), a small consolidation sideways or sloping lower (the <strong>flag</strong>), then a measured move — an equal leg added to the breakout. It's consistent in nice strong immature trends. The problem: <strong>in mature bull trends or at higher-timeframe distribution levels (premium), price prints FALSE bull flags</strong> — retail sees the classic continuation buy and it reverses. Same in reverse: false bear flags form at HTF accumulation levels (discount). Price does not move based on any pattern — chart patterns for the sake of patterns is how ICT himself fell victim early on.</p>
+
+  <h3>Diagnosing the False Bull Flag (top-down)</h3>
+  <ol>
+    <li><strong>Daily</strong>: fib the swing high→low — the flag is forming in <strong>premium</strong>, inside a big up candle (a bearish orderblock). That's distribution territory.</li>
+    <li><strong>4-hour</strong>: liquidity voids running up then down through the area — the whole range is treated as a bearish OB with a <strong>mean threshold</strong>.</li>
+    <li><strong>5-minute refinement</strong>: the up candle(s) right before the down move = the bearish orderblock. With two consecutive up candles, <strong>measure body-low to body-high across both — the equilibrium of that range is the mean threshold</strong> (which lands at the bottom of the last up candle).</li>
+    <li>Focus on the <strong>bodies</strong> — ignore the big wick; the sensitivity for selling short sits at the bodies and low-end wicks of the up candles.</li>
+  </ol>
+  <div class="callout rule"><span class="tag">The trade</span>The "breakout" only clears the <em>bodies</em> of the old candles — the turtle soup: it pokes a short-term higher high, gets flag-traders excited, then rolls over. <strong>Sell the first return to the bearish orderblock</strong> (the last up candle's open — 76.97 in the example, matching to the pip on both the 5m and 15m). Stop above the flag's high (the wick) — very few pips of risk. First objective: <strong>close the liquidity void the false flag created</strong>.</div>
+
+  <h3>The False Bear Flag (the buy side)</h3>
+  <ul>
+    <li>On the daily, the decline is only running the <strong>stops below the bodies</strong> of old candles (ignore the wicks) — returning to the area for the first time in months.</li>
+    <li>Don't just buy the rally — <strong>wait for a swing high to be created and violated on the upside</strong>. Then buy the return to the last down candle (the bullish OB), stop below the flag's low.</li>
+    <li>Objectives: fill the down-candle range, the stops above the <strong>equal highs</strong> (clean levels), then the bearish OBs and liquidity pools above.</li>
+  </ul>
+
+  <div class="callout"><span class="tag">The takeaway</span>"When I look at price action, I'm looking for <strong>reasons why other traders will view the opposite side of the marketplace</strong>." It's a sentiment play combined with HTF institutional order flow: after a rapid one-sided delivery, IPDA pauses in consolidation — the rally-then-flag is bait. Go back through old data and find the flags that failed — that's the homework.</div>
+
+  <div class="fig-slot" data-slug="m2-07-market-maker-trap-false-flag"></div>
+
+  <div class="quiz" data-quiz="m2-07"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m2-08" data-title="Market Maker Trap: False Breakouts" data-month="m2">
+  <div class="lesson-hero">
+    <div class="crumb">Month 2 · Lesson 8</div>
+    <h2>Market Maker Trap — False Breakouts</h2>
+    <div class="desc">The market always seeks liquidity — and the liquidity is at the candle bodies.</div>
+  </div>
+
+  <h3>Who Gets Trapped</h3>
+  <p>At some measure of equilibrium, price moves into a trading range. <strong>Neophyte and breakout traders bracket the range</strong> — buy stops above the old highs, sell stops below the old lows — hoping to catch a trend either way because they have no idea what's going on. Those brackets are the trap:</p>
+  <div class="kv">
+    <div>Bearish market</div><div>False breakouts occur <strong>above</strong> the consolidation — market makers send price above the range to neutralize the buy stops</div>
+    <div>Bullish market</div><div>False breakouts occur <strong>below</strong> the consolidation — price is sent below the range to neutralize the sell stops</div>
+  </div>
+
+  <h3>The Buy Model, Step by Step</h3>
+  <ol>
+    <li>Price breaks below the consolidation — the tripped <strong>sell stops are used to pair smart money's long orders</strong> (their counterparties).</li>
+    <li>Price expands (think IPDA) up to the liquidity above the old high — the <strong>buy stops are used to pair long exits</strong>: scaling out, taking profit, hedging.</li>
+    <li>New consolidation forms → sell stops build below it again → the cycle repeats, each time <strong>stacking orders a little higher</strong>. Every consolidation is priming.</li>
+  </ol>
+  <ul>
+    <li><strong>All the volume is in the bodies of the candles</strong> — so the liquidity rests above the bodies, not the wicks.</li>
+    <li><strong>Measured moves</strong> confirm the model: the first impulse leg out of a false breakout projects the next legs (108.75→109.25, 108.85→109.80 in the example — the 109.90 terminus tied directly to the daily bearish orderblock).</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Directional bias</span>The market will <strong>always seek liquidity</strong> — it's the number one driver in price action. Ask: <strong>where is the most recent area of untapped liquidity with the least resistance getting to it?</strong> That gives you the directional bias.</div>
+
+  <div class="callout"><span class="tag">Think like the market maker</span>Don't vilify them — they're providing liquidity; that's their job. And don't try to beat or outsmart them — <strong>get in line with their motive</strong>: if you had complete control of price, where would you drive it to facilitate other traders' orders? The easiest way to see a bullish profile: every time the market consolidates it seeks the sell stops <em>below</em>, absorbs them, and quickly runs the other way through the buy stops. Every drop below a consolidation = a false breakout; anticipate the accumulation, then the repricing higher.</div>
+
+  <div class="fig-slot" data-slug="m2-08-market-maker-trap-false-breakouts"></div>
+
+  <div class="quiz" data-quiz="m2-08"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<!-- ================= MONTH 3 ================= -->
+
+<section class="lesson" id="m3-01" data-title="Timeframe Selection & Defining Setups" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 1</div>
+    <h2>Timeframe Selection &amp; Defining Setups</h2>
+    <div class="desc">The daily chart gives the bias. The model works on all timeframes — and there are only three patterns.</div>
+  </div>
+
+  <h3>What Each Timeframe Is For</h3>
+  <div class="kv">
+    <div>Monthly</div><div><strong>Position trading.</strong> Only enormous money moves a monthly chart — banks and institutions. ICT's precision has a lot to do with direction derived from the monthly. Great for the intraday-intolerant.</div>
+    <div>Weekly</div><div><strong>Swing trading</strong> — typically one or two trades within a three-month period (a setup roughly every quarter). Requires deep patience.</div>
+    <div>Daily</div><div><strong>Short-term trading — the best chart there is.</strong> The best of both worlds: a long-term perspective plus all the near-term banking levels. If a gun were held to ICT's head to pick one chart, it's the daily. It gives the directional bias everyone begs for — the hard part is <strong>trusting it</strong>.</div>
+    <div>4-hour or less</div><div><strong>Day trading</strong> — inherently tied to time-of-day concepts.</div>
+  </div>
+  <div class="callout"><span class="tag">Start here</span>Even if you know in your heart you'll be a day trader — <strong>start on the daily chart</strong>. It's the bellwether. And the reason ICT day-trades isn't that it's better: it's <strong>money velocity</strong> — putting money to work, getting the return, compounding it, and putting it back to work faster. Higher timeframes compound exceedingly well too; it's about your unique alignment — your patience, aptitude, and what your life allows.</div>
+
+  <h3>The Monthly Chart Seed (EURUSD Case Study)</h3>
+  <ul>
+    <li>Smart money <strong>sells up-moves and buys down-moves</strong> — on the monthly, your eyes go straight to the <strong>last up candle</strong> before the breakdown: the bearish orderblock.</li>
+    <li>The return to that monthly OB took <strong>13 months to set up — then the move unfolded in 6</strong>: 2,900+ pips.</li>
+    <li>Below the clean, equal monthly lows (look at the <strong>bodies</strong> — too clean): the sell stops of <strong>large trend-following funds</strong>, who leave stops in for a very long time. That's the target.</li>
+    <li>With the range known in advance (OB high → equal lows), lay the fib across it and <strong>grade the swing — setups form every 25% of the range</strong>, on the way to the terminus.</li>
+    <li>Every monthly candle holds ~20 trading days and ~4 weekly candles of setups — see the apple seed, but also every tree inside it.</li>
+    <li>Hold the bias until it's <strong>clearly proven wrong</strong> — or the terminus is hit.</li>
+  </ul>
+
+  <h3>ICT's Only 3 Setups</h3>
+  <div class="flip-row">
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">1. Trade Inside<br>the Range</div><div class="flip-face flip-back">Return to an exposed range / liquidity void — buy the close-in, aim for the known range. Not 5,000 pips — just the known range.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">2. Orderblocks<br>&amp; Breakers</div><div class="flip-face flip-back">Sell a return to a bearish orderblock (or a breaker — the down candle before the up move that took out a high).</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">3. Stop Runs<br>(Turtle Soup)</div><div class="flip-face flip-back">Sell the false break above an old high when bearish — the market absorbing buy-side liquidity before expansion.</div></div></div>
+  </div>
+  <div class="flip-hint">Click a card to flip it</div>
+  <div class="callout rule"><span class="tag">Find YOUR pattern</span>You only need <strong>one good pattern</strong>. If a friend excels at orderblocks but you can clearly see the stop runs — the stop run is your pattern; <strong>don't force it</strong>. All three exist on every timeframe, and when you understand all three characteristics, nothing evades you: not a reversal, not a trend-following pullback, not an expansion out of consolidation.</div>
+
+  <div class="fig-slot" data-slug="m3-01-timeframe-selection-defining-setups"></div>
+
+  <div class="quiz" data-quiz="m3-01"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-02" data-title="Institutional Order Flow" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 2</div>
+    <h2>Institutional Order Flow</h2>
+    <div class="desc">Bodies matter, wicks are retail. Every move is a hedge between the extremes of the range.</div>
+  </div>
+
+  <h3>Bodies vs. Wicks</h3>
+  <ul>
+    <li><strong>The bodies of the candles are where the institutional volume is</strong> — the bulk of the bodies is as close to interbank prices as you'll get. The wick is generally comprised of <strong>retail pricing</strong> (brokers opening the spread — allow that erroneous, extreme price delivery).</li>
+    <li>Do your analysis around the bodies. Price only needs to reach <strong>below the bodies, not through the wicks</strong>, to seek the truest volume.</li>
+    <li>The bodies respect the <strong>mean threshold</strong> — the middle of the orderblock candle.</li>
+  </ul>
+
+  <h3>Rebalancing — Every Down Candle Needs an Up Candle</h3>
+  <div class="callout rule"><span class="tag">Rule</span>Wherever price has been delivered on the sell side (a run of down candles / a liquidity void), it must at some point be <strong>offered on the buy side</strong> to rebalance — the range gets closed in. Ask the market efficiency paradigm question: <strong>where is the maximum liquidity relative to where the market has traded from and where it is now?</strong> Once the stops below are absorbed, price seeks the liquidity on the other side — the last up candle where they sold, the void above.</div>
+
+  <h3>Everything Is a Hedge</h3>
+  <div class="callout"><span class="tag">Bookmaking</span>Between every two <strong>range extremes</strong> there's hedging and bookmaking — a bank can run a net bearish book going down, but they still have to buy back the longs they used at the other extreme. That unwinding at the top of a range is the basis of the <strong>market maker sell profile</strong>: consolidation → return to consolidation → accumulation → smart-money reversal (low-risk short) → redistribution → the run below the consolidation for the stops. A <strong>mitigation block</strong> (the wick-to-body of the last up candle) is where their underwater shorts get taken off — buying to cover <em>plus</em> new longs = the explosive reaction.</div>
+
+  <h3>Mapping It Top-Down</h3>
+  <ul>
+    <li>Mark the bullish/bearish institutional order flow zones on the <strong>monthly</strong>, then drop into the weekly and daily — the same shaded logic maps years of price (the notes map EURUSD mid-2008 → mid-2012 this way).</li>
+    <li>The tell for a shift: <strong>when the last up candle is violated</strong>, expect downside expansion (and vice versa).</li>
+    <li>The <strong>daily chart will always seek the fund-level institutional order flow — the stops found on the monthly and weekly charts</strong>. That's where the whales (large funds, billions of dollars) reside. The banks can't counterparty with retail — even collectively we're too small.</li>
+    <li>Keep the monthly/weekly levels on your daily chart and you'll see <strong>every significant price swing coming before it gets there</strong> — that's why the daily shows "unexplainable" sensitivity at levels that have no visible reference on the daily itself.</li>
+  </ul>
+
+  <div class="callout"><span class="tag">Definition</span><strong>Institutional order flow is the seeking of large institutional liquidity</strong> — found on the monthly and weekly, traded into on the daily. The market goes to those levels to either take those participants out of the marketplace or draw them in as counterparties to its intended purpose: a buyer counterparty to sell stops, or a seller counterparty to buy stops.</div>
+
+  <div class="fig-slot" data-slug="m3-02-institutional-order-flow"></div>
+
+  <div class="quiz" data-quiz="m3-02"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-03" data-title="Institutional Sponsorship" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 3</div>
+    <h2>Institutional Sponsorship</h2>
+    <div class="desc">Sponsorship is a willingness to protect a price swing. If the response at your level is lethargic — there are no institutional orders there.</div>
+  </div>
+
+  <ul>
+    <li><strong>Sponsorship = the willingness to protect an underlying price swing</strong> that has a high probability of unfolding — the impact of large institutions, banks and big equity traders funding the side of the marketplace you anticipate.</li>
+    <li>Price is <strong>fractal</strong> — everything you see on one timeframe replicates on higher and lower timeframes, so the same low-violation pattern can be hunted on the LTF as the HTF level is hit.</li>
+    <li>The elephant in the pool: a daily chart doesn't move dynamically without a large entity behind it — <strong>displacement is the water overflowing</strong>. Go back to where the move began: that root price level is the institutional sponsorship level.</li>
+  </ul>
+
+  <h3>Criteria for a Long (reverse everything for shorts)</h3>
+  <ol>
+    <li><strong>HTF price displacement</strong> — a reversal, an expansion, or a return to fair value.</li>
+    <li><strong>Intermediate-term imbalance</strong> — a move to discount, or a sell-side liquidity run (old low taken).</li>
+    <li><strong>Short-term buy liquidity above the marketplace</strong> — ideal for pairing your long exits to sell to.</li>
+    <li>Plus <strong>time-of-day influence</strong> — e.g. London open for the low of the day, or a New York session low.</li>
+  </ol>
+
+  <div class="callout warn"><span class="tag">The litmus test</span>You need an <strong>immediate, dynamic response</strong> at the level. If it's lethargic and unwilling to move right away — <strong>there are no institutional orders there</strong>: reduce risk, cut the position in half, or bail entirely. Never marry the idea; you can always re-enter. If you're on the right side, the market moves dynamically almost as soon as you're in.</div>
+
+  <h3>4 Stages of a Price Swing</h3>
+  <div class="kv">
+    <div>Stage 1</div><div>Origin — the start of the swing (support here is usually quick; they don't want to let you in)</div>
+    <div>Stage 2</div><div>Equilibrium / midway point</div>
+    <div>Stage 3</div><div>~75% of the swing</div>
+    <div>Stage 4</div><div>Terminus — above the old high, into the buy stops</div>
+  </div>
+  <p>Once market structure breaks bullish (the old high violated), <strong>sponsorship should protect price from ever returning to the origin</strong> — don't wait for the whole retracement back down; it's not coming. Each level of buy stops consumed just shifts focus to the next pool above; don't hunt reversal patterns or divergences at each old high.</p>
+
+  <div class="callout"><span class="tag">Midnight NY Open — the blue lines</span>Mark the <strong>opening price at midnight New York</strong>. If you suspect bullishness: <strong>anything below the midnight opening price should be accumulated</strong> — day after day the market opens, dips below the opening, and sponsorship steps in. The buys come at <strong>down candles (bullish orderblocks) from the previous London or New York sessions</strong>, recapitalized below the day's opening price. This is <strong>power of 3</strong> in action: buying near or below the open of an up day and exiting toward the close — easy to say, but 99% can't do it without this framework.</div>
+
+  <div class="callout"><span class="tag">Why old resistance fails — and when it works</span>Traditional S/R sellers short the old high, their buy stops go just above it, and they get run — repeatedly. Classic support/resistance only works on a retracement when there's an <strong>unfulfilled objective above</strong> (the old higher-high the banks are still driving toward). Every successful trade carries the same hallmark: <strong>recapitalized orderblocks</strong> gravitating toward HTF liquidity pools. If you don't see that — you're probably offside.</div>
+
+  <div class="fig-slot" data-slug="m3-03-institutional-sponsorship"></div>
+
+  <div class="quiz" data-quiz="m3-03"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-04" data-title="Anticipatory Skill Development" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 4</div>
+    <h2>Anticipatory Skill Development</h2>
+    <div class="desc">A monthly OHLC study of the last three months — find the range, find the orderblock, anticipate.</div>
+  </div>
+
+  <h3>The Monthly OHLC Study</h3>
+  <p>Monthly charts only move with a great deal of money behind the swings — retail cannot move them. So the study: delineate the <strong>open, high, low and close of every monthly candle over the last 3 months</strong>, on every pair of interest, and transpose those levels into your lower timeframes. A few overlapping opens/closes is fine — that's confluence.</p>
+  <ol>
+    <li>Find the <strong>most recent monthly down candle</strong>.</li>
+    <li>Find the prior <strong>up candle whose low is above that down candle's high</strong> — those two candles define your trading range.</li>
+    <li>Once price trades <strong>above the down candle's high</strong>, that down candle is activated as the <strong>bullish orderblock</strong> — buy at its open <strong>or less</strong>, targeting the last up candle of the range.</li>
+    <li>Reverse it: an up candle whose low gets violated activates as the <strong>bearish orderblock</strong> — the range extends down to the most recent down candle.</li>
+  </ol>
+
+  <div class="callout"><span class="tag">From the notes' examples</span>USDJPY: range 10326 → 10628 (~300 pips); the buy at 10326 filled <strong>on the US election itself</strong> — and even the election knee-jerk never challenged the mean threshold of the monthly OB. USDCAD: the 13080 monthly open held multiple dips before expansion. Kiwi: the violated up candle framed the short down to the 7005 candle bodies.</div>
+
+  <div class="callout rule"><span class="tag">Rules</span>
+    <ul>
+      <li>When two down candles form the block, the one with the <strong>larger body begins the orderblock</strong>.</li>
+      <li>Refine the monthly level down through the weekly → daily → hourly to get closer to market and reduce risk.</li>
+      <li>It's a <strong>top-down approach that leads you into trade setups you otherwise wouldn't know were there</strong> — you go in with a specific mindset, not waiting for a neon sign.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m3-04-anticipatory-skill-development"></div>
+
+  <div class="quiz" data-quiz="m3-04"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-05" data-title="Institutional Market Structure" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 5</div>
+    <h2>Institutional Market Structure</h2>
+    <div class="desc">Failure swings, anticipating the turtle soup before it happens, and SMT divergence between correlated markets.</div>
+  </div>
+
+  <h3>What Is Institutional Market Structure?</h3>
+  <p>The analysis of correlated assets against inversely correlated assets, to determine <strong>what the smart money is accumulating or distributing</strong>. Currencies are the easiest — compare <strong>every price swing</strong> in the US Dollar Index with the foreign currency you trade. <strong>SMT = smart money tool / smart money technique.</strong></p>
+
+  <h3>Symmetrical Markets — Confirmation</h3>
+  <div class="kv">
+    <div>USDX lower low + FX higher high</div><div>Price action confirmed — the underlying trend likely continues</div>
+    <div>USDX higher high + FX lower low</div><div>Also confirmed — same conclusion</div>
+  </div>
+  <div class="callout warn"><span class="tag">Warning</span>In symmetrical conditions, <strong>stalking reversal patterns is NOT high probability — avoid it altogether</strong>. Any run above a short-term high is just a buy-stop raid before resumption; any dip below a swing low is just gathering sell stops for continuation.</div>
+
+  <h3>Non-Symmetrical Markets — SMT Divergence</h3>
+  <div class="kv">
+    <div>USDX makes a lower low, FX fails to make a higher high</div><div>USDX SMT — price NOT confirmed; reversal stalking IS high probability</div>
+    <div>USDX fails to make a lower low while FX makes a higher high</div><div>Underlying dollar strength — the FX high is a stop raid / distribution</div>
+  </div>
+  <ul>
+    <li>This is how ICT <strong>anticipates a turtle soup before it actually happens</strong> — the failure swing tells you the coming break is a raid, not a trend.</li>
+    <li>Cable case study (June &amp; Aug–Sep 2016): cable pierced old highs — looked like a bullish breakout to retail — while the dollar <strong>refused to make its lower low</strong>. The dollar was being accumulated; cable was being <strong>distributed above the old highs</strong>, selling accumulated longs to the buy stops. "Retail candy land" — retail chases the false breakout while smart money watches the failure swing. That divergence is why ICT was a dollar bull for all of late 2016.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">How to use it</span>Always <strong>double-check apparent strength/breakouts in a foreign currency against the dollar index</strong>. It's a daily-chart concept — it gives the long-term / intermediate bias. Once set (e.g. bearish cable), execute it however you trade: sell every 60-minute or 4-hour bearish orderblock, or day-trade shorts above the midnight NY opening price. The notes also show installing an <strong>MT4 overlay chart-line indicator</strong> to lay the USDX directly over the pair for clean visual comparison.</div>
+
+  <div class="fig-slot" data-slug="m3-05-institutional-market-structure"></div>
+
+  <div class="quiz" data-quiz="m3-05"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-06" data-title="Macro Economic To Micro Technical" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 6</div>
+    <h2>Macro Economic To Micro Technical</h2>
+    <div class="desc">Interest rates control everything — read them visually via the bond market and cascade down to the currency pairs.</div>
+  </div>
+
+  <h3>The Closest-Guarded Secret</h3>
+  <ul>
+    <li>The goal: a <strong>3–6 month outlook</strong> on where currencies are heading. Not from bank reports — <em>"why would a bank tell you what their intentions are? That's like a football team telling you their plays for the Super Bowl."</em></li>
+    <li>Not from sifting fundamentals either — a <strong>visual interpretation</strong> of the data via price action in the bond market. The <strong>30-year Treasury bond</strong> (the benchmark behind US mortgage rates) and the <strong>10-year note</strong>, both December contracts.</li>
+    <li><strong>Bond futures rally = rates lowering. Bond futures drop = rates increasing.</strong> And rising rates see an aggressive pouring-in of funds to buy the dollar — <strong>rates ↑ → dollar ↑</strong>, chasing yield.</li>
+  </ul>
+
+  <h3>Two Layers of Interest-Rate SMT</h3>
+  <div class="kv">
+    <div>Bonds vs. USDX</div><div>The dollar failing to make a lower low while the bond market makes a higher high = the quarterly shift forming — dollar accumulation (the June–Aug 2016 turn)</div>
+    <div>10yr vs. 30yr</div><div>SMT between the note and the bond → dollar direction → direction for every USD pair (the Sept 2016 rallies, mapped across dollar-swiss, dollar-cad, euro, pound, yen, kiwi, aussie in the notes)</div>
+  </div>
+
+  <div class="callout"><span class="tag">The election-night proof</span>Overnight on the US election the dollar and Dow futures tanked — <strong>but the 10yr/30yr made no confirming higher highs. It was all fluff, all manipulation</strong>; interest rates were still calling the shots, and the dollar rallied 10 days straight after. Foreign currencies popping old highs at the same time (aussie, kiwi) were the false moves — "there's no way the dollar is going to allow aussie dollar to rally."</div>
+
+  <div class="callout rule"><span class="tag">Key ideas</span>
+    <ul>
+      <li>Every <strong>3–4 months</strong> there's a quarterly shift — a reversal, or extended consolidation then resumption. Hunt for it.</li>
+      <li><strong>The interest rate markets control everything</strong> — without interest rates, nothing in the financial industry moves. Know the bond market and the 10-year note and you know everything you need (the German bund confirms too).</li>
+      <li>This is macro-economic to micro-technical: the rates give the direction, then you execute with the technicals from the earlier lessons.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m3-06-macro-economic-to-micro-technical"></div>
+
+  <div class="quiz" data-quiz="m3-06"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-07" data-title="Market Maker Trap: Trendline Phantoms" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 7</div>
+    <h2>Market Maker Trap — Trendline Phantoms</h2>
+    <div class="desc">Trendlines are opinions with no edge — but the stops that gather around them are real targets.</div>
+  </div>
+
+  <h3>Why the Trendline Is a Phantom</h3>
+  <ul>
+    <li><strong>Trendlines are opinions, not edges.</strong> Everybody draws them, everybody sees the same touches — which is exactly why they fail. <em>"If everyone's looking at the same thing and everyone can't win, the majority has to be wrong."</em></li>
+    <li>A trendline needs <strong>two points to draw and a third to confirm</strong>. Retail is taught to buy the third touch of a rising line (or sell the third touch of a falling line). The stops for those trades cluster in one obvious place.</li>
+    <li>The real target is the <strong>liquidity pool</strong>, not the line: buy stops rest <strong>above point 2</strong> of a bearish/declining trendline; sell stops rest <strong>below point 2</strong> of a bullish/rising one.</li>
+  </ul>
+
+  <h3>The Phantom Play</h3>
+  <ul>
+    <li>When bearish at a HTF <strong>premium array</strong>, ICT wants price to trade <strong>up into the area between touch 2 and the projected touch 3</strong> — aiming for the <strong>high between point 2 and point 3</strong> where the buy stops live.</li>
+    <li>Look for an <strong>orderblock or a turtle soup above that high</strong>, after the 2nd touch and before the market ever reaches a "clean" 3rd touch. That failure-swing above the pool is the entry.</li>
+    <li>The <strong>triangle / wedge</strong> is the same mechanism — converging trendlines just stack buy stops above and sell stops below the apex so the breakout can be faded.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Takeaway</span>Don't trade the trendline — <strong>trade the stops the trendline creates.</strong> The "phantom" is the confidence the pattern gives retail; the trap is the raid on their stops before the pattern ever completes.</div>
+
+  <div class="fig-slot" data-slug="m3-07-market-maker-trap-trendline-phantoms"></div>
+
+  <div class="quiz" data-quiz="m3-07"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m3-08" data-title="Market Maker Trap: Head & Shoulders" data-month="m3">
+  <div class="lesson-hero">
+    <div class="crumb">Month 3 · Lesson 8</div>
+    <h2>Market Maker Trap — Head &amp; Shoulders Pattern</h2>
+    <div class="desc">Picking tops and bottoms is the worst thing you can do — and the head &amp; shoulders is the trap that invites it.</div>
+  </div>
+
+  <h3>The Most Dangerous Pattern in Retail</h3>
+  <ul>
+    <li><strong>Trying to pick tops and bottoms is the single worst thing a trader can do</strong> — and the head &amp; shoulders is the pattern that convinces people to do it. It looks like a reversal signal, so retail sells the right shoulder and puts stops above the head.</li>
+    <li>Those <strong>stops above the head (and above the shoulders)</strong> are the liquidity the algorithm is engineering the pattern to reach. The prettier and more textbook the pattern looks, the more stops are stacked, and the better the target.</li>
+  </ul>
+
+  <h3>How ICT Fades It</h3>
+  <ul>
+    <li><strong>The neckline break is a turtle soup.</strong> Retail is taught to sell (or add) when the neckline breaks; instead, treat the break of the neckline as a stop-raid on the sell stops below it — the ideal spot to look for the <em>opposite</em> side.</li>
+    <li>Anchor to the <strong>HTF premium/discount array</strong> first. Only fade the pattern in the direction the higher-timeframe bias already supports; the head &amp; shoulders just tells you where the trapped orders are.</li>
+    <li>The <strong>inverse head &amp; shoulders</strong> is the mirror trap at a discount — sell stops below the "head" are the target before the real move up.</li>
+    <li>Study the daily and 1-hour examples below to see the buy/sell stops relative to the head, shoulders, and neckline.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Takeaway</span>The pattern isn't a forecast — it's a <strong>map of where the crowd's stops are</strong>. Don't sell the head &amp; shoulders; use it to find the liquidity the market maker is reaching for, then trade with the higher-timeframe bias.</div>
+
+  <div class="fig-slot" data-slug="m3-08-market-maker-trap-head-shoulders"></div>
+
+  <div class="quiz" data-quiz="m3-08"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<!-- ================= MONTH 4 ================= -->
+
+<section class="lesson" id="m4-01" data-title="Interest Rate Effects On Currency Trades" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 1</div>
+    <h2>Interest Rate Effects On Currency Trades</h2>
+    <div class="desc">Interest rates are the #1 driver of currency — blend the bonds, the notes and the dollar to see smart money.</div>
+  </div>
+
+  <h3>The Interest Rate Triad</h3>
+  <ul>
+    <li><strong>Interest rates are the single most influential driving force behind market moves</strong> — "that's what makes the whole world go round." Nothing drives currencies harder.</li>
+    <li>The <strong>triad</strong> is three futures markets overlaid together: the <strong>30-year bond</strong> (long-term benchmark), the <strong>10-year note</strong> (intermediate), and the <strong>5-year note</strong> (short-term). Charts are free on <strong>barchart.com</strong>.</li>
+    <li>A raw open/high/low/close chart tells you nothing — the edge is <strong>comparative/overlay analysis</strong> of the three against each other. That's why it "evades the majority."</li>
+  </ul>
+
+  <h3>Reading Smart Money via Failure Swings</h3>
+  <div class="kv">
+    <div>Base asset</div><div>Dow (stocks), Dollar Index (currencies), or CRB Index (commodities) — your benchmark to compare against</div>
+    <div>Distribution</div><div>Benchmark makes higher highs, but correlated assets make <strong>lower highs</strong> — not new buying, heavy selling. A warning sign of a distribution cycle.</div>
+    <div>Accumulation</div><div>Benchmark makes lower lows, but some assets make <strong>higher lows</strong> — heavy demand won't let price discount, so it's forced to a premium.</div>
+  </div>
+  <ul>
+    <li>The three rates should <strong>confirm each higher high / lower low</strong> at the moment the Dollar Index is at a significant price point. You only need <strong>one to break the pattern</strong> — a <strong>failure swing</strong> — to reveal smart money participation (large volume shifting supply/demand).</li>
+    <li><strong>Have a predetermined bias first.</strong> The triad divergence doesn't tell you direction on its own — it <em>validates</em> an idea you already have on the dollar (e.g. the 99.50 rejection → dollar bullish → sell fiber/euro/cable).</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">The action plan (green light)</span>When price trades to a focus point — an <strong>orderblock, liquidity pool, liquidity void or fair value gap</strong> — check the interest rate triad + Dollar Index. A <strong>divergence among the 30/10/5-year plus that orderblock = the green light</strong>; it confirms smart money is behind the trade. <strong>No obvious divergence → pass on the trade.</strong> Reverse the whole logic for dollar shorts (rates make a lower low, then one fails to → validates selling the dollar).</div>
+
+  <div class="fig-slot" data-slug="m4-01-interest-rate-effects-on-currency-trades"></div>
+
+  <div class="quiz" data-quiz="m4-01"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-02" data-title="Reinforcing Liquidity Concepts & Price Delivery" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 2</div>
+    <h2>Reinforcing Liquidity Concepts &amp; Price Delivery</h2>
+    <div class="desc">Entries on internal range liquidity, exits on external — price has an agenda.</div>
+  </div>
+
+  <ul>
+    <li>Mark <strong>each new range high and low</strong>.</li>
+    <li><strong>Entries on internal range liquidity</strong> (e.g. an orderblock), <strong>exits on external</strong> (old highs/lows).</li>
+    <li>The monthly/weekly bias frames the <strong>low-resistance liquidity runs on the daily</strong> — "price has an agenda."</li>
+    <li>Use the <strong>energetic low</strong>, not the consolidation low.</li>
+    <li>Buy internal (orderblock) targeting the old external high <strong>in sync with the HTF</strong>.</li>
+    <li>If there are no ranges, target <strong>swing-low turtle soups</strong>.</li>
+    <li>External liquidity taken → an internal setup (orderblock) confirms.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Trade filters</span>
+    <ul>
+      <li>A 1h orderblock with only a <strong>20-pip target = no trade</strong> — you want 40+ pips.</li>
+      <li><strong>One setup a week</strong> is enough.</li>
+      <li>Trading against the HTF narrative = a <strong>high resistance</strong> run — the ones you sit in too long or that turn and bite you.</li>
+      <li>Low resistance runs give an <strong>immediate response and low drawdown</strong>.</li>
+    </ul>
+  </div>
+
+  <h3>Match the Timeframe to Your Pip Goal</h3>
+  <div class="kv">
+    <div>Range &lt; 20 pips</div><div>Pass — not worth the risk</div>
+    <div>40+ pips</div><div>Viable day trade / short-term setup (1h)</div>
+    <div>75–100 pips</div><div>Hourly / 4-hour swings — "100 pips a week? Trade a 4h or 1h chart, nothing less."</div>
+    <div>250 pips over ~2 weeks</div><div>Live on the 4h / daily — you'll never get it hunting 5-min swings</div>
+  </div>
+  <ul>
+    <li>Work backwards from your goal: e.g. 10%/month needs X pips on your equity base → hunt only ranges that offer it. <strong>You don't need the range to break</strong> — framing the right swing can hand you 75 of a 100-pip range without ever clearing the old high.</li>
+    <li><strong>Two disciplines</strong> cover everything: (1) <em>turtle soups</em> — buying sell-stops / selling buy-stops, or (2) <em>return to fair value</em> — buying internal range liquidity. Pick whichever the chart shows most clearly.</li>
+    <li><strong>Gap risk:</strong> a liquidity void / big one-candle range beneath your long is where aggressive repricing stops people out — ICT hunts those as opportunities rather than fearing them.</li>
+  </ul>
+
+  <div class="fig-slot" data-slug="m4-02-reinforcing-liquidity-concepts-price-delivery"></div>
+
+  <div class="quiz" data-quiz="m4-02"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-03" data-title="Orderblocks" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 3</div>
+    <h2>Orderblocks</h2>
+    <div class="desc">The first PD array in depth — a down candle becomes a bullish orderblock after displacement through a high.</div>
+  </div>
+
+  <h3>Definition &amp; Validation</h3>
+  <ul>
+    <li>A bullish orderblock is the <strong>lowest down-close candle with the most open-to-close range, near a support level</strong> (an old low/high on the monthly, weekly or daily).</li>
+    <li>It's only a <em>suspected</em> block until <strong>validated</strong> — a later candle must <strong>trade through its high</strong>. That displacement is the fingerprint of institutional sponsorship (big flows that can actually move price).</li>
+  </ul>
+
+  <h3>Entry, Risk &amp; Targets</h3>
+  <ul>
+    <li>Enter on the return to the <strong>open of the down candle (body high)</strong> — or as early as the very candle that broke the high, without waiting. Use wicks only where they overlap FVGs; otherwise focus on <strong>bodies</strong>.</li>
+    <li><strong>Set an alert and submit to time</strong> — plan risk, size and target while price travels down. Add ~<strong>5 pips</strong> to a limit order so the dealing spread fills you.</li>
+    <li>The best orderblocks <strong>never trade below the 50% mean threshold</strong> (measured open-to-close, not the wicks) — a small stab through is tolerable.</li>
+    <li>Stop below the block's <strong>low / the close of the body</strong>; raise to 50% once price runs away.</li>
+    <li>You buy <strong>internal range liquidity</strong> (the block) and exit into <strong>external range liquidity</strong> — the buy stops above an old daily/weekly high — pairing your long exit with willing buyers.</li>
+  </ul>
+
+  <h3>Refinements</h3>
+  <ul>
+    <li><strong>2+ consecutive down candles = one full orderblock</strong> — blend them.</li>
+    <li>ICT wants a rally of <strong>2–3× the orderblock's body height</strong> before trusting the retracement back for a second entry.</li>
+    <li>After a stop run, price may not reach the refined block — use the <strong>bigger orderblock's mean threshold</strong> instead.</li>
+    <li>Refine top-down <strong>monthly → weekly → daily → (even 5-min)</strong>, always in the direction of the monthly/weekly/daily bias. Each fresh, higher down candle becomes the new block.</li>
+  </ul>
+
+  <div class="callout warn"><span class="tag">Bearish OBs</span>Bearish orderblocks are <strong>profit-taking targets only</strong> when the time of day matters (e.g. London close) — otherwise expect them to be traded through. Big players take profit above old highs.</div>
+
+  <div class="fig-slot" data-slug="m4-03-orderblocks"></div>
+
+  <div class="quiz" data-quiz="m4-03"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-04" data-title="Mitigation Blocks" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 4</div>
+    <h2>Mitigation Blocks</h2>
+    <div class="desc">The M-pattern swing failure — trapped buyers underwater, exiting with "buyer's remorse."</div>
+  </div>
+
+  <h3>The Setup (bearish; reverse for bullish)</h3>
+  <ul>
+    <li>Price rallies into an anticipated <strong>resistance / bearish reference point</strong> (old high, bearish OB, breaker…), then prints an <strong>M pattern</strong> — a failure swing that <strong>breaks the prior short-term low</strong>. That break is the <strong>market structure shift</strong> — confirmation smart money wants lower prices. No higher high needed.</li>
+    <li>Once structure shifts, your focus moves to <strong>that short-term low</strong> and specifically the <strong>last down candle before the little rally</strong> — that's where the trapped buying happened.</li>
+  </ul>
+
+  <h3>The A-B-C Frame</h3>
+  <div class="kv">
+    <div>A → B</div><div>The rally that trapped longs (buyers get in)</div>
+    <div>B → C</div><div>The break lower that puts them underwater</div>
+    <div>Return to A</div><div>Price retraces to the last down candle — trapped longs <strong>mitigate</strong> (bail at breakeven), and you <strong>sell into their exit</strong></div>
+  </div>
+  <ul>
+    <li>Entry: sell as price trades back up into that last down candle. Uses the <strong>full body of the candle</strong> — a small overshoot into the body is fine, but the <strong>body should not be violated</strong>; that's the Hallmark of a valid mitigation block. Expect ~20 pips of drawdown at most.</li>
+    <li>Stop just above the down candle's high. Target: back below the low, on toward the next untapped support (e.g. the <strong>mean threshold of a liquidity void</strong>).</li>
+    <li>The mechanic is <strong>"buyer's remorse"</strong> — support-broken-turns-resistance. Premium highs are bought by the less informed and sold by smart money. Every fresh rally that needs to be mitigated is another sell.</li>
+  </ul>
+
+  <div class="fig-slot" data-slug="m4-04-mitigation-blocks"></div>
+
+  <div class="quiz" data-quiz="m4-04"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-05" data-title="ICT Breaker Block" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 5</div>
+    <h2>ICT Breaker Block</h2>
+    <div class="desc">Short orders inside the last up candle before the raid on sell stops — explosive by design.</div>
+  </div>
+
+  <h3>Bullish Breaker (a buy)</h3>
+  <ul>
+    <li>An <strong>old low is violated</strong> — sell stops below it are taken (a false break / turtle soup). Sellers are now trapped short.</li>
+    <li>Price then <strong>runs back up through the swing high</strong> between the two lows — the repricing that confirms a stop-run, a bullish market structure shift.</li>
+    <li>The <strong>last up candle inside that swing high</strong> (the highest up candle prior to the drop) is the <strong>bullish breaker</strong> — its entire range.</li>
+    <li>Buy the return to it: trapped shorts <strong>mitigate</strong> (cover) and add new longs at the same level → the explosive rally.</li>
+  </ul>
+
+  <h3>Bearish Breaker (a sell)</h3>
+  <ul>
+    <li>An <strong>old high is violated</strong> — buy stops taken, buyers trapped long. Price then breaks the swing low between the two highs (structure shift down).</li>
+    <li>The <strong>down-close candle in that swing low</strong> is the bearish breaker — sell the return to it as trapped longs bail.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Keys</span>
+    <ul>
+      <li><strong>One low/high must be traded below/above</strong> first — no stop raid, no breaker.</li>
+      <li>Confirmation = the <strong>quick repricing</strong> after stops are taken; that proves traders are trapped.</li>
+      <li>A breaker uses the <strong>entire candle range and the bodies</strong>. It needs a real story — it's not a horizontal line drawn on a whim; it marks liquidity being pulled out.</li>
+      <li>Explosive because it's <strong>covering + new entries</strong> at the same price.</li>
+    </ul>
+  </div>
+
+  <div class="fig-slot" data-slug="m4-05-ict-breaker-block"></div>
+
+  <div class="quiz" data-quiz="m4-05"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-06" data-title="ICT Rejection Block" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 6</div>
+    <h2>ICT Rejection Block</h2>
+    <div class="desc">At every new high or low, anticipate rejection — the wick above the highest open/close is the orderblock.</div>
+  </div>
+
+  <ul>
+    <li>Anticipating rejection at <strong>every new high/low</strong> is the first — and hardest to groom — anticipatory skill. Best setups are in <strong>major-to-intermediate-term trends</strong>.</li>
+    <li>A bearish rejection block: a swing high with <strong>long wick(s)</strong> where price pushes <strong>above the highest body</strong> to run buy-side liquidity, then declines. <strong>No higher high is required</strong> for the failure swing — read the <strong>bodies</strong>, not the wicks.</li>
+    <li><strong>Framing it:</strong> the block runs from the <strong>highest wick high</strong> down to the <strong>highest open or close</strong> in the swing high (regardless of whether that candle is bullish or bearish). Treat that range as a <strong>bearish orderblock</strong>. The wicks just flag where to look.</li>
+  </ul>
+
+  <h3>Three Entry Choices</h3>
+  <div class="kv">
+    <div>Aggressive</div><div>Sell right at the low of the block on the return, wide stop above the wick high</div>
+    <div>Middle</div><div>Let it trade into the block a little, then sell</div>
+    <div>On weakness</div><div>Wait for price to trade back <strong>above the highest open/close without a new wick high</strong>, then a <strong>sell-stop below that level</strong> — one of the few times ICT enters on a stop order</div>
+  </div>
+  <ul>
+    <li>Bullish version is the mirror: lowest wick low + lowest open/close frames a <strong>bullish rejection block</strong> in an uptrend — buy the return.</li>
+  </ul>
+
+  <div class="callout warn"><span class="tag">Don't be fooled</span>A classic chartist calls this consolidation a <strong>bull flag / continuation</strong> — but the push above the highest body is <strong>distribution</strong>. Price doesn't move on geometry; it moves on orders. And if an old high/low has long wicks, expect a sweep of the <strong>bodies</strong>, not the wicks.</div>
+
+  <div class="fig-slot" data-slug="m4-06-ict-rejection-block"></div>
+
+  <div class="quiz" data-quiz="m4-06"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-07" data-title="Reclaimed ICT Orderblock" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 7</div>
+    <h2>Reclaimed ICT Orderblock</h2>
+    <div class="desc">The market maker buy model — the market goes lower to go higher.</div>
+  </div>
+
+  <h3>The Market Maker Buy Model</h3>
+  <ul>
+    <li>The curve is simply <strong>price going lower to go higher</strong>. On the <strong>sell side of the curve</strong> (the drop into support), market makers <strong>scale in early</strong> — their size is too big to fill in one move, so they <strong>hedge</strong> down.</li>
+    <li>Each small bounce on the way down is a <strong>minor displacement</strong> = new accumulation. The <strong>last down candle before each little rally is a bullish orderblock</strong>. (Traders who buy those bounces get stopped out — they're piggybacking a hedging move, not the real low.)</li>
+    <li>Off the major support the <strong>buy side of the curve</strong> begins. Every one of those old sell-side down candles gets <strong>reclaimed / recapitalized</strong> as price rises — the blocks match up on both sides of the curve, "like X-ray vision."</li>
+  </ul>
+
+  <h3>The Market Maker Sell Model (reverse)</h3>
+  <ul>
+    <li>Anticipate a rally to go lower. On the <strong>buy side of the curve</strong>, every <strong>up candle with a small displacement down</strong> = market makers <strong>selling short early / hedging into the rally</strong>.</li>
+    <li>To the right of the high, every return to one of those old up candles (a <strong>bearish orderblock</strong>) is a <strong>reclaimed short</strong> — the sell-side blocks match the buy-side ones.</li>
+  </ul>
+
+  <div class="callout"><span class="tag">Definition</span>A <strong>reclaimed block</strong> = a candle previously used to build a position, whose short-term bounce/decline confirmed minor displacement, now revisited to <strong>facilitate new entries in the same direction</strong>. Map every up candle on the decline side and you'll find shorts you'd otherwise never notice.</div>
+
+  <div class="fig-slot" data-slug="m4-07-reclaimed-ict-orderblock"></div>
+
+  <div class="quiz" data-quiz="m4-07"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-08" data-title="ICT Propulsion Block" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 8</div>
+    <h2>ICT Propulsion Block</h2>
+    <div class="desc">An orderblock acting on a prior orderblock — a higher, highly sensitive block with little drawdown.</div>
+  </div>
+
+  <ul>
+    <li>Definition: a <strong>down candle that trades down into a prior down candle / bullish orderblock</strong> when the context is already bullish. That second, higher block is the <strong>propulsion candle</strong> — highly sensitive, "predisposed to go higher."</li>
+    <li>The <strong>mean threshold (50% of the body) should never break</strong>. Most often price only trades to the candle <strong>high</strong> (maybe a pip or two under) and then <strong>explodes</strong> — sudden, violent movement away.</li>
+    <li>The mean-threshold rule is the edge: it lets you run an <strong>ultra-tight stop</strong>, and a break gives <strong>immediate feedback</strong> you're wrong — go to the sidelines or look to <strong>reverse</strong>.</li>
+    <li>Bearish version: an <strong>up candle trading back up into a prior bearish orderblock</strong> — sell the mean threshold, or the return to the candle's low (below the body — extra sensitive).</li>
+    <li>The payoff: <strong>little drawdown, immediate responsiveness</strong> — exactly what short-term traders want.</li>
+  </ul>
+
+  <div class="fig-slot" data-slug="m4-08-ict-propulsion-block"></div>
+
+  <div class="quiz" data-quiz="m4-08"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-09" data-title="ICT Vacuum Block" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 9</div>
+    <h2>ICT Vacuum Block</h2>
+    <div class="desc">Gaps at big events and session openings — breakaway or exhaustion, and time-of-day decides the fill.</div>
+  </div>
+
+  <ul>
+    <li>A vacuum block is a <strong>gap from a volatility event</strong> — non-farm payroll, FOMC, an unforeseen geopolitical shock, or a futures session/Sunday open — where a central-bank-level repricing means <strong>no trade could occur</strong> between the prior close and the new open (a vacuum of liquidity). NFP can gap 30–60 pips.</li>
+    <li><strong>Treat the empty gap as its own candle</strong>: define its <strong>high, low, mean threshold, open and close</strong>, then trade it like any orderblock. Risk is defined between two reference points → more leverage for the same % exposure.</li>
+    <li>A <strong>gap up from a discount after a decline = a breakaway gap</strong> (strength). A gap after an extended rally = an <strong>exhaustion gap</strong> / capitulation.</li>
+    <li>Fill behavior is <strong>time-of-day sensitive</strong>: an early-NY (8:30) gap likely fills the same day; a 10–11am gap likely stays open → becomes an <strong>FVG for later</strong>.</li>
+    <li>Two outcomes on the way down: a <strong>bullish orderblock inside the gap</strong> may halt the fill and rally (leaving a small FVG), or price fully <strong>closes the gap</strong> = perfect, balanced delivery → then a buy targeting the highs.</li>
+    <li>Reverse the whole model for a gap <strong>down</strong>: wait for up candles to fill it, then sell.</li>
+  </ul>
+
+  <div class="callout warn"><span class="tag">Warning sign</span>Once the gap is closed and price has delivered both down (to fill) and up (to rally), there's <strong>no reason for price to trade back below the first up candle's close</strong>. If it does, the trade is suspect — take profit / take it off.</div>
+
+  <div class="fig-slot" data-slug="m4-09-ict-vacuum-block"></div>
+
+  <div class="quiz" data-quiz="m4-09"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-10" data-title="Liquidity Pools" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 10</div>
+    <h2>Liquidity Pools</h2>
+    <div class="desc">Sell to the buyers, buy from the sellers — roleplay where the stops are resting.</div>
+  </div>
+
+  <ul>
+    <li>We want to <strong>sell to the buyers and buy from the sellers</strong> — sell at a premium, buy at a discount. Retail buys at premium and sells at discount.</li>
+    <li>If the market is bearish, look to <strong>sell above old highs</strong> — there are dumb buyers above the highs, or shorts with their buy stops resting there. We sell into that <strong>pool of liquidity</strong>.</li>
+    <li><strong>Roleplay</strong>: "if I was short right now, where would my buy stop be? If I was long, where would my sell stop be?" — that shows you where other traders' stops are.</li>
+    <li>The trick is knowing the <strong>underlying HTF bias</strong>. If it wants to go higher — wait for an old low to be taken out, then be a buyer.</li>
+  </ul>
+
+  <div class="callout rule"><span class="tag">Sweep mechanics</span>
+    <ul>
+      <li>Expect a <strong>10–20 pip sweep</strong>. If you buy right under the low, use a <strong>30–50 pip stop</strong>.</li>
+      <li>Don't FOMO by buying at the low or above it — <strong>buy under it</strong>.</li>
+      <li>If it moves <strong>beyond 25 pips</strong>, it's probably not a sweep — it's likely a continuation of the decline.</li>
+    </ul>
+  </div>
+
+  <div class="callout"><span class="tag">Notes</span>Accumulation on the sellside for longs; distributing the longs into the buyside. If the market trended all week, expect a <strong>choppy Friday</strong> — they want to take profit.</div>
+
+  <div class="fig-slot" data-slug="m4-10-liquidity-pools"></div>
+
+  <div class="quiz" data-quiz="m4-10"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-11" data-title="Liquidity Voids" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 11</div>
+    <h2>Liquidity Voids</h2>
+    <div class="desc">Where no trading took place at all — big one-sided candles that price returns to balance out.</div>
+  </div>
+
+  <ul>
+    <li>A <strong>liquidity void</strong> is where absolutely no trading took place — e.g. a big news candle (CPI) where neither buyside nor sellside was offered.</li>
+    <li>Voids where there was <strong>no trading at all are the best draw on liquidity</strong>.</li>
+    <li>Price in a small range/consolidation = <strong>price in balance / at equilibrium</strong>; when it moves away it creates an imbalance = <strong>displacement</strong>.</li>
+    <li>There's <strong>no specific time</strong> for a void to fill — it's relative to the surrounding price action.</li>
+    <li>A void looks like <strong>big candles delivered to one side</strong>, occasionally with small gaps between them.</li>
+    <li>The void gets <strong>covered back over</strong> in the future — once both sides have been offered, price is balanced out.</li>
+    <li>Sometimes it fills instantly; sometimes it <strong>first drops lower, faking people out</strong>, then fills completely.</li>
+  </ul>
+
+  <div class="callout"><span class="tag">Institutional pricing</span>Pricing on an institutional level happens in <strong>graduated terms</strong> — it can't be done on the first pass. Price runs from the level, gradually returns, sells off, comes back once more — they're <strong>stacking orders</strong>. When price gaps away aggressively, it's high probability it continues — you can <strong>sell inside the gap</strong>. Watch how the <strong>bodies</strong> close a void in.</div>
+
+  <div class="fig-slot" data-slug="m4-11-liquidity-voids"></div>
+
+  <div class="quiz" data-quiz="m4-11"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-12" data-title="ICT Fair Value Gaps (FVG)" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 12</div>
+    <h2>ICT Fair Value Gaps (FVG)</h2>
+    <div class="desc">The gap exists on the timeframe you're viewing — and the concepts overlap by design.</div>
+  </div>
+
+  <h3>Framing an FVG (three candles)</h3>
+  <ul>
+    <li>A fair value gap is a range where <strong>only one side of liquidity was offered</strong>. For a bearish FVG, take the big <strong>down candle</strong> and look at its neighbours:</li>
+    <li>The candle <strong>to the left</strong> already offered <em>buy-side</em> from its <strong>low up to its close</strong>; the candle <strong>to the right</strong> offered buy-side from its <strong>open up to its high</strong>.</li>
+    <li>The <strong>pocket left open</strong> — between the <strong>low of the left candle and the high of the right candle</strong> — is the FVG (in the example ~25 pips, 105.00 → 104.75). Only sell-side was delivered there, so price is drawn back to <strong>rebalance</strong> it ("perfect delivery" = both sides offered).</li>
+  </ul>
+
+  <ul>
+    <li>The gap occurs <strong>on the timeframe you're looking at</strong> — broken down on smaller timeframes it would probably be a liquidity void (multiple candles), not one gap.</li>
+    <li>Why expect the gap to fill? Because sellside liquidity was already taken beneath the low with a <strong>turtle soup</strong>, there are <strong>equal highs (EQH)</strong>, and above them the FVG — a high-probability trade. (The example: ~100+ pips in about two days.)</li>
+    <li>In rangey conditions (like December) this is the style to use: <strong>looking for stops and looking for FVGs</strong>.</li>
+    <li><strong>FVGs, liquidity voids, orderblocks and liquidity pools overlap a lot</strong> — a single run can take buy stops (pool), hit an FVG, and on a lower timeframe show up as a liquidity void, all at once.</li>
+    <li>Once price breaks below the efficient range, <strong>only sellside is delivered</strong> below it. Reverse everything for a bullish FVG below the market.</li>
+  </ul>
+
+  <div class="fig-slot" data-slug="m4-12-ict-fair-value-gaps-fvg"></div>
+
+  <div class="quiz" data-quiz="m4-12"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-13" data-title="Divergence Phantoms" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 13</div>
+    <h2>Divergence Phantoms</h2>
+    <div class="desc">Banks don't look at indicators — they look at where the stops are. Do the opposite of retail.</div>
+  </div>
+
+  <h3>Two Types of Divergence</h3>
+  <div class="flip-row">
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Type 1 — Classic</div><div class="flip-face flip-back">Higher high in price, but no higher high in momentum.</div></div></div>
+    <div class="flip"><div class="flip-in"><div class="flip-face flip-front">Type 2 — Hidden</div><div class="flip-face flip-back">Trend-following: a higher low while the stochastic cycles down to a lower low — a good entry in bullish markets.</div></div></div>
+  </div>
+  <div class="flip-hint">Click a card to flip it</div>
+
+  <ul>
+    <li>ICT likes to see the <strong>hidden divergence</strong> when looking for higher prices — while retail is staring at the classic bearish divergence at the top. Indicators are <strong>mathematically derived and measure only the past</strong>; price has <strong>zero awareness</strong> of them.</li>
+    <li><strong>Banks (UBS, Credit Suisse, Citi) aren't looking at stochastics — they attack liquidity where buy/sell stops rest.</strong> Funds are long-term trend-followers, and those very systems get <strong>targeted</strong> in consolidations and at tops.</li>
+    <li>Bearish divergence for retail while we expect higher prices → <strong>we buy. Do the opposite of retail.</strong></li>
+  </ul>
+
+  <h3>The Mechanic</h3>
+  <ol>
+    <li>Retail sees a <strong>type-1 bearish divergence</strong> and sells the "top" — with no qualified target, they hold forever expecting lower and lower.</li>
+    <li>Price gives them ~30 pips, then <strong>runs the sell stops below the equal lows</strong>, dips into a <strong>bullish orderblock</strong> (mean threshold), and the stochastic cycles to a <strong>new low — not oversold, just enough to grab the stops</strong>.</li>
+    <li>That new stochastic low against a <strong>higher low in price</strong> is the <strong>real (hidden) divergence</strong> — price snaps up and runs the buy stops above the old high, leaving the divergence sellers "holding the bag."</li>
+  </ol>
+
+  <div class="callout"><span class="tag">Retail's 4 (+1) conditions</span>Retail thinks trading is: overbought or oversold × diverging bearish or bullish = 4 signals. The overlooked <strong>fifth condition is "is it even a time to trade?"</strong> — often the market is consolidating and you do nothing. Only pull up an indicator to read <strong>what the retail crowd is thinking</strong>, then find the institutional reason for the opposite.</div>
+
+  <div class="fig-slot" data-slug="m4-13-divergence-phantoms"></div>
+
+  <div class="quiz" data-quiz="m4-13"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+<section class="lesson" id="m4-14" data-title="Double Bottom / Double Top" data-month="m4">
+  <div class="lesson-hero">
+    <div class="crumb">Month 4 · Lesson 14</div>
+    <h2>Double Bottom / Double Top</h2>
+    <div class="desc">Never trust them — always expect them to get swept, with a measured move.</div>
+  </div>
+
+  <ul>
+    <li>The <strong>algo remembers double tops/bottoms as reference points</strong> — even after time passes — and reaches through them for the buy stops (above tops) and sell stops (below bottoms).</li>
+    <li>We <strong>NEVER trust double tops and double bottoms — we always expect them to get swept.</strong></li>
+    <li><strong>Extreme ends of the range</strong> are where high-probability trading lives; the middle is low probability. Double tops/bottoms frame those extremes.</li>
+  </ul>
+
+  <h3>The Measured Move (the real target)</h3>
+  <ul>
+    <li>Retail sees the double top as resistance and targets the <strong>support low</strong> below. The algorithm does the opposite: measure the <strong>high-to-low of the consolidation between the two peaks</strong>, then <strong>project that distance beyond the double top</strong> — that projection is the objective (in the example, price hit it to <strong>within 1 pip</strong>).</li>
+    <li>Same in reverse for a double bottom: project the range below the lows to find where sell stops get swept, then price reverses back to the double-bottom reference.</li>
+    <li>That's why you get <strong>spike reversals</strong> at both extremes — the algo runs to the measured level, then reverses.</li>
+  </ul>
+
+  <div class="callout"><span class="tag">Timeframe scaling</span>On the 15m expect ~<strong>10–20 pip</strong> stop runs. On the <strong>hourly</strong> that rule breaks down — use the <strong>measured range instead</strong> (e.g. a 48-pip projection). This works on <em>all</em> timeframes — highlight clean tops/bottoms even when there's no trade today; they'll pay off later once run through.</div>
+
+  <div class="fig-slot" data-slug="m4-14-double-bottom-double-top"></div>
+
+  <div class="quiz" data-quiz="m4-14"></div>
+  <div class="lesson-footer"></div>
+</section>
+
+
+    </div>
+  </main>
+</div>
+
+<div id="lightbox"><img src="" alt=""><div class="lb-cap"></div></div>
+
+<script>
+/* ---------- course meta ---------- */
+const MONTHS = [
+  {id:"m1", title:"Month 1 — Reading The Conditions", desc:"Trade setup elements, market maker conditioning, equilibrium vs discount & premium, fair valuation, liquidity runs and protraction."},
+  {id:"m2", title:"Month 2 — Risk & Trade Selection", desc:"Growing small accounts, framing low-risk setups, 10% months, mitigating losses, high-reward selection and the first market maker traps."},
+  {id:"m3", title:"Month 3 — Institutional Analysis", desc:"Timeframe selection, institutional order flow, sponsorship, anticipatory skills, SMT, macro-to-micro and more traps."},
+  {id:"m4", title:"Month 4 — The PD Arrays", desc:"Orderblocks, mitigation, breaker, rejection, reclaimed, propulsion & vacuum blocks, liquidity pools, voids, FVGs and phantoms."}
+];
+/* filled after lessons defined */
+</script>
+<script>
+/* ---------- image manifest (slug -> count of images/{slug}-NN.png) ---------- */
+const IMG_COUNTS = {
+  "m1-01-elements-of-a-trade-setup":8, "m1-02-how-market-makers-condition-the-market":4,
+  "m1-03-what-to-focus-on-right-now":1, "m1-07-liquidity-runs":5,
+  "m2-01-growing-small-accounts":4, "m2-02-framing-low-risk-trade-setups":4,
+  "m2-04-no-fear-of-losing":5, "m2-06-secrets-to-selecting-high-reward-setups":9,
+  "m2-07-market-maker-trap-false-flag":5, "m2-08-market-maker-trap-false-breakouts":4,
+  "m3-01-timeframe-selection-defining-setups":8, "m3-02-institutional-order-flow":9,
+  "m3-03-institutional-sponsorship":23, "m3-04-anticipatory-skill-development":10,
+  "m3-05-institutional-market-structure":14, "m3-06-macro-economic-to-micro-technical":3,
+  "m3-07-market-maker-trap-trendline-phantoms":13, "m3-08-market-maker-trap-head-shoulders":11,
+  "m4-01-interest-rate-effects-on-currency-trades":11, "m4-02-reinforcing-liquidity-concepts-price-delivery":5,
+  "m4-03-orderblocks":20, "m4-04-mitigation-blocks":15, "m4-05-ict-breaker-block":15,
+  "m4-06-ict-rejection-block":13, "m4-07-reclaimed-ict-orderblock":5, "m4-08-ict-propulsion-block":5,
+  "m4-09-ict-vacuum-block":6, "m4-10-liquidity-pools":5, "m4-11-liquidity-voids":8,
+  "m4-12-ict-fair-value-gaps-fvg":6, "m4-13-divergence-phantoms":2, "m4-14-double-bottom-double-top":3
+};
+
+/* ---------- quiz bank (every question derived from the notes) ---------- */
+const QUIZZES = {
+ "m1-01":[
+  {q:"Where do all price moves start?",o:["From a reversal","From a consolidation","From a retracement","From an expansion"],a:1,e:"All moves start from a consolidation — that's where the market maker lets orders build on both sides. The cycle runs consolidation → expansion → retracement or reversal."},
+  {q:"In a consolidation, which direction does the market eventually expand?",o:["Always up","Toward whichever side has the most money to be absorbed","Always toward the trend","Random"],a:1,e:"Whichever end of the range has the highest amount of money to be absorbed — that's the direction. We don't always know it, so we always wait for the first expansion."},
+  {q:"Price expands up quickly out of equilibrium. What's the play?",o:["Chase the move","Wait for price to come back to the bullish orderblock left near equilibrium","Short the high","Wait a week"],a:1,e:"Expansion couples with the orderblock: don't chase — wait for price to return to the down candle before the up move, at or near the equilibrium price point."},
+  {q:"Which ICT tool pairs with a REVERSAL?",o:["Equilibrium","Liquidity pools just above old highs / below old lows","Fair value gaps","Trendlines"],a:1,e:"Reversal = the market makers ran a level of stops. The tool is the liquidity pool just above an old high or just below an old low."},
+  {q:"How is a consolidation range properly defined?",o:["By the wicks","By the bodies of the candles","By closes only","By volume"],a:1,e:"The range is defined by the bodies of the candles, not the wicks — equilibrium is the halfway point of that range."}
+ ],
+ "m1-02":[
+  {q:"Which of these can NEVER happen?",o:["Consolidation → expansion","Expansion → retracement","Consolidation directly → reversal","Expansion → reversal"],a:2,e:"It never goes consolidation → reversal or consolidation → retracement — it can't retrace or reverse before it has moved. It's always consolidation → expansion first."},
+  {q:"What does 'retracement' mean the market is doing after an expansion?",o:["Reversing the trend","Coming back to recapitalize the orderblock it left behind, then continuing","Consolidating","Filling all gaps"],a:1,e:"From expansion it either reverses, or retraces back into the orderblock it just left, recapitalizes it, and makes another leg in the same direction."},
+  {q:"What always accompanies the Judas swing after midnight NY?",o:["High volume","Some news event or driver at or just before it","A gap","London close"],a:1,e:"The manipulation always comes by way of some news event/driver at the time of the manipulation or just before it — that's the Judas swing, the false move."},
+  {q:"On a buy day, what does London open classically do?",o:["Rallies immediately","Shoots down, runs the stops, makes the higher low of the day, then expands","Consolidates all session","Gaps up"],a:1,e:"The classic London open scenario: drop after midnight (the false move for the low), run the stops, form the higher low, then range expansion."},
+  {q:"Who is the actual 'drive shaft' of the marketplace?",o:["Retail traders collectively","The banks — the small circle of liquidity providers","News agencies","Large retail funds"],a:1,e:"The retail crowd's vastness is a facade. The small circle — the banks — drives price; they're the liquidity provider and everyone else is liquidity."}
+ ],
+ "m1-03":[
+  {q:"How much data should your daily-chart log cover?",o:["3 weeks","3 months","12 months (no less than 9)","Multiple years"],a:2,e:"Daily: 12 months (no less than 9 — and not multiple years). 4h: 3 months. 60m: 3 weeks. 15m: 3–4 days."},
+  {q:"What forms above 'clean' / equal highs?",o:["Sell stops","Buy stops — and the market usually comes back to run through them","Nothing","Support"],a:1,e:"Two equal highs in close proximity are too clean — buy stops build above them and price tends to come back up and run through that level. Equal lows hold sell stops."},
+  {q:"What is the uninformed money's core belief?",o:["Banks drive price","Indicators are the answer — overbought/oversold moves price","Liquidity moves price","Time of day matters"],a:1,e:"The uninformed perspective holds that price moves by indicators' influence ('indicator-itis'). The smart money perspective: everyone else is liquidity — buy stops, sell stops, pending orders."},
+  {q:"Which pair should you keep your personal log on?",o:["EURUSD","GBPUSD","One pair that is NOT the pound or euro","All majors"],a:2,e:"One pair, apart from the british pound and euro (the mentorship already uses those) — so you build a unique perspective you arrived at yourself."},
+  {q:"Why must you avoid marrying your analysis?",o:["It saves time","If real-time price stops making sense, you need flexibility to switch gears or stand aside","Analysis is useless","Brokers punish it"],a:1,e:"We don't know direction with certainty — only probabilities. Holding on with cast-iron conviction is imposing your will on the market."}
+ ],
+ "m1-04":[
+  {q:"What defines a swing high, and what confirms it?",o:["5 candles + volume","3 candles — high with lower left & right; the 4th candle lower confirms","2 closes below","A trendline touch"],a:1,e:"A swing high is 3 candles; then wait for the fourth candle to be lower than the highest one — only then start waiting for the retracement to equilibrium."},
+  {q:"Why do the 62–79% fib levels actually work?",o:["Fibonacci magic","They measure how far the current price range has been — price action foundations cause it","Golden ratio in nature","They don't"],a:1,e:"There's no magic in fibonacci — it only helps you see equilibrium and discount visually. The foundations behind price action cause those levels to work."},
+  {q:"Where is the market PERMITTED to be bought on the banking level?",o:["Anywhere","At equilibrium or less — never above it","Only at the low","At a premium"],a:1,e:"EQ = fair market value. Banks can buy at EQ or less; they won't come in above it. Best buys come at equilibrium or less."},
+  {q:"Why do market makers run price below old lows when bullish?",o:["To scare traders","Tripping sell stops injects sellers — counterparties for their buy orders","To fill gaps","Random noise"],a:1,e:"The sell stops below the low become market sell orders — exactly the counterparties smart money needs for its buys. Then it explodes: the turtle soup."},
+  {q:"Price blows through OTE while you're still bullish. What now?",o:["Flip bearish","Find the low it just blew out and expect the turtle soup buy there","Buy immediately","Quit the setup"],a:1,e:"Take the deeper discount: the violated low is where you anticipate the turtle soup buy — an even better price."},
+  {q:"How do market makers engineer liquidity above old highs?",o:["Spreading news","Allowing retracements so buy stops build above the high, then selling their longs to those stops","Widening spreads","Placing icebergs"],a:1,e:"They let price retrace so stops accumulate above an old high; running those buy stops turns them into market orders they distribute their accumulated longs to."}
+ ],
+ "m1-05":[
+  {q:"Where does ICT sell — and where do other disciplines sell?",o:["ICT at 50%, others at 62%","ICT at 62–79% (premium), others at the 50% level","Both at 79%","Neither uses retracements"],a:1,e:"The 50% touch alone isn't enough — sell in the 62–79% OTE zone, at a premium. If price only reaches EQ and sells off, that's a missed opportunity — let it go."},
+  {q:"What makes a turtle soup sell high probability?",o:["Any old high broken","Price above equilibrium AND running out an old high's stops at the same time","Volume spike","A doji at the high"],a:1,e:"At a premium plus taking buy stops above an old high — that's really good probabilities. Target the established lows below."},
+  {q:"Which swings do you anchor the fib to?",o:["Any swing","Only pure, clear, discernible swings — skip sloppy ones","The largest ever","Every 3-candle swing"],a:1,e:"If it looks sloppy or questionable, don't measure it. Obvious price swings are the ones we use."},
+  {q:"Do you need a directional bias to trade?",o:["Yes, always","No — you need to know how to trade inside a range","Only on the HTF","Only in trends"],a:1,e:"Ranges are always there — trending, consolidating or reversing — and you don't need a breakout to make money. In long consolidations this is your go-to."}
+ ],
+ "m1-06":[
+  {q:"What are the two perspectives of fair value?",o:["Retail and broker","Equilibrium (range midpoint) and the market makers' valuation for accumulating/liquidating","Bid and ask","Spot and futures"],a:1,e:"Fair value = equal-distance equilibrium of a range, AND fair value from the market maker's perspective — fair for them to accumulate at deep discount and liquidate at what retail calls premium."},
+  {q:"At equilibrium, how do you judge the probable direction?",o:["RSI","Where market structure broke most recently — a swing high or a swing low","Volume","The last candle color"],a:1,e:"At EQ the market can go either way. The easiest cue: did it most recently break a swing high or a swing low?"},
+  {q:"What defines a liquidity void?",o:["Low volume","Sudden movement, large ranges, very little wicks — price spent almost no time there","A weekend gap","Three dojis"],a:1,e:"Big-range, quick, one-sided movement. The market will want to trade back into it and close it in later."},
+  {q:"A turtle soup takes buy stops but then just consolidates sideways. What does that tell you?",o:["It's confirmed bearish","It's not acting like a turtle soup — it's building equilibrium and pointing higher","Nothing","Volume is low"],a:1,e:"If it wanted lower after blowing out buy stops it should go quickly. Sideways consolidation instead means it's building equilibrium again — pointing to higher prices."},
+  {q:"How do we treat breakouts?",o:["Trade every breakout","We don't play the breakout game — we anticipate the breakout","Fade every breakout","Wait for retest always"],a:1,e:"Price action gives clues in advance about which side of the consolidation it will break — we anticipate it rather than chase it."}
+ ],
+ "m1-07":[
+  {q:"Where does a short seller's stop rest?",o:["Below the entry","Just above the swing high they sold from (often right at it)","At breakeven","Nowhere"],a:1,e:"That's the story of stops: shorts from a swing high leave buy stops above the high; longs from a low leave sell stops below it. The market finds interest in returning to that body of orders."},
+  {q:"What typically cuts through a high resistance liquidity run?",o:["Any London session","A sharp driver — non-farm payroll, FOMC, a black swan","A trendline break","Nothing ever"],a:1,e:"Without that type of volatility injection, the levels behind heavy price action are well defended — which is why high resistance runs are the least probable condition."},
+  {q:"After a sharp one-way decline breaks an old low, what is the run back up through the short-term highs?",o:["High resistance","Low resistance — buy stops above every short-term high, little in the way","A reversal signal","Untradeable"],a:1,e:"That's the low resistance liquidity run — the easiest trading there is. Each retracement sets up the next drive through the stops."},
+  {q:"When does a low resistance run turn back into high resistance?",o:["After 3 candles","When price returns to the old broken level that defined the range","At London close","Never"],a:1,e:"Once it gets back to the old low/high that was broken, the probabilities fall off precipitously — beyond it is a high resistance run."},
+  {q:"What does heavy price action around a level indicate?",o:["Weak level","The level is being defended on an institutional price model","Random chop","Retail interest"],a:1,e:"More price action around a level = a defended level. Trade away from defended levels to sync with institutional order flow — low resistance exits, very little drawdown."}
+ ],
+ "m1-08":[
+  {q:"What exactly is market protraction?",o:["Any impulse swing","A time-sensitive impulse price swing designed for manipulation only","A consolidation","A gap"],a:1,e:"Protraction is an impulse price swing that is highly sensitive to time of day — its design is to fake out those chasing the initial move and to reach for liquidity."},
+  {q:"What are the three protraction times per 24 hours?",o:["London open, NY open, close","0 GMT, after midnight NY, after 7 AM NY","9am, 12pm, 3pm NY","Sunday, Wednesday, Friday"],a:1,e:"Right at 0 GMT (8 PM NY), after the midnight NY candle (the Judas swing), and after 7 AM NY — it has to happen after 7 o'clock."},
+  {q:"The protraction move goes higher. What do you think?",o:["Buy the momentum","The opposite direction — it's counter to the major move that follows","Stay flat all day","Add to longs"],a:1,e:"If it moves higher at the protraction time, think the opposite direction; if lower, think higher. It's counter the major direction after that time of day."},
+  {q:"How do you combine protraction with premium/discount?",o:["You can't","After an impulse swing down, sell the protraction into the 62% premium, targeting the old lows","Buy every 50% retrace","Only trade Asia"],a:1,e:"Measure the impulse swing, let the protraction retrace above EQ into 62% — sell there expecting the run on the stops below the old/equal lows."}
+ ],
+ "m2-01":[
+  {q:"What is the most important metric?",o:["Win rate","Monthly return","Drawdown","Number of trades"],a:2,e:"Drawdown is the most important thing — it hurts you psychologically and monetarily. Nobody goes broke taking profits; they go broke taking too much risk."},
+  {q:"At 3:1 reward-to-risk, how often can you be wrong and still profit?",o:["25% of the time","50% of the time","75% of the time","Never"],a:2,e:"With 3:1 payouts you can be wrong 75% of the time and still be net profitable — and as accuracy grows, equity grows exponentially."},
+  {q:"What does 6% per month compounded do?",o:["Nothing meaningful","Doubles your money every year","Triples it monthly","Beats inflation only"],a:1,e:"6%/month doubles your money every single year regardless of account size — and it only takes 20 pips a week at 1.5% risk and 1:1."},
+  {q:"What matters for building wealth — pips or percent?",o:["Total pips","Percent returns","Number of trades","Leverage used"],a:1,e:"Pips are a trophy for social media. Percent returns compounded over time are what build consistent wealth."},
+  {q:"What emotion puts a new trader INTO a trade, and what does it become?",o:["Fear → greed","Greed → fear","Hope → joy","Boredom → greed"],a:1,e:"Greed puts you into the trade; once the transaction starts it transfers into fear. Respect the risk side before you execute."}
+ ],
+ "m2-02":[
+  {q:"Why must setups be selected on higher timeframes?",o:["They're prettier","Large institutions and banks analyze markets on the daily, weekly and monthly","Lower spreads","Faster fills"],a:1,e:"The HTF has more influence on price and carries the institutional order flow — without it you limit your exposure to high-probability setups."},
+  {q:"How does refining a HTF level to the LTF change the trade?",o:["It doesn't","Smaller stop-loss placement → lower risk by default → bigger R multiples","It only changes the entry time","It increases risk"],a:1,e:"The Aussie study: 20 pips on the 1h → 17 on the 15m → under 10 on the 5m. The refined trade hits 3R before price even reaches the hourly entry."},
+  {q:"Price breaks an old low. When is that a buy?",o:["Always","When it trades into a HTF premise — e.g. a daily bullish orderblock where banks have bought before","Never","When RSI is oversold"],a:1,e:"Breaking old lows alone isn't enough — you need the higher-timeframe reason for buying below the low: the daily OB at 7512 in the case study."},
+  {q:"Who are HTF setups especially good for?",o:["Scalpers only","People who can't day trade — they form slowly and give ample time to plan","Nobody","News traders"],a:1,e:"Higher timeframe setups form slow and provide ample planning time — jobs and life don't stop you trading them."}
+ ],
+ "m2-03":[
+  {q:"What is 'the real secret' to making the money?",o:["Big risk","Small risk","More trades","Higher leverage"],a:1,e:"It's not having big risk that makes the money — it's having small risk, framed on levels with institutional sponsorship (daily/weekly/monthly), because that's where the real orders are."},
+  {q:"What does ICT say about taking partials?",o:["It's a weakness","Pay yourself — those who call partials a weakness don't make money consistently","Only exit in full","Only at 10R"],a:1,e:"Pay the trader. You don't know if the trade will pay in full; banking 3:1 first means you're already paid — and the second portion always makes more than the first."},
+  {q:"You captured only half of the identified 100-pip range. Reaction?",o:["Be upset","That's greed talking — half the range still made the month (21%+ in the example)","Revenge trade","Quit the model"],a:1,e:"You don't need the absolute high or low — the lion's share is enough. Even the 3:1 first objective alone is over 10% per month."}
+ ],
+ "m2-04":[
+  {q:"What is the highest-probability support in an orderblock?",o:["The wick low","The high-to-open — the fair value gap","The midpoint of the wick","The prior close"],a:1,e:"The bullish orderblock's high-to-open defines the FVG — the most probable support. The mean threshold (middle of the down candle) shouldn't be violated on a closing basis."},
+  {q:"What risk per trade 'makes millionaires'?",o:["5%","2%","1%","10%"],a:2,e:"One percent makes millionaires; 2% is the industry standard. At 50% accuracy, 5:1 framing and 1% risk = 20%/month — the optimal trading goal."},
+  {q:"How are losses framed by the professional equity manager?",o:["As failures to avoid","As costs of doing business","As reasons to stop","As broker manipulation"],a:1,e:"Losing is inevitable — fear-based decision-making fosters trade paralysis. Losses are costs of doing business and don't remove profitability."},
+  {q:"At 30% accuracy with 5:1 and 1% risk, what's the example month?",o:["-5%","0%","+8%","+50%"],a:2,e:"Even losing 70% of your trades, 5:1 framing yields +8% on the sample month. You never need to demand better than 50/50 accuracy."},
+  {q:"How do you compute dollar-per-pip leverage?",o:["Guess","Risk dollars ÷ stop pips (e.g. $50 ÷ 25 pips)","Fixed lots always","Broker decides"],a:1,e:"1% of $5,000 = $50; divide by the stop size in pips to get the per-pip leverage for the trade."}
+ ],
+ "m2-05":[
+  {q:"After a losing trade in an idea, what size is the next attempt?",o:["Double","Same","One half","Zero forever"],a:2,e:"Half the position size of the initial loss: 2% → 1%, 1% → 0.5%. Equity preservation is the number one rule — that loss could be the start of a 10-loss string."},
+  {q:"At what multiple is the initial full loss mitigated on the half-risk re-entry?",o:["R1","R2","R5","R10"],a:1,e:"At R2 with half the risk, the full initial loss is recovered — without even needing the old highs taken."},
+  {q:"It's Thursday, you just got back to breakeven after a loss. What now?",o:["Add size","Take it off — close the week flat, never carry a net loss into the weekend if the market offers it back","Hold through Friday","Reverse the position"],a:1,e:"Especially late in the week: fix the error, correct the drawdown, move to the sidelines and start fresh."},
+  {q:"Why did the first trade lose, in the scenario?",o:["The idea was wrong","The stop was placed too tight — just below the mean threshold","News hit","The OB was fake"],a:1,e:"The trade idea hadn't unraveled — the stop placement was inaccurate. The re-entry goes below the entire orderblock, allowing more movement."}
+ ],
+ "m2-06":[
+  {q:"How many things in agreement make a high-reward setup?",o:["3","5","7","10"],a:2,e:"2 of 4 from the big picture, 2 of 3 from the intermediate, and 1 from each of the 3 short-term areas = 7 things across all three perspectives."},
+  {q:"Which charts actually move price?",o:["The intraday charts","The monthly, weekly and daily","The tick chart","The 5-minute"],a:1,e:"Intraday charts have no influence — they only reflect what the M/W/D arrive at. Funds analyze monthly/weekly and execute on the daily."},
+  {q:"What are the big-picture areas of study?",o:["RSI, MACD, volume, news","Macro (inflation/deflation), interest rates, intermarket (CRB vs USDX), seasonals","Sentiment only","Chart patterns"],a:1,e:"Macro market analysis, interest rate analysis, intermarket analysis and seasonal influences — any 2 of the 4 in agreement."},
+  {q:"What signals a possible change in the commercials' hedging program (COT)?",o:["Any weekly change","A 12-month or 4-year extreme reading","Zero reading","Rising open interest"],a:1,e:"When commercials reach a 12-month extreme high or low relative to the zero line, it often indicates a change — and a long-term high/low forming."},
+  {q:"Where will most of your losses come from?",o:["The big picture","The intermediate view","The short-term perspective — forcing it or trading a market in transition","Random"],a:2,e:"Trades framed on the HTF premise generally serve you well; the short-term perspective is where you force things and where transitions cause the losses."},
+  {q:"What should your trading feel like?",o:["Exciting","Boring — monotonous, mundane, routine","Adrenaline-fueled","Social"],a:1,e:"Boring is exactly what you want — it means no fear and greed forcing you. Emotions are for the weekend."}
+ ],
+ "m2-07":[
+  {q:"Where do FALSE bull flags print?",o:["In fresh trends","In mature bull trends / at HTF distribution levels (premium)","At discounts","Randomly"],a:1,e:"In immature strong trends the flag is consistent; at premium/distribution it's the trap. False bear flags print at HTF accumulation (discount)."},
+  {q:"With two consecutive up candles before the drop, where is the mean threshold?",o:["Wick to wick 50%","Body-low to body-high across both candles — its equilibrium","The higher open","The lower close"],a:1,e:"Measure body-to-body across the two candles; the midpoint (= bottom of the last up candle in the example) is the mean threshold."},
+  {q:"How do you trade the false bull flag?",o:["Buy the breakout","Sell the first return to the bearish OB (last up candle's open), stop above the flag's wick high","Wait a week","Straddle it"],a:1,e:"The turtle-soup pop above clears only the bodies; sell the return to 76.97, tiny stop above the wick, first objective = close the void the flag created."},
+  {q:"Before buying a false BEAR flag, what must happen?",o:["Nothing — buy the low","A swing high must be created and violated on the upside","Volume spike","3 green candles"],a:1,e:"Wait for the swing high violation, then buy the return to the last down candle (bullish OB), stop below the flag's low."},
+  {q:"What is ICT actually looking for in price action?",o:["His own entries only","Reasons why other traders will view the opposite side of the marketplace","Perfect patterns","Indicator confluence"],a:1,e:"It's a sentiment play plus HTF institutional order flow — see what the retail mind sees, then fade the trap."}
+ ],
+ "m2-08":[
+  {q:"Who brackets a trading range with orders, and how?",o:["Banks — limits inside","Neophyte/breakout traders — buy stops above the highs, sell stops below the lows","Hedgers — no orders","Nobody"],a:1,e:"They bracket both sides hoping to catch a trend either way — those stops are exactly what the market makers harvest."},
+  {q:"In a bullish market, where does the false breakout occur?",o:["Above the consolidation","Below the consolidation — to neutralize the sell stops","Both sides equally","At equilibrium"],a:1,e:"MMs send price below the range; the tripped sell stops pair their long entries. In bearish markets it's above the range for the buy stops."},
+  {q:"Why does price then run above the old high?",o:["Random momentum","The buy stops there are used to pair long exits — scaling out, profit, hedging","News only","Retail buying pressure"],a:1,e:"The full cycle: sell stops pair entries below, buy stops pair exits above, then a new consolidation primes the next round — stacking orders higher each time."},
+  {q:"Where does liquidity rest, exactly?",o:["Above the wicks","Above/below the bodies of the candles — that's where the volume is","At round numbers","At moving averages"],a:1,e:"All the volume is in the bodies, so the liquidity rests relative to the bodies, not the wicks."},
+  {q:"What single question gives you directional bias?",o:["What's the trend?","Where is the most recent untapped liquidity with the least resistance getting to it?","What's the news?","What's the sentiment?"],a:1,e:"The market always seeks liquidity — it's the number one driver in price action. Get in line with the market maker's motive; don't try to outsmart them."}
+ ],
+ "m3-01":[
+  {q:"Which are ICT's only 3 patterns?",o:["Head & shoulders, flags, wedges","Orderblocks, stop runs, liquidity voids","Doji, hammer, engulfing","Triangles, channels, double tops"],a:1,e:"Orderblocks, stop runs (turtle soup / false breakout), and liquidity voids."},
+  {q:"How often do setups form within a range?",o:["Every 10%","Every 25% of the range","Every 50%","Once per range"],a:1,e:"Setups form every 25% of the range (grading the swings). The daily gives bias; hold it until clearly proven wrong."}
+ ],
+ "m3-02":[
+  {q:"Bodies vs wicks — which matters?",o:["Wicks — bodies are retail","Bodies — wicks are retail","Both equally","Neither"],a:1,e:"Bodies matter, wicks are retail. Liquidity sits below the bodies, and price only needs to go below bodies, not wicks."},
+  {q:"Why is a mitigation block's reaction explosive?",o:["News","Shorts covering plus new buying","Thin liquidity","Algorithms pause"],a:1,e:"The explosive reaction = covering shorts + new buying at the same level."},
+  {q:"What is institutional order flow seeking?",o:["Retail entries","Large institutional liquidity on the M/W, traded on the D","Round numbers","Moving averages"],a:1,e:"Seeking large institutional liquidity on the monthly/weekly, traded on the daily — taking people out or drawing them in as counterparties."}
+ ],
+ "m3-03":[
+  {q:"What is institutional sponsorship?",o:["A paid newsletter","Willingness to protect an underlying price swing","High volume","A news release"],a:1,e:"Sponsorship = willingness to protect an underlying price swing — fractal across timeframes."},
+  {q:"Your level gets hit but the response is lethargic. What does that mean?",o:["Hold and add","No institutional orders there — reduce/cut","Wait a week","Flip direction"],a:1,e:"You need an immediate dynamic response. Lethargic = no institutional orders → reduce or cut, don't marry the idea."},
+  {q:"If bullish, where does accumulation happen relative to the midnight NY open?",o:["Above it only","Below it only","Exactly at it","Anywhere"],a:1,e:"If bullish, accumulation happens below the MNO only — buy below the day's opening price."}
+ ],
+ "m3-04":[
+  {q:"What defines the trading range in the monthly study?",o:["Any two candles","The most recent monthly down candle + the prior up candle above it","The year's high/low","The last quarter"],a:1,e:"Find the most recent monthly down candle plus the prior up candle above it — that's the range."},
+  {q:"When does the down candle become the orderblock?",o:["Immediately","Once price trades above the down-candle's high","After 3 months","When it's below EQ"],a:1,e:"Once price trades above the down-candle's high it becomes the orderblock — buy at its open or less, target the last up candle of the range."}
+ ],
+ "m3-05":[
+  {q:"USDX is accumulating while GBPUSD is distributing. What is that?",o:["Correlation","SMT divergence — bullish dollar, bearish GBP","A false signal","Random noise"],a:1,e:"That's SMT divergence — it gives the long/intermediate bias on the daily timeframe."},
+  {q:"What do failure swings let you do?",o:["Pick exact tops","Anticipate the turtle soup before it happens","Avoid all losses","Trade without stops"],a:1,e:"Failure swings are about anticipating the turtle soup before it happens."}
+ ],
+ "m3-06":[
+  {q:"When interest rates go up, what do the dollar and bond futures do?",o:["Both up","Dollar up, bonds down","Dollar down, bonds up","Both down"],a:1,e:"Rising rates chase yield into the dollar (dollar ↑) while bond futures drop (bonds ↓) — an inverse relationship."},
+  {q:"What does a rallying bond-futures contract tell you about rates?",o:["Rates rising","Rates lowering","Rates unchanged","Nothing"],a:1,e:"Bond futures rally = rates lowering; bond futures drop = rates increasing."},
+  {q:"SMT between which two instruments points to dollar direction?",o:["Gold and oil","The 10yr note and the 30yr T-bond","SPX and NDX","EURUSD and GBPUSD"],a:1,e:"SMT between the 10-year note and the 30-year T-bond → dollar direction → USD-pairs direction. The interest markets control everything."},
+  {q:"On US election night the dollar tanked — why did ICT ignore it?",o:["He panicked and sold","The 10yr/30yr made no confirming higher highs — it was all fluff/manipulation","He bought foreign currencies","The bond market was closed"],a:1,e:"Interest rates were still calling the shots with no confirming move; the dollar rallied 10 days straight afterward. Foreign pairs popping old highs were the false moves."},
+  {q:"How often should you hunt for a quarterly shift?",o:["Every month","Every 3–4 months","Once a year","Every week"],a:1,e:"Every 3–4 months there's a quarterly shift — a reversal, or extended consolidation then resumption."}
+ ],
+ "m3-07":[
+  {q:"What are trendlines, per the notes?",o:["An edge","Opinions — no edge","Institutional levels","Support"],a:1,e:"Trendlines = opinions, no edge. If everyone draws the same line and everyone can't win, the majority must be wrong."},
+  {q:"On a declining/bearish trendline, where do the buy stops rest?",o:["Below point 1","Above point 2","At the apex only","There are none"],a:1,e:"Buy stops rest above the 2nd high (point 2); sell stops rest below point 2 on a rising line — that liquidity pool is the real target, not the line."},
+  {q:"Where does ICT look for the trade against a trendline?",o:["At the 1st touch","OB or turtle soup above the high between touch 2 and the projected touch 3, when bearish at a HTF PD array","At the 5th touch","Below the trendline only"],a:1,e:"Aim for the high between point 2 and point 3 where the buy stops live; find an orderblock or turtle soup there before a 'clean' 3rd touch ever prints."},
+  {q:"Why does the triangle / wedge work the same way?",o:["It doesn't","Converging lines stack buy stops above and sell stops below the apex to be faded","It's a continuation only","It has no stops"],a:1,e:"The triangle is the same trap — the converging trendlines just cluster stops on both sides of the apex so the breakout can be raided."}
+ ],
+ "m3-08":[
+  {q:"What does the head & shoulders pattern function as?",o:["A reliable reversal","A market maker trap","A continuation signal","An entry trigger"],a:1,e:"The head & shoulders is a trap — and trying to pick tops/bottoms with it is the single worst thing a trader can do."},
+  {q:"Where is the liquidity the algorithm is reaching for in a head & shoulders?",o:["Below the neckline","In the stops above the head and shoulders","At the right shoulder's open","There is none"],a:1,e:"Retail sells the right shoulder with stops above the head; those stacked buy stops are the liquidity the pattern is engineered to reach."},
+  {q:"How should the neckline break be read?",o:["Confirmation to sell","A turtle soup — a stop-raid, look for the opposite side","A continuation","Ignore it"],a:1,e:"Treat the neckline break as a raid on the sell stops below it (a turtle soup), then look to trade with the higher-timeframe bias, not against it."},
+  {q:"What must you anchor to before fading the pattern?",o:["The neckline slope","The HTF premium/discount array","The volume","The right shoulder height"],a:1,e:"Only fade it in the direction the higher-timeframe bias supports — the pattern just maps where the crowd's stops are."}
+ ],
+ "m4-01":[
+  {q:"What is the #1 driver of currency?",o:["GDP","Interest rates","Employment","Equities"],a:1,e:"Interest rates are the single most influential driving force behind market moves — 'what makes the whole world go round.'"},
+  {q:"What three markets make up the interest rate triad?",o:["2yr, 20yr, 30yr","30yr bond, 10yr note, 5yr note","Fed funds, LIBOR, SOFR","Gold, oil, dollar"],a:1,e:"The 30-year bond (long-term), 10-year note (intermediate) and 5-year note (short-term) — overlaid and compared on barchart.com."},
+  {q:"What does a failure swing in the triad reveal?",o:["Nothing useful","Smart money participation — one rate refuses to confirm the higher high / lower low","A data error","Retail sentiment"],a:1,e:"You only need one of the three to break the pattern; that failure swing shows large volume shifting real supply/demand — an interest rate shift."},
+  {q:"What combination is the 'green light' for a high-probability trade?",o:["Two indicators crossing","Triad divergence (30/10/5yr) + price at an orderblock/pool/void/FVG","A trendline break","A news release"],a:1,e:"With a predetermined dollar bias, a divergence among the three rates while price sits at a focus point confirms smart money is behind it. No divergence → pass. Reverse for dollar shorts."}
+ ],
+ "m4-02":[
+  {q:"Where are entries and exits taken?",o:["Entries external, exits internal","Entries on internal range liquidity, exits on external","Both internal","Both external"],a:1,e:"Entries on internal range liquidity (e.g. an orderblock), exits on external (old highs/lows)."},
+  {q:"A 1h orderblock offers a 20-pip target. Trade it?",o:["Yes, always","No — you want 40+ pips","Only on Fridays","Double the size"],a:1,e:"A 1h OB with only a 20-pip target is no trade — want 40+ pips. One setup a week."},
+  {q:"You want ~100 pips a week. What timeframe?",o:["5-minute","A 4-hour or 1-hour chart, nothing less","1-minute scalps","Monthly only"],a:1,e:"'100 pips a week? Trade a 4h or 1h chart, nothing less' — match the timeframe to the pip goal. 250 pips over two weeks lives on the 4h/daily."},
+  {q:"Do you need the range to break to hit your target?",o:["Yes, always","No — framing the right swing can give 75 of a 100-pip range without clearing the old high","Only in trends","Only on the daily"],a:1,e:"You don't need the range to break; a well-framed swing hands you most of the move inside the range."}
+ ],
+ "m4-03":[
+  {q:"What exactly is a bullish orderblock?",o:["Any down candle","The lowest down-close candle with the most open-to-close range, near support","The last green candle","A doji at a low"],a:1,e:"The lowest down-close candle with the most range, near a support level — validated when a later candle trades through its high."},
+  {q:"What should the best orderblocks never do?",o:["Get touched twice","Trade below the 50% mean threshold of the body","Form on a Monday","Overlap an FVG"],a:1,e:"The best OBs never trade below their 50% mean threshold (body). Enter at the body high; SL below the body or wick; add ~5 pips for the spread."},
+  {q:"How much rally does ICT want before trusting the retracement?",o:["Any rally","2–3× the orderblock's body height","10 pips","Half the range"],a:1,e:"He wants a rally of 2–3× the block's body height, then the retracement back for a second entry."},
+  {q:"How are 2+ consecutive down candles treated?",o:["Only the last one","As one full orderblock","Ignored","As separate OBs"],a:1,e:"Blend them into one full orderblock. Refine top-down monthly → weekly → daily in the direction of the HTF bias."}
+ ],
+ "m4-04":[
+  {q:"Does a mitigation block need a higher high?",o:["Yes","No — it's an M pattern / swing failure that breaks the prior low","Only on the daily","Only with volume"],a:1,e:"A mitigation block is an M pattern where the break of the prior short-term low is the market structure shift — no higher high needed."},
+  {q:"In the A-B-C frame, what happens on the return to A?",o:["Nothing","Trapped longs mitigate (bail at breakeven) and you sell into their exit","Price gaps","New buyers enter"],a:1,e:"A→B trapped the longs, B→C put them underwater; on the return to the last down candle they mitigate and you sell into it."},
+  {q:"What confirms a valid mitigation block on entry?",o:["The body is violated","The body is NOT violated — a small overshoot into it is fine","A wick sweep","A gap forms"],a:1,e:"Hallmark: price uses the full body but the body should not be violated. Expect ~20 pips drawdown at most; target the next void's mean threshold."}
+ ],
+ "m4-05":[
+  {q:"What sets up a bullish breaker (a buy)?",o:["An old high is taken","An old low is violated (sell stops taken), then price runs back through the swing high","Three touches of a line","A news candle"],a:1,e:"An old low is swept trapping shorts, then price displaces up through the swing high — a bullish structure shift. The last up candle in that swing high is the breaker."},
+  {q:"What confirms a breaker is forming?",o:["Slow drift","The quick repricing after stops are taken","A round number","Rising volume only"],a:1,e:"The fast repricing after the stop-run proves traders are trapped. A breaker uses the entire candle range and the bodies."},
+  {q:"Why is the breaker reaction explosive?",o:["Thin liquidity","Trapped traders covering PLUS new entries at the same level","News","Algorithms pause"],a:1,e:"Covering + new positions fire at once. One low/high must be traded first — no stop raid, no breaker."}
+ ],
+ "m4-06":[
+  {q:"How is a bearish rejection block framed?",o:["The whole candle","From the highest wick high down to the highest open/close in the swing high","The prior candle","The FVG below"],a:1,e:"Highest wick high + highest open/close (bull or bear candle) frames the block; treat it as a bearish orderblock. No higher high needed for the failure swing."},
+  {q:"What is ICT's 'sell on weakness' entry here?",o:["Sell at the wick","A sell-stop below the highest open/close after price trades above it without a new wick high","Buy the dip","Market sell only"],a:1,e:"One of the few times ICT enters on a stop order — selling on weakness once price pokes above the body but makes no new wick high."},
+  {q:"A chartist calls this a bull flag. What is it really?",o:["A continuation","Distribution — the push above the highest body runs buy-side liquidity","Accumulation","Noise"],a:1,e:"Price moves on orders, not geometry. The push above the highest body is distribution, not a continuation."}
+ ],
+ "m4-07":[
+  {q:"What is the market maker buy model in one line?",o:["Buy every dip","The market goes lower to go higher","Buy breakouts","Follow the trend"],a:1,e:"Lower to go higher. On the sell side of the curve, each small bounce's last down candle is a bullish OB — accumulation while market makers scale/hedge in."},
+  {q:"What is a reclaimed order block?",o:["A brand-new OB","A candle previously used to build a position, revisited to add more in the same direction","A failed OB","A gap"],a:1,e:"On the buy side of the curve the old sell-side down candles are reclaimed/recapitalised — the blocks match on both sides of the curve."},
+  {q:"On the sell model, what does an up candle with a small displacement down mean?",o:["Buyers winning","Market makers selling short early / hedging into the rally","Nothing","A reversal up"],a:1,e:"To the right of the high, each return to those up candles (bearish OBs) is a reclaimed short."}
+ ],
+ "m4-08":[
+  {q:"What creates a propulsion block?",o:["Two gaps","An orderblock acting on a prior orderblock","A news candle","A triple top"],a:1,e:"An OB acting on a prior OB creates a higher, highly sensitive orderblock — little drawdown, immediate response."},
+  {q:"What invalidates the propulsion block trade?",o:["A wick touch","The mean threshold (50% body) breaking","Time running out","Low volume"],a:1,e:"The mean threshold should never break — if it breaks, it's not a good trade. It usually trades back to the candle high then explodes."}
+ ],
+ "m4-09":[
+  {q:"Which gap is the best?",o:["Any Sunday gap","A gap up from a discount after a decline (breakaway)","A gap after a long rally","A midday gap"],a:1,e:"Gap up from discount after a decline = breakaway gap = strength. A gap after a rally is an exhaustion gap / capitulation."},
+  {q:"How do you treat the empty gap itself?",o:["Ignore it","As its own candle — define its high, low, mean threshold, open and close","As a single price line","As a wick"],a:1,e:"Treat the vacuum block like any orderblock candle; risk is defined between two reference points → more leverage for the same % exposure."},
+  {q:"A gap forms after ~10am NY. What's likely?",o:["It fills immediately","It stays open → becomes an FVG for later","Price reverses","The session closes"],a:1,e:"Time-of-day sensitive: an early-NY (8:30) gap likely fills same day; a 10–11am gap likely stays open as an FVG for later."},
+  {q:"After the gap closes and price rallies, what's the warning sign?",o:["A new high","Price trading back below the first up candle's close","A pullback","Higher volume"],a:1,e:"Both sides have been delivered — there's no reason to return below that close. If it does, the trade is suspect; take profit."}
+ ],
+ "m4-10":[
+  {q:"If the market is bearish, where do we look to sell?",o:["Below old lows","Above old highs — into the pool of buy stops","At equilibrium","At the open"],a:1,e:"Sell above old highs into the liquidity pool of buy stops — sell to the buyers, buy from the sellers."},
+  {q:"A sweep extends beyond 25 pips. What is it probably?",o:["Still a sweep","A continuation of the decline, not a sweep","A reversal","An FVG"],a:1,e:"Expect 10–20 pip sweeps; beyond 25 pips it's probably a continuation. Buy under the low — never FOMO at or above it."}
+ ],
+ "m4-11":[
+  {q:"What is a liquidity void?",o:["A quiet session","Where no trading took place at all — big one-sided candles","A gap on Sunday only","A doji"],a:1,e:"A liquidity void is where absolutely no trading took place — big candles delivered to one side. The cleanest ones are the best draw on liquidity."},
+  {q:"How does institutional pricing happen?",o:["In one pass","In graduated terms — stacking orders over multiple passes","Instantly at news","Randomly"],a:1,e:"It can't be done on the first pass — price runs away, gradually returns, sells off, returns once more: they're stacking orders."}
+ ],
+ "m4-12":[
+  {q:"How is a bearish FVG's open range defined?",o:["The down candle's body","Between the low of the left candle and the high of the right candle","The wick of the down candle","The whole three candles"],a:1,e:"The pocket left open between the neighbouring candles — the left candle offered buy-side low→close, the right offered open→high; only that middle range wasn't."},
+  {q:"A FVG broken down on smaller timeframes usually becomes…",o:["An orderblock","A liquidity void","A breaker","A trendline"],a:1,e:"The gap exists on the timeframe you're viewing — on smaller timeframes it would probably be a liquidity void (multiple candles)."},
+  {q:"What style suits rangey conditions (like December)?",o:["Trend following","Looking for stops and looking for FVGs","Buy and hold","News trading"],a:1,e:"When range-bound: hunt stops and FVGs. A single run can take a pool, hit an FVG and show as a void on a lower timeframe — they overlap."}
+ ],
+ "m4-13":[
+  {q:"What are the banks actually looking at?",o:["Indicators","Where the stops are","Moving averages","Divergence signals"],a:1,e:"Banks (UBS, Credit Suisse, Citi) attack liquidity where stops rest — indicators only measure the past; price has zero awareness of them."},
+  {q:"What is Type 2 (hidden) divergence?",o:["Higher high in price, lower momentum","Higher low in price while the stochastic makes a lower low — trend following","Equal highs","A gap"],a:1,e:"Hidden divergence is trend-following and gives a good entry in bullish markets — ICT likes it when looking for higher prices."},
+  {q:"How does the 'phantom' trap actually spring?",o:["Price just reverses","Retail sells the type-1 bearish divergence; price runs the sell stops, taps an OB, the stochastic makes a NEW low, then price runs the highs","Volume spikes","News hits"],a:1,e:"That new stochastic low against a higher price low is the real divergence — the crowd is left holding the bag. The stochastic doesn't even need to be oversold."},
+  {q:"What overlooked 5th condition do indicator traders miss?",o:["Trend strength","'Is it even a time to trade?' — often the market is consolidating","Volume","Session time"],a:1,e:"Retail thinks in 4 signals (overbought/oversold × bull/bear divergence); the fifth is whether there's any reason to be trading at all."}
+ ],
+ "m4-14":[
+  {q:"How do we treat double tops and double bottoms?",o:["Trust them as reversals","NEVER trust them — always expect them to get swept","Trade the neckline","Ignore them"],a:1,e:"The algo remembers them as reference points and reaches through them for the stops — we always expect them swept."},
+  {q:"How does the algorithm set the real target off a double top?",o:["Retail's support low","Measure the consolidation's high-to-low between the peaks and project it BEYOND the top","A round number","The prior day's high"],a:1,e:"The measured move projects the between-peaks range past the double top (hit to within 1 pip in the example) — the opposite of retail's support target."},
+  {q:"On the hourly, why can't you use the 10–20 pip sweep rule?",o:["It always works","The moves are bigger — use the measured range instead (e.g. 48 pips)","Hourly has no stops","You can, always"],a:1,e:"10–20 pip sweeps suit the 15m; on the hourly use the measured projection. Highlight clean tops/bottoms even with no trade today — they pay off once run through."}
+ ]
+};
+
+/* ---------- captions ---------- */
+const CAPTION = slug => "Chart from the notes";
+
+/* ---------- build lesson list ---------- */
+const SLUG_BY_ID = {}; // "m1-01" -> full slug
+Object.keys(IMG_COUNTS).forEach(s=>{ SLUG_BY_ID[s.slice(0,5)] = s; });
+const LESSONS = Array.from(document.querySelectorAll('.lesson')).filter(el=>el.id!=="home")
+  .map(el=>({id:el.id, title:el.dataset.title, month:el.dataset.month}));
+
+/* ---------- state ---------- */
+const store = {
+  get done(){ try{return JSON.parse(localStorage.getItem('ict-done')||'[]')}catch(e){return[]} },
+  set done(v){ localStorage.setItem('ict-done', JSON.stringify(v)); },
+  get quiz(){ try{return JSON.parse(localStorage.getItem('ict-quiz')||'{}')}catch(e){return{}} },
+  set quiz(v){ localStorage.setItem('ict-quiz', JSON.stringify(v)); }
+};
+
+/* ---------- render figures ---------- */
+document.querySelectorAll('.fig-slot').forEach(slot=>{
+  const slug = slot.dataset.slug, n = IMG_COUNTS[slug]||0;
+  if(!n) return;
+  const h = document.createElement('h3'); h.textContent = 'Charts from the notes';
+  slot.appendChild(h);
+  const wrap = document.createElement('div');
+  wrap.className = n>2 ? 'gallery' : '';
+  for(let i=1;i<=n;i++){
+    const nn = String(i).padStart(2,'0');
+    const fig = document.createElement('figure'); fig.className='fig';
+    const img = document.createElement('img');
+    img.loading='lazy'; img.src = `images/${slug}-${nn}.png`;
+    img.alt = `${slug} chart ${i}`;
+    img.onerror = ()=>fig.remove();
+    const cap = document.createElement('figcaption'); cap.textContent = `Note chart ${i} of ${n} — click to zoom`;
+    fig.appendChild(img); fig.appendChild(cap); wrap.appendChild(fig);
+  }
+  slot.appendChild(wrap);
+});
+
+/* ---------- lightbox ---------- */
+const lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+document.addEventListener('click', e=>{
+  const img = e.target.closest('.fig img');
+  if(img){ lbImg.src = img.src; lbCap.textContent = img.alt; lb.classList.add('open'); }
+  else if(e.target===lb || e.target===lbImg) lb.classList.remove('open');
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+
+/* ---------- flip cards ---------- */
+document.querySelectorAll('.flip').forEach(f=>f.addEventListener('click', ()=>f.classList.toggle('flipped')));
+
+/* ---------- quizzes ---------- */
+document.querySelectorAll('.quiz').forEach(qz=>{
+  const key = qz.dataset.quiz, qs = QUIZZES[key];
+  if(!qs){ qz.remove(); return; }
+  qz.innerHTML = `<h3>Lesson Check</h3><div class="q-sub">Answers come straight from the notes above.</div>`;
+  qs.forEach((item,qi)=>{
+    const qd = document.createElement('div'); qd.className='q';
+    qd.innerHTML = `<div class="q-text">${qi+1}. ${item.q}</div>`;
+    item.o.forEach((opt,oi)=>{
+      const b = document.createElement('button'); b.className='opt'; b.textContent = opt;
+      b.addEventListener('click', ()=>{
+        qd.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+        if(oi===item.a){ b.classList.add('correct'); }
+        else { b.classList.add('wrong'); qd.querySelectorAll('.opt')[item.a].classList.add('correct'); }
+        expl.classList.add('show');
+        const s = store.quiz; s[`${key}-${qi}`] = (oi===item.a); store.quiz = s;
+      });
+      qd.appendChild(b);
+    });
+    const expl = document.createElement('div'); expl.className='expl'; expl.textContent = item.e;
+    qd.appendChild(expl);
+    qz.appendChild(qd);
+  });
+});
+
+/* ---------- navigation ---------- */
+const navList = document.getElementById('nav-list');
+function renderNav(){
+  navList.innerHTML='';
+  MONTHS.forEach(m=>{
+    const items = LESSONS.filter(l=>l.month===m.id);
+    const g = document.createElement('div'); g.className='month-group';
+    const doneCt = items.filter(l=>store.done.includes(l.id)).length;
+    g.innerHTML = `<div class="month-head"><h2>${m.title.split('—')[0].trim()}</h2><span class="count">${doneCt}/${items.length}</span></div>`;
+    items.forEach((l,i)=>{
+      const a = document.createElement('div');
+      a.className = 'nav-lesson'+(store.done.includes(l.id)?' done':'');
+      a.dataset.target = l.id;
+      a.innerHTML = `<span class="dot">✓</span><span class="n">${i+1}</span><span>${l.title}</span>`;
+      a.addEventListener('click', ()=>show(l.id));
+      g.appendChild(a);
+    });
+    navList.appendChild(g);
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const n = store.done.length;
+  document.getElementById('prog-fill').style.width = (n/LESSONS.length*100)+'%';
+  document.getElementById('prog-label').textContent = `${n} / ${LESSONS.length} lessons complete`;
+}
+
+/* ---------- footer buttons ---------- */
+LESSONS.forEach((l,idx)=>{
+  const foot = document.querySelector(`#${l.id} .lesson-footer`);
+  const prev = document.createElement('button'); prev.className='btn';
+  prev.textContent = idx>0 ? '← '+LESSONS[idx-1].title : '← Home';
+  prev.addEventListener('click', ()=>show(idx>0?LESSONS[idx-1].id:'home'));
+  const doneB = document.createElement('button'); doneB.className='btn done-btn';
+  const refresh = ()=>{ const d = store.done.includes(l.id); doneB.classList.toggle('marked',d); doneB.textContent = d?'✓ Completed':'Mark complete'; };
+  doneB.addEventListener('click', ()=>{
+    let d = store.done;
+    d = d.includes(l.id) ? d.filter(x=>x!==l.id) : [...d, l.id];
+    store.done = d; refresh(); renderNav(); renderCards();
+  });
+  refresh();
+  const next = document.createElement('button'); next.className='btn primary';
+  next.textContent = idx<LESSONS.length-1 ? 'Next: '+LESSONS[idx+1].title+' →' : 'Finish course';
+  next.addEventListener('click', ()=>{
+    if(!store.done.includes(l.id)){ store.done=[...store.done,l.id]; refresh(); renderNav(); renderCards(); }
+    if(idx<LESSONS.length-1) show(LESSONS[idx+1].id); else show('home');
+  });
+  foot.appendChild(prev); foot.appendChild(doneB); foot.appendChild(next);
+});
+
+/* ---------- month cards on home ---------- */
+function renderCards(){
+  const wrap = document.getElementById('month-cards'); wrap.innerHTML='';
+  MONTHS.forEach((m,i)=>{
+    const items = LESSONS.filter(l=>l.month===m.id);
+    const doneCt = items.filter(l=>store.done.includes(l.id)).length;
+    const c = document.createElement('div'); c.className='mcard';
+    c.innerHTML = `<div class="m-num">Month ${i+1}</div><h3>${m.title.split('— ')[1]}</h3><p>${m.desc}</p><div class="m-prog">${doneCt}/${items.length} lessons · ${items.reduce((a,l)=>a+(IMG_COUNTS[SLUG_BY_ID[l.id]]||0),0)} charts</div>`;
+    c.addEventListener('click', ()=>show(items[0].id));
+    wrap.appendChild(c);
+  });
+}
+
+/* ---------- routing ---------- */
+function show(id){
+  document.querySelectorAll('.lesson').forEach(el=>el.classList.remove('visible'));
+  const el = document.getElementById(id) || document.getElementById('home');
+  el.classList.add('visible');
+  document.querySelectorAll('.nav-lesson').forEach(a=>a.classList.toggle('active', a.dataset.target===el.id));
+  window.scrollTo({top:0});
+  sidebar.classList.remove('open');
+  location.hash = el.id;
+}
+const sidebar = document.getElementById('sidebar');
+document.getElementById('menu-toggle').addEventListener('click', ()=>sidebar.classList.toggle('open'));
+
+renderNav(); renderCards();
+show(location.hash ? location.hash.slice(1) : 'home');
+</script>
+</body>
+</html>
