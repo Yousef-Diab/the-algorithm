@@ -1,0 +1,7 @@
+[
+  {q:"When interest rates go up, what do the dollar and bond futures do?",o:["Both up","Dollar up, bonds down","Dollar down, bonds up","Both down"],a:1,e:"Rising rates chase yield into the dollar (dollar ↑) while bond futures drop (bonds ↓) — an inverse relationship."},
+  {q:"What does a rallying bond-futures contract tell you about rates?",o:["Rates rising","Rates lowering","Rates unchanged","Nothing"],a:1,e:"Bond futures rally = rates lowering; bond futures drop = rates increasing."},
+  {q:"SMT between which two instruments points to dollar direction?",o:["Gold and crude oil","The 10yr note and 30yr bond","The SPX and the NDX index","EURUSD versus GBPUSD"],a:1,e:"SMT between the 10-year note and the 30-year T-bond → dollar direction → USD-pairs direction. The interest markets control everything."},
+  {q:"On US election night the dollar tanked — why did ICT ignore it?",o:["He panicked and sold","The 10yr/30yr didn't confirm","He bought foreign currencies","The bond market was closed"],a:1,e:"The 10yr/30yr made no confirming higher highs — it was all fluff/manipulation; the dollar rallied 10 days straight afterward. Foreign pairs popping old highs were the false moves."},
+  {q:"How often should you hunt for a quarterly shift?",o:["Every month","Every 3–4 months","Once a year","Every week"],a:1,e:"Every 3–4 months there's a quarterly shift — a reversal, or extended consolidation then resumption."}
+ ]

@@ -1,0 +1,6 @@
+[
+  {q:"Why must setups be selected on higher timeframes?",o:["Because they look prettier","Institutions analyze on D/W/M","They have lower spreads","They give faster fills"],a:1,e:"The HTF has more influence on price and carries the institutional order flow — without it you limit your exposure to high-probability setups."},
+  {q:"How does refining a HTF level to the LTF change the trade?",o:["It doesn't","Smaller stop → lower risk → bigger R","It only changes the entry time","It increases risk"],a:1,e:"The Aussie study: 20 pips on the 1h → 17 on the 15m → under 10 on the 5m. The refined trade hits 3R before price even reaches the hourly entry."},
+  {q:"Price breaks an old low. When is that a buy?",o:["Always, no matter what","When it hits a HTF premise","Never under any conditions","Only when the RSI is oversold"],a:1,e:"Breaking old lows alone isn't enough — you need the higher-timeframe reason for buying below the low: the daily OB at 7512 in the case study."},
+  {q:"Who are HTF setups especially good for?",o:["Only for scalpers","People who can't day trade","Nobody at all really","News traders mainly"],a:1,e:"Higher timeframe setups form slow and provide ample planning time — jobs and life don't stop you trading them."}
+ ]

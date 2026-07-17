@@ -1,0 +1,6 @@
+[
+  {q:"What exactly is market protraction?",o:["Just any old impulse swing","A time-sensitive manipulation swing","A sideways consolidation phase","An opening price gap up"],a:1,e:"Protraction is an impulse price swing that is highly sensitive to time of day — its design is to fake out those chasing the initial move and to reach for liquidity."},
+  {q:"What are the three protraction times per 24 hours?",o:["London open, NY open, and close","0 GMT, after midnight NY, after 7 AM NY","9am, 12pm and 3pm in NY time","Sunday, Wednesday, and Friday"],a:1,e:"Right at 0 GMT (8 PM NY), after the midnight NY candle (the Judas swing), and after 7 AM NY — it has to happen after 7 o'clock."},
+  {q:"The protraction move goes higher. What do you think?",o:["Buy into the momentum","Think the opposite direction","Stay flat for the day","Add more to your longs"],a:1,e:"If it moves higher at the protraction time, think the opposite direction; if lower, think higher. It's counter the major direction after that time of day."},
+  {q:"How do you combine protraction with premium/discount?",o:["You simply can't combine them","Sell the protraction into 62% premium","Buy every 50% retracement","Only ever trade the Asia session"],a:1,e:"Measure the impulse swing, let the protraction retrace above EQ into 62% — sell there expecting the run on the stops below the old/equal lows."}
+ ]

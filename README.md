@@ -12,7 +12,7 @@ The scope grows over time. Planned sections:
 2. **ICT 2022 Mentorship** *(planned)*.
 3. **Fear.ing's own models & methods** *(out of scope)* — advanced SMC; his proprietary material, not for republication.
 
-Everything lives in one HTML file that runs offline in any modern browser. No build step, no server, no dependencies.
+The published site is a single HTML file that runs offline in any modern browser — no server, no dependencies. Under the hood, that file is **assembled from per-lesson source files by a small Python build** (`build.py`), so it stays easy to expand without giving up the "just open it" property.
 
 ---
 
@@ -20,7 +20,11 @@ Everything lives in one HTML file that runs offline in any modern browser. No bu
 
 | Path | What it is |
 |------|-----------|
-| `index.html` | The entire course — markup, styles, data and app logic in one file. |
+| `content/` | Lesson source, one folder per lesson: `content/<section>/<month>/<id>/` holding `lesson.html`, `quiz.js`, `video.txt`. **This is what you edit.** |
+| `engine/` | The rendering shell + app logic (styles, page frame, `app.js`) — rarely changes. |
+| `build.py` | Assembles `content/` + `engine/` into `index.html` (validates ids/quizzes as it goes). |
+| `verify.py` | Rebuilds, then headless-checks the whole course (lessons, images, quizzes, no JS errors). Run `python verify.py` after editing. |
+| `index.html` | **Build artifact** — the entire course in one offline file. Generated; don't hand-edit. |
 | `images/` | Chart images scraped from the notes, named `{slug}-{NN}.png` (e.g. `m4-03-orderblocks-07.png`). |
 | `transcripts/` | Source ICT video transcripts, organised `Month 1` … `Month 4`. **Git-ignored** (local source material only). |
 | `.claude/` | Claude Code local settings. |
@@ -72,8 +76,8 @@ This project is a personal study aid that reorganises the above material into an
 
 ## Roadmap / future to-do
 
-- [ ] **Refactor for expandability.** The course is a single hand-edited file. Before adding the next section (the 2022 Mentorship), factor content and rendering apart so new lessons/sections drop in with minimal friction (see `CLAUDE.md` → *Future direction*).
-- [ ] Keep the project **AI-development friendly** — predictable conventions, one obvious place to change each thing, verifiable with a headless check.
+- [x] **Refactor for expandability.** Content and rendering are now split: lessons live in `content/<section>/<month>/<id>/` and `build.py` assembles the offline `index.html`. New lessons/sections drop in as folders (see `CLAUDE.md` → §2 / §4).
+- [x] **AI-development friendly.** One obvious edit point per change (§4), `build.py` validates as it assembles, an `add-content` skill scaffolds lessons/months/sections, and `verify.py` + CI enforce a headless check (and that `index.html` is never committed stale) on every PR.
 - [ ] **Section 2 — ICT 2022 Mentorship** as its transcripts/notes become available.
 - Section 3 (Fear.ing's own models) is **out of scope** — his proprietary material stays private.
 
@@ -81,7 +85,7 @@ This project is a personal study aid that reorganises the above material into an
 
 ## Verifying changes
 
-A headless [Playwright](https://playwright.dev/python/) pass is used to confirm the course still renders after edits (all lessons present, all images load, quizzes grade, no JS errors). See `CLAUDE.md` → *Verification*.
+Run **`python verify.py`** after any edit. It rebuilds `index.html`, then loads it in headless [Playwright](https://playwright.dev/python/) Chromium and checks every lesson is present, all charts load, quizzes shuffle and grade, and there are no JS errors — exiting non-zero (with the problems) on failure. The same check runs in **CI on every PR**, which also fails if the committed `index.html` is out of sync with `content/`. One-time setup: `pip install playwright && python -m playwright install chromium`.
 
 ---
 

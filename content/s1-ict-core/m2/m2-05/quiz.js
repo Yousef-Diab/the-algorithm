@@ -1,0 +1,6 @@
+[
+  {q:"After a losing trade in an idea, what size is the next attempt?",o:["Double","Same","One half","Zero forever"],a:2,e:"Half the position size of the initial loss: 2% → 1%, 1% → 0.5%. Equity preservation is the number one rule — that loss could be the start of a 10-loss string."},
+  {q:"At what multiple is the initial full loss mitigated on the half-risk re-entry?",o:["R1","R2","R5","R10"],a:1,e:"At R2 with half the risk, the full initial loss is recovered — without even needing the old highs taken."},
+  {q:"It's Thursday, you just got back to breakeven after a loss. What now?",o:["Add more size now","Take it off — close the week flat","Hold it through Friday","Reverse the whole position"],a:1,e:"Especially late in the week: fix the error, correct the drawdown, move to the sidelines and start fresh. Never carry a net loss into the weekend if the market offers it back."},
+  {q:"Why did the first trade lose, in the scenario?",o:["The idea was just wrong","The stop was placed too tight","A news event hit it","The orderblock was fake"],a:1,e:"The trade idea hadn't unraveled — the stop was placed too tight, just below the mean threshold. The re-entry goes below the entire orderblock, allowing more movement."}
+ ]

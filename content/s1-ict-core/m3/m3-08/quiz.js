@@ -1,0 +1,6 @@
+[
+  {q:"What does the head & shoulders pattern function as?",o:["A reliable reversal","A market maker trap","A continuation signal","An entry trigger"],a:1,e:"The head & shoulders is a trap — and trying to pick tops/bottoms with it is the single worst thing a trader can do."},
+  {q:"Where is the liquidity the algorithm is reaching for in a head & shoulders?",o:["Below the neckline","In the stops above the head","At the right shoulder's open","There is none"],a:1,e:"Retail sells the right shoulder with stops above the head; those stacked buy stops are the liquidity the pattern is engineered to reach."},
+  {q:"How should the neckline break be read?",o:["Confirmation to sell","A turtle soup / stop-raid","A trend continuation","Just ignore it entirely"],a:1,e:"Treat the neckline break as a raid on the sell stops below it (a turtle soup), then look to trade with the higher-timeframe bias, not against it."},
+  {q:"What must you anchor to before fading the pattern?",o:["The neckline slope","The HTF premium/discount array","The volume","The right shoulder height"],a:1,e:"Only fade it in the direction the higher-timeframe bias supports — the pattern just maps where the crowd's stops are."}
+ ]

@@ -1,0 +1,7 @@
+[
+  {q:"How much data should your daily-chart log cover?",o:["3 weeks","3 months","12 months","Multiple years"],a:2,e:"Daily: 12 months (no less than 9 — and not multiple years). 4h: 3 months. 60m: 3 weeks. 15m: 3–4 days."},
+  {q:"What forms above 'clean' / equal highs?",o:["Sell stops","Buy stops","Nothing","Support"],a:1,e:"Two equal highs in close proximity are too clean — buy stops build above them and price tends to come back up and run through that level. Equal lows hold sell stops."},
+  {q:"What is the uninformed money's core belief?",o:["Banks drive price","Indicators move price","Liquidity moves price","Time of day matters"],a:1,e:"The uninformed perspective holds that price moves by indicators' influence ('indicator-itis'). The smart money perspective: everyone else is liquidity — buy stops, sell stops, pending orders."},
+  {q:"Which pair should you keep your personal log on?",o:["The EURUSD pair","The GBPUSD pair","A pair that isn't GBP/EUR","Any major pair you like"],a:2,e:"One pair, apart from the british pound and euro (the mentorship already uses those) — so you build a unique perspective you arrived at yourself."},
+  {q:"Why must you avoid marrying your analysis?",o:["It simply saves you time","Stay flexible; be ready to stand aside","Because analysis is useless anyway","Because brokers punish conviction"],a:1,e:"We don't know direction with certainty — only probabilities. Holding on with cast-iron conviction is imposing your will on the market."}
+ ]

@@ -186,9 +186,6 @@
   <div class="month-cards" id="month-cards"></div>
   <div class="notice"><b>How to use this course:</b> work through the lessons in order — the material builds month over month. Flip the concept cards, study every chart (click to zoom), then take the lesson check. Your progress and quiz answers are saved in your browser automatically.</div>
 </section>
-
-<!-- ================= MONTH 1 ================= -->
-
 <section class="lesson" id="m1-01" data-title="Elements Of A Trade Setup" data-month="m1">
   <div class="lesson-hero">
     <div class="crumb">Month 1 · Lesson 1</div>
@@ -533,8 +530,6 @@
   <div class="lesson-footer"></div>
 </section>
 
-<!-- ================= MONTH 2 ================= -->
-
 <section class="lesson" id="m2-01" data-title="Growing Small Accounts" data-month="m2">
   <div class="lesson-hero">
     <div class="crumb">Month 2 · Lesson 1</div>
@@ -820,8 +815,6 @@
   <div class="lesson-footer"></div>
 </section>
 
-<!-- ================= MONTH 3 ================= -->
-
 <section class="lesson" id="m3-01" data-title="Timeframe Selection & Defining Setups" data-month="m3">
   <div class="lesson-hero">
     <div class="crumb">Month 3 · Lesson 1</div>
@@ -1101,8 +1094,6 @@
   <div class="quiz" data-quiz="m3-08"></div>
   <div class="lesson-footer"></div>
 </section>
-
-<!-- ================= MONTH 4 ================= -->
 
 <section class="lesson" id="m4-01" data-title="Interest Rate Effects On Currency Trades" data-month="m4">
   <div class="lesson-hero">
@@ -1538,6 +1529,7 @@
 </section>
 
 
+
     </div>
   </main>
 </div>
@@ -1555,22 +1547,40 @@ const MONTHS = [
 /* filled after lessons defined */
 </script>
 <script>
-/* ---------- image manifest (slug -> count of images/{slug}-NN.png) ---------- */
+/* ---------- image manifest (slug -> count of images/{slug}-NN.png) — DERIVED by build.py ---------- */
 const IMG_COUNTS = {
-  "m1-01-elements-of-a-trade-setup":8, "m1-02-how-market-makers-condition-the-market":4,
-  "m1-03-what-to-focus-on-right-now":1, "m1-07-liquidity-runs":5,
-  "m2-01-growing-small-accounts":4, "m2-02-framing-low-risk-trade-setups":4,
-  "m2-04-no-fear-of-losing":5, "m2-06-secrets-to-selecting-high-reward-setups":9,
-  "m2-07-market-maker-trap-false-flag":5, "m2-08-market-maker-trap-false-breakouts":4,
-  "m3-01-timeframe-selection-defining-setups":8, "m3-02-institutional-order-flow":9,
-  "m3-03-institutional-sponsorship":23, "m3-04-anticipatory-skill-development":10,
-  "m3-05-institutional-market-structure":14, "m3-06-macro-economic-to-micro-technical":3,
-  "m3-07-market-maker-trap-trendline-phantoms":13, "m3-08-market-maker-trap-head-shoulders":11,
-  "m4-01-interest-rate-effects-on-currency-trades":11, "m4-02-reinforcing-liquidity-concepts-price-delivery":5,
-  "m4-03-orderblocks":20, "m4-04-mitigation-blocks":15, "m4-05-ict-breaker-block":15,
-  "m4-06-ict-rejection-block":13, "m4-07-reclaimed-ict-orderblock":5, "m4-08-ict-propulsion-block":5,
-  "m4-09-ict-vacuum-block":6, "m4-10-liquidity-pools":5, "m4-11-liquidity-voids":8,
-  "m4-12-ict-fair-value-gaps-fvg":6, "m4-13-divergence-phantoms":2, "m4-14-double-bottom-double-top":3
+  "m1-01-elements-of-a-trade-setup":8,
+  "m1-02-how-market-makers-condition-the-market":4,
+  "m1-03-what-to-focus-on-right-now":1,
+  "m1-07-liquidity-runs":5,
+  "m2-01-growing-small-accounts":4,
+  "m2-02-framing-low-risk-trade-setups":4,
+  "m2-04-no-fear-of-losing":5,
+  "m2-06-secrets-to-selecting-high-reward-setups":9,
+  "m2-07-market-maker-trap-false-flag":5,
+  "m2-08-market-maker-trap-false-breakouts":4,
+  "m3-01-timeframe-selection-defining-setups":8,
+  "m3-02-institutional-order-flow":9,
+  "m3-03-institutional-sponsorship":23,
+  "m3-04-anticipatory-skill-development":10,
+  "m3-05-institutional-market-structure":14,
+  "m3-06-macro-economic-to-micro-technical":3,
+  "m3-07-market-maker-trap-trendline-phantoms":13,
+  "m3-08-market-maker-trap-head-shoulders":11,
+  "m4-01-interest-rate-effects-on-currency-trades":11,
+  "m4-02-reinforcing-liquidity-concepts-price-delivery":5,
+  "m4-03-orderblocks":20,
+  "m4-04-mitigation-blocks":15,
+  "m4-05-ict-breaker-block":15,
+  "m4-06-ict-rejection-block":13,
+  "m4-07-reclaimed-ict-orderblock":5,
+  "m4-08-ict-propulsion-block":5,
+  "m4-09-ict-vacuum-block":6,
+  "m4-10-liquidity-pools":5,
+  "m4-11-liquidity-voids":8,
+  "m4-12-ict-fair-value-gaps-fvg":6,
+  "m4-13-divergence-phantoms":2,
+  "m4-14-double-bottom-double-top":3
 };
 
 /* ---------- quiz bank (every question derived from the notes) ---------- */
@@ -1798,31 +1808,46 @@ const QUIZZES = {
  ]
 };
 
-/* ---------- lesson videos (id -> YouTube URL of the original video) ----------
-   Rule: every lesson opens with a link to its source video. Fill each URL below.
-   Empty string = no link rendered (graceful, like a missing image count). */
+/* ---------- video links (lesson id -> source video) ---------- */
 const VIDEOS = {
-  "m1-01":"https://youtu.be/0LhteuLVuDU", "m1-02":"https://youtu.be/XwYYWBttWro",
-  "m1-03":"https://youtu.be/B7_cjybYQ0g", "m1-04":"https://youtu.be/qC0LogyIk2I",
-  "m1-05":"https://youtu.be/YuefjnUKQdM", "m1-06":"https://youtu.be/SiVmoeyOWZE",
-  "m1-07":"https://youtu.be/22XkhpJR5eA", "m1-08":"https://youtu.be/K4LtfujVpJs",
-  "m2-01":"https://youtu.be/mjVHmE1gVMg", "m2-02":"https://youtu.be/Zsg8IeBtfu0",
-  "m2-03":"https://youtu.be/pctqB3UD6dk", "m2-04":"https://youtu.be/pFdW8wdR9sQ",
-  "m2-05":"https://youtu.be/vWDElb65YHg", "m2-06":"https://youtu.be/bftKgceXqYo",
-  "m2-07":"https://youtu.be/cRbPS3uxkj4", "m2-08":"https://youtu.be/pv2-R-STviA",
-  "m3-01":"https://youtu.be/UF5J0nEBc0E", "m3-02":"https://youtu.be/PQkcFbr61FI",
-  "m3-03":"https://youtu.be/t2VNzJZ4hK4", "m3-04":"https://youtu.be/9kabTfUEVKg",
-  "m3-05":"https://youtu.be/GuycI8XubgE", "m3-06":"https://youtu.be/MJwWUd_FM-k",
-  "m3-07":"https://youtu.be/o8NfSK-pUlE", "m3-08":"https://youtu.be/w8lbrvZXUVY",
-  "m4-01":"https://youtu.be/6oQVb0zVxMM", "m4-02":"https://youtu.be/npL3ZXJ5zOU",
-  "m4-03":"https://youtu.be/PIYh0CxoY9c", "m4-04":"https://youtu.be/FOUzW0QmsfI",
-  "m4-05":"https://youtu.be/UrS-mtGHtAA", "m4-06":"https://youtu.be/oALYX0HCSYw",
-  "m4-07":"https://youtu.be/X5pQjfkAUCI", "m4-08":"https://youtu.be/glu98jAH8vE",
-  "m4-09":"https://youtu.be/shPGUz9pU-A",
-  "m4-10":"https://youtu.be/Gnw54f9v6SA", /* Liquidity Pools */
-  "m4-11":"https://youtu.be/HTQgH11W37o", /* Liquidity Voids  */
-  "m4-12":"https://youtu.be/FgacYSN9QEo", "m4-13":"https://youtu.be/Xae0VrbkyFk",
-  "m4-14":"https://youtu.be/owq30ATPU5s"
+ "m1-01":"https://youtu.be/0LhteuLVuDU",
+ "m1-02":"https://youtu.be/XwYYWBttWro",
+ "m1-03":"https://youtu.be/B7_cjybYQ0g",
+ "m1-04":"https://youtu.be/qC0LogyIk2I",
+ "m1-05":"https://youtu.be/YuefjnUKQdM",
+ "m1-06":"https://youtu.be/SiVmoeyOWZE",
+ "m1-07":"https://youtu.be/22XkhpJR5eA",
+ "m1-08":"https://youtu.be/K4LtfujVpJs",
+ "m2-01":"https://youtu.be/mjVHmE1gVMg",
+ "m2-02":"https://youtu.be/Zsg8IeBtfu0",
+ "m2-03":"https://youtu.be/pctqB3UD6dk",
+ "m2-04":"https://youtu.be/pFdW8wdR9sQ",
+ "m2-05":"https://youtu.be/vWDElb65YHg",
+ "m2-06":"https://youtu.be/bftKgceXqYo",
+ "m2-07":"https://youtu.be/cRbPS3uxkj4",
+ "m2-08":"https://youtu.be/pv2-R-STviA",
+ "m3-01":"https://youtu.be/UF5J0nEBc0E",
+ "m3-02":"https://youtu.be/PQkcFbr61FI",
+ "m3-03":"https://youtu.be/t2VNzJZ4hK4",
+ "m3-04":"https://youtu.be/9kabTfUEVKg",
+ "m3-05":"https://youtu.be/GuycI8XubgE",
+ "m3-06":"https://youtu.be/MJwWUd_FM-k",
+ "m3-07":"https://youtu.be/o8NfSK-pUlE",
+ "m3-08":"https://youtu.be/w8lbrvZXUVY",
+ "m4-01":"https://youtu.be/6oQVb0zVxMM",
+ "m4-02":"https://youtu.be/npL3ZXJ5zOU",
+ "m4-03":"https://youtu.be/PIYh0CxoY9c",
+ "m4-04":"https://youtu.be/FOUzW0QmsfI",
+ "m4-05":"https://youtu.be/UrS-mtGHtAA",
+ "m4-06":"https://youtu.be/oALYX0HCSYw",
+ "m4-07":"https://youtu.be/X5pQjfkAUCI",
+ "m4-08":"https://youtu.be/glu98jAH8vE",
+ "m4-09":"https://youtu.be/shPGUz9pU-A",
+ "m4-10":"https://youtu.be/Gnw54f9v6SA",
+ "m4-11":"https://youtu.be/HTQgH11W37o",
+ "m4-12":"https://youtu.be/FgacYSN9QEo",
+ "m4-13":"https://youtu.be/Xae0VrbkyFk",
+ "m4-14":"https://youtu.be/owq30ATPU5s"
 };
 
 /* ---------- captions ---------- */

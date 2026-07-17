@@ -1,0 +1,5 @@
+[
+  {q:"How do we treat double tops and double bottoms?",o:["Trust them as clean reversals","Never trust them — expect a sweep","Trade the neckline break","Just ignore them totally"],a:1,e:"The algo remembers them as reference points and reaches through them for the stops — we always expect them swept."},
+  {q:"How does the algorithm set the real target off a double top?",o:["Retail's obvious support low","Project the between-peaks range","A big round number","The prior day's high"],a:1,e:"The measured move takes the consolidation's high-to-low between the peaks and projects it BEYOND the double top (hit to within 1 pip in the example) — the opposite of retail's support target."},
+  {q:"On the hourly, why can't you use the 10–20 pip sweep rule?",o:["It always works fine there","Bigger moves — use the range","The hourly has no stops","You can, always do it"],a:1,e:"10–20 pip sweeps suit the 15m; on the hourly use the measured projection (e.g. 48 pips). Highlight clean tops/bottoms even with no trade today — they pay off once run through."}
+ ]

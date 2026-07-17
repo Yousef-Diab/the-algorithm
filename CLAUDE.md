@@ -20,24 +20,44 @@ If a request seems to need outside knowledge, say so instead of quietly adding i
 
 ## 2. Architecture (current state)
 
-Everything is **one self-contained file**: `index.html` (served at <https://yousef-diab.github.io/the-algorithm/> via GitHub Pages). No build step, no external requests, no dependencies. Structure, top to bottom:
+The site is **content sources + a small engine, assembled by a build step into one self-contained `index.html`** (served at <https://yousef-diab.github.io/the-algorithm/> via GitHub Pages). The *output* keeps every property that mattered before — single offline file, no external requests, no runtime dependencies — but the *source* is now split so each change touches one predictable place.
 
-1. **`<head>` → `<style>`** — all CSS.
-   - `:root { … }` holds design tokens (colors, spacing, type). **Change tokens here, not per-element.**
-   - `@media(max-width:900px)` holds the responsive/mobile rules.
-2. **`<body>`** — the app shell (`#sidebar`, `#main`, `#lightbox`) and every lesson as a `<section class="lesson">`.
-3. **Three `<script>` blocks** at the end:
-   - **Block 1 — `MONTHS`**: month metadata (`id`, `title`, `desc`) for nav and home cards.
-   - **Block 2 — data**: `IMG_COUNTS` (slug → number of chart images), `QUIZZES` (lesson id → questions), and `VIDEOS` (lesson id → source YouTube URL).
-   - **Block 3 — app logic**: derives `SLUG_BY_ID` and `LESSONS` from the DOM, then wires figures, lightbox, flip cards, quizzes, nav, footer buttons, home cards and hash routing. **This block rarely needs to change** — most edits are content + the two data objects.
+**You edit source files, then run `python build.py`.** `index.html` is a **build artifact** — never hand-edit it; your change will be overwritten on the next build. Python 3 is the only tool needed (no npm, no bundler).
 
-Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
+```text
+engine/                     ← rendering shell + logic (rarely changes)
+  head.html                 ← <head> + <style> (design tokens in :root, @media at 900px)
+  shell-top.html            ← <body> … the #sidebar / #main / inner-open markup
+  home.html                 ← the landing <section id="home">
+  shell-bottom.html         ← inner/main close + #lightbox
+  app.js                    ← all app logic (figures, lightbox, flip cards, quizzes, nav,
+                              footer, home cards, hash routing). Derives SLUG_BY_ID & LESSONS
+                              from the DOM. This is old "Block 3" — rarely needs to change.
+content/
+  s1-ict-core/              ← a SECTION (Section 2 will be a sibling, e.g. s2-mentorship/)
+    months.js               ← the MONTHS entries for this section (id, title, desc)
+    m1/ m2/ m3/ m4/         ← a MONTH per folder
+      m1-01/                ← a LESSON per folder (folder name = lesson id)
+        lesson.html         ← the <section class="lesson"> markup, verbatim
+        quiz.js             ← this lesson's quiz array literal (see §3 shape)
+        video.txt           ← the source video URL (one line; empty = no link)
+build.py                    ← walks content/ + engine/ → writes index.html
+index.html                  ← BUILD ARTIFACT (committed, so GitHub Pages serves it)
+```
+
+**`build.py` generates the old data objects for you** by scanning `content/`:
+- `QUIZZES` ← every `quiz.js`, keyed by lesson-folder id.
+- `VIDEOS` ← every `video.txt`, keyed by lesson-folder id.
+- `MONTHS` ← each section's `months.js`, in section order.
+- `IMG_COUNTS` ← **auto-derived** by counting `images/{slug}-NN.png` for each `data-slug` in the lesson HTML. **There is no image-count table to maintain** — drop the PNGs in, rebuild, done.
+
+Rendering is still **data-driven**: lessons declare *slots* (`.fig-slot`, `.quiz`, `.lesson-footer`) and `app.js` fills them at runtime — exactly as before.
 
 ---
 
 ## 3. Conventions (memorise these)
 
-**Lesson section:**
+**Lesson section** (lives in `content/<section>/<month>/<id>/lesson.html`):
 
 ```html
 <section class="lesson" id="m4-03" data-title="Orderblocks" data-month="m4">
@@ -61,14 +81,14 @@ Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
 - Slug = `m{month}-{NN}-{kebab-title}` (e.g. `m3-07-market-maker-trap-trendline-phantoms`).
 - `SLUG_BY_ID` maps id → slug automatically via `slug.slice(0,5)`; keep slug and id prefixes in sync.
 
-**Images:** `images/{slug}-{NN}.png`, `NN` zero-padded from `01`. `IMG_COUNTS[slug]` = how many exist. A missing image auto-removes its `<figure>` (`img.onerror`), so a wrong count fails gracefully but should still be correct. Galleries render when count > 2.
+**Images:** `images/{slug}-{NN}.png`, `NN` zero-padded from `01`. Counts are **auto-derived by `build.py`** — just drop the PNGs in `images/` and rebuild; there is no count to type. A missing image also auto-removes its `<figure>` at runtime (`img.onerror`). Galleries render when count > 2.
 
-**Lesson video (rule):** every lesson opens with a link to its source video. Set `VIDEOS["mX-NN"] = "https://…"` (keyed by lesson **id**, not slug). The JS injects a `.lesson-video` link right after that lesson's `.lesson-hero` — no HTML edit needed. An empty string renders nothing (graceful, like a missing image count). Use the **real** source video URL only; never invent one (see §1). It opens in a new tab (external link, so it doesn't break the offline property until clicked).
+**Lesson video (rule):** every lesson opens with a link to its source video. Put the URL (one line) in that lesson's `video.txt`; `build.py` emits `VIDEOS["mX-NN"]` and the JS injects a `.lesson-video` link right after the lesson's `.lesson-hero` — no HTML edit needed. An empty `video.txt` renders nothing (graceful). Use the **real** source video URL only; never invent one (see §1). It opens in a new tab (external link, so it doesn't break the offline property until clicked).
 
-**Quiz object shape:**
+**Quiz object shape** (the array literal in that lesson's `quiz.js` — `build.py` keys it by the folder id):
 
 ```js
-"m4-03":[
+[
   { q:"question?", o:["opt0","opt1","opt2","opt3"], a:1, e:"explanation from the notes" },
   …
 ]
@@ -91,28 +111,37 @@ Rendering is **data-driven**: lessons declare *slots*, and the JS fills them.
 
 ## 4. Common tasks — where to change what
 
+**Every change is followed by `python build.py`, then the §5 verification.** `index.html` is never edited by hand.
+
 | Task | Edit |
 |------|------|
-| Enrich a lesson | The `<section>` content only. Leave `.fig-slot`, `.quiz`, `.lesson-footer` untouched. |
-| Add/upgrade a quiz | The `QUIZZES` object entry for that lesson id. |
-| Set/change a lesson's video | The `VIDEOS[id]` entry (real source URL). Renders at the top automatically. |
-| Add charts to a lesson | Drop `images/{slug}-{NN}.png` files, then bump `IMG_COUNTS[slug]`. |
-| Add a new lesson | New `<section>` (correct id/slug/`data-month`) **+** a `QUIZZES` entry **+** `IMG_COUNTS` entry **+** a `VIDEOS` entry. Nav/footer/cards update automatically. |
-| Add a new month | Append to `MONTHS`, then add its lessons as above. |
-| Restyle | `:root` tokens first; component classes second. |
+| Enrich a lesson | That lesson's `lesson.html` content only. Leave `.fig-slot`, `.quiz`, `.lesson-footer` untouched. |
+| Add/upgrade a quiz | That lesson's `quiz.js` (the array literal). |
+| Set/change a lesson's video | That lesson's `video.txt` (one line, real source URL). |
+| Add charts to a lesson | Drop `images/{slug}-{NN}.png` files. Count is auto-derived — nothing else to edit. |
+| Add a new lesson | New folder `content/<section>/<month>/<id>/` with `lesson.html` (correct id/slug/`data-month`) + `quiz.js` + `video.txt`. Nav/footer/cards/counts update automatically. |
+| Add a new month | Add a `{id,title,desc}` entry to that section's `months.js`, then add its lesson folders as above. |
+| Add a new section | New `content/<sN-name>/` with `months.js`, then months + lessons as above. |
+| Restyle | `engine/head.html`: `:root` tokens first; component classes second. |
+| Change rendering/logic | `engine/app.js` (rare). |
 
 ---
 
 ## 5. Verification
 
-After any edit, confirm the course still works with a headless Playwright pass (Python). Check:
+**Just run `python verify.py`.** It rebuilds `index.html` from source, then loads it in headless Chromium and checks — against counts derived from `content/`, nothing hard-coded — that:
 
-- all `section.lesson` (minus `home`) are present,
-- every `<img>` resolves (`naturalWidth > 0`, none `complete && naturalWidth===0`),
-- quizzes render and grade on click,
-- zero console/page JS errors.
+- every lesson in `content/` is present in the page,
+- every chart image resolves (no broken `.fig img`),
+- every quiz renders 4 options, shuffles, and grades on click,
+- a video link renders for each lesson with a non-empty `video.txt`,
+- there are zero console/page JS errors.
 
-A throwaway script in the session scratchpad is fine; don't commit test scripts to the repo. Load the HTML via a `file://` URI. Note that only the **active** lesson section is visible (`.visible`), so to test a specific lesson, set `location.hash` or drive the quiz nodes directly in JS rather than mouse-clicking hidden elements.
+It exits non-zero and lists the problems on any failure. Requires Playwright once: `pip install playwright && python -m playwright install chromium`.
+
+`verify.py` and `build.py` are **committed project tooling** — keep them. The "don't commit scripts" habit applies only to *throwaway exploration* scripts (put those in the scratchpad). **CI** (`.github/workflows/ci.yml`) runs `build.py` on every PR, **fails if the committed `index.html` is out of sync with `content/`**, then runs `verify.py` — so a stale artifact or a runtime regression can't merge.
+
+When writing an ad-hoc browser check, remember only the **active** lesson section is visible (`.visible`); `verify.py` works around this by adding `.visible` to every lesson before checking.
 
 ---
 
@@ -124,14 +153,15 @@ A throwaway script in the session scratchpad is fine; don't commit test scripts 
 
 ---
 
-## 7. Future direction (the planned refactor)
+## 7. Future direction
 
-Goal: make the course **easily expandable** as new sections are added (the 2022 Mentorship, and more months per section), while staying **AI-development friendly** (predictable, one obvious edit point per change, verifiable). Do this refactor *before* bolting a whole new section onto the single file. Keep these principles:
+The content/rendering split (§2) is **done** — content lives in `content/<section>/<month>/<id>/` and `build.py` assembles it into the offline `index.html`. The `section → month → lesson` hierarchy is in place, so **Section 2 (the 2022 Mentorship) drops in as a new `content/s2-…/` sibling** with no engine changes.
 
-- **Separate content from rendering.** The single hand-edited HTML file is the main friction point. Options to weigh: extract lessons/quizzes into data (e.g. JSON/Markdown per lesson) rendered by a small template, or split into per-section/per-month files assembled by a lightweight build. A second top-level grouping (**section → month → lesson**) will likely be needed once Section 2 lands.
-- **Keep it dependency-light and offline-capable.** The "one file you can just open" property is valuable — don't trade it away without a clear win.
-- **One place per concern.** Adding a lesson should touch one predictable set of files, not scattered edits.
-- **Preserve the content principle** (§1) through any refactor — provenance to the source material must survive.
-- **Keep the verification loop** (§5) working end-to-end.
+Principles to preserve going forward:
 
-Until that refactor lands, follow the current conventions in §3–§4.
+- **Keep it dependency-light and offline-capable.** The built `index.html` must stay a single "just open it" file. Python-only build; no npm/bundler, no runtime fetches.
+- **One place per concern.** Adding a lesson touches exactly one folder (§4) — keep it that way.
+- **Preserve the content principle** (§1) — provenance to the source material must survive any change.
+- **Keep the verification loop** working end-to-end — `python verify.py` locally, enforced by CI (§5). Update `verify.py` if you add a new content type or slot.
+
+Possible next steps when they earn their keep: nesting `MONTHS` under sections in `app.js` for a section switcher in the UI; having CI **build and deploy** Pages from `content/` so `index.html` no longer needs committing at all (removes the "did you rebuild?" step entirely).

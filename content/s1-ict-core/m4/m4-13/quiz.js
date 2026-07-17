@@ -1,0 +1,6 @@
+[
+  {q:"What are the banks actually looking at?",o:["Indicators","Where the stops are","Moving averages","Divergence signals"],a:1,e:"Banks (UBS, Credit Suisse, Citi) attack liquidity where stops rest — indicators only measure the past; price has zero awareness of them."},
+  {q:"What is Type 2 (hidden) divergence?",o:["Higher high in price, lower momentum","Higher low in price, lower stochastic low","Equal highs","A gap"],a:1,e:"Hidden divergence is trend-following and gives a good entry in bullish markets — ICT likes it when looking for higher prices."},
+  {q:"How does the 'phantom' trap actually spring?",o:["Price reverses on its own","Run stops, tap OB, reverse up","A sudden volume spike hits","A news event suddenly hits"],a:1,e:"Retail sells the type-1 bearish divergence; price runs the sell stops, taps an OB, the stochastic makes a NEW low, then price runs the highs. That new stochastic low against a higher price low is the real divergence — the crowd is left holding the bag."},
+  {q:"What overlooked 5th condition do indicator traders miss?",o:["The overall trend strength","'Is it even a time to trade?'","The current traded volume","The session's exact timing"],a:1,e:"Retail thinks in 4 signals (overbought/oversold × bull/bear divergence); the fifth is whether there's any reason to be trading at all — often the market is just consolidating."}
+ ]

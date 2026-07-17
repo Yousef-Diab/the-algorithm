@@ -1,0 +1,5 @@
+[
+  {q:"What is the market maker buy model in one line?",o:["Buy every dip","Lower to go higher","Buy breakouts","Follow the trend"],a:1,e:"The market goes lower to go higher. On the sell side of the curve, each small bounce's last down candle is a bullish OB — accumulation while market makers scale/hedge in."},
+  {q:"What is a reclaimed order block?",o:["A brand-new orderblock","An old block revisited for more","A failed orderblock entirely","A simple price gap up"],a:1,e:"A candle previously used to build a position, revisited to add more in the same direction. On the buy side of the curve the old sell-side down candles are reclaimed — the blocks match on both sides."},
+  {q:"On the sell model, what does an up candle with a small displacement down mean?",o:["The buyers are winning","MMs selling short early","Nothing at all really","A reversal to the upside"],a:1,e:"Market makers hedging into the rally. To the right of the high, each return to those up candles (bearish OBs) is a reclaimed short."}
+ ]

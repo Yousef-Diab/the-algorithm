@@ -1,0 +1,6 @@
+[
+  {q:"What exactly is a bullish orderblock?",o:["Literally any down candle","Lowest wide down candle at support","The last green up candle formed","A single doji printed at a low"],a:1,e:"The lowest down-close candle with the most open-to-close range, near a support level — validated when a later candle trades through its high."},
+  {q:"What should the best orderblocks never do?",o:["Get touched more than twice","Trade below its mean threshold","Ever form on a Monday","Overlap with an FVG"],a:1,e:"The best OBs never trade below their 50% mean threshold (body). Enter at the body high; SL below the body or wick; add ~5 pips for the spread."},
+  {q:"How much rally does ICT want before trusting the retracement?",o:["Just any small rally up","2–3× the block's body height","About 10 pips or so","Half of the whole range"],a:1,e:"He wants a rally of 2–3× the block's body height, then the retracement back for a second entry."},
+  {q:"How are 2+ consecutive down candles treated?",o:["Only use the last one","As one full orderblock","They're simply ignored","As two separate OBs"],a:1,e:"Blend them into one full orderblock. Refine top-down monthly → weekly → daily in the direction of the HTF bias."}
+ ]
