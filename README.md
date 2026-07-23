@@ -4,13 +4,12 @@
 
 **▶ [Open the course live](https://yousef-diab.github.io/the-algorithm/)**
 
-A self-contained, interactive course built from **Fear.ing's** trading material — his Notion notes (with their charts) and the original **ICT (Inner Circle Trader)** video transcripts. The name nods to ICT's *interbank price delivery algorithm*: the idea that price isn't random, but delivered to engineer liquidity.
+A self-contained, interactive course built from **ICT's (Inner Circle Trader) Mentorships** — the mentorship notes and their charts, together with the original video transcripts. The name nods to ICT's *interbank price delivery algorithm*: the idea that price isn't random, but delivered to engineer liquidity.
 
 The scope grows over time. Planned sections:
 
 1. **ICT Core — Months 1–4** *(live)* — the foundation.
 2. **ICT 2022 Mentorship** *(planned)*.
-3. **Fear.ing's own models & methods** *(out of scope)* — advanced SMC; his proprietary material, not for republication.
 
 The published site is a single HTML file that runs offline in any modern browser — no server, no dependencies. Under the hood, that file is **assembled from per-lesson source files by a small Python build** (`build.py`), so it stays easy to expand without giving up the "just open it" property.
 
@@ -59,7 +58,7 @@ What you get:
 
 ## Content principle (important)
 
-> **All course content comes purely from the provided source material** — Fear.ing's notes and the video transcripts for whichever section is being built. General/outside trading knowledge is deliberately **not** used. Every lesson explanation and quiz answer is traceable to that source material.
+> **All course content comes purely from the provided source material** — ICT's mentorship notes and the video transcripts for whichever section is being built. General/outside trading knowledge is deliberately **not** used. Every lesson explanation and quiz answer is traceable to that source material.
 
 This constraint is intentional and should be preserved in all future edits. See `CLAUDE.md` for how it shapes the workflow.
 
@@ -67,7 +66,7 @@ This constraint is intentional and should be preserved in all future edits. See 
 
 ## Credits
 
-- **Notion notes & charts** — by the trader **Fear.ing**. Community / mentorship: [whop.com/vincere-aut-mori](https://whop.com/vincere-aut-mori/?a=ydiab4)
+- **Mentorship notes & charts** — from ICT's (Inner Circle Trader) mentorships.
 - **Video transcripts** — original ICT (Inner Circle Trader) mentorship core-content videos.
 
 This project is a personal study aid that reorganises the above material into an interactive format. All credit for the underlying teaching belongs to the original creators.
@@ -79,7 +78,6 @@ This project is a personal study aid that reorganises the above material into an
 - [x] **Refactor for expandability.** Content and rendering are now split: lessons live in `content/<section>/<month>/<id>/` and `build.py` assembles the offline `index.html`. New lessons/sections drop in as folders (see `CLAUDE.md` → §2 / §4).
 - [x] **AI-development friendly.** One obvious edit point per change (§4), `build.py` validates as it assembles, an `add-content` skill scaffolds lessons/months/sections, and `verify.py` + CI enforce a headless check (and that `index.html` is never committed stale) on every PR.
 - [ ] **Section 2 — ICT 2022 Mentorship** as its transcripts/notes become available.
-- Section 3 (Fear.ing's own models) is **out of scope** — his proprietary material stays private.
 
 ---
 

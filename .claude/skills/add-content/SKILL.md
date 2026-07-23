@@ -1,6 +1,6 @@
 ---
 name: add-content
-description: Scaffold new course content for The Algorithm — a lesson, a month, or a whole content group (section). Handles folder layout, file templates, months.js, then builds and verifies. Use when adding any ICT/Fear.ing material to content/.
+description: Scaffold new course content for The Algorithm — a lesson, a month, or a whole content group (section). Handles folder layout, file templates, months.js, then builds and verifies. Use when adding any ICT mentorship material to content/.
 ---
 
 # Add Content — The Algorithm
@@ -12,8 +12,8 @@ Everything is **data-driven**: you create folders/files under `content/`, run
 
 ## The overriding rule (do not skip)
 
-Course content must come **purely from the provided source material** — Fear.ing's
-Notion notes and the transcripts in `transcripts/` for the section being built. Do
+Course content must come **purely from the provided source material** — ICT's
+mentorship notes and the transcripts in `transcripts/` for the section being built. Do
 **not** add outside trading knowledge or invent examples. The correct quiz option +
 its explanation must be traceable to the source; distractors may be invented (they're
 wrong on purpose). See `CLAUDE.md` §1.
@@ -94,7 +94,7 @@ sibling folders under `content/` and sort alphabetically, so prefix with an ordi
 1. `mkdir content/s2-<slug>/` (e.g. `content/s2-2022-mentorship/`). Keep the `sN-` prefix so ordering is stable and it sorts after `s1-ict-core`.
 2. Create `content/s2-<slug>/months.js` with that section's month entries (same one-line format as Task 2). Month ids can repeat across sections (`m1`…) — they're namespaced by folder — but lesson **folder ids must be globally unique** because the runtime keys quizzes/videos by lesson id. Prefer a section-distinct scheme (e.g. `m1-01` is already used by s1; for s2 use ids like `n1-01` or `s2m1-01`) so ids don't collide. Whatever scheme you pick, the folder name, `id=` in lesson.html, `data-quiz`, and `data-slug` prefix must all agree.
 3. Add months (Task 2) and lessons (Task 1) under it.
-4. Update the home/README scope if this is a newly-live section. **Respect scope:** Fear.ing's own models are out of scope (proprietary — do not republish); see `CLAUDE.md` header.
+4. Update the home/README scope if this is a newly-live section. **Respect scope:** only ICT's Mentorships are in scope as source material; see `CLAUDE.md` header.
 5. **Build + verify.**
 
 ## Build + verify (always, after any change)

@@ -1,14 +1,14 @@
 # CLAUDE.md — working guide for this project
 
-Guidance for AI-assisted work on **The Algorithm** — an interactive course built from Fear.ing's trading material. Read this before editing.
+Guidance for AI-assisted work on **The Algorithm** — an interactive course built from ICT's Mentorships. Read this before editing.
 
-Scope grows over time: Section 1 is **ICT Core (Months 1–4, live)**; Section 2 is the **ICT 2022 Mentorship (planned)**. Fear.ing's own models are **out of scope** (proprietary — do not republish).
+Scope grows over time: Section 1 is **ICT Core (Months 1–4, live)**; Section 2 is the **ICT 2022 Mentorship (planned)**.
 
 ---
 
 ## 1. The one rule that overrides everything
 
-**Course content must come *purely* from the provided source material** — Fear.ing's Notion notes and the video transcripts in `transcripts/` for whichever section is being built. Do **not** add general/outside trading knowledge, invent examples, or "improve" concepts with information that isn't in the source.
+**Course content must come *purely* from the provided source material** — ICT's mentorship notes and the video transcripts in `transcripts/` for whichever section is being built. Do **not** add general/outside trading knowledge, invent examples, or "improve" concepts with information that isn't in the source.
 
 - When enriching a lesson, read the relevant transcript first, then write only what it supports.
 - Quiz questions and answer explanations must be traceable to the notes/transcript, not to outside knowledge.
@@ -148,8 +148,8 @@ When writing an ad-hoc browser check, remember only the **active** lesson sectio
 ## 6. Source material & tooling
 
 - **Transcripts:** `transcripts/Month N/…txt` — the primary source for lesson enrichment. Git-ignored; local only.
-- **Notion notes & charts:** authored by the trader **Fear.ing** (community: <https://whop.com/vincere-aut-mori/?a=ydiab4>). Charts are scraped from the notes into `images/`. The scraper (Playwright, resumable via a manifest) has historically lived in the session scratchpad, not the repo.
-- **Notes fidelity:** the transcripts and Fear.ing's notes are the *only* permitted inputs (see §1). Preserve attribution to the original creators in the README's Credits section through any refactor.
+- **Mentorship notes & charts:** from ICT's (Inner Circle Trader) mentorships. Charts are scraped from the notes into `images/`. The scraper (Playwright, resumable via a manifest) has historically lived in the session scratchpad, not the repo.
+- **Notes fidelity:** the transcripts and ICT's mentorship notes are the *only* permitted inputs (see §1). Preserve attribution to the original creators in the README's Credits section through any refactor.
 
 ---
 
