@@ -1925,6 +1925,8 @@ document.querySelectorAll('.quiz').forEach(qz=>{
     // shuffle options so the correct answer isn't always in the same position
     const opts = item.o.map((text,idx)=>({text, correct: idx===item.a}));
     for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const answered = Object.prototype.hasOwnProperty.call(store.quiz, `${key}-${qi}`);
+    const wasCorrect = store.quiz[`${key}-${qi}`];
     const btns = [];
     opts.forEach(o=>{
       const b = document.createElement('button'); b.className='opt'; b.textContent = o.text;
@@ -1939,6 +1941,14 @@ document.querySelectorAll('.quiz').forEach(qz=>{
     });
     const expl = document.createElement('div'); expl.className='expl'; expl.textContent = item.e;
     qd.appendChild(expl);
+    if(answered){
+      btns.forEach(x=>{ x.disabled=true; if(x._correct) x.classList.add('correct'); });
+      if(!wasCorrect){
+        const wrongBtn = btns.find(x=>!x._correct);
+        if(wrongBtn) wrongBtn.classList.add('wrong');
+      }
+      expl.classList.add('show');
+    }
     qz.appendChild(qd);
   });
 });
