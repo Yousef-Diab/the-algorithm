@@ -12,7 +12,9 @@ const store = {
   get done(){ try{return JSON.parse(localStorage.getItem('ict-done')||'[]')}catch(e){return[]} },
   set done(v){ localStorage.setItem('ict-done', JSON.stringify(v)); },
   get quiz(){ try{return JSON.parse(localStorage.getItem('ict-quiz')||'{}')}catch(e){return{}} },
-  set quiz(v){ localStorage.setItem('ict-quiz', JSON.stringify(v)); }
+  set quiz(v){ localStorage.setItem('ict-quiz', JSON.stringify(v)); },
+  get notes(){ try{return JSON.parse(localStorage.getItem('ict-notes')||'{}')}catch(e){return{}} },
+  set notes(v){ localStorage.setItem('ict-notes', JSON.stringify(v)); }
 };
 
 /* ---------- render lesson videos (at the top of each lesson) ---------- */
@@ -97,6 +99,32 @@ document.querySelectorAll('.quiz').forEach(qz=>{
       expl.classList.add('show');
     }
     qz.appendChild(qd);
+  });
+});
+
+/* ---------- personal notes ---------- */
+document.querySelectorAll('.lesson').forEach(sec=>{
+  if(sec.id==='home') return;
+  const foot = sec.querySelector('.lesson-footer');
+  if(!foot) return;
+  const box = document.createElement('div'); box.className = 'notes';
+  box.innerHTML = `<h3>My Notes</h3><div class="notes-sub">Saved locally on this device — not part of the course content.</div>
+    <textarea class="notes-area" placeholder="Jot down anything you want to remember about this lesson…"></textarea>
+    <div class="notes-status"></div>`;
+  foot.insertAdjacentElement('beforebegin', box);
+  const area = box.querySelector('.notes-area');
+  const status = box.querySelector('.notes-status');
+  area.value = store.notes[sec.id] || '';
+  let saveTimer;
+  area.addEventListener('input', ()=>{
+    status.textContent = '';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      const n = store.notes;
+      if(area.value){ n[sec.id] = area.value; } else { delete n[sec.id]; }
+      store.notes = n;
+      status.textContent = 'Saved';
+    }, 400);
   });
 });
 
