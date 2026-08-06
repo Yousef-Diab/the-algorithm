@@ -2,7 +2,7 @@
 
 Guidance for AI-assisted work on **The Algorithm** — an interactive course built from ICT's Mentorships. Read this before editing.
 
-Scope grows over time: Section 1 is **ICT Core (Months 1–4, live)**; Section 2 is the **ICT 2022 Mentorship (planned)**.
+Scope grows over time. Both current sections are live: Section 1 is **ICT Core (Months 1–4, 38 lessons)**; Section 2 is the **ICT 2022 Mentorship (Parts 1–6, 40 lessons)**.
 
 ---
 
@@ -178,7 +178,7 @@ When writing an ad-hoc browser check, remember only the **active** lesson sectio
 
 The content/rendering split (§2) is **done** — content lives in `content/<section>/<month>/<id>/` and `build.py` assembles it into the offline `index.html`. The `section → month → lesson` hierarchy is in place and sections are first-class in the engine (`SECTIONS` drives the nav grouping, the home cards and the review pages), so **Section 2 (the 2022 Mentorship) drops in as a new `content/s2-…/` sibling** — its own `section.js`, `months.js`, months/lessons, and its own `summary.html` + `exam.js`.
 
-**Section 2 is in progress.** Its build plan, episode→lesson map, session batching and progress tracker live in [`docs/s2-2022-mentorship-plan.md`](docs/s2-2022-mentorship-plan.md) — **read that before doing any Section 2 work.** Its source material sits in the git-ignored `notes/2022-mentorship/` (notes prose per episode, plus the charts harvested from Notion) alongside `transcripts/2022 Mentorship/`.
+**Section 2 is complete** — 40 lessons (one per episode, 28 omitted), a `summary.html` and a 40-question `exam.js`. Its build plan, episode→lesson map, session batching and progress tracker live in [`docs/s2-2022-mentorship-plan.md`](docs/s2-2022-mentorship-plan.md) — **read that before doing any Section 2 work.** Its source material sits in the git-ignored `notes/2022-mentorship/` (notes prose per episode, plus the charts harvested from Notion) alongside `transcripts/2022 Mentorship/`.
 
 Adding it needed three small engine changes, since the rendering — not the data model — had assumed a single section: the home cards now group by section and number within it (taking their noun from `section.js`'s `label`), the sidebar prints a section heading once there is more than one section, and a month with no lessons yet renders inert instead of throwing on click.
 
