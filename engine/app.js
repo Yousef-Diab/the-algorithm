@@ -474,6 +474,12 @@ function show(id){
 }
 const sidebar = document.getElementById('sidebar');
 document.getElementById('menu-toggle').addEventListener('click', ()=>sidebar.classList.toggle('open'));
+/* browser back/forward (and any hand-edited hash) should route too — show()
+   writes the hash itself, so skip the echo when the target is already open. */
+window.addEventListener('hashchange', ()=>{
+  const el = document.getElementById(location.hash.slice(1)) || document.getElementById('home');
+  if(!el.classList.contains('visible')) show(el.id);
+});
 
 renderNav(); renderCards(); renderReview(); renderReset();
 show(location.hash ? location.hash.slice(1) : 'home');

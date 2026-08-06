@@ -159,7 +159,7 @@ It exits non-zero and lists the problems on any failure. Requires Playwright onc
 
 `verify.py` and `build.py` are **committed project tooling** — keep them. The "don't commit scripts" habit applies only to *throwaway exploration* scripts (put those in the scratchpad). **CI** (`.github/workflows/ci.yml`) runs `build.py` on every PR, **fails if the committed `index.html` is out of sync with `content/`**, then runs `verify.py` — so a stale artifact or a runtime regression can't merge.
 
-When writing an ad-hoc browser check, remember only the **active** lesson section is visible (`.visible`); `verify.py` works around this by adding `.visible` to every lesson before checking.
+When writing an ad-hoc browser check, remember only the **active** lesson section is visible (`.visible`); `verify.py` works around this by adding `.visible` to every lesson before checking. Routing is hash-based and **does** respond to `hashchange` (browser back/forward works), but `page.goto()` to the same URL with only a different fragment is a same-document navigation — the app never re-runs, so drive it with `location.hash = …` or a real reload.
 
 ---
 
