@@ -1,1 +1,2 @@
   {id:"p1", title:"Part 1 — Foundations & The 2022 Model", desc:"The mindset the mentorship is built on, then the model itself: fair value gaps, liquidity, the market structure shift, premium & discount and the killzones."}
+  {id:"p2", title:"Part 2 — Order Blocks, Power of Three & Structure", desc:"How an order block is actually found, the accumulation-manipulation-distribution shape of the daily range, the opening range every setup forms inside, and applying the model to forex."}
