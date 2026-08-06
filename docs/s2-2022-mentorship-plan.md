@@ -43,15 +43,16 @@ Source page (for provenance only):
 
 ### Gaps — flagged, not filled
 
-- **Episode 28 has no source at all**: its transcript file is 0 bytes and the notes page has
-  no Episode 28 block. Per CLAUDE.md §1 it **cannot be authored** and is omitted. Section 2
-  is therefore **40 lessons**, numbered by episode with 28 skipped.
+- **Episode 28 is skipped — confirmed by the user.** The video has no audio and is just a
+  two-minute trade example; its transcript file is 0 bytes and the notes page has no Episode
+  28 block. There is nothing to author from, so Section 2 is **40 lessons**, numbered by
+  episode with 28 omitted.
 - **Episodes 26 and 28 have no notes.** Ep 26 still has a 11 KB transcript, which is a valid
   primary source, so it is built from the transcript alone.
-- **Video URLs are not in hand.** Every lesson needs its real source video URL in `video.txt`
-  (CLAUDE.md §3) and inventing one is forbidden. Until a real list is supplied, write an
-  **empty `video.txt`** — the engine renders nothing, which is the correct graceful state.
-  See §8 Open questions.
+- **Video URLs are resolved.** [`s2-2022-mentorship-videos.md`](s2-2022-mentorship-videos.md)
+  maps every episode to its lesson id and its real video URL, generated from the mentorship
+  playlist. It is **the only permitted source** for a Section 2 `video.txt` — never write a
+  URL that is not in that table (CLAUDE.md §1).
 
 ---
 
@@ -163,7 +164,8 @@ Each content session does exactly this, for one batch from §7:
       `.flip-row`, `<h3>`. Content comes **only** from that episode's transcript + notes.
    d. Write `quiz.js` — 4–6 questions, the shape and authoring rules in CLAUDE.md §3
       (balanced option lengths; the correct option and `e` must be source-traceable).
-   e. Write `video.txt` — empty until real URLs are supplied (§8).
+   e. Write `video.txt` — copy that episode's URL from
+      [`s2-2022-mentorship-videos.md`](s2-2022-mentorship-videos.md), one line, nothing else.
    f. Copy that episode's `raw/ep-NN-KK.png` into `images/` renamed to the lesson slug.
    **Then move to the next episode.** Finishing each lesson before starting the next keeps
    only one transcript live in context.
@@ -215,11 +217,16 @@ verified and committed.
 
 ---
 
-## 8. Open questions for the user
+## 8. Open questions
 
-1. **Video URLs.** Every Section 1 lesson links its source video; Section 2 cannot without a
-   real list of the 41 episode URLs (a YouTube playlist would do). Until then `video.txt`
-   stays empty. Supplying the playlist at any point makes this a single mechanical pass.
-2. **Episode 28.** No transcript, no notes. Confirm it should be omitted, or supply the
-   transcript to include it.
-3. **Part titles.** The §3 themes are provisional and get confirmed in the polish session.
+Resolved — kept as the record of the decision:
+
+- ~~**Video URLs.**~~ The playlist was supplied and every episode is mapped in
+  [`s2-2022-mentorship-videos.md`](s2-2022-mentorship-videos.md).
+- ~~**Episode 28.**~~ Confirmed skipped: the video has no audio and shows only a two-minute
+  trade example, so there is no source to author from.
+
+Still open:
+
+1. **Part titles.** The §3 themes are provisional and get confirmed in the polish session,
+   once every lesson exists and the real shape of each part is known.
