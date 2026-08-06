@@ -204,7 +204,7 @@ verified and committed.
 | 11 | p4 | 23–25 | `p4-04`–`p4-06` | 118 KB | [x] |
 | 12 | p5 | 26–33 (no 28) | `p5-01`–`p5-07` | 106 KB | [x] |
 | 13 | p6 | 34–38 | `p6-01`–`p6-05` | 116 KB | [x] |
-| 14 | p6 | 39 | `p6-06` | 82 KB | [ ] |
+| 14 | p6 | 39 | `p6-06` | 82 KB | [x] |
 | 15 | p6 | 40–41 | `p6-07`–`p6-08` | 98 KB | [ ] |
 | P | — | — | Polish: part titles, `summary.html`, `exam.js`, home copy | — | [ ] |
 
