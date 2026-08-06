@@ -285,10 +285,11 @@
 <section class="lesson" id="home" data-title="Welcome">
   <div class="hero">
     <h2>Learn how price is <em>really delivered</em>.</h2>
-    <p>An interactive course built from ICT's Mentorships. Section 1 — the <em>ICT Core Content</em> — is 38 lessons across 4 months: market maker templates, equilibrium &amp; fair valuation, liquidity, institutional order flow, PD arrays, and the market maker traps. Every word comes from ICT's mentorship notes and the original ICT video transcripts; every chart is pulled from the notes.</p>
+    <p>An interactive course built from ICT's Mentorships — <strong>78 lessons across two sections</strong>. Every word comes from ICT's mentorship notes and the original ICT video transcripts; every chart is pulled from the notes.</p>
+    <p>Section 1 — the <em>ICT Core Content</em> — is 38 lessons across 4 months: market maker templates, equilibrium &amp; fair valuation, liquidity, institutional order flow, PD arrays, and the market maker traps. Section 2 — the <em>2022 Mentorship</em> — is 40 lessons across 6 parts, one per episode: a single stripped-down intraday model taught end to end, from fair value gaps and market structure shifts to the killzones, the daily bias and risk.</p>
   </div>
   <div class="month-cards" id="month-cards"></div>
-  <div class="notice"><b>How to use this course:</b> work through the lessons in order — the material builds month over month. Flip the concept cards, study every chart (click to zoom), then take the lesson check. Your progress and quiz answers are saved in your browser automatically.</div>
+  <div class="notice"><b>How to use this course:</b> work through the lessons in order — the material builds from one lesson to the next. Flip the concept cards, study every chart (click to zoom), then take the lesson check. Your progress and quiz answers are saved in your browser automatically.</div>
 
   <h3 class="home-h">Revise &amp; test yourself</h3>
   <p class="home-sub">When you've worked through a section, the summary re-teaches the whole thing in one read and the final exam tells you what to go back to.</p>
@@ -5091,6 +5092,491 @@
   <div class="lesson-footer"></div>
 </section>
 
+<section class="lesson" id="s2-review" data-kind="review" data-section="s2" data-title="Section Summary">
+  <div class="lesson-hero">
+    <div class="crumb">2022 Mentorship · Section Review</div>
+    <h2>ICT 2022 Mentorship (Parts 1–6) — Section Summary</h2>
+    <div class="desc">Every concept from the 40 lessons, condensed onto one page for revision. Nothing here is new material — it is the same episodes, re-ordered so you can re-read the whole mentorship in one sitting.</div>
+  </div>
+
+  <div class="callout"><span class="tag">How to use this page</span>Read it top to bottom the day before you sit the <strong>Final Exam</strong>. Where a line doesn't click, go back to the lesson it came from — the part and lesson numbers are kept in the sub-headers so you can find them in the sidebar. Then take the exam.</div>
+
+  <h3>The one idea underneath everything</h3>
+  <p>Price is <strong>delivered by an algorithm</strong>. There is no buying or selling pressure — that is "an excuse used for what the market does and doesn't do". Algorithmic theory rests on <strong>time and price</strong>, and the code leans heavily on the time element: a price level is useless until time is considered, and time is useless unless price is at a key level. That is why a rectangle on the chart is not supply and demand, and why this is not auction theory.</p>
+  <div class="callout rule"><span class="tag">All the algorithm does <span class="src">(P3 L3)</span></span>It seeks <strong>discount to premium and premium to discount</strong>. Within that it reaches for <strong>liquidity</strong> — buy stops above old highs, sell stops below old lows — and for <strong>imbalances</strong>: creating a fair value gap, or returning into one to rebalance it. And it does all of it <strong>on the basis of time, then price</strong>. ICT calls this a gross oversimplification, and says it is by and large all these things do.</div>
+  <div class="callout"><span class="tag">The question behind every session <span class="src">(P1 L2)</span></span>"<strong>What is price most likely to draw towards?</strong> Is there an <strong>imbalance higher</strong>, or a <strong>liquidity pool lower</strong>?" That single question sets the bias. Everything after it is detail.</div>
+  <p><strong>Bias before precision.</strong> The entries taught here are deliberately <strong>forgiving</strong>; what you must be precise about is the <strong>directional bias and where price is reaching for</strong>. It requires very little chart graffiti: a line at the level you want breached, and a line at the level you want price to reach into.</p>
+
+  <h3>What each part was for</h3>
+  <div class="kv">
+    <div>Part 1</div><div><strong>The model</strong> — the mindset it demands, the fair value gap candle by candle, the liquidity run and market structure shift that qualify it, displacement, premium &amp; discount, and how the trading day is framed.</div>
+    <div>Part 2</div><div><strong>Order blocks &amp; structure</strong> — Power of Three, how a block is actually found, the opening range, the halo system, and the rebalance that leaves a key high or low.</div>
+    <div>Part 3</div><div><strong>The workflow</strong> — the three-chart layout end to end, multiple setups inside one session, the forex variations, bias off the daily dealing range, and when to stand aside.</div>
+    <div>Part 4</div><div><strong>Correlation &amp; tape reading</strong> — the dollar index, risk on/risk off, SMT divergence, the fib settings, news days, the two entry patterns, and daily rebalance theory.</div>
+    <div>Part 5</div><div><strong>Session playbooks</strong> — counter-trend ideas, narrow range days, the PM session, consolidation days, confluence, and the back-testing method that manufactures experience.</div>
+    <div>Part 6</div><div><strong>Theory &amp; risk</strong> — the dealing range, the mean threshold, changing gears mid-session, the four times of day, the six keys to bias, and position sizing and stops.</div>
+  </div>
+
+  <!-- ==================== PART 1 ==================== -->
+  <h3>Part 1 — Foundations &amp; The 2022 Model</h3>
+
+  <h4>What this mentorship is, and isn't <span class="src">(L1)</span></h4>
+  <p>The model is <strong>deliberately stripped down</strong>. The full arsenal from the private mentorship does create exceptional traders, but most students get bogged down in the content and it creates <strong>analysis paralysis</strong> — a kid in a candy store, unsure what to eat first. You are moved through three stages: <strong>yearner → learner → earner</strong>, and the last one is not on a schedule.</p>
+  <div class="callout rule"><span class="tag">The promises, and your side of the deal</span>
+    <ul>
+      <li>You will learn things that <strong>repeat — a lot</strong>. You will <strong>not</strong> be perfect; no teacher provides 100% accuracy and he does not trade perfectly either.</li>
+      <li>Setups repeat with common characteristics but are <strong>never carbon copies</strong> — you are learning to recognise a familiar setup, not match a template.</li>
+      <li><strong>No trade signals.</strong> Levels are pointed at beforehand <em>for study</em>, not as an enticement to take a live trade.</li>
+      <li>Your side: an <strong>independent mindset</strong>, no codependency, no cutting corners, do the homework — and <strong>backtest, backtest, backtest</strong>.</li>
+    </ul>
+  </div>
+  <p>The objective is <strong>income-based, not home runs</strong>: <strong>25 handles a week</strong> out of a market like the E-mini S&amp;P and you can do very well. A <strong>handle</strong> is four ticks — <strong>$50</strong> on ES ($12.50 a tick), <strong>$20</strong> on NQ, <strong>$5</strong> on the micros. This is not a scalping course: the model looks for a <strong>whole intraday price leg</strong>.</p>
+
+  <h4>The four elements of the setup <span class="src">(L2)</span></h4>
+  <div class="kv">
+    <div>1</div><div>A <strong>run on liquidity</strong> — buy stops taken, if you're bearish</div>
+    <div>2</div><div>A <strong>break in market structure</strong> — a short-term swing low broken</div>
+    <div>3</div><div>The <strong>imbalance</strong> that displacement leaves behind — the fair value gap</div>
+    <div>4</div><div>Price trades <strong>back up into the gap</strong> — that's the short</div>
+  </div>
+  <p>Enter in the gap; stop above the candle above the gap, or above the swing high that was run; exit where the liquidity is. Any time a significant move lower is expected, <strong>always anticipate a stop hunt on buy stops first</strong> — the <strong>Judas swing</strong> — and the reverse before a rally.</p>
+  <div class="callout warn"><span class="tag">Don't chase</span>Once a low has been taken out you are chasing, and a market order there invites slippage. <strong>You have to learn to sell short while the candle is going up.</strong> It feels wrong, and retail can't grasp it because they've been told to wait for confirmation — which is precisely what makes them late.</div>
+
+  <h4>The fair value gap, candle by candle <span class="src">(L6)</span></h4>
+  <div class="callout rule"><span class="tag">The bearish criteria</span>
+    <ul>
+      <li><strong>Candle 1</strong> is the high; its low must be traded below on the immediately following candle.</li>
+      <li><strong>Candle 3</strong> must trade with an extended low below candle 2 — and must <strong>not</strong> trade back up to candle 1's low.</li>
+      <li>That leaves the gap: from <strong>candle 1's low down to candle 3's high</strong>, with candle 2 in the middle. Mirror it for bullish.</li>
+    </ul>
+  </div>
+  <p><strong>The paint roller.</strong> Roll a loaded roller down a wall and the first stretch goes on thick, then it leaves porous pockets. You fix it by <strong>rolling back up over the same place</strong> — which is exactly what price does. The optimal bearish gap forms <strong>after a run into buy-side liquidity</strong>; nothing before that matters except that price traded above an old high. The easiest entry is a <strong>limit just above candle 3's high</strong>, with the stop above candle 1 (or candle 2 if you can afford less range).</p>
+
+  <h4>Displacement — the range the gap must sit in <span class="src">(L5, L6)</span></h4>
+  <div class="callout rule"><span class="tag">The elephant in the paddling pool</span>Fill a children's pool, drop an elephant in — the water is obviously displaced. That is what you want in price. The move away must be <strong>energetic and animated</strong>, preferably closing beyond the short-term level. <strong>A lethargic drift is not enough</strong>, and a little wick through the low that comes straight back is not convincing.</div>
+  <div class="callout warn"><span class="tag">No gap, no trade</span>If there is no fair value gap inside the displacement range, <strong>you don't have a trade</strong>. You wait, or you go to another market.</div>
+
+  <h4>The market structure shift, and the one condition <span class="src">(L3)</span></h4>
+  <div class="callout rule"><span class="tag">The rule</span>Breaking a short-term high is significant <strong>only if the run down before it traded into sell stops</strong> — below an old low, a double bottom, something retail views as support. Bearish is the mirror: breaking a short-term low matters only because buy stops were taken above old highs first. <strong>No liquidity taken, no shift.</strong></div>
+  <p><em>Shift</em> is used deliberately rather than <em>break</em>: an intraday shift means there is likely an intraday draw in that direction — it does not imply prolonged, multi-day movement. Where relative equal highs sit above an older high, use the <strong>equal highs</strong>.</p>
+
+  <h4>The order block, defined properly <span class="src">(L3)</span></h4>
+  <div class="callout rule"><span class="tag">What it actually is</span>An order block is a <strong>change in the state of delivery</strong>. It is <em>not</em> "every down-closed candle is a bullish order block and every up-closed candle is a bearish one" — that is not the case. The reference point is the <strong>opening price</strong> of the series, because <strong>the algorithm remembers that opening price</strong>.</div>
+  <p>Combine the two: the <strong>opening price of the order block, inside the fair value gap</strong>, as a limit order. A high-probability bearish block is the one that <strong>has the gap</strong>, <strong>has taken liquidity</strong>, and <strong>sits at a market structure shift</strong>.</p>
+
+  <h4>Internal and external range liquidity <span class="src">(L3, L6)</span></h4>
+  <p><strong>Internal range liquidity</strong> is a short-term high or low sitting inside the price leg you are retracing back into, with stops behind it — or an imbalance in that same range. <strong>External range liquidity</strong> is the stops resting beyond the range's high and low. <strong>Partials at the internal, the balance at the external.</strong> Where two gaps are stacked, take the higher one but let price trade into the lower first; if price runs into the opposite imbalance before reaching your area, <strong>nix the trade</strong>.</p>
+  <div class="callout warn"><span class="tag">Don't roll the stop early</span>Sharp pullbacks are intended to knock out anyone trailing too tightly right before the real leg. <strong>Use the first partial to quench the urge to move your stop.</strong> Only once a significant intermediate-term low is taken out can you roll the stop down to it.</div>
+
+  <h4>Premium &amp; discount <span class="src">(L2)</span></h4>
+  <div class="kv">
+    <div>Above 50%</div><div><strong>Premium</strong> — an expensive market; where you want to be selling</div>
+    <div>Below 50%</div><div><strong>Discount</strong> — a cheap market; where a sell is looking to go</div>
+  </div>
+  <p><strong>Low hanging fruit:</strong> take the closest target — an old low, or an imbalance. Don't get fancy and aim for the lowest low on the chart, because the market can deny you that. Let it run further without you.</p>
+
+  <h4>Framing the day <span class="src">(L5)</span></h4>
+  <div class="callout warn"><span class="tag">New York local time — no exceptions</span>Set your charting platform to <strong>New York local time</strong>. Wherever you are, calibrate from that. Use any other zone and your levels won't line up with anyone else's.</div>
+  <div class="kv">
+    <div>Morning</div><div>8:30 (news events) to noon — preferably positioned before 11:00</div>
+    <div>Lunch</div><div>Noon–1:00 pm — <strong>a no-trade period. Not even in demo.</strong></div>
+    <div>Afternoon</div><div>From <strong>1:30</strong> at the earliest, where an algorithmic macro starts running</div>
+  </div>
+  <p>A <strong>swing high is three candles</strong>: a candle with a lower high to its left and a lower high to its right (a swing low is the mirror). Whether the candles close up or down has <strong>no bearing at all</strong> — swing points are simply where the stops are placed. In <strong>three drives</strong>, the third drive need not clear the old high: each swing high builds more buy stops above the previous one, and informed money is already short.</p>
+  <div class="callout rule"><span class="tag">The only two afternoon patterns you need</span>
+    <ul>
+      <li>After 1:30, wait for a <strong>swing low to be violated</strong> — buy those sell stops and expect the level above to be taken.</li>
+      <li>If no swing low gets traded below, look for a <strong>sudden displacement higher, then a fair value gap</strong>; when price trades back down into it, buy. Reversed for the sell side.</li>
+    </ul>
+    That's it — no fifteen gimmicky names. Contracts roll on <strong>H (March), M (June), U (September), Z (December)</strong>; around the first or second day of the week prior to expiration, trade whichever month has the <strong>larger open interest</strong>.</div>
+
+  <h4>Daily bias, and what to do without one <span class="src">(L7)</span></h4>
+  <div class="callout rule"><span class="tag">The bias question</span>You look at the daily chart to answer one thing: <strong>where is price likely to draw to next?</strong> Higher to an old high, or lower to an old low? <strong>Until it reaches that draw and puts in a higher low, you stay with that bias.</strong></div>
+  <p><strong>No read is not no trading.</strong> When consolidation makes the bias unclear you drop to smaller intraday timeframes and simply look for <strong>liquidity pools</strong> — run old highs, run old lows, be far more nimble. A surgical strike: take your handles and go. And <strong>time before price</strong> — algorithms run on time and price, so refer to time first (what's the important time? 8:30), then go left and find the price.</p>
+  <p>The other indices are used <strong>like indicators, without being indicators</strong> — the Dow and S&amp;P read alongside the Nasdaq. A <strong>crack in correlation</strong> is confirmation of an idea you had already established; <strong>by itself a divergence between the averages means nothing</strong>, and hunting divergences with no narrative behind them is how accounts were blown in the '90s.</p>
+
+  <!-- ==================== PART 2 ==================== -->
+  <h3>Part 2 — Order Blocks, Power of Three &amp; Structure</h3>
+
+  <h4>Power of Three <span class="src">(L2, L3)</span></h4>
+  <div class="kv">
+    <div>Accumulation</div><div>The opening price sits near the low of the day or session</div>
+    <div>Manipulation</div><div>Price trades lower, making some important low — <strong>the fake move</strong></div>
+    <div>Distribution</div><div>It rallies, makes the high, and closes near the high of the day</div>
+  </div>
+  <div class="callout rule"><span class="tag">Take the close out of it</span>You do <strong>not</strong> need to predict the closing price. All you need to know is whether this daily range is more likely to <strong>expand higher or lower than the opening price</strong>. That's it — that is the key to bias.</div>
+  <p>Miss the manipulation low and you should try to get long <strong>close to the opening price</strong> — the one he likes is <strong>8:30</strong>. Draw it out in time and run the checklist: did we go below it, into the imbalance, take out a short-term low, hit an order block, was it an optimal trade entry?</p>
+
+  <h4>How an order block is actually found <span class="src">(L2, L5, L6)</span></h4>
+  <div class="callout rule"><span class="tag">The definition</span><strong>Consecutive down-close candles right before a price surge that has an imbalance.</strong> The block is the <strong>series</strong>, not the last candle before the move — "that is not my order block, so stop calling it one." High probability = your narrative is bullish, you see <strong>displacement</strong>, you mark the down-close candles behind it, and you anticipate a return into them.</div>
+  <div class="callout rule"><span class="tag">The three ingredients</span>A high-probability bullish order block is <strong>the down-close candle</strong>, plus <strong>the imbalance</strong> created as price moves away from it, plus <strong>the narrative</strong> that price is going higher to reach for buy-side liquidity. "Period. That's it." There is no engulfing-candle requirement.</div>
+  <div class="callout warn"><span class="tag">Not every down close is an order block</span>The rally exists to lull in traders who chase it. People who don't understand order blocks see a down-close candle after a run-up, buy it, watch it work, and conclude that <em>every</em> down close after a run-up is a bullish block. It is not — the real context is the imbalance.</div>
+  <p>In an established swing the candles themselves are the order flow: in a <strong>bearish</strong> swing, up-close candles are your resistance and price should stay below them; in a <strong>bullish</strong> swing, down-close candles are your support and price should hold above them. The one permitted violation is a dip when a <strong>short-term low sits in close proximity</strong> — that's just a run on sell stops before reaccumulating.</p>
+
+  <h4>The opening range, and the 8:30 embargo <span class="src">(L3)</span></h4>
+  <div class="callout rule"><span class="tag">How to build it</span>The day opens and rallies — that rally is the <strong>Judas swing</strong>. Take the range from the <strong>opening price up to that high</strong> and project the same distance <strong>below the opening price</strong>. That is your opening range, and it is where the day's setups form. If price leaves it, <strong>you can't chase it</strong>, no matter how good it looks later.</div>
+  <p><strong>8:30 is the crosshairs time because the news embargo lifts</strong> and a batch of events is ushered in at once. Reports may be a <strong>smokescreen</strong> or a catalyst; there is often a buildup or drop right before the report with the real move starting after. On the calendar, <strong>red</strong> is high impact, <strong>orange</strong> medium, <strong>yellow</strong> low. Strip the entry down <strong>5 → 4 → 3 → 2 → 1 minute</strong>, take the <strong>first</strong> gap you come to and stop; if there isn't one even on the 1-minute, you don't have a trade.</p>
+
+  <h4>Market structure — the halos <span class="src">(L4)</span></h4>
+  <div class="kv">
+    <div>1 halo</div><div><strong>Short-term high</strong></div>
+    <div>2 halos</div><div><strong>Intermediate-term high</strong></div>
+    <div>3 halos</div><div><strong>Long-term swing high</strong></div>
+  </div>
+  <p>The halo system classifies the <strong>level</strong> of a high rather than just labelling higher highs and lower lows; ICT credits this way of deciphering market structure to <strong>Larry Williams</strong>. It is why he trusted a short near the session high: the <strong>nesting</strong> showed an intermediate-term high with lower swing highs either side. <strong>You do not need the high of the day</strong> — you need to understand why price should be trading away from the level you enter at.</p>
+
+  <h4>The lesson he had never taught before: rebalance creates a key level <span class="src">(L5)</span></h4>
+  <div class="callout rule"><span class="tag">Write this one down</span><strong>Every single time price rebalances an imbalance, the swing created at that moment is an intermediate-term high or low.</strong> A candle passing down leaves a gap; when price trades back up and rebalances it, <strong>that high is an ITH</strong>. When price drops back and fills an imbalance left by a candle up, <strong>that low is an ITL</strong>.</div>
+  <p>An ITH <em>should</em> be higher than the short-term highs either side of it. <strong>When it isn't, the market is very weak</strong> and the algorithm is tipping its hand — it is only rebalancing. And if, after a rebalance ITH, the <strong>next short-term high trades above it, your trade idea is probably flawed</strong>: don't force it, go to the sidelines and wait for structure to get back in sync.</p>
+  <div class="callout"><span class="tag">The only question that matters</span>Before he sits in front of a chart: is price likely to go <strong>up for buy-side liquidity</strong>, or <strong>up to rebalance an imbalance</strong>? Or <strong>down to sweep short-term lows for sell-side liquidity</strong>, or <strong>down to rebalance an old imbalance</strong> below market price? That's it — four parts, one question.</div>
+  <p>Everything smaller is <strong>subordinate to the parent</strong>: the daily is the parent of the structure, so minor lower-timeframe swings adhere to it. Frame it top-down — <strong>daily</strong> for the logic, <strong>hourly</strong> to frame the trade, <strong>15-minute</strong> as the bellwether for the actual get in and get out, lower only if the risk on the 15 doesn't suit you.</p>
+
+  <h4>Applying it to forex <span class="src">(L1)</span></h4>
+  <p>The same institutional order flow, dropped onto a cross. <strong>Frame a cross by its components:</strong> pull up the futures of each currency on the daily — euro strong, yen weak → EUR/JPY goes higher. Then the killzones: <strong>New York 7:00–10:00 am, London 2:00–5:00 am</strong>, New York local time. Intraday, two questions frame it: <strong>does it take out a swing low, and does it then take out a swing high?</strong></p>
+
+  <h4>Pyramiding, gearing, and the days you don't trade <span class="src">(L2, L4, L6)</span></h4>
+  <div class="callout rule"><span class="tag">Build the base first</span>The <strong>biggest position goes in the initial entry</strong> — 3, then 2, then 1 — so every later add has equity behind it and the position can weather a deeper retrace. Buying one, then two, then three is an <strong>inverted pyramid</strong>: balancing on its point, wobbly, no foundation.</div>
+  <div class="callout rule"><span class="tag">After a big overnight run</span>A big move on NASDAQ, Dow or ES roughly 2:00–5:00 am → <strong>avoid the New York morning session entirely</strong>. Wait until the other side of lunch — <strong>1:00 pm</strong> — and anticipate the lunch lows or the morning session lows being taken out. Expect chop, not precision.</div>
+  <p>And <strong>knowing when enough is enough</strong>: "you don't want to push your edge — if you keep pushing it, you dull it." A wick through a gap does <strong>not</strong> invalidate it: look at the <strong>bodies</strong>, and in volatile conditions permit a greater level of imperfection, using the gap as the entry idea and the stop as the premise.</p>
+
+  <!-- ==================== PART 3 ==================== -->
+  <h3>Part 3 — Sessions, Targeting &amp; the Daily Narrative</h3>
+
+  <h4>The workflow, step by step <span class="src">(L5)</span></h4>
+  <div class="kv">
+    <div>Upper left</div><div>The <strong>daily</strong> chart — always. This is where analysis starts.</div>
+    <div>Lower left</div><div>The <strong>hourly</strong> chart.</div>
+    <div>Right (largest)</div><div>The <strong>15-minute</strong> — the bellwether.</div>
+  </div>
+  <ol>
+    <li><strong>The daily chart and the bias.</strong> "Your bias isn't going to be perfect — I'm not always perfect with my bias either." A bias is an idea you work within: shorts when bearish, longs when bullish, and you filter out the other side unless proven clearly wrong.</li>
+    <li><strong>Frame the target on previous daily highs and lows.</strong> Mark the last three days' highs and lows — that is where the liquidity pools sit and where the HFT algorithms attack. "You're never going to run out of trades, ever."</li>
+    <li><strong>The hourly, then the 15-minute.</strong> The 15 is the chart he returns to all day: it is influential for managing a position, for stalking a setup, and — most of all — it helps him <strong>trust his intraday bias</strong>.</li>
+    <li><strong>Refine on the 5-minute</strong>, then 4, 3, 2, 1. The higher-timeframe imbalance is the <strong>parent</strong>; the smaller timeframes are only fine-tuning.</li>
+  </ol>
+  <div class="callout warn"><span class="tag">Not on your phone</span>You can <em>manage</em> a position on a phone. Entering a brand-new position on one, no — the data is too compressed to see the lay of the land.</div>
+
+  <h4>What makes an order block valid <span class="src">(L5, L6)</span></h4>
+  <div class="callout rule"><span class="tag">The correction</span>An order block is a <strong>change in the state of delivery</strong>, and <strong>it has to have an imbalance. Without the imbalance, there is no order block.</strong> That is exactly why this is <em>not</em> supply and demand — supply and demand requires fresh, untouched zones; he will cut straight through candles and still trade the level.</div>
+  <p><strong>The bookmark analogy:</strong> the algorithm places a bookmark where the candle closes. You're reading a chapter, life interrupts, you mark the page. Everything that happens while you're away is the move; when you come back you pick up the same storyline — it was dropping, it paused, it goes back to dropping.</p>
+
+  <h4>The 9:30 open <span class="src">(L2)</span></h4>
+  <div class="callout rule"><span class="tag">The pattern in one line</span>At 9:30, if there is a <strong>fair value gap with a swing low created beneath it</strong>, expect that low to be <strong>taken out to flush the early buyers</strong> — then buy the original gap once price sweeps the low and trades back up into it.</div>
+  <p>You <em>could</em> buy at the open, but you don't know how far it will whip below that low and you can be painfully wrong. On <strong>FOMC</strong> you can trade the morning, but <strong>you have to be done early</strong>.</p>
+
+  <h4>Multiple setups inside one session <span class="src">(L3)</span></h4>
+  <p>One Friday produced <strong>six</strong>: three shorts in the morning off successive gaps after displacement, then — once the sell-side objective was met — three longs in the afternoon into the PM liquidity pool. The engineering behind the turn: price took the relative equal lows into the order block, selling retail on "support broken", so when price traded <strong>back up into those same lows retail sold</strong>, and those sellers need a counterparty. That is <strong>engineering buy-side liquidity on the basis of sell-side flow</strong>.</p>
+  <div class="callout rule"><span class="tag">The session rules</span>
+    <ul>
+      <li>Morning <strong>8:30–noon</strong>; lunch <strong>noon–1:00</strong>; PM session after it.</li>
+      <li><strong>No entries during lunch</strong> — but you can take profits in it. A limit at the objective can fill while you're away.</li>
+      <li><strong>No more than four trades a day</strong> — two in the morning, two in the afternoon.</li>
+      <li>Old highs are a <strong>premium array until price trades above them</strong>, after which the old high becomes a <strong>discount array</strong> — which is when a broken high can act as support. Once the liquidity target is met, stop using it.</li>
+    </ul>
+  </div>
+  <div class="callout"><span class="tag">Trades are buses</span>Some days there won't be many retracements — one or two, or it moves at the open and that's it. <strong>You have no right to be angry about missing a trade.</strong> They come around on a schedule "like mass transit"; be happy your analysis spoke with that much clarity.</div>
+
+  <h4>Swing projections and where to anchor a fib <span class="src">(L3)</span></h4>
+  <p>Anchor to the <strong>highest body and the lowest body</strong> — the open or close, it makes no difference. "I'm showing you how the algorithm is going to read the price — the wicks and the tails are all distractions." The precision only pays when the rest of the narrative is incorporated: the order block it wants to reach, the relative equal lows where liquidity is <em>known</em> to be, and the measurement, all landing together. Use the wrong swing high and low and you get nothing — "that's why everybody that uses Fibonacci struggles."</p>
+
+  <h4>The forex session <span class="src">(L4)</span></h4>
+  <div class="kv">
+    <div>FX killzone</div><div><strong>7:00–10:00 am</strong> New York — after 10:00, generally no new trades unless there's a news driver</div>
+    <div>Index futures</div><div><strong>8:30–11:00 am</strong>; he'll still take a trade up to 10:40 or 10:45</div>
+    <div>News extension</div><div>A high-impact driver at 10:00 extends the window to <strong>11:00/11:30</strong>; crude inventories around 10:30 do the same for CAD</div>
+  </div>
+  <div class="callout rule"><span class="tag">Institutional price levels &amp; the 8:30 rule</span>The <strong>big figure</strong> and the <strong>00, 20, 50 and 80</strong> levels are highly influential, because a great deal of commerce settles around them — that is where the liquidity is. And when bearish in FX, refer to both the <strong>8:30</strong> and the <strong>midnight</strong> opening price and <strong>use the lower one</strong>, to set the minimum threshold for a Judas swing to the upside. Bullish reverses everything.</div>
+  <div class="callout warn"><span class="tag">Fluff the exit</span>Never aim for the exact level. Add <strong>three to five pips</strong> of cushion — <strong>ten if you're new</strong>. You have a spread to account for and every broker can open it on you. Overzealous targeting has cost him "many amazing exits" over the years.</div>
+  <p>What news is <em>for</em>: "I don't care about the raw data, I don't care what the expectation is." What he expects is <strong>the volatility at those specific times</strong>, because the algorithm uses that injection to reprice to levels that let those in the know participate. And the <strong>11:30 rule</strong>: if the order hasn't filled by 11:30, <strong>pull it</strong> — killzones are when you determine the entry, place the order and walk away.</p>
+
+  <h4>Bias from the daily dealing range <span class="src">(L6)</span></h4>
+  <div class="callout rule"><span class="tag">The bias, stated plainly</span>"It went down to <strong>equilibrium or short-term discount</strong>. The next day we can expect it to go higher." If it's likely to go higher the next day, you go into that day expecting it — and if that day is down or doesn't move, you carry the same expectation into the next. It isn't hard, but it isn't perfect either.</div>
+  <div class="kv">
+    <div>Dealing range</div><div>The most energetic and most recent low and high</div>
+    <div>Equilibrium</div><div>50% of that range — at or below it is a discount</div>
+    <div>Mean threshold</div><div>The midpoint (median) of an order block — half of it</div>
+  </div>
+  <p><strong>Purge and revert:</strong> price runs below a short-term low, purging sell-side liquidity, then reverts back to the <strong>high of the last three days</strong> — with the purge day counted as day one. Above that high sit the buy stops, because shorts trail their stops there.</p>
+  <div class="callout rule"><span class="tag">Think in pairings</span>Price ran below old lows, so smart money bought those sell stops and is now <strong>net long</strong>. How do they get out? They must sell to <strong>willing buyers</strong> — the buy stops above the relative equal highs. That's the draw. "If you don't have this mindset going in before you click the enter button of your trade, you are gambling."</div>
+  <p><strong>Two opening prices, two purposes:</strong> midnight NY frames the whole daily range and the London session; 8:30 frames the New York morning; the PM session starts its own accumulation–manipulation–distribution at 1:30. The dip below the 8:30 open is a <strong>micro Judas swing</strong> — the same Power of Three on a smaller scale. At 8:30, <strong>look to the left</strong>: find the short-term swing lows, because you want to absorb the sell stops smart money will pair with their buys.</p>
+
+  <h4>When not to trade <span class="src">(L6)</span></h4>
+  <div class="callout rule"><span class="tag">The line between trading and gambling</span>If you <strong>cannot reasonably outline where price is going next</strong>, higher or lower, you are gambling. And the impulse that you have to be in there every day <em>is</em> a gambler's mentality.</div>
+  <div class="callout warn"><span class="tag">The rattlesnake</span>A heavily manipulated market is a rattlesnake on the trail. You hear the rattle, you stand still, find it, and <strong>back away</strong>. When the market is messy, the first thing to consider is <strong>closing the charts and going and doing something you love</strong>. Going two weeks without a trade will drive some people nuts and make others want to change their style — "and they're both wrong."</div>
+
+  <!-- ==================== PART 4 ==================== -->
+  <h3>Part 4 — Correlation, Tape Reading &amp; Reading the Day</h3>
+
+  <h4>Risk on, risk off <span class="src">(L2)</span></h4>
+  <div class="callout rule"><span class="tag">The mechanism</span>A <strong>rising dollar is risk off</strong>: a flight to quality, money pouring into the dollar and out of risk assets — so foreign currency, index futures and stocks decline. <strong>Dollar down is risk on</strong> and they rise. A rising dollar makes sustained FX rallies unlikely and sustained declines likely.</div>
+  <p><strong>The teeter-totter:</strong> dollar and euro are inverted, so if the dollar is dropping into a level you've marked as bullish, expect euro to rally into that same moment — and the instant the dollar reaches its buying opportunity is the instant euro is a short. Use the dollar index for <strong>EURUSD and GBPUSD bias</strong>.</p>
+
+  <h4>The day the market refuses <span class="src">(L2)</span></h4>
+  <div class="callout rule"><span class="tag">The read that matters</span>Bearish bias. Did it rally above the <strong>midnight</strong> opening price? No. Above the <strong>8:30</strong> opening price? No. That combination is the tell: <strong>extremely bearish</strong> — it can't even rally to a short-term premium at key times, so it will not hand you tidy rallies to fade. Either you get in on small pockets of imbalance, or you miss the move.</div>
+  <p>Sometimes markets are simply <strong>too heavy to rally for you to short into</strong> — "it doesn't mean that they've changed anything, it doesn't mean that the concepts don't work." <strong>Don't jam the stop</strong>: you need time and price behind you before you start moving it. And the mistake he made for years — "it's too low now, the indicators say oversold, I'll buy it" — "1992, 1993, 1994, I blew account after account doing that."</p>
+
+  <h4>SMT divergence <span class="src">(L3)</span></h4>
+  <div class="callout rule"><span class="tag">Smart money technique</span>The S&amp;P and Nasdaq composites are closely correlated and generally move in tandem — <strong>not all the time</strong>. If you're bearish and <strong>NQ makes the higher run but ES doesn't</strong>, the run is a <strong>stop run</strong> and ES is really weak. That is your confirmation, <strong>without an indicator</strong> — it looks like a divergence, but it's price.</div>
+  <p>Plot it with the <strong>compare</strong> tab, add the correlated contract in a new pane, and change that pane's <strong>price source to High</strong> when comparing highs (or <strong>Low</strong> when comparing lows). When a sell program seeks lower prices it is likely to reprice to the <strong>low where something was respected</strong> — not to a low where a sell-side purge has already occurred.</p>
+
+  <h4>The Fibonacci settings <span class="src">(L3, L4)</span></h4>
+  <div class="kv">
+    <div>0.5</div><div><strong>Equilibrium</strong> — the divide between premium and discount</div>
+    <div>0.62 &amp; 0.79</div><div>The <strong>optimal trade entry</strong> levels</div>
+    <div>Standard deviations</div><div><strong>Projections</strong> — how far the move is likely to travel</div>
+  </div>
+  <div class="callout rule"><span class="tag">Which anchor, and when</span>For <strong>premium and discount</strong>, use the range high to low. For <strong>OTE</strong> he uses the <strong>bodies</strong> — the lowest open-or-close and the highest open-or-close — because that is the bulk of the volume and the wicks beyond them are stop runs. But on a <strong>high-volatility day like FOMC</strong>, the extremes of the range should be considered, which means using the <strong>wicks</strong>. That is the whole answer to why he sometimes uses one and sometimes the other.</div>
+  <p>Also: any time the market trades <strong>above an old high that is a short-term premium</strong>, because it's going into liquidity; below an old low is a discount. But <strong>things can be in a premium and keep going</strong> — market structure only helps you frame an idea, and the idea must align with the present narrative.</p>
+
+  <h4>News days <span class="src">(L4)</span></h4>
+  <div class="callout rule"><span class="tag">The knee-jerk sequence</span>FOMC — like non-farm payroll — delivers a repeatable order: <strong>an initial leg, then another leg, then a fake-out leg, and then the real setup</strong>. That is why you can afford to wait for price to trade into the higher-timeframe gap rather than chasing the first move.</div>
+  <div class="kv">
+    <div>Sweeping a high/low</div><div>A <strong>shallow run</strong> above the level, then back down and a reversal into the range</div>
+    <div>Running a high/low</div><div>It goes <strong>right over the top and doesn't look back</strong> — an expansion that continues</div>
+  </div>
+  <div class="callout warn"><span class="tag">Eight setups, and you take one</span>One move contained eight separate setups — and "I'm not Spiderman", neither are you. Any <em>one</em> could be the setup that fits your unique model. The move that happens <strong>ahead of the release doesn't count</strong>: "that's a gambler's setup." And none of it is an invitation to trade FOMC or NFP — they are "extremely risky", but a <strong>wonderful case study</strong>.</div>
+
+  <h4>The two entry patterns <span class="src">(L5)</span></h4>
+  <div class="kv">
+    <div>1</div><div>A level of <strong>relative equal highs</strong>; price approaches, corrects, approaches again</div>
+    <div>2</div><div>It <strong>runs through</strong> those highs — buy stops taken</div>
+    <div>3</div><div>Pan back to the left and find the <strong>nearest short-term low</strong> — that's your trigger</div>
+    <div>4</div><div>Price must trade <strong>below that short-term low with displacement</strong></div>
+    <div>5</div><div>Go back through that displacement leg and find the <strong>fair value gap</strong> — that's where you sell</div>
+  </div>
+  <div class="callout rule"><span class="tag">The filter that removes the low-probability trades</span>"It's not that it goes above the relative equal high and then goes down below that — that's not it, folks." <strong>Until it takes out that short-term low with displacement, there's nothing going on.</strong> The displacement leg is the foundation of the setup; only then do you look for the gap.</div>
+  <p><strong>Pattern two</strong> is the same logic with an <strong>old fair value gap above</strong> standing in for the relative equal highs: use the <strong>low of the gap</strong> as the level, and once price trades up through it go back through the leg for the short-term low, the shift and the displacement. "That way you don't have to worry about how far into it does it need to go."</p>
+
+  <h4>The day the setup never came <span class="src">(L5)</span></h4>
+  <div class="callout rule"><span class="tag">The model proved itself by keeping him out</span>Sell stops were run, but there was <strong>no displacement back above the old low</strong> and no gap to buy into — so there was no setup and no losing trade. "If a model has valid, reasonable, sound logic behind it, it should prevent you from taking bad trades." <strong>It doesn't mean the model's broke — the market did not provide the structure to allow this to form.</strong></div>
+
+  <h4>Daily rebalance theory <span class="src">(L6)</span></h4>
+  <div class="callout rule"><span class="tag">The routine</span>Look back over the <strong>last three days</strong> and ask: is there a fair value gap in them? If there isn't, and one day opened, extended and closed near its low, go back to the <strong>previous day's low</strong>. That level becomes the place a retracement can reach to <strong>rebalance the entire move</strong>.</div>
+  <div class="callout warn"><span class="tag">What the rebalance does to people</span>It tricks people into thinking the low is in. All it has actually done is go up to a logical level that rebalances the sell-off. Indicator followers see oversold and hunt bullish divergence; breakout traders read it as resistance-turned-support. <strong>Don't try to pick the bottom:</strong> "I have lost more money trying to do that than any other thing." There's a lot of meat in between the major turning points.</div>
+  <div class="callout rule"><span class="tag">Which liquidity gets taken first — and the hard-line rule</span>Price running <strong>above the buy-side first</strong>, without the low below being taken, is <strong>bearish</strong> and inside the context of the bias. If instead it took the previous low and <em>then</em> rallied, that is not bearish. And: put the fib on the displacement swing — <strong>never sell in a discount</strong>. "You have to be at equilibrium or higher to be in a premium. That's a hard-line rule — if you just follow that, it will keep you out of so many ill-fated scenarios."</div>
+  <p><strong>Seasonal tendency:</strong> from about the last week of April into May, the S&amp;P, Nasdaq, Dow and Russell tend to be weak — "usually, not always, never guaranteed", like not expecting snow in Maryland on the 4th of July. And the timeline: <strong>three months of serious daily study and back testing, then two or three months of forward testing</strong> — "after six months with just what's been taught here, I am absolutely confident that you will have found your model."</p>
+
+  <!-- ==================== PART 5 ==================== -->
+  <h3>Part 5 — Session Playbooks &amp; Special Days</h3>
+
+  <h4>Counter-trend, and when it is allowed <span class="src">(L1, L2)</span></h4>
+  <p>A long <em>against</em> a bearish daily bias is on the table only once <strong>the sell side has already been taken</strong> and price has already traded into the downside objective. With the downside met, the working idea is a run up into the buy stops — "it doesn't need to do that to be profitable."</p>
+  <div class="callout rule"><span class="tag">Sell side is not enough — it has to be a discount</span>Relative equal lows sitting below are not a buy unless they are in a <strong>discount of the day's range</strong>. Put the fib on the low and high; the buy goes inside the fair value gap only because it is <strong>at or below equilibrium</strong>. And the draw does not need to be reached for the framework to pay — think of the level as "a big magnet drawing price up towards it."</div>
+  <div class="callout warn"><span class="tag">The warning attached</span>Counter-trend trading goes against higher-timeframe order flow. "<strong>You can and will absolutely lose money trading this style.</strong>" It is shown so you understand the retracement and <em>don't</em> trade it — material for back testing, not for live risk.</div>
+
+  <h4>The PM session playbook <span class="src">(L2, L4)</span></h4>
+  <div class="callout rule"><span class="tag">The lunch-lows rule</span>Many times when there is an <strong>afternoon continuation to the upside, the lunch lows get swept first</strong>. If you're bullish and it consolidates through lunch, find the lunch lows, wait for them to be run out, and then the move resumes.</div>
+  <div class="kv">
+    <div>9:30</div><div>New York open — often creates the low of the day</div>
+    <div>~12:10</div><div>Lunch time — usually a retracement or consolidation</div>
+    <div>1:30</div><div>The algorithm starts <strong>seeking liquidity</strong>; if it's continuing higher, it seeks sell side first</div>
+    <div>3:00 pm</div><div>The algorithms <strong>spool</strong> price toward the liquidity objective into the close</div>
+  </div>
+  <p>What that manipulation does to everyone: breakout buyers get long on the triggered buy stops and are taken against; those without stops are squeezed out; <strong>morning longs who trailed their stops below the lunch lows get taken out</strong> — "they don't want them being able to profit on the real move"; and the new shorts are about to be squeezed as it rips into the target.</p>
+
+  <h4>The narrow range day, and close-proximity entries <span class="src">(L3)</span></h4>
+  <p><strong>The day before the Fed chair speaks is usually a very quiet, small-range day</strong> — which is why the market was lethargic. It is important to know when volatility is likely to occur <em>and when it is likely to shrink up</em>. A short that day never qualified: there was a rally, a broken low, a gap and a breakdown — but the displacement leg had <strong>no fair value gap above 50% of its own range</strong>, so nothing fit.</p>
+  <div class="callout rule"><span class="tag">The rule for a missed entry</span>If you fumble the ideal entry, getting in <strong>really close to it is acceptable</strong> — a <strong>close-proximity entry</strong>. The condition is that you get close to the fair value gap <strong>without price running too far away from it</strong>. On that move the market gave eight candles of opportunity.</div>
+
+  <h4>Consolidation days and the three o'clock setup <span class="src">(L6)</span></h4>
+  <div class="callout rule"><span class="tag">The definition and the clock</span>On a consolidation day the market creates an <strong>initial range and stays in it until the afternoon at three o'clock</strong>. "It used to be the bond close that started this whole thing, but now it's just <strong>three o'clock to four o'clock</strong> when equities close" — the closing bell that sets the tone for on-close orders.</div>
+  <p>The tell that produces one: price trades down to an old low and <strong>falls short of it</strong> — the setup people read as a double bottom — especially after an <strong>outside day with a down close</strong>. And when price trades back into the <strong>middle of the range</strong> the probability statistically moves to <strong>50/50</strong>; that's not a disclaimer, it's the read. The afternoon setup, called in advance: <strong>run the buy stops above the relative equal highs</strong> (squeezing out shorts who trailed, recruiting breakout longs whose new stops build sell side below), then <strong>reverse back down into the midpoint</strong> of the 9:30 high and low.</p>
+  <div class="callout warn"><span class="tag">Why the chop is expensive</span>Ranges like that can come back on you, stop you out, and then go nowhere for a long period. The advice for anyone getting chewed up in one: <strong>wait until three o'clock</strong>. On those afternoons nobody is really allowed to make money — and most traders are too afraid to go short into the high, which is precisely where the setup is.</div>
+
+  <h4>Confluence, not support and resistance <span class="src">(L7)</span></h4>
+  <div class="callout rule"><span class="tag">The gap is the trade, not the level</span>The entries occur at old lows where sell side was resting — but the mechanism is a <strong>fair value gap after a run below</strong>, not broken support turning into resistance. "<strong>If the fair value gap doesn't exist, I don't trust that level.</strong>" The levels aren't indiscriminate: "it's based on liquidity, not support and resistance — the orders I know are going to be there."</div>
+  <div class="kv">
+    <div>Condition 1</div><div>Break below the level being watched</div>
+    <div>Condition 2</div><div>A <strong>fair value gap formed with that break</strong></div>
+    <div>Condition 3</div><div>The next level breaks too…</div>
+    <div>Condition 4</div><div>…and gets <strong>another fair value gap</strong>, which delivers even more</div>
+  </div>
+  <p>Reaching the objective was conditional on <strong>all of those coming together</strong> — "a confluence, not just one thing." That accumulation is what justifies pushing the button.</p>
+
+  <h4>The scout and the sniper <span class="src">(L5)</span></h4>
+  <p>Pointing at a level is <strong>not calling a trade</strong>: "I'm acting like a scout; you're the sniper in training." The scout shows you where to aim — you scope it and pull the trigger. And <strong>don't wait only for the open</strong>: if you don't get a trade at 8:30 or 9:30, a fair value gap later in the day still lets you get involved with the move. The trigger that day: <strong>three candles forming a swing high inside a five-minute gap</strong>, with the gap already traded through and the bias bearish — short on that candle's close.</p>
+
+  <h4>Negative evidence <span class="src">(L4)</span></h4>
+  <div class="callout rule"><span class="tag">When the market isn't going to deliver, the pattern doesn't appear</span>An afternoon sell-off was plainly visible on the five-minute — and the model gave <strong>no setup in it</strong>. It didn't run buy side, it just sold off. "It's important to notice that." The caveat is stated in the same breath: "it's not a fantasy; it means it's <strong>not going to work all the time</strong>."</div>
+
+  <h4>Back testing that trains the subconscious <span class="src">(L2)</span></h4>
+  <div class="callout rule"><span class="tag">The method</span>Annotate the old move as richly as you can. Then, in the <strong>empty space on the chart</strong>, write commentary in your own words, <strong>in the first person, as though you saw it coming</strong>. Screen-capture it into your journal, and <strong>re-read those journals at the end of the week</strong>.</div>
+  <p>He states the objection himself — "you're telling people to lie to themselves" — and answers it: "you <em>are</em> lying in the chart when you do your annotations for study purposes. You're <strong>tricking your brain</strong>." Your subconscious retains the image and the words, so when you see it live it remembers having done it before: <strong>pseudo-experience</strong>. The comparison is the <strong>reticular activating system</strong> — buy a car and suddenly everyone has bought the same one, because it has become meaningful to you.</p>
+  <div class="callout warn"><span class="tag">And what never goes in it</span><strong>Never write anything negative</strong> — not "I wish I'd seen this", not "I was foolish", not "I'm never going to get this." These entries exist to be reflected on later, so they must be positive. Also: "you're going to develop at your own pace and arrive at full understanding right on time."</div>
+
+  <!-- ==================== PART 6 ==================== -->
+  <h3>Part 6 — Dealing Range, Algorithmic Theory &amp; Risk</h3>
+
+  <h4>The Sunday opening gap, and drawing the dealing range <span class="src">(L1)</span></h4>
+  <div class="callout rule"><span class="tag">The Sunday gap</span>Put the <strong>Sunday gap opening</strong> on your chart and plot it across the <strong>entire week</strong>. There is often a lot of valuation around it, so treat it as a <strong>dynamic level</strong>: above it, look for support; below it, look for resistance. It earns its keep in <strong>consolidation weeks</strong> — an FOMC week, for instance — not in weeks that run away and never come back.</div>
+  <div class="callout rule"><span class="tag">The correction on the dealing range</span>Anchor the fib on the <strong>expansion swing — the impulsive leg running in the direction you are trying to trade</strong>. Looking for a long? Draw from the low up to the high of that up-leg, then wait for the retracement; below 50% is the discount where you hunt the long, better still if it lands in a gap. <strong>Don't use a high-to-low leg to measure something you're trying to go long on.</strong> The measurement always follows the direction of the trade you want.</div>
+
+  <h4>The mean threshold <span class="src">(L2)</span></h4>
+  <div class="callout rule"><span class="tag">The three sensitive prices</span>When a candle is used as an order block, the <strong>low, the open and the middle of the range</strong> are the three sensitive areas. The middle — 50% of the candle, found with a fib across it — is the <strong>mean threshold</strong>, and it is the level the block has to defend. <strong>If it doesn't hold, expect the order block to fail.</strong></div>
+  <p>Where a delivery came in <strong>two stages</strong>, measure the <strong>most recent</strong> one: short-term low to short-term high, fib across, 50% is equilibrium, and expect the drop into discount. The same shape repeats fractally up the hourly — dealing range, retrace into discount, gap or block, rally, then a new dealing range and the same again.</p>
+
+  <h4>SMT — timing, and the trap <span class="src">(L2)</span></h4>
+  <p>The cracking correlation shows up at <strong>specific times — 8:30, 9:30, and at news releases</strong>. A nice run <strong>early, before or around 7:00 am</strong>, means a deep retracement is probably coming, and SMT usually shows up around <strong>9:30</strong> after such a run.</p>
+  <div class="callout warn"><span class="tag">The trap</span>"If you have a bias it's helpful, but <strong>if you don't know where it's going you're going to encounter what would look like SMT divergence and then it disappears</strong>" as the two start moving in concert again. Hence the standing instruction: <strong>know what price is reaching for</strong>. SMT without a bias is worthless.</div>
+
+  <h4>No entry means no setup <span class="src">(L3)</span></h4>
+  <div class="callout rule"><span class="tag">Negative evidence is evidence</span>On a big drop, "notice there's <strong>no model entry</strong> here. That's telling — it's tipping its hand to you, because there's no real setup and it's a <strong>rush to get down here</strong>." A run that never offers an entry is not a delivery you were meant to be in; it is the market <strong>clearing the liquidity</strong> before it does what it actually intends.</div>
+  <p>And <strong>which market structure shift counts?</strong> It is not a rule about the candles — it's the frame: <strong>define the range you are working within first</strong>, and the shift is the one that breaks that range.</p>
+
+  <h4>Where bias comes from, and the days you skip <span class="src">(L4)</span></h4>
+  <p>Off the daily: price moves off a low and creates a swing low, so it's easy to assume it wants to come back to the high — <strong>bullish until that high is taken out</strong>. After the high, a day or two of retracement is logical because the rally left a gap; price trades down, fills it, tests it, and rallies. Levels on the hourly are <strong>transposed daily levels, not hourly support and resistance</strong> — lose that context on a one-minute chart and you won't understand why price is dropping where it is.</p>
+  <div class="callout warn"><span class="tag">Non-Farm Payroll: study it, don't trade it</span>NFP Friday is not a day to speculate on. Not because money can't be made there — because <strong>you are here to learn to read price action</strong>, the day can be very volatile, choppy, or a complete dud, and <strong>precision drops precipitously</strong>. Determine which side of liquidity price is reaching for <em>before</em> the 8:30 release, then watch the one- and five-minute charts: "an amazing study for liquidity purposes only."</div>
+  <div class="callout rule"><span class="tag">Stop trading by Wednesday</span>Stop by the <strong>New York session on Wednesday</strong>. If you were profitable to that point, stop for the rest of the week and just observe. And if you have bagged <em>nothing</em> from Sunday's open through Wednesday, <strong>don't do any trades</strong> — sit with the desire and do nothing. It forges discipline and patience, and Thursday/Friday of an NFP week lose a lot of their precision.</div>
+
+  <h4>Changing gears — abandoning a bias <span class="src">(L5)</span></h4>
+  <p>The evidence the bias was wrong: multiple lows were taken and the market <strong>reversed while offering no high-probability short</strong>; the downside objective was never tagged and that liquidity was left in place. The turn came on the bellwether 15-minute — price ran higher, gave a <strong>short-term shift in market structure</strong>, created a gap, and traded back down into it. "No panic. No 'I'm missing a move'. No calling somebody or reaching out on social media."</p>
+  <div class="callout rule"><span class="tag">Narrative, defined</span>"Narrative is the <strong>understanding of what price should do, why, and what things it will encounter to prove that the narrative you are assuming is in fact underway</strong>." It is not buying and selling pressure — it is algorithmic. But narrative <strong>by itself is not an entry</strong>: you still want <strong>displacement</strong>, then measure that leg for premium and discount, and wait for the discount.</div>
+  <div class="kv">
+    <div>Consolidates into lunch</div><div>Mark the swing lows made <strong>during</strong> the lunch hour, wait for the drop to sweep them, then look for the rally</div>
+    <div>Retraces into lunch</div><div><strong>They're going to work through lunch</strong> — expect a short-term low with smooth relative equal highs above it, then one more drop below that low into the sell stops</div>
+  </div>
+  <p>That distinction was learned from a floor trader in the open-outcry days: when the floor knew the market was in a hurry, <strong>they didn't leave the floor</strong> — and the same mentality transferred into electronic trading.</p>
+  <div class="kv">
+    <div>Optimal trade entry</div><div>Low to high, fib, buy the <strong>62–79%</strong> retracement</div>
+    <div>Turtle soup + OTE</div><div>A low, then a <strong>lower low violating it</strong>, taken with the OTE</div>
+    <div>The fair value gap</div><div>Find the gap <strong>below the 50% level</strong> and buy as it trades to the top of it; stop below the lower low</div>
+    <div>Buying strength</div><div>A <strong>buy stop at the swing high</strong> prior to the move into the gap — "not, in my opinion, the preferred entry strategy"</div>
+  </div>
+  <div class="callout rule"><span class="tag">Being wrong twice and still getting paid</span>"I was wrong on this level, and I was wrong on the other level — but I was able to trade and take the <strong>lion's portion of the move in the middle</strong>. That's all you need." You do not need the absolute high and the absolute low. And on a call that never printed: "last time I checked, if you don't put a trade on, did you lose? No."</div>
+
+  <h4>Algorithmic theory: time and price <span class="src">(L6)</span></h4>
+  <div class="kv">
+    <div>The time element</div><div>What <strong>time of day</strong> → what <strong>day of week</strong> → what <strong>week of month</strong> → what <strong>month of year</strong> → what <strong>seasonal</strong> influences</div>
+    <div>Price without time</div><div>Price levels are <strong>useless</strong> until time is considered — which is why support and resistance is a fallacy: anyone can find the level that worked in hindsight</div>
+    <div>Time without price</div><div>Time is of no use unless price is at a <strong>key PD array</strong>. Being free to sit at the charts means nothing on its own</div>
+    <div>Blending the two</div><div>Yields the precision demonstrated in the forecasts throughout the mentorship</div>
+  </div>
+  <div class="kv">
+    <div>8:30 am</div><div>The <strong>news embargo lifts</strong> — first element of time in the model</div>
+    <div>9:30 am</div><div><strong>Equities open</strong> — the second opportunity, taken if 8:30 was missed</div>
+    <div>1:30 pm</div><div>The <strong>afternoon session</strong> setup, after lunch ends at 1:00</div>
+    <div>3:00–4:00 pm</div><div>The <strong>market-on-close macro</strong> — a little setup forms there most days; it may be a buy, not only a sell</div>
+  </div>
+  <p>Also from this lesson: <strong>narrative comes before everything</strong> — start annotations on the higher timeframe, keep them simple (the level price is likely to draw to, plus the key levels that may confirm or change the bias), then <strong>transpose them down</strong> onto the chart you trade from. Without it, "it's not a breaker, it's a gamble, it's a guess, it's a speculation that's aimless."</p>
+
+  <h4>The five-point model <span class="src">(L6)</span></h4>
+  <div class="callout rule"><span class="tag">Five points, then out</span><strong>Five points, then out — even if the framework allows for thirty.</strong> Below five you are ultra short-term scalping and commissions will kill you; five is the lowest threshold a setup should reasonably yield.</div>
+  <div class="kv">
+    <div>One trade in the morning</div><div>8:30 or 9:30 — get the five points at 8:30 and he doesn't trade 9:30. Miss or lose at 8:30, try 9:30.</div>
+    <div>One in the afternoon</div><div><strong>Only if the morning was missed or lost.</strong> If the morning made money, the afternoon is demo.</div>
+    <div>Why not push the edge</div><div>The lesson is <strong>discipline, not greed</strong>. Seeing that you <em>can</em> make more and choosing not to builds the contentment that stops over-trading.</div>
+    <div>The arithmetic</div><div>One ES contract, one point is $50 → <strong>five points is $250 a day</strong>; consistently, that's 25 points — <strong>$1,250</strong> — a week.</div>
+  </div>
+
+  <h4>The six keys to daily bias <span class="src">(L7)</span></h4>
+  <div class="callout rule"><span class="tag">The rules, in order</span>
+    <ol>
+      <li><strong>A bias every day is unrealistic.</strong> Going in with a predetermined daily bias before the market opens, invariably it will be wrong.</li>
+      <li>Determine the likely <strong>weekly expansion from the weekly chart</strong> — not where the week will close, <strong>where it is likely to reach for</strong>. That gives the strongest bias.</li>
+      <li>Look for <strong>obvious liquidity</strong> in that direction — below old lows, above old highs.</li>
+      <li>Identify <strong>imbalances top down</strong> — weekly, daily, 4h, 1h, 15m, then 5 down through 1 for whichever gives the clear gap under the model's rules.</li>
+      <li>Focus only on <strong>high or medium impact calendar days</strong>. Yellow events are of no interest.</li>
+      <li>Look for the <strong>directional price run inside the killzones</strong>, at the same time the calendar says a high or medium impact event is likely.</li>
+    </ol>
+    The framing question that goes with it: <strong>who's in the crosshairs?</strong> Have people been making money going long? Is there a low to run down and stop them out with?</div>
+  <div class="kv">
+    <div>The three-bar swing</div><div>A sweep of an old high followed by that three-bar pattern is when lower prices are expected — confirmed when the next candle trades lower. <strong>Not a five-candle fractal:</strong> "if you're waiting for five candles you missed the boat."</div>
+    <div>10:00–11:00 am</div><div>The <strong>London close profit-taking hour</strong>. Usually the opposing end of the daily range forms here — if the session high is in, the low likely forms in this window. Have roughly <strong>80% of a directional trade off</strong> between 10 and 11.</div>
+    <div>Wick days</div><div>Two big wicks either side caused by news? <strong>Ignore the wicks</strong> — the manipulation is done and can't hurt you. Take the real range from the swing that follows.</div>
+    <div>Protected lows</div><div>London gives an energetic move, price retraces, and at 8:30 you open near the London low → <strong>you can buy before 9:30</strong>, because the manipulation already happened. Stops go under those lows.</div>
+  </div>
+  <div class="callout warn"><span class="tag">Why not trade every day</span>"Trading is not an Olympic sport. <strong>They don't give out gold medals for over-trading — but they do blow accounts.</strong>"</div>
+
+  <h4>Risk, drawdown and stop management <span class="src">(L8)</span></h4>
+  <div class="callout rule"><span class="tag">The gold standard setup</span>
+    <ol>
+      <li>Price trades down into and <strong>closes in the 15-minute fair value gap</strong>.</li>
+      <li>A <strong>short-term shift in market structure</strong> — it shows willingness to go higher.</li>
+      <li>It trades back down into the <strong>order block</strong> — the last down-close candle — with a fair value gap there.</li>
+      <li>That is <strong>also an optimal trade entry</strong>, the 62–70% retracement, below equilibrium.</li>
+    </ol>
+    <strong>Fair value gap + order block + OTE, after a short-term shift in market structure</strong> is the flagship pattern of the channel — the gold standard of the ICT setup.</div>
+  <div class="callout rule"><span class="tag">The drawdown ladder</span>Take a full <strong>1% loss → the next trade risks 0.5%</strong>. Lose that → the next risks <strong>0.25%</strong>, which is the floor. <strong>You must make back 50% of what you lost before returning to full risk.</strong> Three consecutive losses at 1%, 0.5% and 0.25% leaves you down 1¾% — easy to come back from. The alternative — doubling up to 2%, then 3% or 4%, widening or dropping the stop — reaches 10% drawdown quickly, "along with embarrassment and shame."</div>
+  <div class="callout rule"><span class="tag">When the stop is allowed to move</span>At <strong>50% of the expected targeted range</strong>, the stop can be <strong>trimmed by 25%</strong> of the entry-to-stop distance. At <strong>75% of the expected range, the stop goes to break even — period.</strong></div>
+  <div class="callout warn"><span class="tag">The hard stop is not optional, and the tax</span>"I don't really use a hard stop but I know when I want to get out" — <strong>if you don't know where to place a stop loss, you really don't know what you're doing.</strong> And the closing word: <strong>you are going to have losing trades, plural</strong>. That is <strong>a tax on success</strong>. Nobody gets around it and nobody is the exception. What you control is how bad it gets. Professional money management views drawdown as <strong>a loan you are going to collect interest on</strong> — a bank doesn't cry about lending you the money and doesn't want it back straight away.</div>
+
+  <!-- ==================== REFERENCE ==================== -->
+  <h3>The times worth memorising</h3>
+  <div class="kv">
+    <div>Midnight NY</div><div>Where the new day begins; frames Power of Three on the daily range and the London session</div>
+    <div>2:00–5:00 am</div><div>The <strong>London killzone</strong>; also where a big overnight run happens that cancels your morning</div>
+    <div>7:00–10:00 am</div><div>The <strong>forex</strong> New York killzone</div>
+    <div>8:30 am</div><div>The <strong>news embargo lifts</strong> — the opening price for the New York morning, and where the hunt starts</div>
+    <div>8:30–11:00 am</div><div>The <strong>index futures</strong> window; he'll still take a trade to 10:40–10:45</div>
+    <div>9:30 am</div><div>The <strong>equities open</strong> — volatility, and usually a Judas swing opposite to the real move</div>
+    <div>10:00–11:00 am</div><div>The <strong>London close</strong> profit-taking hour — take ~80% off here</div>
+    <div>11:30 am</div><div>If the order hasn't filled, <strong>pull it</strong></div>
+    <div>Noon–1:00 pm</div><div><strong>New York lunch</strong> — no entries. Exits are fine.</div>
+    <div>1:30 pm</div><div>The <strong>PM session</strong> — its own accumulation, manipulation, distribution</div>
+    <div>3:00–4:00 pm</div><div>The <strong>market-on-close macro</strong>; the algorithmic spool into the objective</div>
+  </div>
+
+  <h3>The numbers worth memorising</h3>
+  <div class="kv">
+    <div>1 handle</div><div>Four ticks — <strong>$50</strong> on ES, <strong>$20</strong> on NQ, <strong>$5</strong> on the micros</div>
+    <div>25 handles a week</div><div>The stated objective on a market like the E-mini S&amp;P</div>
+    <div>5 points</div><div>The <strong>lowest threshold</strong> a setup should yield — take it and stop</div>
+    <div>3 candles</div><div>A swing high or low — <strong>not</strong> a five-candle fractal</div>
+    <div>50%</div><div>Equilibrium of a dealing range, and the <strong>mean threshold</strong> of an order block</div>
+    <div>62–79%</div><div>The optimal trade entry zone (the gold-standard setup cites 62–70%)</div>
+    <div>1% max</div><div>The risk ceiling — <strong>a half or a quarter percent while learning</strong></div>
+    <div>1% → 0.5% → 0.25%</div><div>The <strong>drawdown ladder</strong>; make back 50% of the loss before returning to full risk</div>
+    <div>50% / 75%</div><div>Of the expected range: <strong>trim the stop 25%</strong>, then <strong>move it to break even</strong></div>
+    <div>3 + 2 + 1</div><div>Pyramid <strong>biggest first</strong> — never one, then two, then three</div>
+    <div>4 trades a day</div><div>The cap — two in the morning, two in the afternoon</div>
+    <div>3–5 pips</div><div>The cushion to add to an FX exit — <strong>10 if you're new</strong></div>
+    <div>6 months</div><div>Three months of study and back testing, then two or three forward testing</div>
+  </div>
+
+  <h3>The checklist before any trade</h3>
+  <ol>
+    <li><strong>What is the draw?</strong> Is price reaching for an imbalance, or for a liquidity pool? Name the level before anything else.</li>
+    <li><strong>What is the weekly and daily bias?</strong> Where is the week likely to <em>reach for</em>; where does the daily dealing range sit relative to equilibrium?</li>
+    <li><strong>Is it the right time?</strong> 8:30, 9:30, 1:30, or 3:00–4:00 — inside a killzone, with a red or orange calendar event if one is due.</li>
+    <li><strong>Has liquidity been taken?</strong> No stop run, no market structure shift — and a shift without one is not a shift.</li>
+    <li><strong>Is there displacement?</strong> Energetic and animated, preferably closing beyond the level. A lethargic drift is not enough.</li>
+    <li><strong>Is there a fair value gap inside that displacement leg?</strong> No gap, no trade. Strip down 5 → 4 → 3 → 2 → 1 and take the first one you find.</li>
+    <li><strong>Premium or discount?</strong> Sells at or above equilibrium; buys at or below it. Never sell in a discount — that is a hard-line rule.</li>
+    <li><strong>Where is the stop and where is the target?</strong> Stop beyond the candle that created the gap (or the swing extreme); target the external liquidity, fluffed a few pips inside.</li>
+    <li><strong>Is the risk right?</strong> 1% maximum, less while learning; biggest position first if you pyramid; and don't move the stop until time and price are behind you.</li>
+  </ol>
+
+  <h3>What the mentorship keeps warning you about</h3>
+  <div class="callout warn"><span class="tag">The repeated warnings</span>
+    <ul>
+      <li><strong>Don't chase.</strong> Once the low is taken you are chasing; learn to sell while the candle is going up.</li>
+      <li><strong>Don't trade every day.</strong> "Trading is not an Olympic sport." One setup a week is enough, and stop by Wednesday if you've banked it.</li>
+      <li><strong>Don't trade the noon hour, or NFP and FOMC.</strong> They are case studies, not trading days.</li>
+      <li><strong>Don't pick bottoms or tops.</strong> "I have lost more money trying to do that than any other thing."</li>
+      <li><strong>Don't call it a setup when there isn't one.</strong> No entry means no setup — that is the market tipping its hand, and the model keeping you out.</li>
+      <li><strong>Don't force it when structure disagrees.</strong> A short-term high trading above a rebalance ITH means your idea is probably flawed — go to the sidelines.</li>
+      <li><strong>Don't strangle the position.</strong> Trailing too tight and rushing out of marginal winners are the two failure modes that filter people out of this industry.</li>
+      <li><strong>Don't increase risk after a loss.</strong> Halve it, then quarter it, and make back half of what you lost first.</li>
+      <li><strong>Don't dilute the model</strong> with bolted-on indicators, and don't grow a dependency on being shown every move — "that mindset stunts your growth."</li>
+      <li><strong>Don't skip the journal.</strong> "Nothing else gives it to you. Watching my videos will not do it for you. If you fail under my tutelage, it's because you don't do this."</li>
+    </ul>
+  </div>
+
+  <div class="callout"><span class="tag">Ready?</span>If most of the above reads as familiar rather than new, take the <strong>Final Exam</strong> — 40 questions across all six parts. Anything you get wrong points you straight back at the lesson to re-read.</div>
+
+  <div class="review-footer"></div>
+</section>
+
+<section class="lesson" id="s2-exam" data-kind="exam" data-section="s2" data-title="Final Exam">
+  <div class="lesson-hero">
+    <div class="crumb">ICT 2022 Mentorship · Section Review</div>
+    <h2>Final Exam</h2>
+    <div class="desc">40 questions drawn from every lesson in this section. Nothing is graded until you submit — and you can retake it as many times as you like.</div>
+  </div>
+  <div class="exam" data-exam="s2"></div>
+  <div class="review-footer"></div>
+</section>
+
 
 
     </div>
@@ -5121,17 +5607,17 @@ const MONTHS = [
   {"id": "m2", "title": "Month 2 — Risk & Trade Selection", "desc": "Growing small accounts, framing low-risk setups, 10% months, mitigating losses, high-reward selection and the first market maker traps."},
   {"id": "m3", "title": "Month 3 — Institutional Analysis", "desc": "Timeframe selection, institutional order flow, sponsorship, anticipatory skills, SMT, macro-to-micro and more traps."},
   {"id": "m4", "title": "Month 4 — The PD Arrays", "desc": "Orderblocks, mitigation, breaker, rejection, reclaimed, propulsion & vacuum blocks, liquidity pools, voids, FVGs and phantoms."},
-  {"id": "p1", "title": "Part 1 — Foundations & The 2022 Model", "desc": "The mindset the mentorship is built on, then the model itself: fair value gaps, liquidity, the market structure shift, premium & discount and the killzones."},
-  {"id": "p2", "title": "Part 2 — Order Blocks, Power of Three & Structure", "desc": "How an order block is actually found, the accumulation-manipulation-distribution shape of the daily range, the opening range every setup forms inside, and applying the model to forex."},
-  {"id": "p3", "title": "Part 3 — Sessions, Targeting & the Daily Narrative", "desc": "Live executions at the open, the multiple setups hiding inside one morning session, swing projections that land on the exact low, and the killzone rules that differ between index futures and forex."},
-  {"id": "p4", "title": "Part 4 — Correlation, Tape Reading & Reading the Day", "desc": "The dollar index as the barometer for forex and the indices, risk on versus risk off, SMT divergence between closely correlated markets, and what to do on the day the model's setup never arrives."},
-  {"id": "p5", "title": "Part 5 — Session Playbooks & Special Days", "desc": "Trading against the daily bias, the narrow range day before the Fed speaks, sweeping the lunch lows for the afternoon move, the consolidation day that only sets up at three o'clock, and the confluence that has to stack before a button gets pushed."},
-  {"id": "p6", "title": "Part 6 — Dealing Range, Changing Gears & Discipline", "desc": "The Sunday gap held across the week, the mean threshold that decides whether an order block survives, what a move with no entry is telling you, and how a bias gets abandoned mid-session when the objective never prints."}
+  {"id": "p1", "title": "Part 1 — Foundations & The 2022 Model", "desc": "The mindset the mentorship is built on, then the model itself — the fair value gap defined candle by candle, the liquidity run and market structure shift that qualify it, displacement, premium & discount, and how the trading day is framed from 8:30 onward."},
+  {"id": "p2", "title": "Part 2 — Order Blocks, Power of Three & Structure", "desc": "How an order block is actually found and what makes one high probability, the accumulation–manipulation–distribution shape of the daily range, the opening range every setup forms inside, and the market structure lesson he had never taught before: every rebalanced imbalance leaves a key high or low."},
+  {"id": "p3", "title": "Part 3 — Sessions, Targeting & the Daily Narrative", "desc": "Live executions at the open, the multiple setups hiding inside one morning session, the killzone rules that differ between index futures and forex — then the whole workflow in one pass, what makes an order block valid, and when the honest read is to stand aside."},
+  {"id": "p4", "title": "Part 4 — Correlation, Tape Reading & Reading the Day", "desc": "The dollar index as the barometer for both forex and the indices, risk on versus risk off, SMT divergence between closely correlated markets, the Fibonacci anchoring behind OTE and the projections, daily rebalance theory — and the day the setup never arrived, which is the model working, not breaking."},
+  {"id": "p5", "title": "Part 5 — Session Playbooks & Special Days", "desc": "Trading against the daily bias, the narrow range day before the Fed speaks, sweeping the lunch lows for the afternoon move, the consolidation day whose only setup comes at three o'clock, the confluence that has to stack before a button gets pushed — and the back-testing method that turns annotated hindsight into experience."},
+  {"id": "p6", "title": "Part 6 — Dealing Range, Algorithmic Theory & Risk", "desc": "The Sunday gap held across the week, the mean threshold that decides whether an order block survives, what a move with no entry is telling you, how a bias gets abandoned mid-session — then the closing lessons: the four times of day the algorithm works, the six keys to daily bias, and position sizing, drawdown and stops."}
 ];
 /* ---------- sections (months/review/exam are DERIVED by build.py) ---------- */
 const SECTIONS = [
   {"id": "s1", "short": "ICT Core", "title": "ICT Core (Months 1–4)", "desc": "The full core syllabus — market conditions and templates, premium & discount, liquidity, risk and trade selection, institutional analysis, and the PD arrays.", "months": ["m1", "m2", "m3", "m4"], "review": "s1-review", "exam": "s1-exam"},
-  {"id": "s2", "short": "2022 Mentorship", "label": "Part", "title": "ICT 2022 Mentorship", "desc": "The free 2022 YouTube mentorship — one stripped-down intraday model taught end to end: fair value gaps, liquidity, market structure shifts, the killzones, and reading the daily bias.", "months": ["p1", "p2", "p3", "p4", "p5", "p6"], "review": null, "exam": null},
+  {"id": "s2", "short": "2022 Mentorship", "label": "Part", "title": "ICT 2022 Mentorship", "desc": "The free 2022 YouTube mentorship — one stripped-down intraday model taught end to end: fair value gaps, liquidity, market structure shifts, the killzones, and reading the daily bias.", "months": ["p1", "p2", "p3", "p4", "p5", "p6"], "review": "s2-review", "exam": "s2-exam"},
 ];
 /* filled after lessons defined */
 </script>
@@ -6656,6 +7142,253 @@ const EXAMS = {
     q: "A 1-hour orderblock offers only a 20-pip target. What do you do?",
     o: ["Pass — you want 40+ pips", "Take it with double size", "Take it and hold for more", "Move down to the 5-minute"], a: 0,
     e: "A 1h orderblock with only a 20-pip target is no trade — you want 40+ pips. Match the timeframe to the pip goal; one setup a week is enough. (Month 4, Lesson 2)"
+  }
+],
+ "s2":[
+  /* ---------------- Part 1 — Foundations & The 2022 Model ---------------- */
+  {
+    q: "Which single question does ICT say sets your bias for the week?",
+    o: ["What is price most likely to draw towards?", "Which indicator is showing oversold now?", "Where did the last three candles close up?", "How much volume arrived at the session open?"], a: 0,
+    e: "Is there an imbalance higher, or a liquidity pool lower? That one question sets your initial bias for the week — everything after it is detail. (Part 1, Lesson 2)"
+  },
+
+  {
+    q: "What must have happened before a broken short-term high counts as a market structure shift?",
+    o: ["The run before it must have taken sell stops", "The breaking candle must close as an engulfer", "Volume must expand on the candle that breaks", "A moving average must cross beneath the price"], a: 0,
+    e: "Breaking a short-term high is significant only if the run down before it traded into sell stops — below an old low, a double bottom, something retail views as support. No liquidity taken, no shift. (Part 1, Lesson 3)"
+  },
+
+  {
+    q: "In a bearish fair value gap, which two prices form the edges of the gap?",
+    o: ["Candle 1's low and candle 3's high", "Candle 1's high and candle 3's low", "Candle 2's open and candle 2's close", "Candle 2's high and candle 3's close"], a: 0,
+    e: "Candle 1's low is the upper end of the gap, candle 3's high is the lower end, and the gap itself resides on candle 2. Candle 3 must not trade back up to candle 1's low. (Part 1, Lesson 6)"
+  },
+
+  {
+    q: "What does ICT mean by displacement — the elephant in the paddling pool?",
+    o: ["An energetic, animated move away from the level", "A slow drift that eventually clears the level", "A gap left open across the weekend session", "A wick that pokes through and comes back in"], a: 0,
+    e: "Drop an elephant into a children's swimming pool and the water is obviously displaced. A lethargic, anemic move lower is not enough — only once you get real displacement do you go looking for the fair value gap. (Part 1, Lesson 5)"
+  },
+
+  {
+    q: "What is the rule for the noon-to-one hour in New York?",
+    o: ["It is a no-trade period — not even in demo", "It is the best window for a second entry", "It is when the afternoon macro begins to run", "It is the hour to move stops to break even"], a: 0,
+    e: "The morning runs 8:30 to noon, preferably positioned before 11:00; lunch is noon to 1:00 pm and is a no-trade period; the afternoon starts at 1:30 at the earliest. (Part 1, Lesson 5)"
+  },
+
+  {
+    q: "How many candles make a swing high in this model?",
+    o: ["Three — a high with a lower high either side", "Five — the standard fractal drawn on MT4", "Four — three, plus one more to confirm it", "Two — a high and the candle that breaks it"], a: 0,
+    e: "A swing high is a candle with a lower high to the left of it and a lower high to the right of it. It does not matter whether the candles close up or down — that has no bearing at all. (Part 1, Lesson 5)"
+  },
+
+  {
+    q: "Which price is the reference point of an order block?",
+    o: ["The opening price of the series of candles", "The midpoint between the wick high and low", "The close of the final candle in the series", "The widest body found anywhere in the leg"], a: 0,
+    e: "An order block is a change in the state of delivery, and the algorithm remembers that opening price. That is why the reference point is the open of the series rather than a candle body or a zone. (Part 1, Lesson 3)"
+  },
+
+  {
+    q: "Consolidation has made the daily bias unreadable. What does ICT say to do?",
+    o: ["Drop down and trade the liquidity pools nimbly", "Sit out entirely until the daily range expands", "Increase size so the small moves are worth it", "Switch to a lagging indicator for the direction"], a: 0,
+    e: "No read is not no trading. You drop to the smaller intraday timeframes and simply look for liquidity pools — run old highs, run old lows, be far more nimble. Like a surgical strike: take your handles and run. (Part 1, Lesson 7)"
+  },
+
+  /* ---------------- Part 2 — Order Blocks, Power of Three & Structure ---------------- */
+  {
+    q: "In Power of Three, what is the manipulation leg?",
+    o: ["The move against the day's eventual direction", "The expansion that closes near the day's high", "The quiet build-up before the market opens up", "The final push into the closing bell at 4:00"], a: 0,
+    e: "Accumulation is the opening price sitting near the low of the day; manipulation is the move lower that makes the fake low; distribution is the rally that makes the high and closes near it. (Part 2, Lesson 2)"
+  },
+
+  {
+    q: "For a bullish order block, which candles actually make up the block?",
+    o: ["The consecutive down-close candles before the surge", "The single last down-close candle before the surge", "The up-close candle that engulfs the prior range", "Every down-close candle inside the whole price leg"], a: 0,
+    e: "The order block is the consecutive series of down-close candles right before a price surge that has an imbalance — not the last down-close candle before the up move. \"That is not my order block, so stop calling it one.\" (Part 2, Lesson 5)"
+  },
+
+  {
+    q: "What are the three ingredients of a high-probability bullish order block?",
+    o: ["The candle, the imbalance and the narrative", "The candle, a volume spike and a strong close", "The candle, an engulfing bar and then a retest", "The candle, a trend line and a round number"], a: 0,
+    e: "The down-close candle, plus the imbalance created as price moves away from it, plus the narrative that price is likely to go higher to reach for buy-side liquidity. \"Period. That's it.\" There is no engulfing-candle requirement. (Part 2, Lesson 6)"
+  },
+
+  {
+    q: "How is the opening range built?",
+    o: ["Open to the Judas high, mirrored below the open", "The high and low of the first thirty minutes", "Yesterday's close projected onto today's session", "The overnight session's high and low, extended"], a: 0,
+    e: "The day opens and rallies — that rally is the Judas swing. Take the range from the opening price up to that high and project that same distance below the opening price. (Part 2, Lesson 3)"
+  },
+
+  {
+    q: "In the halo system, what do two halos mark?",
+    o: ["An intermediate-term high or low", "A long-term swing high or low", "A short-term high or low only", "The high or low of the session"], a: 0,
+    e: "One halo is a short-term high, two halos an intermediate-term high, three halos a long-term swing high. ICT credits this way of deciphering market structure to Larry Williams. (Part 2, Lesson 4)"
+  },
+
+  {
+    q: "What does every rebalanced imbalance leave behind?",
+    o: ["An intermediate-term high or low at that swing", "A short-term high that will always be broken", "A long-term swing point on the daily chart", "A fresh imbalance in the opposite direction"], a: 0,
+    e: "\"Write this one down\": every single time price rebalances an imbalance, the swing created at that moment is an intermediate-term high or low. And if the next short-term high trades above a rebalance ITH, your idea is probably flawed. (Part 2, Lesson 5)"
+  },
+
+  /* ---------------- Part 3 — Sessions, Targeting & the Daily Narrative ---------------- */
+  {
+    q: "Which chart is the bellwether in the three-chart layout?",
+    o: ["The 15-minute chart, on the right", "The hourly chart, at lower left", "The daily chart, at upper left", "The 5-minute refinement chart"], a: 0,
+    e: "Daily upper left, hourly lower left, 15-minute largest on the right. The 15 is the chart he keeps returning to all day — and, most importantly, it is what helps him trust his intraday bias. (Part 3, Lesson 5)"
+  },
+
+  {
+    q: "What is the one thing that makes an order block valid?",
+    o: ["It must have an imbalance with it", "It must be a fresh, untouched zone", "It must sit on a round number level", "It must be confirmed by a retest bar"], a: 0,
+    e: "\"It has to have an imbalance. Without the imbalance, there is no order block.\" That is exactly why this is not supply and demand — supply and demand requires fresh, untouched zones. (Part 3, Lesson 5)"
+  },
+
+  {
+    q: "At 9:30 there is a fair value gap with a swing low beneath it. What should you expect?",
+    o: ["The low gets taken, then buy the original gap", "The gap fills first, then the low is defended", "The open runs higher and never returns to it", "Both levels hold and the range stays intact"], a: 0,
+    e: "At 9:30, if there is a fair value gap with a swing low created beneath it, expect that low to be taken out to flush the early buyers — then buy the gap once price sweeps the low and trades back up into it. (Part 3, Lesson 2)"
+  },
+
+  {
+    q: "What is the lunch-hour rule for a position that is already open?",
+    o: ["No new entries, but you can take profits", "No new entries and no exits of any kind", "New entries allowed at half your usual size", "Close everything before the lunch hour opens"], a: 0,
+    e: "No entries between noon and 1:00 pm. But you can take profits in it — if you've funded the trade with a partial and moved your stop, a limit at the objective can fill during lunch. You don't need to babysit it. (Part 3, Lesson 3)"
+  },
+
+  {
+    q: "Where does ICT anchor a fib when projecting a swing objective?",
+    o: ["To the highest and lowest candle bodies", "To the extreme wick high and wick low", "To the open of the first candle only", "To the midpoint of the widest candle"], a: 0,
+    e: "Anchor to the highest body and the lowest body — open or close, it makes no difference. \"I'm showing you how the algorithm is going to read the price — the wicks and the tails are all distractions.\" (Part 3, Lesson 3)"
+  },
+
+  {
+    q: "Trading forex with a bearish bias, which opening price do you work from?",
+    o: ["The lower of the 8:30 and midnight opens", "The higher of the 8:30 and midnight opens", "Always the midnight New York opening price", "Always the London open at two in the morning"], a: 0,
+    e: "Use the 8:30 opening price for New York session trades, but also refer to midnight; if 8:30 is lower, use the lower one, because you want to set the minimum threshold for a Judas swing to the upside. Bullish reverses it. (Part 3, Lesson 4)"
+  },
+
+  {
+    q: "What is the 11:30 rule?",
+    o: ["If the order hasn't filled by then, pull it", "Close any open position at that time, flat", "Wait until then before placing any orders", "Move the stop to break even at that hour"], a: 0,
+    e: "Don't leave it good-till-cancelled — you want to be entering on the day the setup forms, otherwise it can fill you at a time of day you don't want to be there. Killzones are when you determine the entry, place the order and walk away. (Part 3, Lesson 5)"
+  },
+
+  /* ---------------- Part 4 — Correlation, Tape Reading & Reading the Day ---------------- */
+  {
+    q: "What does a rising dollar index imply for other asset classes?",
+    o: ["Risk off — they generally start to decline", "Risk on — they generally start to rally hard", "Nothing at all without a volume confirmation", "That equities and the dollar will rise together"], a: 0,
+    e: "A rising dollar is a risk off scenario — a flight to quality, a safe haven. Money pours into the dollar and out of risk assets, foreign currency among them. (Part 4, Lesson 2)"
+  },
+
+  {
+    q: "You are bearish and price rallies above neither the midnight nor the 8:30 open. What is that?",
+    o: ["Extremely bearish — no tidy rallies to fade", "A bullish reversal — the bias should be flipped", "A consolidation that will range all day long", "A sign the setup will arrive in the afternoon"], a: 0,
+    e: "That combination is the tell: it can't even rally to a short-term premium above the opening price at key levels and key times. Either you get in on small pockets of imbalance, or you miss the move entirely. (Part 4, Lesson 2)"
+  },
+
+  {
+    q: "What is SMT divergence?",
+    o: ["Two correlated markets failing to move alike", "An oscillator diverging from the price swing", "A gap that opens between two session opens", "The spread widening between bid and the ask"], a: 0,
+    e: "The S&P and Nasdaq composites are closely correlated and generally move in tandem. If you're bearish and NQ makes the higher run but ES doesn't, that shows the run is a stop run and ES is really weak — confirmation without an indicator. (Part 4, Lesson 3)"
+  },
+
+  {
+    q: "Which anchor does ICT normally use for the optimal trade entry levels?",
+    o: ["The bodies — the highest and lowest open or close", "The wicks — the extreme high and the extreme low", "The opening prices of the first and last candles", "The midpoint between the range's high and its low"], a: 0,
+    e: "For premium and discount he uses the high-to-low range, but for OTE he uses the bodies, because that is the bulk of the volume and the wicks beyond them are stop runs. On a high-volatility day like FOMC he uses the wicks instead. (Part 4, Lesson 3)"
+  },
+
+  {
+    q: "What is the difference between sweeping a level and running it?",
+    o: ["A sweep is shallow and reverses; a run carries on", "A sweep is on volume; a run happens without it", "A sweep is intraday; a run only occurs on daily", "A sweep needs a gap; a run needs an order block"], a: 0,
+    e: "Sweeping is a real shallow little run above the level, then it comes back down and reverses into the range. Running goes right over the top of it and doesn't look back — an expansion move that continues. (Part 4, Lesson 4)"
+  },
+
+  {
+    q: "In entry pattern one, what must happen after the relative equal highs are run?",
+    o: ["A short-term low is taken out with displacement", "Price returns to the equal highs a second time", "A bearish engulfing candle closes on the high", "Volume drops away for two full candlesticks"], a: 0,
+    e: "\"It's not that it goes above the relative equal high and then goes down below that — that's not it, folks.\" Until it takes out that short-term low with displacement, there's no setup there. Only then do you look for the gap. (Part 4, Lesson 5)"
+  },
+
+  {
+    q: "Daily rebalance theory: there is no fair value gap in the last three days. What do you use?",
+    o: ["The previous day's low as the rebalance level", "The weekly opening price of the current week", "The 200-period average on the daily timeframe", "The midpoint of the whole three-day price run"], a: 0,
+    e: "When there's no gap to work with, go back to the previous day's low. That level becomes the place a retracement can reach to rebalance the entire down move — and it tricks people into thinking the low is in. (Part 4, Lesson 6)"
+  },
+
+  /* ---------------- Part 5 — Session Playbooks & Special Days ---------------- */
+  {
+    q: "What has to be true before relative equal lows below price become a buy?",
+    o: ["They must sit in a discount of the day's range", "They must have been tested at least three times", "They must line up with a round number exactly", "They must form inside the first hour of trade"], a: 0,
+    e: "There were relative equal lows sitting below, but they were not in a discount of the day's range. The buy is inside the fair value gap only because it is at or below equilibrium between that low and that high. (Part 5, Lesson 2)"
+  },
+
+  {
+    q: "When the afternoon continues higher, what usually happens first?",
+    o: ["The lunch lows get swept", "A news event is released", "The daily high is cleared", "The market goes flat and quiet"], a: 0,
+    e: "Many times when there is an afternoon continuation to the upside, the lows at lunch time will get swept first — taking out the morning longs who trailed their stops beneath them. (Part 5, Lesson 4)"
+  },
+
+  {
+    q: "What kind of day is the one before the Fed chairman speaks?",
+    o: ["A quiet, small-range day", "A wide-range trending day", "A gap-and-go reversal day", "An outside day, always"], a: 0,
+    e: "The day before Fed chair Powell speaks is usually a very quiet, small-range day — that is why the market was lethargic. \"It doesn't mean you can't trade it, but it takes a little bit more experience.\" (Part 5, Lesson 3)"
+  },
+
+  {
+    q: "On a consolidation day, when does the day's only real setup form?",
+    o: ["Between three and four o'clock", "In the first hour after 9:30", "Right at the 8:30 news release", "During the noon-to-one lunch"], a: 0,
+    e: "The market creates an initial range and stays in it until the afternoon. \"It used to be the bond close that started this whole thing, but now it's just three o'clock to four o'clock when equities close.\" (Part 5, Lesson 6)"
+  },
+
+  {
+    q: "A low breaks but no fair value gap forms with it. What is ICT's position on that level?",
+    o: ["He doesn't trust that level at all", "He trades it as broken support", "He waits for a retest of the low", "He halves the size and enters it"], a: 0,
+    e: "\"Not go back to the old low broken and act as resistance. That's not how I look at it. If the fair value gap doesn't exist, I don't trust that level.\" The levels are built on liquidity, not support and resistance. (Part 5, Lesson 7)"
+  },
+
+  {
+    q: "Why write back-test annotations in the first person, as though you saw it coming?",
+    o: ["It builds pseudo-experience in the subconscious", "It produces a record you can sell on to others", "It proves to a broker that you are consistent", "It removes the need to keep any chart images"], a: 0,
+    e: "\"You are lying in the chart when you do your annotations for study purposes. You're tricking your brain.\" Your subconscious retains the image and the words, so when you see it live it remembers having done it before. (Part 5, Lesson 2)"
+  },
+
+  /* ---------------- Part 6 — Dealing Range, Algorithmic Theory & Risk ---------------- */
+  {
+    q: "You are looking for a long. Which swing do you anchor the dealing-range fib to?",
+    o: ["The up-leg — its low up to its high", "The down-leg — its high down to its low", "The whole week, open to current price", "The single largest candle of the session"], a: 0,
+    e: "Anchor the fib on the expansion swing — the impulsive price swing that runs in the direction you are trying to trade — then wait for the retracement below 50%. The measurement always follows the direction of the trade you want. (Part 6, Lesson 1)"
+  },
+
+  {
+    q: "What is the mean threshold of an order block?",
+    o: ["50% of the candle's own range", "The open of the block candle", "The low of the block candle", "The gap left above the block"], a: 0,
+    e: "The low, the open and the middle of the range are the three sensitive prices inside an order block candle. The middle — 50%, found by running a fib across it — is the mean threshold, and it is the level the block has to defend. (Part 6, Lesson 2)"
+  },
+
+  {
+    q: "A big move gives you no model entry anywhere. What is it telling you?",
+    o: ["It is a rush to clear liquidity, not a delivery", "It is a sign the model has stopped working", "It is an invitation to enter at market price", "It proves the higher timeframe bias was wrong"], a: 0,
+    e: "\"Notice there's no model entry here. That's telling — it's tipping its hand to you, because there's no real setup and it's a rush to get down here.\" Negative evidence is evidence. (Part 6, Lesson 3)"
+  },
+
+  {
+    q: "What does ICT tell students to do on Non-Farm Payroll Friday?",
+    o: ["Study it for liquidity, don't speculate on it", "Trade it with double the usual position size", "Trade it only in the afternoon PM session", "Ignore the charts and take the whole day off"], a: 0,
+    e: "Not because money can't be made there — because you're here to learn to read price action, the day can be very volatile, choppy or a complete dud, and precision drops precipitously. It is an amazing study for liquidity purposes only. (Part 6, Lesson 4)"
+  },
+
+  {
+    q: "What are the four times of day the model is built around?",
+    o: ["8:30, 9:30, 1:30 and 3:00–4:00", "8:00, 9:00, 12:00 and 2:00–3:00", "7:00, 8:30, 11:00 and 4:00–5:00", "9:30, 11:30, 2:00 and 3:30–4:30"], a: 0,
+    e: "8:30 is the news embargo lifting; 9:30 is the equities open and the second opportunity; 1:30 is the afternoon session after lunch; 3:00–4:00 is the market-on-close macro run by the algorithm. (Part 6, Lesson 6)"
+  },
+
+  {
+    q: "After a full one percent loss, what does the drawdown ladder say to risk next?",
+    o: ["Half of one percent, then a quarter", "Two percent, to win the loss back", "The same one percent every time", "Nothing at all for a whole week"], a: 0,
+    e: "A full 1% loss means the next trade risks 0.5%; lose that and the next risks 0.25%, which is the floor. You must make back 50% of what you lost before returning to full risk. (Part 6, Lesson 8)"
   }
 ]
 };

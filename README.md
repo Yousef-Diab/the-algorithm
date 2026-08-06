@@ -6,10 +6,10 @@
 
 A self-contained, interactive course built from **ICT's (Inner Circle Trader) Mentorships** — the mentorship notes and their charts, together with the original video transcripts. The name nods to ICT's *interbank price delivery algorithm*: the idea that price isn't random, but delivered to engineer liquidity.
 
-The scope grows over time. Planned sections:
+Two sections, **78 lessons**, both live:
 
-1. **ICT Core — Months 1–4** *(live)* — the foundation.
-2. **ICT 2022 Mentorship** *(planned)*.
+1. **ICT Core — Months 1–4** — 38 lessons; the foundation.
+2. **ICT 2022 Mentorship — Parts 1–6** — 40 lessons, one per episode; a single stripped-down intraday model taught end to end.
 
 The published site is a single HTML file that runs offline in any modern browser — no server, no dependencies. Under the hood, that file is **assembled from per-lesson source files by a small Python build** (`build.py`), so it stays easy to expand without giving up the "just open it" property.
 
@@ -25,11 +25,14 @@ The published site is a single HTML file that runs offline in any modern browser
 | `verify.py` | Rebuilds, then headless-checks the whole course (lessons, images, quizzes, resets, section exams, no JS errors). Run `python verify.py` after editing. |
 | `index.html` | **Build artifact** — the entire course in one offline file. Generated; don't hand-edit. |
 | `images/` | Chart images scraped from the notes, named `{slug}-{NN}.png` (e.g. `m4-03-orderblocks-07.png`). |
-| `transcripts/` | Source ICT video transcripts, organised `Month 1` … `Month 4`. **Git-ignored** (local source material only). |
+| `transcripts/` | Source ICT video transcripts — `Month 1` … `Month 4` for Section 1, `2022 Mentorship` for Section 2. **Git-ignored** (local source material only). |
+| `notes/` | Section 2's harvested mentorship notes and their staging charts. **Git-ignored** (local source material only). |
 | `.claude/` | Claude Code local settings. |
 | `CLAUDE.md` | Working guide for AI-assisted development — read this before editing. |
 
-Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note charts and a lesson quiz — plus a section summary and a 45-question final exam.
+### Section 1 — ICT Core
+
+**4 months, 38 lessons**, each with note charts and a lesson quiz — plus a section summary and a 45-question final exam.
 
 | Month | Theme |
 |-------|-------|
@@ -37,6 +40,19 @@ Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note c
 | 2 | Risk & trade selection — small accounts, framing low-risk setups, 10% months, mitigating losses, high-reward selection, first market-maker traps. |
 | 3 | Institutional analysis — timeframe selection, order flow, sponsorship, anticipatory skills, SMT, macro-to-micro, more traps. |
 | 4 | The PD arrays — orderblocks, mitigation / breaker / rejection / reclaimed / propulsion / vacuum blocks, liquidity pools, voids, FVGs, phantoms. |
+
+### Section 2 — ICT 2022 Mentorship
+
+**6 parts, 40 lessons** — one lesson per episode of the free 2022 YouTube mentorship, so every lesson is traceable to exactly one transcript. Each has a lesson quiz, plus a section summary and a 40-question final exam. (Episode 28 is omitted: the video has no audio and there is no source to author from.)
+
+| Part | Episodes | Theme |
+|------|----------|-------|
+| 1 | 1–7 | Foundations & the 2022 model — the fair value gap candle by candle, the liquidity run and market structure shift that qualify it, displacement, premium & discount, framing the day. |
+| 2 | 8–13 | Order blocks, Power of Three & structure — how a block is actually found, the opening range, the halo system, and the rebalance that leaves a key high or low. |
+| 3 | 14–19 | Sessions, targeting & the daily narrative — the three-chart workflow, multiple setups in one session, the forex variations, bias off the daily dealing range, and when to stand aside. |
+| 4 | 20–25 | Correlation & tape reading — the dollar index, risk on / risk off, SMT divergence, the fib settings, news days, the two entry patterns, daily rebalance theory. |
+| 5 | 26–33 | Session playbooks & special days — counter-trend ideas, narrow range days, the PM session, consolidation days, confluence, and back testing as pseudo-experience. |
+| 6 | 34–41 | Dealing range, algorithmic theory & risk — the mean threshold, changing gears mid-session, the four times of day, the six keys to daily bias, position sizing and stops. |
 
 ---
 
@@ -48,7 +64,7 @@ Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note c
 
 What you get:
 
-- **Sidebar navigation** grouped by month, with per-month completion counts.
+- **Sidebar navigation** grouped by section, then by month (Section 1) or part (Section 2), with completion counts on each.
 - **Lesson quizzes** that grade instantly and explain every answer — each resettable on its own.
 - **Section review**: a one-page summary of everything in the section, and a **final exam** that grades on submit against an 80% pass mark, keeps your best score, and can be retaken.
 - **Chart galleries** with a click-to-zoom viewer: browse every chart in the lesson with
@@ -82,7 +98,8 @@ This project is a personal study aid that reorganises the above material into an
 
 - [x] **Refactor for expandability.** Content and rendering are now split: lessons live in `content/<section>/<month>/<id>/` and `build.py` assembles the offline `index.html`. New lessons/sections drop in as folders (see `CLAUDE.md` → §2 / §4).
 - [x] **AI-development friendly.** One obvious edit point per change (§4), `build.py` validates as it assembles, an `add-content` skill scaffolds lessons/months/sections, and `verify.py` + CI enforce a headless check (and that `index.html` is never committed stale) on every PR.
-- [ ] **Section 2 — ICT 2022 Mentorship** as its transcripts/notes become available.
+- [x] **Section 2 — ICT 2022 Mentorship.** All 40 lessons built from the episode transcripts and notes, with a section summary and final exam. See [`docs/s2-2022-mentorship-plan.md`](docs/s2-2022-mentorship-plan.md) for how it was scoped and built.
+- [ ] **A section switcher in the sidebar**, now that there is more than one section.
 
 ---
 
