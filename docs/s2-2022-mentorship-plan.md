@@ -191,7 +191,7 @@ verified and committed.
 | # | Part | Episodes | Lessons | Transcript | Done |
 |---|------|----------|---------|-----------|------|
 | A | p1 | 1 | Phase A: engine, scaffold + pilot lesson `p1-01` | 30 KB | [x] |
-| 1 | p1 | 2–3 | `p1-02`–`p1-03` | 104 KB | [ ] |
+| 1 | p1 | 2–3 | `p1-02`–`p1-03` | 104 KB | [x] |
 | 2 | p1 | 4–6 | `p1-04`–`p1-06` | 93 KB | [ ] |
 | 3 | p1 | 7 | `p1-07` | 60 KB | [ ] |
 | 4 | p2 | 8–10 | `p2-01`–`p2-03` | 106 KB | [ ] |
