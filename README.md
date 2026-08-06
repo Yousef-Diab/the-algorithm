@@ -51,7 +51,9 @@ What you get:
 - **Sidebar navigation** grouped by month, with per-month completion counts.
 - **Lesson quizzes** that grade instantly and explain every answer — each resettable on its own.
 - **Section review**: a one-page summary of everything in the section, and a **final exam** that grades on submit against an 80% pass mark, keeps your best score, and can be retaken.
-- **Chart galleries** with a click-to-zoom lightbox.
+- **Chart galleries** with a click-to-zoom viewer: browse every chart in the lesson with
+  the on-screen controls or ← / →, zoom to 500% (`+` / `−` / `0`) and drag to pan,
+  and close by pressing Escape or clicking anywhere outside the image and its panel.
 - **Flip cards** for definitions.
 - **Per-lesson notes** you can jot as you go, saved locally.
 - **Progress tracking** saved in the browser via `localStorage` (keys `ict-done`, `ict-quiz`, `ict-exam`, `ict-notes`).

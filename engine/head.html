@@ -101,10 +101,38 @@
   .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:18px 0}
   .gallery .fig{margin:0}
   .gallery img{height:160px;width:100%;object-fit:cover;object-position:top left}
-  #lightbox{position:fixed;inset:0;background:rgba(5,7,12,.94);display:none;align-items:center;justify-content:center;z-index:100;cursor:zoom-out;flex-direction:column;gap:10px}
+  #lightbox{position:fixed;inset:0;background:rgba(5,7,12,.94);display:none;align-items:center;justify-content:center;
+    z-index:100;cursor:zoom-out;flex-direction:column;gap:12px;padding:18px}
   #lightbox.open{display:flex}
-  #lightbox img{max-width:94vw;max-height:88vh;border-radius:8px}
-  #lightbox .lb-cap{color:var(--muted);font-size:13px}
+  body.lb-lock{overflow:hidden}
+  /* The stage takes ALL the leftover height, so the caption and panel are pinned
+     to the bottom and never shift when the image size or the zoom changes.
+     `safe center` keeps the top/left reachable once the image outgrows the stage;
+     the plain `center` before it is the fallback for engines without `safe`. */
+  .lb-stage{flex:1 1 auto;min-height:0;width:100%;max-width:94vw;overflow:auto;
+    border-radius:8px;cursor:default;
+    display:flex;align-items:center;justify-content:center;
+    align-items:safe center;justify-content:safe center}
+  .lb-stage.zoomed{cursor:grab}
+  .lb-stage.zoomed:active{cursor:grabbing}
+  /* the global scrollbar thumb is dark — invisible against a white chart */
+  .lb-stage::-webkit-scrollbar{width:10px;height:10px}
+  .lb-stage::-webkit-scrollbar-thumb{background:var(--dim);border-radius:5px}
+  .lb-stage::-webkit-scrollbar-track{background:rgba(0,0,0,.3)}
+  #lightbox img{max-width:100%;max-height:100%;border-radius:8px;display:block;flex:none;
+    -webkit-user-drag:none;user-select:none}
+  #lightbox .lb-cap{flex:none;color:var(--muted);font-size:13px;text-align:center;max-width:90vw;
+    min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lb-panel{flex:none;display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;cursor:default;
+    background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:7px 9px}
+  .lb-btn{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:7px;
+    min-width:34px;height:32px;padding:0 9px;font-size:16px;line-height:1;font-family:var(--font);cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}
+  .lb-btn.lb-wide{font-size:13px}
+  .lb-btn:hover:not(:disabled){border-color:var(--accent)}
+  .lb-btn:disabled{opacity:.3;cursor:default}
+  .lb-count,.lb-zoom{font-size:12.5px;color:var(--muted);min-width:54px;text-align:center;user-select:none}
+  .lb-sep{width:1px;height:22px;background:var(--border);margin:0 3px}
 
   /* ---------- quiz ---------- */
   .quiz{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:34px 0 10px}
@@ -215,6 +243,10 @@
     .inner{padding:0 18px}
     #main{padding-top:52px}
     .lesson-hero h2{font-size:25px}
+    .lb-panel{gap:4px;padding:6px}
+    .lb-btn{min-width:32px;padding:0 6px}
+    .lb-count,.lb-zoom{min-width:40px;font-size:12px}
+    .lb-sep{display:none}
     .quiz-head{flex-direction:column;gap:8px}
     .exam-best{padding-top:0}
     .exam-actions .btn{flex:1}

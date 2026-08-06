@@ -8,6 +8,7 @@ Chromium and checks the whole course actually works:
   * every <img> resolves (no broken charts),
   * every quiz renders 4 options, shuffles, and grades on click,
   * every quiz exposes a working reset control,
+  * the lightbox opens, browses the lesson's charts, zooms, and closes correctly,
   * each section's summary + final exam pages render, and the exam grades on submit,
   * a video link renders for each lesson that has a non-empty video.txt,
   * zero console/page JS errors.
@@ -139,6 +140,67 @@ def main() -> int:
             problems.append("at least one quiz has no reset button")
         elif not (resets["cleared"] and resets["enabled"]):
             problems.append("quiz reset did not clear the graded state")
+
+        # Lightbox: opens on a chart, browses that lesson's set, zooms, and
+        # closes on an outside click but NOT on a click on the image itself.
+        # Uses REAL mouse input, not el.click() — while zoomed the stage holds a
+        # pointer capture that retargets the click, and only real input sees it.
+        def lb_state(what):
+            return page.evaluate(
+                """() => { const lb = document.getElementById('lightbox'),
+                             big = lb.querySelector('img'),
+                             t = k => (lb.querySelector(k) || {}).textContent || '';
+                       return {open: lb.classList.contains('open'), src: big.src,
+                               w: big.clientWidth, count: t('.lb-count'), zoom: t('.lb-zoom'),
+                               lock: document.body.classList.contains('lb-lock')}; }""")
+        try:
+            first = page.query_selector(".lesson .fig img")
+            if first is None:
+                raise RuntimeError("no chart images to open")
+            first.click(timeout=5000)
+            page.wait_for_timeout(250)
+            st = lb_state("open")
+            if not st["open"]:
+                problems.append("lightbox did not open on a chart click")
+            if not st["lock"]:
+                problems.append("lightbox did not lock background scrolling")
+            total = st["count"].split("/")[-1].strip()
+            if not total.isdigit() or int(total) < 2:
+                problems.append(f"lightbox group looks wrong (counter {st['count']!r})")
+
+            page.click('[data-lb="next"]', timeout=5000); page.wait_for_timeout(300)
+            if lb_state("next")["src"] == st["src"]:
+                problems.append("lightbox next did not change the image")
+            page.click('[data-lb="prev"]', timeout=5000); page.wait_for_timeout(300)
+
+            w0 = lb_state("fit")["w"]
+            page.click('[data-lb="in"]', timeout=5000); page.wait_for_timeout(250)
+            zs = lb_state("zoomed")
+            if not (zs["w"] > w0 and zs["zoom"] == "125%"):
+                problems.append(f"lightbox zoom-in failed ({w0} -> {zs['w']}, {zs['zoom']})")
+            # A plain click on the image while zoomed must NOT close it.
+            box = page.eval_on_selector(
+                "#lightbox img",
+                "e => { const r = e.getBoundingClientRect();"
+                "return {x: r.x + r.width / 2, y: r.y + r.height / 2}; }")
+            page.mouse.click(box["x"], box["y"]); page.wait_for_timeout(250)
+            if not lb_state("after image click")["open"]:
+                problems.append("lightbox closed when the image itself was clicked")
+            page.click('[data-lb="reset"]', timeout=5000); page.wait_for_timeout(250)
+            if lb_state("refit")["w"] != w0:
+                problems.append("lightbox fit did not restore the original size")
+
+            page.mouse.click(5, 5); page.wait_for_timeout(250)
+            end = lb_state("closed")
+            if end["open"]:
+                problems.append("lightbox did not close on an outside click")
+            if end["lock"]:
+                problems.append("lightbox left the body scroll lock on after closing")
+        except Exception as exc:  # noqa: BLE001 - any page failure is a finding
+            problems.append(f"lightbox check could not run: {str(exc).splitlines()[0]}")
+            page.evaluate("() => { document.getElementById('lightbox')"
+                          ".classList.remove('open');"
+                          "document.body.classList.remove('lb-lock'); }")
 
         # Answer a whole exam, submit, and confirm it grades to a real score.
         exam = probe(

@@ -86,6 +86,7 @@ Rendering is still **data-driven**: lessons declare *slots* (`.fig-slot`, `.quiz
 
 **Images:** `images/{slug}-{NN}.png`, `NN` zero-padded from `01`. Counts are **auto-derived by `build.py`** — just drop the PNGs in `images/` and rebuild; there is no count to type. A missing image also auto-removes its `<figure>` at runtime (`img.onerror`). Galleries render when count > 2.
 
+**Chart viewer (lightbox).** Clicking a chart opens the **whole lesson's** set (`img.closest('.lesson')`), so prev/next browses it without closing. Zoom is expressed **relative to the fitted size** (100% = fit, max 500%); above fit the stage scrolls and the image drags to pan. The panel is **pinned**: `.lb-stage` takes all the leftover height (`flex:1;min-height:0`) so the caption and panel sit at a fixed spot regardless of the image's aspect ratio or the zoom level — don't give the stage a content-sized height or the panel starts hopping about. Three traps if you touch it: (1) the zoomed stage holds a **pointer capture**, so Chromium retargets the follow-up `click` from the image to the stage — `lbHitsImage()` hit-tests the image rect instead of trusting `e.target`, and you must **test close-on-outside-click with real mouse input, never `el.click()`** (synthetic clicks pass through the `e.target` fallback and hide the bug); (2) the stage centres with `align-items:safe center`, without which the top/left of a zoomed image becomes unreachable.
 
 **Lesson video (rule):** every lesson opens with a link to its source video. Put the URL (one line) in that lesson's `video.txt`; `build.py` emits `VIDEOS["mX-NN"]` and the JS injects a `.lesson-video` link right after the lesson's `.lesson-hero` — no HTML edit needed. An empty `video.txt` renders nothing (graceful). Use the **real** source video URL only; never invent one (see §1). It opens in a new tab (external link, so it doesn't break the offline property until clicked).
 
@@ -151,6 +152,7 @@ Review pages are `.lesson` sections so routing works, but they carry `data-kind`
 - every chart image resolves (no broken `.fig img`),
 - every quiz renders 4 options, shuffles, and grades on click,
 - every quiz exposes a reset control that actually clears the graded state,
+- the lightbox opens, browses the lesson's charts, zooms, and closes on an outside click but not on a click on the image,
 - each section's `summary.html` and `exam.js` produce a page, and the exam grades to a real score on submit,
 - a video link renders for each lesson with a non-empty `video.txt`,
 - there are zero console/page JS errors.

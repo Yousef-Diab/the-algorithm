@@ -58,6 +58,7 @@ document.querySelectorAll('.fig-slot').forEach(slot=>{
     img.loading='lazy'; img.src = `images/${slug}-${nn}.png`;
     img.alt = `${slug} chart ${i}`;
     img.onerror = ()=>fig.remove();
+    img.dataset.cap = `Note chart ${i} of ${n}`;
     const cap = document.createElement('figcaption'); cap.textContent = `Note chart ${i} of ${n} — click to zoom`;
     fig.appendChild(img); fig.appendChild(cap); wrap.appendChild(fig);
   }
@@ -65,13 +66,132 @@ document.querySelectorAll('.fig-slot').forEach(slot=>{
 });
 
 /* ---------- lightbox ---------- */
-const lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+/* Opens the whole CURRENT LESSON's chart set, so prev/next browses the lesson
+   without closing. Zoom is expressed relative to the fitted size (100% = fit);
+   above 100% the stage scrolls and the image can be dragged to pan. */
+const lb = document.getElementById('lightbox'),
+      lbImg = lb.querySelector('img'),
+      lbStage = lb.querySelector('.lb-stage'),
+      lbCap = lb.querySelector('.lb-cap'),
+      lbCount = lb.querySelector('.lb-count'),
+      lbZoomLabel = lb.querySelector('.lb-zoom'),
+      lbBtn = k => lb.querySelector(`[data-lb="${k}"]`);
+const ZOOM_MIN = 1, ZOOM_MAX = 5, ZOOM_STEP = 1.25;
+let lbGroup = [], lbIdx = 0, lbZoom = 1, lbFitW = 0;
+
+function lbApplyZoom(){
+  // Measure the fitted width with the CSS caps back on, then scale from it.
+  lbImg.style.width = ''; lbImg.style.maxWidth = ''; lbImg.style.maxHeight = '';
+  if(lbImg.clientWidth) lbFitW = lbImg.clientWidth;
+  if(lbZoom > 1){
+    lbImg.style.maxWidth = 'none'; lbImg.style.maxHeight = 'none';
+    lbImg.style.width = Math.round(lbFitW * lbZoom) + 'px';
+  }
+  lbZoomLabel.textContent = Math.round(lbZoom * 100) + '%';
+  lbStage.classList.toggle('zoomed', lbZoom > 1);
+  lbBtn('out').disabled = lbZoom <= ZOOM_MIN + 1e-3;
+  lbBtn('in').disabled = lbZoom >= ZOOM_MAX - 1e-3;
+  lbBtn('reset').disabled = lbZoom <= ZOOM_MIN + 1e-3;
+}
+function lbSetZoom(z){
+  lbZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z));
+  lbApplyZoom();
+  lbStage.scrollLeft = (lbStage.scrollWidth - lbStage.clientWidth) / 2;
+  lbStage.scrollTop = (lbStage.scrollHeight - lbStage.clientHeight) / 2;
+}
+function lbRender(){
+  const img = lbGroup[lbIdx];
+  if(!img) return;
+  lbImg.src = img.currentSrc || img.src;
+  lbImg.alt = img.alt;
+  lbCap.textContent = img.dataset.cap || img.alt || '';
+  lbCount.textContent = `${lbIdx + 1} / ${lbGroup.length}`;
+  lbBtn('prev').disabled = lbIdx === 0;
+  lbBtn('next').disabled = lbIdx === lbGroup.length - 1;
+  lbSetZoom(1);
+}
+function lbOpen(img){
+  const scope = img.closest('.lesson') || document;
+  lbGroup = Array.from(scope.querySelectorAll('.fig img'));
+  lbIdx = Math.max(0, lbGroup.indexOf(img));
+  lb.classList.add('open');
+  document.body.classList.add('lb-lock');
+  lbRender();
+}
+function lbClose(){ lb.classList.remove('open'); document.body.classList.remove('lb-lock'); }
+function lbGo(d){
+  const n = lbIdx + d;
+  if(n < 0 || n >= lbGroup.length) return;
+  lbIdx = n; lbRender();
+}
+const LB_ACTIONS = {
+  prev: ()=>lbGo(-1), next: ()=>lbGo(1),
+  in: ()=>lbSetZoom(lbZoom * ZOOM_STEP), out: ()=>lbSetZoom(lbZoom / ZOOM_STEP),
+  reset: ()=>lbSetZoom(1), close: lbClose
+};
+
+// Re-fit whenever a new image finishes decoding, and on resize.
+lbImg.addEventListener('load', ()=>{ if(lb.classList.contains('open')) lbApplyZoom(); });
+window.addEventListener('resize', ()=>{ if(lb.classList.contains('open')) lbApplyZoom(); });
+
 document.addEventListener('click', e=>{
   const img = e.target.closest('.fig img');
-  if(img){ lbImg.src = img.src; lbCap.textContent = img.alt; lb.classList.add('open'); }
-  else if(e.target===lb || e.target===lbImg) lb.classList.remove('open');
+  if(img) lbOpen(img);
 });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+/* Hit-test the image rect rather than trusting e.target: while zoomed we hold
+   a pointer capture on the stage, and Chromium retargets the follow-up click to
+   the capturing element — so a plain click on the image arrives as the stage.
+   The rect test also gets the letterbox right (stage, but beside the image =
+   outside). Synthetic clicks have clientX/Y 0, hence the e.target fallback. */
+function lbHitsImage(e){
+  if(e.target === lbImg) return true;
+  if(!e.clientX && !e.clientY) return false;
+  const r = lbImg.getBoundingClientRect();
+  return e.clientX >= r.left && e.clientX <= r.right
+      && e.clientY >= r.top  && e.clientY <= r.bottom;
+}
+lb.addEventListener('click', e=>{
+  if(lbDragged){ lbDragged = false; return; }   // a pan gesture, not a click
+  const btn = e.target.closest('[data-lb]');
+  if(btn){ LB_ACTIONS[btn.dataset.lb](); return; }
+  // Anything that isn't the image or the control panel is "outside" → close.
+  if(lbHitsImage(e) || e.target.closest('.lb-panel')) return;
+  lbClose();
+});
+
+/* drag-to-pan once zoomed in */
+let lbDragging = false, lbDragged = false, lbSX = 0, lbSY = 0, lbSL = 0, lbST = 0;
+lbStage.addEventListener('pointerdown', e=>{
+  if(lbZoom <= 1 || e.target !== lbImg) return;
+  lbDragging = true; lbDragged = false;
+  lbSX = e.clientX; lbSY = e.clientY;
+  lbSL = lbStage.scrollLeft; lbST = lbStage.scrollTop;
+  lbStage.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+lbStage.addEventListener('pointermove', e=>{
+  if(!lbDragging) return;
+  const dx = e.clientX - lbSX, dy = e.clientY - lbSY;
+  if(Math.abs(dx) > 3 || Math.abs(dy) > 3) lbDragged = true;
+  lbStage.scrollLeft = lbSL - dx; lbStage.scrollTop = lbST - dy;
+});
+['pointerup','pointercancel'].forEach(t=>lbStage.addEventListener(t, e=>{
+  if(!lbDragging) return;
+  lbDragging = false;
+  try { lbStage.releasePointerCapture(e.pointerId); } catch(_){}
+}));
+
+document.addEventListener('keydown', e=>{
+  if(!lb.classList.contains('open')){ return; }
+  if(e.key === 'Escape') lbClose();
+  else if(e.key === 'ArrowLeft') lbGo(-1);
+  else if(e.key === 'ArrowRight') lbGo(1);
+  else if(e.key === '+' || e.key === '=') lbSetZoom(lbZoom * ZOOM_STEP);
+  else if(e.key === '-' || e.key === '_') lbSetZoom(lbZoom / ZOOM_STEP);
+  else if(e.key === '0') lbSetZoom(1);
+  else return;
+  e.preventDefault();
+});
 
 /* ---------- flip cards ---------- */
 document.querySelectorAll('.flip').forEach(f=>f.addEventListener('click', ()=>f.classList.toggle('flipped')));
