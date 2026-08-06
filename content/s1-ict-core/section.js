@@ -1,0 +1,1 @@
+{ id: "s1", short: "ICT Core", title: "ICT Core (Months 1–4)", desc: "The full core syllabus — market conditions and templates, premium & discount, liquidity, risk and trade selection, institutional analysis, and the PD arrays."; }

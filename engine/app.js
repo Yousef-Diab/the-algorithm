@@ -4,7 +4,10 @@ const CAPTION = slug => "Chart from the notes";
 /* ---------- build lesson list ---------- */
 const SLUG_BY_ID = {}; // "m1-01" -> full slug
 Object.keys(IMG_COUNTS).forEach(s=>{ SLUG_BY_ID[s.slice(0,5)] = s; });
-const LESSONS = Array.from(document.querySelectorAll('.lesson')).filter(el=>el.id!=="home")
+/* review/exam pages are .lesson sections too (for routing), but they carry a
+   data-kind and are NOT part of the lesson count or the progress bar. */
+const LESSONS = Array.from(document.querySelectorAll('.lesson'))
+  .filter(el=>el.id!=="home" && !el.dataset.kind)
   .map(el=>({id:el.id, title:el.dataset.title, month:el.dataset.month}));
 
 /* ---------- state ---------- */
@@ -13,9 +16,19 @@ const store = {
   set done(v){ localStorage.setItem('ict-done', JSON.stringify(v)); },
   get quiz(){ try{return JSON.parse(localStorage.getItem('ict-quiz')||'{}')}catch(e){return{}} },
   set quiz(v){ localStorage.setItem('ict-quiz', JSON.stringify(v)); },
+  get exam(){ try{return JSON.parse(localStorage.getItem('ict-exam')||'{}')}catch(e){return{}} },
+  set exam(v){ localStorage.setItem('ict-exam', JSON.stringify(v)); },
   get notes(){ try{return JSON.parse(localStorage.getItem('ict-notes')||'{}')}catch(e){return{}} },
   set notes(v){ localStorage.setItem('ict-notes', JSON.stringify(v)); }
 };
+
+/* ---------- shared helpers ---------- */
+/* Fisher-Yates — so the correct answer is never in a fixed position. */
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+const pct = n => Math.round(n*100)+'%';
 
 /* ---------- render lesson videos (at the top of each lesson) ---------- */
 document.querySelectorAll('.lesson').forEach(sec=>{
@@ -102,9 +115,137 @@ document.querySelectorAll('.quiz').forEach(qz=>{
   });
 });
 
+/* ---------- final exams (one per section) ---------- */
+/* Unlike a lesson check, nothing is graded until you submit — and picks are
+   stored by option TEXT, because the options are re-shuffled on every render. */
+const PASS_MARK = 0.8;
+
+function renderExam(ex){
+  const sid = ex.dataset.exam, qs = EXAMS[sid];
+  if(!qs){ ex.remove(); return; }
+  const rec = store.exam[sid] || {};
+  const picks = Object.assign({}, rec.picks || {});
+  let submitted = !!rec.submitted;
+  ex.innerHTML = '';
+
+  const head = document.createElement('div'); head.className = 'quiz-head';
+  head.innerHTML = `<div><h3>Final Exam</h3>
+    <div class="q-sub">${qs.length} questions · ${pct(PASS_MARK)} to pass · retake it as often as you like.</div></div>`;
+  const badge = document.createElement('div'); badge.className = 'exam-best';
+  const paintBadge = ()=>{
+    const r = store.exam[sid] || {};
+    badge.textContent = r.best==null ? 'Not attempted yet'
+      : `Best ${pct(r.best)} · ${r.taken} attempt${r.taken===1?'':'s'}`;
+  };
+  paintBadge();
+  head.appendChild(badge);
+  ex.appendChild(head);
+
+  const rows = [];
+  qs.forEach((item,qi)=>{
+    const qd = document.createElement('div'); qd.className='q eq';
+    qd.innerHTML = `<div class="q-text">${qi+1}. ${item.q}</div>`;
+    const btns = [];
+    shuffle(item.o.map((text,idx)=>({text, correct: idx===item.a}))).forEach(o=>{
+      const b = document.createElement('button'); b.className='opt'; b.textContent = o.text;
+      b._correct = o.correct; b._text = o.text;
+      if(!submitted && picks[qi] === o.text) b.classList.add('picked');
+      b.addEventListener('click', ()=>{
+        if(submitted) return;
+        btns.forEach(x=>x.classList.remove('picked'));
+        b.classList.add('picked');
+        picks[qi] = o.text;
+        savePicks();
+        updateBar();
+      });
+      btns.push(b); qd.appendChild(b);
+    });
+    const expl = document.createElement('div'); expl.className='expl'; expl.textContent = item.e;
+    qd.appendChild(expl);
+    rows.push({qd, btns, expl});
+    ex.appendChild(qd);
+  });
+
+  const bar = document.createElement('div'); bar.className='exam-bar';
+  const status = document.createElement('div'); status.className='exam-status';
+  const actions = document.createElement('div'); actions.className='exam-actions';
+  const retake = document.createElement('button'); retake.className='btn'; retake.textContent='Retake exam';
+  const submit = document.createElement('button'); submit.className='btn primary'; submit.textContent='Submit exam';
+  actions.appendChild(retake); actions.appendChild(submit);
+  bar.appendChild(status); bar.appendChild(actions);
+  ex.appendChild(bar);
+
+  function answered(){ return Object.keys(picks).length; }
+  function savePicks(){
+    const all = store.exam;
+    all[sid] = Object.assign({}, all[sid] || {}, {picks, submitted:false});
+    store.exam = all;
+  }
+  function updateBar(){
+    const n = answered();
+    status.textContent = `${n} / ${qs.length} answered`;
+    submit.disabled = n === 0;
+  }
+  function grade(){
+    let correct = 0;
+    rows.forEach((r,qi)=>{
+      const pick = picks[qi];
+      r.btns.forEach(b=>{
+        b.disabled = true; b.classList.remove('picked');
+        if(b._correct) b.classList.add('correct');
+        else if(pick === b._text) b.classList.add('wrong');
+      });
+      if(pick != null && r.btns.some(b=>b._correct && b._text === pick)) correct++;
+      else r.qd.classList.add('missed');
+      r.expl.classList.add('show');
+    });
+    return correct;
+  }
+  function paintResult(){
+    const correct = grade();
+    const score = correct / qs.length;
+    const passed = score >= PASS_MARK;
+    status.innerHTML = `<span class="exam-score ${passed?'pass':'fail'}">${pct(score)}</span>
+      <span class="exam-sub">${correct} of ${qs.length} correct — ${passed
+        ? 'passed. Read the explanations on anything you missed.'
+        : `keep revising, ${pct(PASS_MARK)} to pass.`}</span>`;
+    submit.style.display = 'none';
+    retake.style.display = '';
+    retake.classList.add('primary');
+    return score;
+  }
+
+  submit.addEventListener('click', ()=>{
+    const n = answered();
+    if(n < qs.length && !confirm(
+      `You've answered ${n} of ${qs.length}. Submit anyway? Unanswered questions count as wrong.`)) return;
+    submitted = true;
+    const score = paintResult();
+    const all = store.exam, prev = all[sid] || {};
+    all[sid] = {best: Math.max(prev.best || 0, score), last: score,
+                taken: (prev.taken || 0) + 1, submitted:true, picks};
+    store.exam = all;
+    paintBadge();
+    renderNav();
+    renderReview();
+    head.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  retake.addEventListener('click', ()=>{
+    const all = store.exam, prev = all[sid] || {};
+    all[sid] = {best: prev.best, last: prev.last, taken: prev.taken || 0};
+    store.exam = all;
+    renderExam(ex);
+    window.scrollTo({top:0});
+  });
+
+  if(submitted){ paintResult(); }
+  else { retake.style.display = 'none'; updateBar(); }
+}
+document.querySelectorAll('.exam').forEach(renderExam);
+
 /* ---------- personal notes ---------- */
 document.querySelectorAll('.lesson').forEach(sec=>{
-  if(sec.id==='home') return;
+  if(sec.id==='home' || sec.dataset.kind) return;
   const foot = sec.querySelector('.lesson-footer');
   if(!foot) return;
   const box = document.createElement('div'); box.className = 'notes';
@@ -132,23 +273,63 @@ document.querySelectorAll('.lesson').forEach(sec=>{
 const navList = document.getElementById('nav-list');
 function renderNav(){
   navList.innerHTML='';
-  MONTHS.forEach(m=>{
-    const items = LESSONS.filter(l=>l.month===m.id);
-    const g = document.createElement('div'); g.className='month-group';
-    const doneCt = items.filter(l=>store.done.includes(l.id)).length;
-    g.innerHTML = `<div class="month-head"><h2>${m.title.split('—')[0].trim()}</h2><span class="count">${doneCt}/${items.length}</span></div>`;
-    items.forEach((l,i)=>{
+  SECTIONS.forEach(sec=>{
+    sec.months.forEach(mid=>{
+      const m = MONTHS.find(x=>x.id===mid);
+      if(!m) return;
+      const items = LESSONS.filter(l=>l.month===m.id);
+      const g = document.createElement('div'); g.className='month-group';
+      const doneCt = items.filter(l=>store.done.includes(l.id)).length;
+      g.innerHTML = `<div class="month-head"><h2>${m.title.split('—')[0].trim()}</h2><span class="count">${doneCt}/${items.length}</span></div>`;
+      items.forEach((l,i)=>{
+        const a = document.createElement('div');
+        a.className = 'nav-lesson'+(store.done.includes(l.id)?' done':'');
+        a.dataset.target = l.id;
+        a.innerHTML = `<span class="dot">✓</span><span class="n">${i+1}</span><span>${l.title}</span>`;
+        a.addEventListener('click', ()=>show(l.id));
+        g.appendChild(a);
+      });
+      navList.appendChild(g);
+    });
+    if(!sec.review && !sec.exam) return;
+    const rec = store.exam[sec.id] || {};
+    const g = document.createElement('div'); g.className='month-group review-group';
+    g.innerHTML = `<div class="month-head"><h2>${sec.short||sec.title} · Review</h2>
+      <span class="count">${rec.best==null?'':pct(rec.best)}</span></div>`;
+    [[sec.review,'Section Summary'],[sec.exam,'Final Exam']].forEach(([id,label])=>{
+      if(!id) return;
       const a = document.createElement('div');
-      a.className = 'nav-lesson'+(store.done.includes(l.id)?' done':'');
-      a.dataset.target = l.id;
-      a.innerHTML = `<span class="dot">✓</span><span class="n">${i+1}</span><span>${l.title}</span>`;
-      a.addEventListener('click', ()=>show(l.id));
+      a.className='nav-lesson'; a.dataset.target = id;
+      a.innerHTML = `<span class="dot rdot">◆</span><span class="n"></span><span>${label}</span>`;
+      a.addEventListener('click', ()=>show(id));
       g.appendChild(a);
     });
     navList.appendChild(g);
   });
   updateProgress();
 }
+
+/* ---------- review-page footers (summary / exam pages) ---------- */
+document.querySelectorAll('.review-footer').forEach(foot=>{
+  const page = foot.closest('.lesson');
+  const sec = SECTIONS.find(s=>s.review===page.id || s.exam===page.id);
+  if(!sec) return;
+  foot.classList.add('lesson-footer');
+  const mk = (label, target, primary)=>{
+    const b = document.createElement('button');
+    b.className = 'btn' + (primary?' primary':'');
+    b.textContent = label;
+    b.addEventListener('click', ()=>show(target));
+    return b;
+  };
+  if(page.id === sec.review){
+    foot.appendChild(mk('← Home','home',false));
+    if(sec.exam) foot.appendChild(mk('Take the final exam →', sec.exam, true));
+  } else {
+    if(sec.review) foot.appendChild(mk('← Section Summary', sec.review, false));
+    foot.appendChild(mk('Home', 'home', false));
+  }
+});
 function updateProgress(){
   const n = store.done.length;
   document.getElementById('prog-fill').style.width = (n/LESSONS.length*100)+'%';
@@ -191,6 +372,33 @@ function renderCards(){
   });
 }
 
+/* ---------- section review cards on home ---------- */
+function renderReview(){
+  const wrap = document.getElementById('review-cards');
+  if(!wrap) return;
+  wrap.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    if(!sec.review && !sec.exam) return;
+    const items = LESSONS.filter(l=>sec.months.includes(l.month));
+    const doneCt = items.filter(l=>store.done.includes(l.id)).length;
+    const rec = store.exam[sec.id] || {};
+    const card = (kind, title, body, meta, target)=>{
+      const c = document.createElement('div'); c.className='rcard';
+      c.innerHTML = `<div class="r-num">${kind}</div><h3>${title}</h3><p>${body}</p><div class="r-prog">${meta}</div>`;
+      c.addEventListener('click', ()=>show(target));
+      wrap.appendChild(c);
+    };
+    if(sec.review) card('Revision', `${sec.title} — Summary`,
+      'Every concept from the lessons condensed onto one page, in the order it was taught.',
+      `${items.length} lessons · ${sec.months.length} months · ${doneCt} completed`, sec.review);
+    if(sec.exam) card('Assessment', `${sec.title} — Final Exam`,
+      `${(EXAMS[sec.id]||[]).length} questions across every month. Nothing is graded until you submit.`,
+      rec.best==null ? 'Not attempted yet'
+        : `Best ${pct(rec.best)} · last ${pct(rec.last)} · ${rec.taken} attempt${rec.taken===1?'':'s'}`,
+      sec.exam);
+  });
+}
+
 /* ---------- routing ---------- */
 function show(id){
   document.querySelectorAll('.lesson').forEach(el=>el.classList.remove('visible'));
@@ -204,5 +412,5 @@ function show(id){
 const sidebar = document.getElementById('sidebar');
 document.getElementById('menu-toggle').addEventListener('click', ()=>sidebar.classList.toggle('open'));
 
-renderNav(); renderCards();
+renderNav(); renderCards(); renderReview();
 show(location.hash ? location.hash.slice(1) : 'home');

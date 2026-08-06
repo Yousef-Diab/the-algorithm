@@ -19,17 +19,17 @@ The published site is a single HTML file that runs offline in any modern browser
 
 | Path | What it is |
 |------|-----------|
-| `content/` | Lesson source, one folder per lesson: `content/<section>/<month>/<id>/` holding `lesson.html`, `quiz.js`, `video.txt`. **This is what you edit.** |
+| `content/` | Course source. One folder per lesson — `content/<section>/<month>/<id>/` holding `lesson.html`, `quiz.js`, `video.txt` — plus each section's `section.js`, `months.js`, `summary.html` and `exam.js`. **This is what you edit.** |
 | `engine/` | The rendering shell + app logic (styles, page frame, `app.js`) — rarely changes. |
 | `build.py` | Assembles `content/` + `engine/` into `index.html` (validates ids/quizzes as it goes). |
-| `verify.py` | Rebuilds, then headless-checks the whole course (lessons, images, quizzes, no JS errors). Run `python verify.py` after editing. |
+| `verify.py` | Rebuilds, then headless-checks the whole course (lessons, images, quizzes, resets, section exams, no JS errors). Run `python verify.py` after editing. |
 | `index.html` | **Build artifact** — the entire course in one offline file. Generated; don't hand-edit. |
 | `images/` | Chart images scraped from the notes, named `{slug}-{NN}.png` (e.g. `m4-03-orderblocks-07.png`). |
 | `transcripts/` | Source ICT video transcripts, organised `Month 1` … `Month 4`. **Git-ignored** (local source material only). |
 | `.claude/` | Claude Code local settings. |
 | `CLAUDE.md` | Working guide for AI-assisted development — read this before editing. |
 
-Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note charts and a lesson quiz.
+Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note charts and a lesson quiz — plus a section summary and a 45-question final exam.
 
 | Month | Theme |
 |-------|-------|
@@ -50,9 +50,11 @@ What you get:
 
 - **Sidebar navigation** grouped by month, with per-month completion counts.
 - **Lesson quizzes** that grade instantly and explain every answer.
+- **Section review**: a one-page summary of everything in the section, and a **final exam** that grades on submit against an 80% pass mark, keeps your best score, and can be retaken.
 - **Chart galleries** with a click-to-zoom lightbox.
 - **Flip cards** for definitions.
-- **Progress tracking** saved in the browser via `localStorage` (keys `ict-done`, `ict-quiz`). Clearing site data resets progress.
+- **Per-lesson notes** you can jot as you go, saved locally.
+- **Progress tracking** saved in the browser via `localStorage` (keys `ict-done`, `ict-quiz`, `ict-exam`, `ict-notes`).
 
 ---
 
