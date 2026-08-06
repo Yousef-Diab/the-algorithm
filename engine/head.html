@@ -124,6 +124,11 @@
   /* ---------- quiz / exam shared chrome ---------- */
   .quiz-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
   .quiz-head .q-sub{margin-bottom:0}
+  .mini-btn{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:7px;
+    padding:5px 11px;font-size:12px;font-family:var(--font);cursor:pointer;white-space:nowrap;
+    transition:border-color .15s,color .15s}
+  .mini-btn:hover:not(:disabled){border-color:var(--red);color:var(--text)}
+  .mini-btn:disabled{opacity:.4;cursor:default}
 
   /* ---------- final exam ---------- */
   .exam{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:8px 0 10px}
@@ -156,6 +161,17 @@
   .rcard h3{margin:6px 0 8px;font-size:17px;color:var(--text)}
   .rcard p{font-size:13px;color:var(--muted)}
   .rcard .r-prog{font-size:11.5px;color:var(--dim);margin-top:12px}
+
+  /* ---------- reset panel ---------- */
+  .reset-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:0 0 46px}
+  .reset-panel h3{margin:0 0 4px;color:var(--muted);font-size:15px}
+  .reset-sub{font-size:13px;color:var(--dim);max-width:620px}
+  .reset-sub strong{color:var(--muted)}
+  .reset-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .reset-btns .btn{font-size:13px;padding:8px 14px}
+  .btn.danger{border-color:var(--red);color:var(--red)}
+  .btn.danger:hover{background:rgba(226,96,108,.12);border-color:var(--red)}
+  .reset-status{font-size:12px;color:var(--green);margin-top:10px;min-height:15px}
 
   /* ---------- personal notes ---------- */
   .notes{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:34px 0 10px}

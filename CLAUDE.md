@@ -119,7 +119,7 @@ Rendering is still **data-driven**: lessons declare *slots* (`.fig-slot`, `.quiz
 
 Review pages are `.lesson` sections so routing works, but they carry `data-kind`, so they are excluded from `LESSONS`, the lesson count, the progress bar and the notes boxes. `build.py` derives `SECTIONS` (with each section's `months`, `review` and `exam` ids) and `EXAMS`. Unlike a lesson check, the exam grades nothing until **Submit**, scores against an 80% pass mark, and can be retaken.
 
-**State:** `localStorage` keys `ict-done` (array of completed lesson ids), `ict-quiz` (map of `"{quizKey}-{qIndex}" → bool`), `ict-exam` (map of section id → `{best, last, taken, submitted, picks}`; `picks` are stored by **option text**, since options re-shuffle on every render) and `ict-notes` (map of lesson id → text).
+**State:** `localStorage` keys `ict-done` (array of completed lesson ids), `ict-quiz` (map of `"{quizKey}-{qIndex}" → bool`), `ict-exam` (map of section id → `{best, last, taken, submitted, picks}`; `picks` are stored by **option text**, since options re-shuffle on every render) and `ict-notes` (map of lesson id → text). Reset controls live on the home page (`#reset-panel`) and in each quiz header; **no reset ever clears `ict-notes`**.
 
 ---
 
@@ -150,6 +150,7 @@ Review pages are `.lesson` sections so routing works, but they carry `data-kind`
 - every lesson in `content/` is present in the page,
 - every chart image resolves (no broken `.fig img`),
 - every quiz renders 4 options, shuffles, and grades on click,
+- every quiz exposes a reset control that actually clears the graded state,
 - each section's `summary.html` and `exam.js` produce a page, and the exam grades to a real score on submit,
 - a video link renders for each lesson with a non-empty `video.txt`,
 - there are zero console/page JS errors.

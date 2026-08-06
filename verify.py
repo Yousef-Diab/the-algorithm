@@ -7,6 +7,7 @@ Chromium and checks the whole course actually works:
   * every lesson in content/ is present in the page,
   * every <img> resolves (no broken charts),
   * every quiz renders 4 options, shuffles, and grades on click,
+  * every quiz exposes a working reset control,
   * each section's summary + final exam pages render, and the exam grades on submit,
   * a video link renders for each lesson that has a non-empty video.txt,
   * zero console/page JS errors.
@@ -120,6 +121,24 @@ def main() -> int:
             problems.append("no quiz questions rendered")
         if quiz["bad"]:
             problems.append(f"{quiz['bad']} quiz question(s) failed (not 4 options, or grading broke)")
+
+        # Every quiz must offer a reset that actually clears the graded state.
+        resets = probe(
+            """() => { const qs = [...document.querySelectorAll('.quiz')];
+                 const btns = qs.map(q => q.querySelector('.quiz-head .mini-btn'));
+                 if (!qs.length || btns.some(b => !b)) return {missing: true};
+                 btns[0].click();
+                 const q = qs[0].querySelector('.q');
+                 if (!q) return {missing: true};
+                 return {missing: false, quizzes: qs.length,
+                         cleared: q.querySelectorAll('.opt.correct, .opt.wrong').length === 0,
+                         enabled: [...q.querySelectorAll('.opt')].every(o => !o.disabled)}; }""",
+            "quiz reset", {"missing": True}
+        )
+        if resets.get("missing"):
+            problems.append("at least one quiz has no reset button")
+        elif not (resets["cleared"] and resets["enabled"]):
+            problems.append("quiz reset did not clear the graded state")
 
         # Answer a whole exam, submit, and confirm it grades to a real score.
         exam = probe(

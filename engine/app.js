@@ -77,16 +77,36 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') lb.classList.remo
 document.querySelectorAll('.flip').forEach(f=>f.addEventListener('click', ()=>f.classList.toggle('flipped')));
 
 /* ---------- quizzes ---------- */
-document.querySelectorAll('.quiz').forEach(qz=>{
+function clearQuiz(key){
+  const s = store.quiz;
+  Object.keys(s).forEach(k=>{ if(k.indexOf(key+'-')===0) delete s[k]; });
+  store.quiz = s;
+}
+function quizAnswered(key, n){
+  const s = store.quiz;
+  for(let i=0;i<n;i++){ if(Object.prototype.hasOwnProperty.call(s, `${key}-${i}`)) return true; }
+  return false;
+}
+function renderQuiz(qz){
   const key = qz.dataset.quiz, qs = QUIZZES[key];
   if(!qs){ qz.remove(); return; }
-  qz.innerHTML = `<h3>Lesson Check</h3><div class="q-sub">Answers come straight from the notes above.</div>`;
+  qz.innerHTML = '';
+
+  const head = document.createElement('div'); head.className = 'quiz-head';
+  head.innerHTML = `<div><h3>Lesson Check</h3>
+    <div class="q-sub">Answers come straight from the notes above.</div></div>`;
+  const reset = document.createElement('button'); reset.className = 'mini-btn';
+  reset.textContent = 'Reset quiz';
+  reset.disabled = !quizAnswered(key, qs.length);
+  reset.addEventListener('click', ()=>{ clearQuiz(key); renderQuiz(qz); });
+  head.appendChild(reset);
+  qz.appendChild(head);
+
   qs.forEach((item,qi)=>{
     const qd = document.createElement('div'); qd.className='q';
     qd.innerHTML = `<div class="q-text">${qi+1}. ${item.q}</div>`;
     // shuffle options so the correct answer isn't always in the same position
-    const opts = item.o.map((text,idx)=>({text, correct: idx===item.a}));
-    for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    const opts = shuffle(item.o.map((text,idx)=>({text, correct: idx===item.a})));
     const answered = Object.prototype.hasOwnProperty.call(store.quiz, `${key}-${qi}`);
     const wasCorrect = store.quiz[`${key}-${qi}`];
     const btns = [];
@@ -98,6 +118,7 @@ document.querySelectorAll('.quiz').forEach(qz=>{
         else { b.classList.add('wrong'); btns.forEach(x=>{ if(x._correct) x.classList.add('correct'); }); }
         expl.classList.add('show');
         const s = store.quiz; s[`${key}-${qi}`] = o.correct; store.quiz = s;
+        reset.disabled = false;
       });
       b._correct = o.correct; btns.push(b); qd.appendChild(b);
     });
@@ -113,7 +134,9 @@ document.querySelectorAll('.quiz').forEach(qz=>{
     }
     qz.appendChild(qd);
   });
-});
+}
+const QUIZ_ELS = Array.from(document.querySelectorAll('.quiz'));
+QUIZ_ELS.forEach(renderQuiz);
 
 /* ---------- final exams (one per section) ---------- */
 /* Unlike a lesson check, nothing is graded until you submit — and picks are
@@ -241,7 +264,8 @@ function renderExam(ex){
   if(submitted){ paintResult(); }
   else { retake.style.display = 'none'; updateBar(); }
 }
-document.querySelectorAll('.exam').forEach(renderExam);
+const EXAM_ELS = Array.from(document.querySelectorAll('.exam'));
+EXAM_ELS.forEach(renderExam);
 
 /* ---------- personal notes ---------- */
 document.querySelectorAll('.lesson').forEach(sec=>{
@@ -337,6 +361,7 @@ function updateProgress(){
 }
 
 /* ---------- footer buttons ---------- */
+const doneRefreshers = [];
 LESSONS.forEach((l,idx)=>{
   const foot = document.querySelector(`#${l.id} .lesson-footer`);
   const prev = document.createElement('button'); prev.className='btn';
@@ -349,7 +374,7 @@ LESSONS.forEach((l,idx)=>{
     d = d.includes(l.id) ? d.filter(x=>x!==l.id) : [...d, l.id];
     store.done = d; refresh(); renderNav(); renderCards();
   });
-  refresh();
+  refresh(); doneRefreshers.push(refresh);
   const next = document.createElement('button'); next.className='btn primary';
   next.textContent = idx<LESSONS.length-1 ? 'Next: '+LESSONS[idx+1].title+' →' : 'Finish course';
   next.addEventListener('click', ()=>{
@@ -399,6 +424,44 @@ function renderReview(){
   });
 }
 
+/* ---------- reset controls on home ---------- */
+function renderReset(){
+  const panel = document.getElementById('reset-panel');
+  if(!panel) return;
+  panel.innerHTML = `<h3>Start over</h3>
+    <p class="reset-sub">Clear saved answers so you can take everything again.
+      <strong>Your personal lesson notes are never touched.</strong></p>
+    <div class="reset-btns"></div><div class="reset-status"></div>`;
+  const btns = panel.querySelector('.reset-btns');
+  const status = panel.querySelector('.reset-status');
+
+  const clearQuizzes = ()=>{ localStorage.removeItem('ict-quiz'); QUIZ_ELS.forEach(renderQuiz); };
+  const clearExams   = ()=>{ localStorage.removeItem('ict-exam'); EXAM_ELS.forEach(renderExam); };
+  const clearDone    = ()=>{ localStorage.removeItem('ict-done'); doneRefreshers.forEach(f=>f()); };
+
+  const actions = [
+    ['Reset lesson quizzes', 'Clear every lesson-check answer? You can then take them all again.',
+      clearQuizzes, 'Lesson quizzes reset.'],
+    ['Reset final exams', 'Clear every final exam — including the best scores?',
+      clearExams, 'Final exams reset.'],
+    ['Reset lesson progress', 'Clear which lessons are marked complete?',
+      clearDone, 'Lesson progress reset.'],
+    ['Reset everything', 'Clear all quizzes, exams and lesson progress? Your notes are kept.',
+      ()=>{ clearQuizzes(); clearExams(); clearDone(); }, 'Everything reset — notes kept.']
+  ];
+  actions.forEach(([label, ask, run, done], i)=>{
+    const b = document.createElement('button');
+    b.className = 'btn' + (i===actions.length-1 ? ' danger' : '');
+    b.textContent = label;
+    b.addEventListener('click', ()=>{
+      if(!confirm(ask)) return;
+      run(); renderNav(); renderCards(); renderReview();
+      status.textContent = done;
+    });
+    btns.appendChild(b);
+  });
+}
+
 /* ---------- routing ---------- */
 function show(id){
   document.querySelectorAll('.lesson').forEach(el=>el.classList.remove('visible'));
@@ -412,5 +475,5 @@ function show(id){
 const sidebar = document.getElementById('sidebar');
 document.getElementById('menu-toggle').addEventListener('click', ()=>sidebar.classList.toggle('open'));
 
-renderNav(); renderCards(); renderReview();
+renderNav(); renderCards(); renderReview(); renderReset();
 show(location.hash ? location.hash.slice(1) : 'home');

@@ -49,12 +49,13 @@ Section 1 (ICT Core) currently covers **4 months, 38 lessons**, each with note c
 What you get:
 
 - **Sidebar navigation** grouped by month, with per-month completion counts.
-- **Lesson quizzes** that grade instantly and explain every answer.
+- **Lesson quizzes** that grade instantly and explain every answer — each resettable on its own.
 - **Section review**: a one-page summary of everything in the section, and a **final exam** that grades on submit against an 80% pass mark, keeps your best score, and can be retaken.
 - **Chart galleries** with a click-to-zoom lightbox.
 - **Flip cards** for definitions.
 - **Per-lesson notes** you can jot as you go, saved locally.
 - **Progress tracking** saved in the browser via `localStorage` (keys `ict-done`, `ict-quiz`, `ict-exam`, `ict-notes`).
+- **Reset controls** on the home page — clear quizzes, exams or progress independently (or all three). Your notes are never touched.
 
 ---
 
