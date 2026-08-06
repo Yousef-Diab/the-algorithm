@@ -34,6 +34,7 @@
   .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:3px;transition:width .4s}
   .progress-label{font-size:11px;color:var(--muted);margin-top:5px}
   .month-group{margin-top:6px}
+  .nav-section{padding:16px 20px 4px;font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--accent2);font-weight:700}
   .month-head{display:flex;align-items:center;justify-content:space-between;padding:12px 20px 6px;cursor:pointer;user-select:none}
   .month-head h2{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold)}
   .month-head .count{font-size:11px;color:var(--dim)}
@@ -225,8 +226,14 @@
   #home .hero h2 em{font-style:normal;color:var(--gold)}
   #home .hero p{color:var(--muted);margin-top:14px;max-width:600px;font-size:16.5px}
   .month-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:26px 0}
+  /* section heading inside the card grid — spans the full row */
+  .sec-head{grid-column:1/-1;font-size:13px;text-transform:uppercase;letter-spacing:1.4px;color:var(--accent2);margin:10px 0 -4px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .sec-head:first-child{margin-top:0}
   .mcard{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:border-color .15s,transform .15s}
   .mcard:hover{border-color:var(--accent);transform:translateY(-2px)}
+  /* a part with no lessons yet: visible but inert */
+  .mcard.empty{opacity:.45;cursor:default}
+  .mcard.empty:hover{border-color:var(--border);transform:none}
   .mcard .m-num{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
   .mcard h3{margin:6px 0 8px;font-size:17px;color:var(--text)}
   .mcard p{font-size:13px;color:var(--muted)}
@@ -1956,6 +1963,77 @@
   <div class="review-footer"></div>
 </section>
 
+<section class="lesson" id="p1-01" data-title="Getting Your Mindset Right" data-month="p1">
+  <div class="lesson-hero">
+    <div class="crumb">Part 1 · Lesson 1</div>
+    <h2>Getting Your Mindset Right</h2>
+    <div class="desc">Before a single chart — what this mentorship is, what it deliberately leaves out, and what it asks of you.</div>
+  </div>
+
+  <p>This first episode is a <strong>prep to get your mindset correct</strong> before the lessons begin. Nothing is taught about price yet; everything here is about how to approach what follows.</p>
+
+  <h3>Three stages</h3>
+  <p>Everyone is treated as a green horn — someone <em>yearning</em> to learn how to do this. The mentorship is designed to move you through three stages:</p>
+  <div class="kv">
+    <div>Yearner</div><div>You want to learn this — you haven't traded yet, or you've tried and failed</div>
+    <div>Learner</div><div>You become a <strong>structured</strong> learner, working through a process</div>
+    <div>Earner</div><div>At your own discretion and timing — this one is not on a schedule</div>
+  </div>
+  <p>It is not a year-long mentorship. The plan is roughly three or four months, and that count <strong>includes March 2022</strong>, when nothing is uploaded at all.</p>
+
+  <h3>A deliberately stripped-down model</h3>
+  <p>ICT built this as a simple model — one he describes framing so that <strong>his daughter</strong> could look at it and see that there aren't a lot of moving parts: simple to decide what she wants to do, and just as importantly <strong>when not to do something</strong>. No bells and whistles, no advanced theories.</p>
+  <div class="callout warn"><span class="tag">Why not the full arsenal?</span>The highest form of analysis he teaches in his private mentorship does create exceptional traders — but the majority of students <strong>get bogged down in all of the content and it creates analysis paralysis</strong>. Like a kid in a candy store: what do you eat first, and what do you reach for while you're still chewing? He can put these things in your hands, but they have sharp edges — use live ammunition before you're properly trained and you can hurt yourself.</div>
+
+  <h3>What is and isn't promised</h3>
+  <div class="callout rule"><span class="tag">The promises</span>
+    <ul>
+      <li>You <strong>will</strong> learn things that repeat — a lot.</li>
+      <li>You will <strong>not</strong> be perfect. No teacher can provide 100% accuracy, and he doesn't trade perfectly either.</li>
+      <li>The goal is to improve your understanding of <strong>price action — how price is delivered</strong>, and how to read bias on an intraday and daily basis.</li>
+      <li>Setups repeat with common characteristics, but they are <strong>never carbon copies</strong>. You're learning to recognise a familiar setup, not to match a template.</li>
+      <li><strong>No trade signals.</strong> He'll draw your attention beforehand to where price will likely draw to next — that is for study, not an enticement to take a live trade.</li>
+    </ul>
+  </div>
+
+  <h3>Independence is the point</h3>
+  <div class="callout"><span class="tag">Key idea</span>Do not grow a dependency on him pointing to everything before it happens. That mindset <strong>stunts your growth and creates a barrier</strong> — a codependent state of mind. He fosters an <strong>independent mindset</strong>, where you come to the decisions on your own, so the results are yours: if you succeed you own it, and if you fail you own that too.</div>
+  <p>He is openly realistic that some students will fail. From his 2016 paid mentorship there are students still trying to find their way, and others with mind-blowing results — the same material, different individual experiences. Responsibility is <strong>paramount</strong>, and it cannot be handed to anyone else. He frames it as a <strong>transferable skill — but one the student has to hone</strong>.</p>
+
+  <h3>The markets and the platforms</h3>
+  <p>The model is driven with <strong>index futures</strong> — but the concepts work in forex too, and he'll show how to scale them into any timeframe. ICT began in 1992 trading commodities and futures, moved to the 30-year treasury bond and the S&amp;P, and found that <strong>intraday trading</strong> suited him where position trading did not.</p>
+  <p>Teaching is done through <strong>TradingView</strong>. For showing results outside a demo account he used a regulated broker rather than MT4 — because it has been shown how frauds and fakes can use that platform to <strong>edit trades after the market has already moved</strong> and pretend they were profitable. He is not recommending a broker; he is removing the ability to fake the result.</p>
+
+  <h3>The arithmetic of the objective</h3>
+  <div class="kv">
+    <div>One handle</div><div>e.g. 4567 → 4568 — that's <strong>four ticks</strong></div>
+    <div>E-mini S&amp;P</div><div><strong>$50 per handle</strong>, so one tick is <strong>$12.50</strong></div>
+    <div>Micros</div><div><strong>$5 per handle</strong> — far less initial margin, and you can build up over time</div>
+  </div>
+  <p>You don't need the margin for a full E-mini contract. Outside the US you could trade a CFD on the US 500, but for US traders that is illegal because it doesn't go through a regulated exchange — which is why micros exist.</p>
+  <div class="callout rule"><span class="tag">The goal</span>A <strong>hypothetical income-based strategy</strong> — not beating the World Cup, not out-posting Instagram traders. If you can take <strong>25 handles a week</strong> out of a market like the E-mini S&amp;P, you can do very well. <strong>You don't need to hit home runs.</strong> The inspiration he offers: what if speculation covered half — or all — of a $1,500 rent or mortgage, or the car payment and insurance?</div>
+
+  <h3>Bias before precision</h3>
+  <div class="callout"><span class="tag">Remember this one</span>You <strong>don't</strong> need to be highly precise about your entries — he teaches <strong>forgiving entries</strong>. You <strong>do</strong> need to be precise about the <strong>directional bias and where price is reaching for</strong>. That, plus understanding the <strong>liquidity matrix — buy side and sell side</strong>, is the basis of how the markets work. It requires very little chart graffiti: a line marking a level he wants to see breached, and a level he wants to see price reach into.</div>
+
+  <h3>What is asked of you</h3>
+  <div class="callout rule"><span class="tag">Your side of the deal</span>
+    <ul>
+      <li>Have an <strong>independent mindset</strong> — see things yourself and come to decisions on your own.</li>
+      <li><strong>Do not be codependent</strong> on him.</li>
+      <li><strong>Don't cut corners</strong> in his teachings.</li>
+      <li>Do your homework. Study, and do the things he suggests — study hard and fully understand the concepts.</li>
+      <li><strong>Backtest, backtest, backtest.</strong></li>
+    </ul>
+  </div>
+  <p>If drills and homework are suggested, participate as best you can. Not everyone can watch live data — there are businesses, school, jobs and family — and reviewing after the fact isn't the same as seeing it live, but it is the best you can do.</p>
+
+  <!-- no fig-slot: the notes carry no charts for this episode -->
+
+  <div class="quiz" data-quiz="p1-01"></div>
+  <div class="lesson-footer"></div>
+</section>
+
 
 
     </div>
@@ -1985,11 +2063,13 @@ const MONTHS = [
   {"id": "m1", "title": "Month 1 — Reading The Conditions", "desc": "Trade setup elements, market maker conditioning, equilibrium vs discount & premium, fair valuation, liquidity runs and protraction."},
   {"id": "m2", "title": "Month 2 — Risk & Trade Selection", "desc": "Growing small accounts, framing low-risk setups, 10% months, mitigating losses, high-reward selection and the first market maker traps."},
   {"id": "m3", "title": "Month 3 — Institutional Analysis", "desc": "Timeframe selection, institutional order flow, sponsorship, anticipatory skills, SMT, macro-to-micro and more traps."},
-  {"id": "m4", "title": "Month 4 — The PD Arrays", "desc": "Orderblocks, mitigation, breaker, rejection, reclaimed, propulsion & vacuum blocks, liquidity pools, voids, FVGs and phantoms."}
+  {"id": "m4", "title": "Month 4 — The PD Arrays", "desc": "Orderblocks, mitigation, breaker, rejection, reclaimed, propulsion & vacuum blocks, liquidity pools, voids, FVGs and phantoms."},
+  {"id": "p1", "title": "Part 1 — Foundations & The 2022 Model", "desc": "The mindset the mentorship is built on, then the model itself: fair value gaps, liquidity, the market structure shift, premium & discount and the killzones."}
 ];
 /* ---------- sections (months/review/exam are DERIVED by build.py) ---------- */
 const SECTIONS = [
   {"id": "s1", "short": "ICT Core", "title": "ICT Core (Months 1–4)", "desc": "The full core syllabus — market conditions and templates, premium & discount, liquidity, risk and trade selection, institutional analysis, and the PD arrays.", "months": ["m1", "m2", "m3", "m4"], "review": "s1-review", "exam": "s1-exam"},
+  {"id": "s2", "short": "2022 Mentorship", "label": "Part", "title": "ICT 2022 Mentorship", "desc": "The free 2022 YouTube mentorship — one stripped-down intraday model taught end to end: fair value gaps, liquidity, market structure shifts, the killzones, and reading the daily bias.", "months": ["p1"], "review": null, "exam": null},
 ];
 /* filled after lessons defined */
 </script>
@@ -2252,7 +2332,16 @@ const QUIZZES = {
   {q:"How do we treat double tops and double bottoms?",o:["Trust them as clean reversals","Never trust them — expect a sweep","Trade the neckline break","Just ignore them totally"],a:1,e:"The algo remembers them as reference points and reaches through them for the stops — we always expect them swept."},
   {q:"How does the algorithm set the real target off a double top?",o:["Retail's obvious support low","Project the between-peaks range","A big round number","The prior day's high"],a:1,e:"The measured move takes the consolidation's high-to-low between the peaks and projects it BEYOND the double top (hit to within 1 pip in the example) — the opposite of retail's support target."},
   {q:"On the hourly, why can't you use the 10–20 pip sweep rule?",o:["It always works fine there","Bigger moves — use the range","The hourly has no stops","You can, always do it"],a:1,e:"10–20 pip sweeps suit the 15m; on the hourly use the measured projection (e.g. 48 pips). Highlight clean tops/bottoms even with no trade today — they pay off once run through."}
- ]
+ ],
+ "p1-01":[
+  {q:"What are the three stages of this mentorship?",o:["Yearner, learner, earner","Novice, trader, investor","Student, analyst, broker","Beginner, scalper, swing"],a:0,e:"Everyone starts as a green horn yearning to learn. The intent is to take yearners through becoming structured learners, and then — at your own discretion and timing — an earner."},
+  {q:"What must you be precise about?",o:["The directional bias","The exact entry price","The contract expiry","The lot size you use"],a:0,e:"You don't need to be highly precise about your entries — he teaches forgiving entries — but you do need to be precise about the directional bias and where price is reaching for."},
+  {q:"Why was the model stripped down for this mentorship?",o:["Excess content creates paralysis","Advanced concepts stopped working","YouTube limits the video length","Regulators banned the old model"],a:0,e:"The highest form of analysis creates exceptional traders, but the majority of students get bogged down in all of the content and it just creates analysis paralysis."},
+  {q:"On the E-mini S&P, what is one tick worth?",o:["$12.50 — four to a handle","$50.00 — four to a handle","$5.00 — ten to a handle","$25.00 — two to a handle"],a:0,e:"A handle is four ticks — 4567 to 4568 — and a handle is $50 in the E-mini S&P, so every one tick is twelve dollars and fifty cents."},
+  {q:"Why did ICT avoid MT4 for showing live results?",o:["It can be gamed to fake results","It cannot chart futures markets","It has no live order entry tool","It was shut down by regulators"],a:0,e:"It has been shown how frauds and fakes can use that platform to go in and edit their trades after the market has already moved, pretending they were profitable."},
+  {q:"What weekly objective does he frame as enough?",o:["Around 25 handles a week","Around 25 handles a day","Around 250 handles a week","Around 5 handles a month"],a:0,e:"If you can take 25 handles out of a market like the E-mini S&P you can do very very well — it's a hypothetical income-based strategy, and you don't need to hit home runs."},
+  {q:"What will he NOT be providing on the channel?",o:["Trade setups to take live","Assignments and PDF files","Charts drawn on beforehand","Lessons on a set schedule"],a:0,e:"Setups will not be given for trades. He draws attention beforehand to where price will likely draw to next so you can study it — not as an enticement to take a live trade."}
+]
 };
 
 /* ---------- final exams (section id -> questions) ---------- */
@@ -2573,7 +2662,8 @@ const VIDEOS = {
  "m4-11":"https://youtu.be/HTQgH11W37o",
  "m4-12":"https://youtu.be/FgacYSN9QEo",
  "m4-13":"https://youtu.be/Xae0VrbkyFk",
- "m4-14":"https://youtu.be/owq30ATPU5s"
+ "m4-14":"https://youtu.be/owq30ATPU5s",
+ "p1-01":""
 };
 
 /* ---------- captions ---------- */
@@ -2996,6 +3086,12 @@ const navList = document.getElementById('nav-list');
 function renderNav(){
   navList.innerHTML='';
   SECTIONS.forEach(sec=>{
+    /* only label the sections once there is more than one of them */
+    if(SECTIONS.length>1){
+      const sh = document.createElement('div');
+      sh.className='nav-section'; sh.textContent = sec.short || sec.title;
+      navList.appendChild(sh);
+    }
     sec.months.forEach(mid=>{
       const m = MONTHS.find(x=>x.id===mid);
       if(!m) return;
@@ -3085,13 +3181,26 @@ LESSONS.forEach((l,idx)=>{
 /* ---------- month cards on home ---------- */
 function renderCards(){
   const wrap = document.getElementById('month-cards'); wrap.innerHTML='';
-  MONTHS.forEach((m,i)=>{
-    const items = LESSONS.filter(l=>l.month===m.id);
-    const doneCt = items.filter(l=>store.done.includes(l.id)).length;
-    const c = document.createElement('div'); c.className='mcard';
-    c.innerHTML = `<div class="m-num">Month ${i+1}</div><h3>${m.title.split('— ')[1]}</h3><p>${m.desc}</p><div class="m-prog">${doneCt}/${items.length} lessons · ${items.reduce((a,l)=>a+(IMG_COUNTS[SLUG_BY_ID[l.id]]||0),0)} charts</div>`;
-    c.addEventListener('click', ()=>show(items[0].id));
-    wrap.appendChild(c);
+  /* grouped by section: the card number restarts per section and the noun comes
+     from that section's `label` ("Month" for the core, "Part" for a mentorship). */
+  SECTIONS.forEach(sec=>{
+    if(SECTIONS.length>1){
+      const sh = document.createElement('h3');
+      sh.className='sec-head'; sh.textContent = sec.title;
+      wrap.appendChild(sh);
+    }
+    sec.months.forEach((mid,i)=>{
+      const m = MONTHS.find(x=>x.id===mid);
+      if(!m) return;
+      const items = LESSONS.filter(l=>l.month===m.id);
+      const doneCt = items.filter(l=>store.done.includes(l.id)).length;
+      const c = document.createElement('div');
+      /* a part whose lessons aren't written yet must not be clickable */
+      c.className = 'mcard'+(items.length?'':' empty');
+      c.innerHTML = `<div class="m-num">${sec.label||'Month'} ${i+1}</div><h3>${m.title.split('— ')[1]||m.title}</h3><p>${m.desc}</p><div class="m-prog">${doneCt}/${items.length} lessons · ${items.reduce((a,l)=>a+(IMG_COUNTS[SLUG_BY_ID[l.id]]||0),0)} charts</div>`;
+      if(items.length) c.addEventListener('click', ()=>show(items[0].id));
+      wrap.appendChild(c);
+    });
   });
 }
 

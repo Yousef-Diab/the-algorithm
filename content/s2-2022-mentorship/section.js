@@ -1,0 +1,1 @@
+{ id: "s2", short: "2022 Mentorship", label: "Part", title: "ICT 2022 Mentorship", desc: "The free 2022 YouTube mentorship — one stripped-down intraday model taught end to end: fair value gaps, liquidity, market structure shifts, the killzones, and reading the daily bias." }

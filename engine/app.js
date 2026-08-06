@@ -418,6 +418,12 @@ const navList = document.getElementById('nav-list');
 function renderNav(){
   navList.innerHTML='';
   SECTIONS.forEach(sec=>{
+    /* only label the sections once there is more than one of them */
+    if(SECTIONS.length>1){
+      const sh = document.createElement('div');
+      sh.className='nav-section'; sh.textContent = sec.short || sec.title;
+      navList.appendChild(sh);
+    }
     sec.months.forEach(mid=>{
       const m = MONTHS.find(x=>x.id===mid);
       if(!m) return;
@@ -507,13 +513,26 @@ LESSONS.forEach((l,idx)=>{
 /* ---------- month cards on home ---------- */
 function renderCards(){
   const wrap = document.getElementById('month-cards'); wrap.innerHTML='';
-  MONTHS.forEach((m,i)=>{
-    const items = LESSONS.filter(l=>l.month===m.id);
-    const doneCt = items.filter(l=>store.done.includes(l.id)).length;
-    const c = document.createElement('div'); c.className='mcard';
-    c.innerHTML = `<div class="m-num">Month ${i+1}</div><h3>${m.title.split('— ')[1]}</h3><p>${m.desc}</p><div class="m-prog">${doneCt}/${items.length} lessons · ${items.reduce((a,l)=>a+(IMG_COUNTS[SLUG_BY_ID[l.id]]||0),0)} charts</div>`;
-    c.addEventListener('click', ()=>show(items[0].id));
-    wrap.appendChild(c);
+  /* grouped by section: the card number restarts per section and the noun comes
+     from that section's `label` ("Month" for the core, "Part" for a mentorship). */
+  SECTIONS.forEach(sec=>{
+    if(SECTIONS.length>1){
+      const sh = document.createElement('h3');
+      sh.className='sec-head'; sh.textContent = sec.title;
+      wrap.appendChild(sh);
+    }
+    sec.months.forEach((mid,i)=>{
+      const m = MONTHS.find(x=>x.id===mid);
+      if(!m) return;
+      const items = LESSONS.filter(l=>l.month===m.id);
+      const doneCt = items.filter(l=>store.done.includes(l.id)).length;
+      const c = document.createElement('div');
+      /* a part whose lessons aren't written yet must not be clickable */
+      c.className = 'mcard'+(items.length?'':' empty');
+      c.innerHTML = `<div class="m-num">${sec.label||'Month'} ${i+1}</div><h3>${m.title.split('— ')[1]||m.title}</h3><p>${m.desc}</p><div class="m-prog">${doneCt}/${items.length} lessons · ${items.reduce((a,l)=>a+(IMG_COUNTS[SLUG_BY_ID[l.id]]||0),0)} charts</div>`;
+      if(items.length) c.addEventListener('click', ()=>show(items[0].id));
+      wrap.appendChild(c);
+    });
   });
 }
 
