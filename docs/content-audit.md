@@ -74,7 +74,7 @@ go-ahead.
 | C | S1 · Month 3 | m3-01 … m3-08 (8) | 25 | ☑ 2026-08-07 (notes + transcripts) |
 | D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☑ 2026-08-07 (notes + transcripts) |
 | E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☑ 2026-08-07 (notes + transcripts) |
-| F | S1 · summary + exam | `summary.html`, `exam.js` | 45 | ☐ |
+| F | S1 · summary + exam | `summary.html`, `exam.js` | 45 | ☑ 2026-08-07 (lessons + findings A–E) |
 | G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☐ |
 | H | S2 · Part 2 | p2-01 … p2-06 (6) | 49 | ☐ |
 | I | S2 · Part 3 | p3-01 … p3-06 (6) | 47 | ☐ |
@@ -1710,15 +1710,589 @@ predictor. What **did** predict **E1** is a note page containing a **dated
 example that post-dates the teaching** — a concrete, greppable signal worth
 carrying into batch F and Section 2.
 
+### Batch F — Section 1, revision summary + final exam
+
+Read in full: `content/s1-ict-core/summary.html` (314 lines, **9 `<h3>` + 23
+`<h4>` = 32 blocks**, not the 30 estimated) and `content/s1-ict-core/exam.js`
+(**45** questions, 275 lines). Per the batch method the reference set was **all
+38 Section 1 lessons** (~121 KB, read in full) plus findings A–E; no transcripts
+were re-read, and `notes/ict-core/m2-04.md` was the only note page opened, to
+settle **F9**.
+
+**Headline: these two pages are the best-constructed content in Section 1, and
+blocker propagation is far narrower than the leads predicted.** Of the three open
+Section 1 blockers only **E1** reaches this batch — and it reaches it in the
+worst possible slot, the definitional one (**F1**). **C1** (the backwards inverse
+head & shoulders) is **absent**: the summary simply doesn't carry the inverse
+pattern, so on that point it is *more* correct than the lesson it summarises.
+**C2**'s invented apex mechanism is gone too; only a one-clause residue survives
+(**F2**). **D1** and **B2** likewise do not propagate.
+
+The two dimensions the leads flagged as high-risk both came back clean. **All 24
+`(Lx)` cross-references resolve to the lesson that actually teaches the thing**
+(**F12**) — the first and only place in the corpus where they could be checked,
+and there are no dead ones. **The 15-row "numbers worth memorising" table checks
+out row by row against the lesson each number came from** (**F13**); B2's shape
+does not recur. Exam coverage is *not* uneven — 36 of 38 lessons are represented
+and per-month sampling tracks lesson count almost exactly (**F8**), so the
+`"vacuum"`-appears-0-times signal was a false positive.
+
+What is left is six should-fix items — four of them defects inherited from
+lessons, one exam question testing something the summary never states (**F6**),
+and one stale self-referential number (**F7**) — plus the confirmation that the
+exam is the best-constructed question set in Section 1 **and now a mechanical
+account of why**, which is the transferable fix for **E19** (**F13**, **F14**).
+
+#### Content fidelity (§1) — and the §3 "re-states the lessons" test
+
+**F1 · blocker ·
+[summary.html:240](../content/s1-ict-core/summary.html#L240) and
+[exam.js:235-237](../content/s1-ict-core/exam.js#L235)** —
+**E1 propagates to both pages, in the one slot where it does most damage: the
+definition.** The summary's liquidity-void row reads *"Where **absolutely no
+trading took place** — big one-sided candles. There is no specific time for a
+void to fill; it gets covered back over **once both sides have been offered**."*
+Three things make this worse than E1 was in m4-11:
+
+- **The self-contradiction is now inside a single table cell.** "No trading took
+  place" and "once both sides have been offered" are one sentence apart.
+- **The vacuum block's row sits four rows above it** and reads *"a gap from a
+  volatility event … where **no trade could occur**."* So the summary hands the
+  same definition to two different PD arrays inside one table. E1 noted that
+  m4-11 collapses the m4-09 distinction; here the collapse is visible at a
+  glance, on the page designed for side-by-side revision.
+- **The correct formulation is two rows *below*.** The FVG row says *"**Only one
+  side of liquidity was offered** there, so price is drawn back to rebalance
+  it"* — which is exactly ICT's liquidity-void definition
+  (`m4-11` transcript 7-11, 111-114, 125-126, quoted in **E1**). The table
+  therefore holds the right words and the wrong ones simultaneously.
+
+In the exam, q39 (`exam.js:235`) asks *"What is a liquidity void?"* and marks
+*"A range where no trading took place"*; its `e` reproduces E1's
+one-sentence self-contradiction verbatim — *"absolutely no trading took place —
+big candles delivered to one side. It gets covered back over later, once both
+sides have been offered."* Note that **none of q39's four options states ICT's
+actual definition**, so this question cannot be salvaged by re-marking `a`; it
+needs rewriting after E1 is fixed. **E19** already showed the fix hands
+`m4-11/quiz.js:2` a free mirror-pair; the same phrasing serves here.
+
+*Scope, measured:* of the **7** "liquidity void" mentions in `summary.html` and
+**4** in `exam.js`, exactly **one each** uses the wrong reading. The other nine
+are neutral, and two of them *presuppose* the correct one — `summary.html:150`
+(*"first objective the liquidity void the false flag created"*) and
+`summary.html:243` (*"on a lower timeframe show up as a liquidity void"*), both
+of which describe ranges where trading demonstrably occurred. So the repair is
+two cells, not eleven.
+
+**F2 · should-fix ·
+[summary.html:222](../content/s1-ict-core/summary.html#L222)** —
+**C2's residue: *"Triangles and wedges are the same mechanism."*** The invented
+apex mechanism is gone (the string "apex" appears in `summary.html` **zero**
+times), but the claim that triangles and wedges *work by* the trendline
+mechanism survives, and neither word appears anywhere in Month 3's transcripts or
+notes — ICT explicitly defers the triangle (**C2**). Because the summary states
+it in six words with no mechanism attached, it is a should-fix here rather than a
+blocker; the fix is to delete the clause when m3-07 is fixed.
+
+*Related, and deliberately not a finding:* "apex" **does** appear in the exam, at
+[`exam.js:169`](../content/s1-ict-core/exam.js#L169) — but only as a
+**distractor** (*"Sell stops at the apex"*), and §3 exempts distractors from
+source-traceability. Worth flagging for the fix pass rather than the audit: if
+C2's repair removes the concept from the course, that distractor starts
+referencing a term the reader has never met, which is a weak distractor even
+though it is a permissible one.
+
+**F3 · should-fix ·
+[summary.html:222](../content/s1-ict-core/summary.html#L222)** —
+**C3 propagates, and is *promoted* from quotation to assertion.** m3-07 sets the
+manufactured line in italics and quotation marks — *"If everyone's looking at the
+same thing and everyone can't win, the majority has to be wrong."* The summary
+drops the marks and folds the claim into its own prose: *"everyone draws them,
+everyone sees the same touches, and **the majority has to be wrong**."* **C3**
+established that "majority", "everyone can't win" and any near-variant appear
+**nowhere** in Month 3's sources. Losing the quotation marks arguably makes it
+worse, not better: it now reads as the course's own assertion rather than as
+ICT's words, so a reader has no cue that it is a paraphrase at all. The three
+real ICT lines **C3** identified are still the fix.
+
+**F4 · should-fix ·
+[summary.html:223](../content/s1-ict-core/summary.html#L223)** —
+**C7 propagates verbatim.** *"trying to pick tops and bottoms is the **single
+worst thing** a trader can do."* ICT: *"picking tops and bottoms is **one of the
+worst games to play** especially the new trader"*
+(`Market Maker Trap Head Shoulders Pattern.txt:112-116`). The same
+over-tightening as **A3** and **C7**, now on the last page a reader reads before
+the exam. (m3-08's other C7 half — "retail sells the right shoulder" — is **not**
+carried over; the summary says only that the stops above the head and shoulders
+are the engineered liquidity, which is correct.)
+
+**F5 · should-fix ·
+[summary.html:123](../content/s1-ict-core/summary.html#L123)** —
+**B1 propagates: *"the same move that pays the hourly trader 1:1 pays you
+3:1."*** **B1** showed this comparison is not in the source and overstates by a
+full R — at the moment price reaches 7542 the hourly trader is *being filled*, at
+0R, not at 1:1. B1's fix applies unchanged: by the time the hourly entry fills,
+the refined trade is already at 3R.
+
+*The good half of the same line:* **B2 does not propagate.** The summary keeps the
+pip counts (*"1-hour entry with a 20-pip stop, 15-minute refinement at 17 pips,
+5-minute refinement at under 10 pips"*) and **drops the 7520 / 7507 price
+levels**, so the row a reader could falsify with mental arithmetic
+(7520 − 7507 = 13, not 17) never reaches this page. That is exactly the shape of
+fix B2 recommended, already applied here.
+
+#### Exam quality (review dimension 3)
+
+**F6 · should-fix ·
+[exam.js:228-232](../content/s1-ict-core/exam.js#L228) (q38)** — **the one exam
+question that tests something the summary does not state.** Q38 asks *"The
+higher-timeframe bias is bullish. What do you wait for?"* → *"An old low to be
+taken out first"*, and its `e` names it as *"the trick"*. That is m4-10's stated
+trick, verbatim from the lesson —
+*"The trick is knowing the **underlying HTF bias**. If it wants to go higher —
+wait for an old low to be taken out, then be a buyer"*
+([m4-10/lesson.html:12](../content/s1-ict-core/m4/m4-10/lesson.html#L12)) — so it
+is source-traceable and passes §1. It fails dimension 3: grepped, `summary.html`
+never states it. Its liquidity-pool row
+([summary.html:239](../content/s1-ict-core/summary.html#L239)) carries only the
+sweep mechanics (*"buy **under** the low, not at it"*), which **presumes** the
+low has already been taken rather than telling the reader to wait for it.
+
+Worse, the summary's only explicit statement about a broken old low pulls the
+other way: [summary.html:126](../content/s1-ict-core/summary.html#L126) —
+*"Breaking an old low is **not** by itself a reason to expect a reversal"*
+(m2-02's warning, correctly carried). A reader revising from this page alone is
+set up to answer q38 wrongly.
+
+Note where this rule now sits: **E18** already recorded it as untested in m4-10's
+own two-question quiz. So m4-10's central trick is absent from its quiz, absent
+from the summary, and examined once — the single worst-supported rule in
+Section 1. Whichever way it is fixed (a clause in the liquidity-pool row, or a
+line in the m4-10 block), the summary is the cheaper place.
+
+**F7 · should-fix ·
+[summary.html:311](../content/s1-ict-core/summary.html#L311)** — **the summary
+tells the reader the exam has 40 questions; it has 45.** *"take the **Final
+Exam** — **40 questions** across all four months."* `exam.js` holds 45 (verified
+mechanically; `verify.py` reports 85 exam questions across 2 exams, S2 holding
+40). The exam page's own count is **derived** — `build.py`'s `exam_page(sid,
+title, n)` writes *"{n} questions drawn from every lesson in this section"*
+([build.py:157](../build.py#L157)) — so the generated page says 45 while the
+hand-written summary says 40, one click apart. Almost certainly a stale figure
+from when the S1 exam matched S2's 40.
+*Fix:* delete the number (the sentence reads fine as "across all four months")
+or write 45; the exam page's figure maintains itself.
+
+*Secondary, in generated text rather than content:* that same derived line claims
+the questions are *"drawn from **every** lesson in this section"*, which **F8**
+shows is not quite true. If `build.py`'s wording is ever revisited, "from across
+the section" would be accurate for both sections without needing a check.
+
+**F8 · nit — exam coverage is even, and only two lessons go untested.** Tabulated
+by reading all 45 questions and their `(Month N, Lesson N)` citations, then
+verifying each against the cited lesson:
+
+| Month | Qs | Lessons | Qs per lesson | Lessons with 0 questions |
+|---|---|---|---|---|
+| Month 1 | 10 | 8 | 1.25 | **m1-03** |
+| Month 2 | 9 | 8 | 1.13 | **m2-03** |
+| Month 3 | 10 | 8 | 1.25 | — |
+| Month 4 | 16 | 14 | 1.14 | — |
+| **Total** | **45** | **38** | **1.18** | **2** |
+
+Per-lesson counts: m1-04 ×3; m1-02, m2-01, m2-08, m3-03, m3-06, m4-02, m4-03 ×2;
+every other covered lesson ×1.
+
+**The lead's suspicion of unevenness is not confirmed, and one specific worry was
+a false positive.** `"vacuum"` appears 0 times in `exam.js`, but **m4-09 is
+tested** — q37 asks the 10–11am gap rule (*"It stays open and becomes an FVG"*),
+which is m4-09's time-of-day fill rule, without using the block's name. Sampling
+tracks lesson count to within 0.12 questions per lesson across all four months,
+and **Months 3 and 4 have every single lesson represented** — including all
+fourteen of Month 4, which is the month the lead expected to be under-sampled.
+
+The two gaps are **m1-03** (the daily price-action log) and **m2-03** (10%
+months). Both are summarised — m1-03 gets a whole block at
+[summary.html:95-96](../content/s1-ict-core/summary.html#L95) — so both are
+eligible under dimension 3, and m1-03 is the more notable absence: it is the one
+lesson in Section 1 that tells the reader what to *do* every day, and **A4/A12**
+already noted it as the habit the whole course is built on. m2-03's is defensible
+for the same reason batch B ruled its 3-question quiz proportionate — it re-walks
+m2-01/m2-02's case study, and q11/q14 already test that material.
+
+**F9 · nit · [exam.js:79](../content/s1-ict-core/exam.js#L79) (q13) — "the
+notes" cited for something the notes do not contain.** Extends **C16** with its
+first instance outside a lesson. q13's `e`: *"50% accuracy at 5:1 with 1% risk
+returns about 20% a month — **stated in the notes** as the optimal trading
+goal."* `notes/ict-core/m2-04.md` is twelve lines of prose and contains no such
+statement — what it has is *"1% risk makes millionaires / 2% risk is the industry
+standard"*, the mean-threshold rule and the FVG note. The +20% / optimal-goal row
+comes from the transcript and from the lesson's own table
+([m2-04/lesson.html:478](../content/s1-ict-core/m2/m2-04/lesson.html#L478)),
+both verified in batch B. As with C16 this is a citation-label problem, not a §1
+breach — the claim is true of the source material. It is the **only** such
+instance in either file: `summary.html` cites "the notes" **zero** times, so
+the batch is otherwise clean on C16's problem.
+
+**F10 · nit ·
+[summary.html:204-209](../content/s1-ict-core/summary.html#L204) — the SMT table
+drops a row the lesson has.** m3-05 states four cells (two symmetrical, two
+non-symmetrical); the summary compresses them to two and keeps only the
+dollar-**bottom** non-symmetrical case (*"USDX makes a lower low but FX fails to
+make a higher high"*). The lesson's second non-symmetrical row —
+[m3-05/lesson.html:173](../content/s1-ict-core/m3/m3-05/lesson.html#L173),
+*"USDX fails to make a lower low while FX makes a higher high — underlying dollar
+strength"* — is gone. Since **C9** already found the lesson missing ICT's fourth
+condition (the rule for spotting a dollar *top*), a reader working from the
+summary can now diagnose the setup in only one direction. Condensation is a
+revision page's job, but this one drops a case rather than shortening it, and the
+table's own *symmetrical / non-symmetrical* framing invites the mirror. Same
+one-sidedness family as **A8**, **C9**, **D13**, **E18**.
+
+**F11 · nit — two small drifts.**
+(a) [summary.html:47](../content/s1-ict-core/summary.html#L47) softens m1-02's
+*"**always** by way of some news event/driver"*
+([m1-02/lesson.html:55](../content/s1-ict-core/m1/m1-02/lesson.html#L55)) to
+*"**usually** around a news driver"*. §1 prefers under-claiming, so this is safe
+in substance — recorded only because drift from the summarised lesson is the
+defect class this batch is looking for, and this is the sole instance of it in
+the four templates and tables.
+(b) [summary.html:33](../content/s1-ict-core/summary.html#L33) is the **only one
+of the 24 `(Lx)` references not inside an `<h4>`** — it sits in a
+`<span class="tag">` inside a `.callout.rule`. `engine/head.html` styles `.src`
+only as `.lesson h4 .src`
+([head.html:182](../engine/head.html#L182)), so this one inherits the callout
+tag's uppercase gold label styling instead of the small dim treatment the other
+23 get, and reads as part of the label ("THE RULES OF CONDITIONS (L2)").
+Cosmetic only, and **the reference itself resolves correctly** — not a dead
+cross-reference, so not a *Fixed in flight* item.
+
+#### F12 — the 24 `(Lx)` cross-references: all resolve, none dead
+
+Batches A–E each recorded "no `(L4)`-style cross-references appear" because they
+live **only** in the two `summary.html` files. This is where they finally get
+checked. There are **24**, not the 25 estimated, and **every one resolves to the
+lesson that actually teaches the thing**, with the number correct for that
+month's numbering (Months 1–3 run to L8, Month 4 to L14):
+
+| Block | Ref | Resolves to | |
+|---|---|---|---|
+| The four conditions + tools | (L1) | m1-01 Elements Of A Trade Setup | ✓ |
+| The rules of conditions | (L2) | m1-02 How Market Makers Condition The Market | ✓ |
+| The daily template | (L2) | m1-02 | ✓ |
+| The weekly template | (L2) | m1-02 | ✓ |
+| Market protraction | (L8) | m1-08 Impulse Price Swings & Market Protraction | ✓ |
+| Equilibrium, discount, premium | (L4, L5, L6) | m1-04 / m1-05 / m1-06 | ✓ |
+| Liquidity runs | (L7) | m1-07 Liquidity Runs | ✓ |
+| The habit that starts it all | (L3) | m1-03 What To Focus On Right Now | ✓ |
+| Reward-to-risk beats accuracy | (L1, L4) | m2-01 (the accuracy table) / m2-04 (the %-month table) | ✓ |
+| Framing a low-risk setup | (L2, L3) | m2-02 / m2-03 | ✓ |
+| Mitigating a loss | (L5) | m2-05 | ✓ |
+| Seven things in agreement | (L6) | m2-06 | ✓ |
+| Traps 1 & 2 | (L7, L8) | m2-07 false flag / m2-08 false breakout | ✓ |
+| What each timeframe is for | (L1) | m3-01 Timeframe Selection | ✓ |
+| Institutional order flow | (L2) | m3-02 | ✓ |
+| Institutional sponsorship | (L3) | m3-03 | ✓ |
+| The anticipation drill | (L4) | m3-04 Anticipatory Skill Development | ✓ |
+| Institutional market structure — SMT | (L5) | m3-05 | ✓ |
+| Macro economic to micro technical | (L6) | m3-06 | ✓ |
+| Traps 3 & 4 | (L7, L8) | m3-07 trendline phantoms / m3-08 head & shoulders | ✓ |
+| The ten arrays at a glance | (L3–L12) | m4-03 … m4-12 | ✓ |
+| Internal vs. external liquidity | (L2, L3) | m4-02 / m4-03 | ✓ |
+| The interest rate triad | (L1) | m4-01 | ✓ |
+| Traps 5 & 6 | (L13, L14) | m4-13 divergence phantoms / m4-14 double tops | ✓ |
+
+Two are worth calling out as unusually well done. **(L3–L12)** is a ten-lesson
+range against a ten-row table, and **the row order matches the lesson order
+exactly** — orderblock, mitigation, breaker, rejection, reclaimed, propulsion,
+vacuum, liquidity pool, liquidity void, FVG = m4-03 … m4-12. And **(L1, L4)** in
+Month 2 correctly splits one block across the two lessons that each own half of
+it: m2-01 has the accuracy/RR ladder, m2-04 has the six %-per-month rows.
+
+So the *Fixed in flight* exception for dead cross-references never fires. Nothing
+in `content/` was edited in this batch either.
+
+#### F13 — "The numbers worth memorising" checks out, row by row
+
+The lead named this the highest-risk block, on the reasoning that a numbers table
+is where **B2**'s shape recurs — a figure a reader can falsify with mental
+arithmetic. **All 15 rows are correct against the lesson each number came from:**
+
+| Row | Traces to | |
+|---|---|---|
+| 62 / 70.5 / 79% — the OTE zone | m1-04:167 (62/70.5/79), m1-05:202 (sells 62–79) | ✓ |
+| 50% — equilibrium, and the mean threshold measured open-to-close | m1-04:164, m4-03:97 | ✓ |
+| 3 candles — wait for the 4th to confirm | m1-04:155 | ✓ |
+| 3 protractions — 0 GMT, after midnight NY, after 7 AM NY | m1-08:332-336 | ✓ |
+| 10–20 pips sweep; beyond 25 probably not a sweep | m4-10:305-307 | ✓ |
+| ~5 pips added to a limit order for the dealing spread | m4-03:96, m2-01:382 | ✓ |
+| 1% risk — "one percent makes millionaires", half the 2% standard | m2-04:482 | ✓ |
+| 3:1 — wrong 75% of the time and still net profitable | m2-01:367 | ✓ |
+| 50% acc · 5:1 · 1% → +20% a month, the optimal goal | m2-04:478 | ✓ |
+| 6% a month doubles the account — 20 pips/week, 1.5%, 1:1 | m2-01:381 | ✓ |
+| Half risk on re-entry; mitigated at R2 | m2-05:508-509 | ✓ |
+| 7 things — 2 + 2 + 3 in agreement | m2-06:543 | ✓ |
+| 2–3× the orderblock body height before a second entry | m4-03:105 | ✓ |
+| 3–4 months — the quarterly shift | m2-06:548, m3-06:212 | ✓ |
+| 40+ pips — the minimum range for a 1-hour setup | m4-02:54, m4-02:64 | ✓ |
+
+Month 2's tables reproduce to the digit in the summary as they did in the
+lessons: the six accuracy/RR rows (+2 / +8 / +15 / +28 / +40 / **+20%**) and the
+four-row RR-vs-accuracy ladder (75% / 50-50 / 40% / 25–33%) are exact. **No drift
+of the summary's own** was found anywhere in this block — the one number in the
+whole page that is wrong is the *question count* in the closing callout
+(**F7**), which is not a trading figure at all.
+
+#### F14 — the exam re-measured: C17 confirmed, and now the mechanism behind it
+
+Re-run the D15/E19 way (a tie counted as *not* a tell per **C17**; margin taken
+over the **second-longest** option per **D15**). **C17's figures reproduce
+exactly** — every Section 1 column below is identical to the published ones:
+
+| | n | strict (uniquely longest) | expected score | median margin | spread > 10 | **correct option is *shorter* than a distractor** |
+|---|---|---|---|---|---|---|
+| m1 | 39 | 72% | 76% | 5 | 36% | 8 (21%) |
+| m2 | 37 | 65% | 68% | 4 | 27% | 10 (27%) |
+| m3 | 25 | 52% | 61% | 4 | 24% | 7 (28%) |
+| m4 | 44 | **86%** | **90%** | 3 | 18% | **3 (7%)** |
+| **S1 quizzes** | **145** | **71%** | **76%** | 4 | 26% | 28 (19%) |
+| **S1 exam** | **45** | **31%** | **42%** | **1** | **0%** | **20 (44%)** |
+
+**Confirmed as the lead predicted: 31% strict / 42% expected, and zero questions
+over spread 10** (max spread is 9; median 3; 39 of 45 within §3's ~5 characters).
+The exam sits **comfortably below its own 80% pass mark** — a guesser who always
+clicks the longest option fails it — and it is the best-constructed set in
+Section 1 by a wide margin, against quizzes averaging 76%.
+
+**Why it is better is now measurable, and it is *not* spread discipline.** That
+was **D15**'s point in reverse: Month 4 has the **lowest** spread in Section 1
+(18%) and the **worst** tell (90%). The distinguishing column is the last one:
+
+- **The exam writes the correct option *shorter* than at least one distractor in
+  20 of 45 questions (44%).** Month 4 does it 3 times in 44 (**7%**); Section 1's
+  quizzes 19%.
+- **Counting ties, 31 of the exam's 45 questions (69%) deny a longest-clicker a
+  clean win.** Month 4: 6 of 44 (**14%**).
+- **And when the correct option does win on length, it wins by a median of 1
+  character** (m1 5, m2 4, m3 4, m4 3).
+
+So the operative metric for a fix pass is **not** max-min spread and **not** §3's
+"within ~5 characters" — the exam satisfies both and so, largely, does Month 4.
+It is *the share of questions where the correct option is not the longest*. The
+exam is at 69%; a set at chance would be ~75%. **That is the number to move for
+E19**, and it is achieved by three techniques all visible in `exam.js`:
+
+- **Whole-set parallel construction**, not just a mirrored pair. `exam.js:266`
+  runs all four options through one grammar — *"Enter internal range, exit
+  external" / "Enter external range, exit internal" / "Enter and exit on internal
+  range" / "Enter and exit on external range"* — which is **C17**'s mirror-pair
+  technique extended to the full option set. `exam.js:248` does the same for the
+  four divergence permutations, and `exam.js:157` for a paradigm set (*"Rates are
+  lowering / increasing / unchanged / irrelevant"*).
+- **Deliberate exact ties.** 11 of 45 questions tie for longest, two of them at
+  spread **0** (`exam.js:66` q11, `exam.js:78` q13) — and a tie costs nothing to
+  author.
+- **Letting the correct option be the short one.** q20's answer is *"The daily
+  chart"* (15 chars) against *"The 15-minute chart"* (19); q26's is *"Rates are
+  lowering"* (18) against *"Rates are increasing"* (20). The nuance goes in `e`,
+  exactly as §3 prescribes — which is the half of §3's rule Month 4 never
+  applied.
+
+Only two questions in the exam give a longest-clicker a real margin: q7
+(+5, *"The sell stops inject counterparties"*) and q1
+(+4, *"Fair value gaps and liquidity voids"*). Both would take a parallel-set
+rewrite in one line.
+
+**Not re-flagged:** every one of the 45 questions marks `a: 0` (mechanically
+confirmed, 45/0/0/0). **D14/D15** settled that this is a harmless authoring
+template — options Fisher-Yates shuffle at render time, so `a` sets no on-screen
+position (§3).
+
+#### What does *not* propagate — checked explicitly
+
+Recorded because the leads expected most of it to, and because it tells a fix
+pass which lesson repairs need a summary edit and which do not:
+
+| Finding | Reaches summary/exam? | |
+|---|---|---|
+| **C1** — m3-08's backwards inverse head & shoulders | **No.** The Traps 3 & 4 block never mentions the inverse pattern; it stops at *"The neckline break is a turtle soup, not a sell signal. Only fade it in the direction the HTF bias already supports"*, which is correct. **The summary is more correct than the lesson here.** | ✓ |
+| **C2** — the invented apex mechanism | **Only a residue.** "apex" is absent from the summary; one six-word clause survives (**F2**). | ~ |
+| **C3** — the manufactured quotation | **Yes, and promoted to plain assertion** (**F3**). | ✗ |
+| **C7** — "the single worst thing a trader can do" | **Yes, verbatim** (**F4**). Its "retail sells the right shoulder" half does not. | ✗ |
+| **D1** — breaker = "entire candle range **and** the bodies" | **No.** summary:234 says only *"The last up candle inside that swing high is the bullish breaker"*; the merged clause is gone. | ✓ |
+| **B1** — the 1:1-vs-3:1 comparison | **Yes** (**F5**). | ✗ |
+| **B2** — the 7520/7507 = 17-pip arithmetic | **No.** The pip counts are kept and the price levels dropped — B2's own recommended fix, already applied. | ✓ |
+| **C4** — m3-01's two competing triads | **No third variant.** The summary sides with the flip cards (trade inside the range / orderblocks & breakers / stop runs), i.e. with the lesson body rather than its quiz. | ✓ |
+| **C5** monthly-vs-daily OB, **C6** "that's confluence", **C8** m3-02's mean threshold | **None.** All three lines are dropped rather than restated. | ✓ |
+| **D2**, **E4** — verbatim quotes attached to the wrong object | **Neither.** "like X-ray vision" and "predisposed to go higher" are both absent. | ✓ |
+| **E3** — "breakaway" attached to the wrong discriminator | **No.** The vacuum row omits the breakaway/exhaustion naming entirely. | ✓ |
+| **E2** — "voids with no trading at all are the best draw on liquidity" | **No.** The superlative is dropped; only **F1**'s definitional half survives. | ✓ |
+| **A13** — stop runs "10 and 20 pips" (source: sometimes 30) | **Yes**, but only as the lesson states it (summary:85). Not a new defect — A13's fix covers both sites. | ~ |
+| **B12 → C8 → D16** — the mean-threshold thread | **Closed and consistent.** The summary uses m4-03's canonical reading in both places it appears (*"the **mean threshold** of any orderblock (measured open-to-close)"*, summary:268; *"the best ones never trade below the **50% mean threshold**"*, summary:232). No fifth rendering. | ✓ |
+
+#### Consistency — clean
+
+- HTML is well-formed: tags balanced, **zero** unclosed elements and zero
+  mismatched closers (checked mechanically over all 314 lines).
+- `id="s1-review"`, `data-kind="review"`, `data-section="s1"` and the
+  `<div class="review-footer"></div>` slot are all present and correct per §3.
+- The exam page is generated, so there is no `exam.html` to drift; its question
+  count is derived from `exam.js` (see **F7** for the one place a *hand-written*
+  count disagrees with it).
+- `summary.html` cites "the notes" zero times (contrast **C16**); the single
+  mis-citation in this batch is in the exam (**F9**).
+- "PD array" is **not** a term the summary introduces: it is in
+  `months.js` (*"Month 4 — The PD Arrays"*), in
+  [m4-03/lesson.html:5](../content/s1-ict-core/m4/m4-03/lesson.html#L5), and in
+  m3-07's, m3-08's and m4-01's quiz explanations. Checked because the summary
+  leans on it in the checklist (summary:290).
+- `python build.py` and `python verify.py` both pass — *"verify OK: 78 lessons,
+  339 images, 78 video links, 451 quiz questions, 2 summary page(s), 85 exam
+  questions across 2 exam(s), 0 JS errors"*. The `p3-01` slug warning is
+  pre-existing (batch I).
+
+#### Noted, not a finding
+
+**The nine-step "checklist before any trade" (summary:284-295) is a synthesis the
+course never states as a checklist — and every step traces.** Checked
+individually because §3 forbids a review page adding material: condition →
+rules of conditions (m1-01/m1-02), HTF bias + which side of structure broke
+(m3-02:68, m1-06:244), premium/discount (m1-04, m1-05, m4-10:297), untapped
+liquidity + low resistance (m2-08:621, m1-07:304-307), which PD array + *"not a
+line drawn on a whim"* (m4-05:174), external exit + no-trade-if-range-too-small
+(m2-01:375, m4-02:54), confirmations (m3-05, m4-01, m3-03:111), risk sizing and
+partials (m2-01:358/373, m2-04:468, m2-03:443, m2-05:503), immediate response
+(m3-03:100). §3 bars new *material*, not new *arrangement*, and the page's own
+`desc` says "re-ordered" — so this is inside the rule. Recording it because it is
+the largest structure on the page with no single lesson behind it, and a future
+edit to any of those nine lessons should check back here.
+
+**The same applies, more mildly, to "What the course keeps warning you about"
+(summary:297-309).** All eight warnings trace — m1-01:21/28, m3-08 + m4-13,
+m2-07:570 + m3-07:245 + m3-08:274, m1-03:130 (verbatim), m3-05:168, m2-05:516,
+m1-04:183 + m1-05:212, m1-03:129 + m3-04 — and four of them are the phrasing of
+the lesson rather than a paraphrase.
+
+**`content/s1-ict-core/section.js` still carries the stray semicolon `desc: "…";
+}` that `CLAUDE.md` §3 warns about.** Confirmed present and confirmed harmless:
+`build.py`'s `parse_objs` re-emits `SECTIONS` from the parsed `key:"value"` pairs
+rather than pasting the literal, and both `build.py` and `verify.py` pass. Not
+touched, not a *Fixed in flight* item — recorded per the batch instruction.
+
+**Corrections to this batch's own scoping estimates.** The summary has **32**
+`<h3>`/`<h4>` blocks, not 30, and **24** `(Lx)` references, not 25. Neither
+changes a finding; recorded so the counts in **F12** reconcile.
+
+### Section 1 roll-up — batches A–F
+
+Section 1 is now fully audited: 38 lessons, 145 quiz questions, one revision
+summary, one 45-question exam.
+
+**Findings: 83, plus one withdrawn (A1) and one open question resolved (A12).**
+
+| Batch | Scope | blocker | should-fix | nit | total |
+|---|---|---|---|---|---|
+| A | Month 1 | — | 2 | 9 | 11 |
+| B | Month 2 | — | 4 | 8 | 12 |
+| C | Month 3 | **2** | 6 | 9 | 17 |
+| D | Month 4a | — | 8 | 6 | 14 |
+| E | Month 4b | **1** | 11 | 6 | 18 |
+| F | summary + exam | **1** | 6 | 4 | 11 |
+| **Total** | **38 lessons + 2 pages** | **4** | **37** | **42** | **83** |
+
+**Three distinct blockers, at four sites, and they cluster in the tails.**
+
+- **C1** (inverse head & shoulders taught backwards) and **C2** (invented
+  triangle mechanism, tested by its own quiz) are both in **m3-07 / m3-08**, the
+  two market-maker-trap lessons that *close* Month 3 and have the thinnest
+  sources in it (m3-08's note page is a single line of prose).
+- **E1** (liquidity void defined as its opposite) is in **m4-11**, and traces to
+  a note-page line citing a **2022** chart on a **2016** teaching — a
+  note-taker's addition, not ICT's.
+- **F1** is E1 reaching `summary.html` and `exam.js`. So **one of the three
+  blockers propagated to the section-level pages, and it is the only one that
+  did** — C1 is absent from the summary and C2 survives only as a six-word
+  clause. Fixing E1 therefore means fixing three files, not one:
+  `m4-11/lesson.html`, `m4-11/quiz.js`, `summary.html:240` and `exam.js:235-237`.
+
+**Weakest dimension, per month.** It shifts, which is the useful part:
+
+| Month | Weakest dimension | Shape of it |
+|---|---|---|
+| 1 | **Quiz construction** | Fidelity is genuinely good (A1 withdrawn on the notes). 9 of 11 findings are nits. But 72% strict / 76% expected on option length, and the **highest spread in the corpus (36%)** — one long correct option beside throwaways like "Guess", "Random". |
+| 2 | **Coverage** | 8 of 12 findings are dropped material. The only month with **numeric** fidelity problems (B1, B2) — and one of those (B2) traces to a garbled transcript, not to the author. |
+| 3 | **Fidelity** | The only month with fidelity blockers, all three (C1, C2, C3) in its two trap lessons. Best-constructed quizzes in Section 1 (52% strict) via **mirror-pair distractors**. |
+| 4a | **Coverage** | 6 consecutive should-fix omissions (D3–D8), including m4-02 never defining internal/external range liquidity — the two terms its own bullets carry. |
+| 4b | **Coverage, with a distinct shape** | **Four of seven lessons teach what a thing *is* and never how to trade it** (E5, E6, E9, E11). Plus the worst option-length stretch in the corpus (90%/92%). |
+| summary + exam | **Propagation** | Construction is the best in Section 1. The defects are inherited (F1–F5), not native. |
+
+**The quiz-count test (C18 → D14 → E18): 11 of 38 lessons under-tested, all in
+Months 3–4.** m3-01, m3-03, m3-04, m3-05, m4-04, m4-05, m4-06, m4-10, m4-11,
+m4-12, m4-14 — plus m4-03 and m4-08 at the margin. All of Months 1–2 are
+proportionate to the material each lesson carries. Month 3's counts run *inverse*
+to the material; Month 4b's are merely *uncorrelated* with it. Worst single case
+is **m4-11**: two questions, one of which tests E1's incorrect definition, for an
+8-chart lesson — so **E1 must be fixed before its quiz can be rewritten**. The
+recommended additions total roughly **+18 questions** and need no new sourcing;
+the material is already in the lessons.
+
+**Option length (A10 → C17 → D15 → E19 → F14), final Section 1 figures:**
+
+| | n | strict | expected score | median margin | spread > 10 | correct not longest |
+|---|---|---|---|---|---|---|
+| m1 | 39 | 72% | 76% | 5 | **36%** | 28% |
+| m2 | 37 | 65% | 68% | 4 | 27% | 35% |
+| m3 | 25 | **52%** | **61%** | 4 | 24% | 48% |
+| m4a | 24 | 83% | 88% | 3 | 17% | — |
+| m4b | 20 | **90%** | **92%** | 3.5 | 20% | — |
+| m4 all | 44 | 86% | 90% | 3 | **18%** | **14%** |
+| **S1 quizzes** | **145** | **71%** | **76%** | 4 | 26% | 29% |
+| **S1 exam** | **45** | **31%** | **42%** | **1** | **0%** | **69%** |
+
+The distribution is the finding: **Section 1's quizzes hand a knowledge-free
+guesser 76%**, and Month 4's hand them **90%** — past the 80% exam pass mark —
+while the exam on the same material gives them **42%**. The corpus's worst and
+best question sets sit in the same section, so the fix is a known quantity rather
+than a research problem: **F14** names the three techniques that produce the
+exam's numbers, and the metric to move is *the share of questions where the
+correct option is not the longest* (Month 4: 14%; exam: 69%; chance: ~75%).
+§3's "within ~5 characters" rule is **necessary but not sufficient** — that is
+**D15**'s conclusion, confirmed twice since, and Month 4 is the proof.
+
+**Two things that came out cleaner than expected**, worth stating so a fix pass
+does not go looking for them: **all 38 note pages' chart counts match `images/`
+1:1 and in order** (A12 → E), and **all 24 `(Lx)` cross-references resolve**
+(F12). Nothing in `content/` was edited across batches A–F.
+
+**Input to batch N.** The cross-cutting sweep should carry forward: the
+one-sidedness family (**A8, C9, C10, D13, E18, F10** — buy-side taught,
+sell-side dropped, six times across four months); the citation-label family
+(**C16, F9** — "the notes" naming the wrong artefact, four sites); verbatim
+quotations attached to the wrong object or the wrong lesson (**A2, D2, E4**); and
+the note-page signal that predicted the one blocker nobody could have guessed
+from the lesson — **an attribution or a date that does not belong to this
+teaching** (**D1**'s *"that's what i saw in another video"*, **E1**'s 2022 chart
+on a 2016 lesson).
+
 ---
 
 ## Fixed in flight
 
 Genuinely-broken things repaired during the audit rather than logged.
 
-_None yet._ Batch A found nothing broken: `build.py` and `verify.py` both pass,
-the page has 0 JS errors, all Month 1 HTML is well-formed, and every video link
-spot-checked resolves to the right video.
+*None through batch F.* Nothing in `content/` has been edited. `build.py` and
+`verify.py` pass at every batch, the page has 0 JS errors, and all Section 1 HTML
+is well-formed (`summary.html` checked mechanically in batch F: zero unclosed
+tags, zero mismatched closers). Every video link spot-checked resolves to the
+right video.
+
+The exception the constraints reserve for **dead cross-references never fired**:
+all 24 `(Lx)` references in `content/s1-ict-core/summary.html` resolve to the
+lesson that teaches the thing (**F12**). The two number-level discrepancies found
+in batch F are *content* errors, not broken references, and are logged rather than
+fixed — the summary's "40 questions" against the exam's 45 (**F7**) and the
+`(L2)` reference that renders in the callout-tag style instead of the `.src` style
+(**F11**b, cosmetic, resolves correctly).
 
 ---
 
@@ -1750,7 +2324,20 @@ spot-checked resolves to the right video.
   *not* a tell (**C17**), and take the margin over the **second-longest** option
   rather than as a max-min spread (**D15**). D15's "median margin" column is
   conditional on the correct option being uniquely longest; see the measurement
-  note in **E19**.
+  note in **E19**. **Add F14's column — the share of questions where the correct
+  option is *not* the longest** (ties + shorter). That is the metric that
+  separates the corpus's best question set from its worst (S1 exam 69%, Month 4
+  14%, chance ~75%), and neither spread nor strict-longest does.
+- **A review page (`summary.html`) is tested against the *lessons*, not the
+  transcripts** — §3 narrows §1 there: it "re-states the existing lessons, it
+  never adds new material". Batch F's method: read all of that section's lessons
+  in full (Section 1's 38 came to ~121 KB), then test each summary claim twice —
+  *does it appear in some lesson?* and *is it stated the way that lesson states
+  it?* Drop to notes/transcripts only to settle a claim found in no lesson. Then
+  check every exam question **both** ways: traceable to a lesson **and** present
+  in the summary (dimension 3). Tabulate which lesson each exam question draws on
+  — a term appearing zero times is not evidence a lesson is untested (**F8**:
+  `"vacuum"` is absent from `exam.js` yet m4-09 is examined).
 - **Video links** are checked by fetching the YouTube watch page and comparing
   its `<title>` to the lesson's `data-title`.
 - **Grep a new note page for dated examples.** Batch E's blocker (**E1**) came
@@ -1759,4 +2346,4 @@ spot-checked resolves to the right video.
   **D1**'s *"that's what i saw in another video"*, the reliable signal that a note
   line is an import is not the page's length (batches C and D settled that) but
   an **attribution or a date that does not belong to this teaching**.
-- Nothing in `content/` was edited in batches A–E.
+- Nothing in `content/` was edited in batches A–F.
