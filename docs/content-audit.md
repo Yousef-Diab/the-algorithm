@@ -75,7 +75,7 @@ go-ahead.
 | D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☑ 2026-08-07 (notes + transcripts) |
 | E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☑ 2026-08-07 (notes + transcripts) |
 | F | S1 · summary + exam | `summary.html`, `exam.js` | 45 | ☑ 2026-08-07 (lessons + findings A–E) |
-| G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☐ |
+| G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☑ 2026-08-07 (notes + transcripts) |
 | H | S2 · Part 2 | p2-01 … p2-06 (6) | 49 | ☐ |
 | I | S2 · Part 3 | p3-01 … p3-06 (6) | 47 | ☐ |
 | J | S2 · Part 4 | p4-01 … p4-06 (6) | 45 | ☐ |
@@ -2273,6 +2273,628 @@ the note-page signal that predicted the one blocker nobody could have guessed
 from the lesson — **an attribution or a date that does not belong to this
 teaching** (**D1**'s *"that's what i saw in another video"*, **E1**'s 2022 chart
 on a 2016 lesson).
+
+### Batch G — Section 2, Part 1 (p1-01 … p1-07 / episodes 1–7)
+
+Sources read: all 7 `notes/2022-mentorship/ep-0N.md` **and** all 7
+`transcripts/2022 Mentorship/…Episode N.txt` (294 KB), plus
+[`docs/s2-2022-mentorship-plan.md`](s2-2022-mentorship-plan.md) first per
+`CLAUDE.md` §7. Part 1 is **one lesson per episode** (plan §3), so each lesson
+has exactly one transcript and one notes block to answer to — a tighter test than
+Section 1's.
+
+**Two things to say up front about how different this section is.** Section 2's
+lessons are **~3× denser** than Section 1's (Part 1 averages ~10 KB of lesson
+HTML against Section 1's ~3 KB) and its notes are **far thinner** (all seven
+episodes' prose totals 4.9 KB; ep-01 is five bullets). So the transcript carries
+almost the whole evidentiary load here, and the lessons are long enough that a
+drifted claim has more places to hide. Neither turns out to be a problem.
+
+*(findings below, added as each episode was audited)*
+
+#### Content fidelity (§1)
+
+**p1-01 and p1-02 are the most faithful lessons audited anywhere in this corpus
+so far.** Every substantive claim in both traces to that episode's own transcript,
+usually to a line and frequently near-verbatim — and where the lesson's phrasing
+matches the *notes* rather than the transcript, the transcript still supports it.
+Checked exhaustively:
+
+- **p1-01** — the three stages (transcript 199-236), the three-or-four-month plan
+  including the March 2022 gap (240-242, 849-854), the daughter framing and
+  "not a lot of moving parts / when not to do something" (69-84, near-verbatim),
+  analysis paralysis → kid in the candy store → sharp edges → live ammunition
+  (91-120, verbatim), all five promises (48-51, 175-196, 215-224), the
+  independence/codependency passage (283-297, verbatim), the 2016 cohort's split
+  results (302-309), responsibility as "paramount" (513-518), "transferable skill
+  — but the skill must be honed by you the student" (552-555, verbatim), the 1992
+  → bonds/S&P → intraday biography (140-164), TradingView (369-377), the
+  handle arithmetic (692-697, verbatim), micros at $5/handle (734-740), the CFD /
+  US-regulated-exchange point (741-760), "hypothetical income-based strategy …
+  not the World Cup, not every Instagram trader" (643-648), 25 handles a week
+  (726-729, 796-798), "you don't need to hit home runs" (799-800), the
+  $1,500 rent / car payment inspiration (805-823), forgiving entries vs precision
+  about bias (703-711, verbatim), and the liquidity matrix / no chart graffiti
+  close (777-789).
+- **p1-02** — the whole Judas-swing sequence (496-534), the "record this in your
+  notes" rule (535-547, verbatim), the relative-equal-highs/engineered-liquidity
+  read (578-624), the 1-/2-/3-minute rationale including the HFT
+  15/30/45/60-second intervals (645-662), the four-step entry sequence
+  (1076-1091), entry/stop/exit (806-810, 1092-1096), the don't-chase and
+  sell-into-a-rising-candle passage (833-876), the FVG's 2016 provenance and the
+  "not supply and demand, not auction theory" disclaimer (430-441, 735-739),
+  premium/discount off a 50% fib (884-909), the worked resolution where price
+  takes the sell stops **and** closes the earlier buy-side imbalance (903-976),
+  low-hanging-fruit targeting (1199-1211, verbatim), the 8:30-11:00 window
+  (1044-1068), keep-the-chart-clean (552-570), and all five homework items
+  (1154-1227).
+
+The four reasons given for the bearish weekly bias — **seasonality, the Fed
+raising rates, earnings-season volatility, and the daily chart's heavy tone** —
+are all four in the transcript (313-324), which is the kind of list a lesson
+usually trims or embellishes. **No fidelity findings in either lesson.**
+
+#### Coverage gaps
+
+**G1 · should-fix · p1-02** — **the scale-down fallback for finding the FVG is
+missing, and it is the answer to "what if I don't see one?"** The lesson names
+the 1-, 2- and 3-minute charts as the best for imbalances and stops there. ICT
+gives a procedure for when the gap isn't on the chart you're watching:
+
+> *"if you don't sell there you can drop down to a lower time frame one minute
+> chart — if this was a 3 minute chart you can go down to a one minute chart and
+> look for that to occur on that time frame as well, and it many times will form
+> … if you're looking at a lower time frame like say this was a 5-minute chart
+> and you looked at a one minute chart you'd find one down in here. **It's a
+> matter of scaling down in your time frames**, because once you have an
+> underlying premise the market's likely to go lower it becomes an easy thing to
+> look for these types of things"* (716-730)
+
+The lesson's "Don't chase" callout offers a *different* remedy (you can still
+enter as price moves down close to the gap), so a reader who cannot see a gap on
+the 2-minute is left with nothing. This is the one actionable technique in
+episode 2 that did not reach the lesson.
+
+**G2 · nit · p1-01** — **the demo→live psychological shift is dropped**, and it is
+the episode's one substantive teaching about trading rather than about mindset
+generally:
+
+> *"you can't appreciate how difficult it is until you start trading live funds …
+> in the consistently quote-unquote profitable demo trading stage you feel like
+> you can do anything, but something magical happens when you go into a live
+> account where now suddenly **every little tick means something to you** …
+> and **making money in an account is sometimes worse than losing money** because
+> it will make you feel like you want another taste of that, and it creates
+> opportunities for you to over trade and or over leverage"* (480-510)
+
+The lesson covers what the mentorship asks of the reader but not this, though ICT
+flags both over-trading and over-leverage as things the mentorship will return to.
+
+**G3 · nit · p1-01** — **the "demo baller" framing is absent, and it is why the
+episode exists.** ICT opens by explaining that he has always taught through a
+demo account *"for my own protection"*, that he dubbed himself **the demo
+baller**, and that a faction online claims his concepts cannot work in a live
+account (10-14, 31-34, 267-282) — which is the entire reason episode 1 shows a
+funded account at all. The lesson says only "For showing results outside a demo
+account he used a regulated broker", so the reader gets the conclusion without the
+question it answers. Related and also dropped: the account's actual size, which
+ICT deliberately keeps unimpressive — *"it's only twenty three thousand … six
+hundred ninety four dollars and eleven cents … it's not something to brag
+about"* (633-639) — and his stated reason for that choice, that results too high
+made him feel as a 1990s student that he would never get there, while results too
+low inspire nobody (466-469).
+
+**G4 · nit · p1-01** — ICT grounds the "transferable skill" claim the lesson *does*
+carry (lesson line 36) in a personal disclosure the lesson drops: *"I'm
+obsessively compulsive and I have ADHD … and I'm bipolar, so I have a lot of
+mental barriers — but if I can sit down and frame out an idea that repeats at
+least once a week, I'm confident that those individuals out there that are like me
+or without these barriers can do it as well"* (534-551). So the lesson keeps the
+claim and omits its warrant. Recorded as a nit rather than a should-fix because
+omitting someone's disclosure about their own health is a defensible editorial
+choice — flagging it as the owner's call, not a defect to fix by default.
+
+**G5 · nit · p1-02** — two smaller drops. (a) The **anti-signal-service passage**:
+*"you will not need to be a slave to some kind of blackbox system … you don't need
+to be a part of a signal service … you want to be able to be **unshackled** …
+if you're part of a signal service … you're kind of held captive"* (210-239).
+Mild because p1-01 carries the independence theme at length, so the reader is not
+short of it. (b) ICT's strongest statement of the algorithmic premise, and his
+explicit rejection of the alternative: *"there absolutely is an algorithm and it's
+manipulating the markets every single day, every single tick — it's **completely
+controlled** … you're led to believe it's buying and selling pressure … no it's
+not, **it's liquidity**"* (747-767). The lesson's FVG callout has "it is an
+algorithm delivering price" but not the claim that the buying-and-selling-pressure
+reading is the illusion being replaced.
+
+#### Noted, not a finding
+
+**p1-02 silently de-garbles a mangled number in the transcript, correctly.** The
+transcript renders NQ's full-contract margin as **"$177,000"** twice (125,
+131) — an ASR artefact. The lesson writes **≈ $17,000** (lesson line 16), which is
+right for NQ at the time and is the only reading consistent with the same
+sentence's *"about 12,000 and a half for an e-mini S&P"* and with episode 1's
+*"12 13 000 or whatever it is to trade one contract"* (ep1:731). Same shape as
+batch B's silently-corrected position-sizing formula and batch D's 2–3× rally —
+a departure from the literal source in the direction of correctness. Flagging for
+visibility, not repair.
+
+**The trade's handle count is under-claimed, which is the right direction.** ICT
+gives the executions as 798 short covered at 675 (184-191) — 123 handles — and
+calls it *"over 100 and something"* (1027) and *"125 130 handles"* (1212). The
+lesson says *"over 100 handles"*. Correct and conservative per §1.
+
+**ICT promises PDF assignments that are not among the permitted sources.** *"there
+will be assignments and pdf files provided for your learning"* (ep1:870-878),
+reachable via his community tab. Same situation as batch E's dangling "measuring
+gaps" reference to the December study notes: the PDFs are not in `transcripts/` or
+`notes/`, so there is nothing to author from. Recorded so a later batch does not
+read a lesson's silence about them as an omission.
+
+---
+
+**Episodes 3–4 added below.**
+
+**p1-03 and p1-04 are also clean on fidelity.** p1-04 in particular is the most
+exact lesson in the audit so far: episode 4 is an 8 KB transcript and the lesson
+renders it almost line for line — both worked examples (S&P Wednesday 26 January,
+Nasdaq Thursday 27 January), the "does it create a fair value gap? **No** — so
+there is nothing to do" pass on both, the hypothetical 4419 → 4382 short with
+ICT's own *"just to be, you know, not perfect"* framing (ep4:86-91), the
+three journal items (104-117), the total-range-in-hindsight rationale (115-127),
+and the "you can't force it, you can't think it's there, it's there or it's not"
+rule (156-165, verbatim). Its quiz quotes the transcript directly twice
+(`quiz.js:16`, `quiz.js:32`) and **both quotations are accurate to the word**.
+Nothing added, nothing material dropped — **zero findings for p1-04**.
+
+p1-03 checks out across all of it too: shift-vs-break semantics (ep3:57-92), the
+equal-highs-over-single-high preference (36-43), the one-condition rule in **both
+directions** (190-207 bullish, 522-531 bearish — the lesson states the mirror, so
+this is not the one-sidedness family), trade-above-without-closing (397-399), the
+next-candle FVG check (400-413), the order block as a change in the state of
+delivery (714-739), the series-open reference level (433-442), "the algorithm
+remembers that opening price" (733-734, verbatim), the high-probability triad
+of gap + liquidity taken + structure shift (704-709), the don't-scale-just-below
+rule (563-573), the two-FVG procedure and the nix-the-trade condition
+(1240-1293), the HFT-orders-don't-move-price passage (624-655), engineered
+liquidity (848-865), all four session windows (974-1003, exact), the
+hours-of-operation callout including the after-noon prohibition and the
+1:00/1:30-4:00 afternoon carve-out as out of scope (1004-1037, exact), the
+internal-range-liquidity definition (1045-1048, verbatim), the 3–3.5% / 4.5% risk
+parameters (1419-1425, exact), watch-the-chart-not-the-P&L (1338-1350), the
+pre-desensitising point (1392-1406), keep-the-chart-naked (940-969), and the
+whole homework block including *"look for this not being true"* (338-339).
+
+**G6 · should-fix · p1-03 — ICT's provenance claim for the order block is
+dropped, and the lesson carries the parallel claim for the FVG.** Episode 3 makes
+the attribution emphatically and with dates:
+
+> *"they're out here running around on YouTube trying to teach order block theory
+> … **order blocks — okay, I invented it, it's mine. No one talked about it
+> before me and I first mentioned it in 2010 on Baby Pips. Prior to that, 1996, I
+> was only teaching it to people one-on-one** … you can't find it in books prior
+> to that, it's mine"* (417-430)
+
+p1-02 **does** carry the equivalent for the fair value gap — *"The FVG is not in
+any book — it was introduced back in **2016**"* (p1-02 lesson line 59, sourced to
+ep2:735-739). So the section keeps one provenance claim and drops the other, from
+adjacent episodes, in the lesson whose subject *is* the order block. This is the
+same family as **B4** (ICT crediting Chris Laurie, dropped) and **E10** (Nick Van
+Nice, dropped), except the creator being credited here is ICT himself, and
+`CLAUDE.md` §6 asks that attribution to the original creators survive any
+refactor. Also dropped from the same passage: the Baby Pips 2010 origin of the
+prove-me-wrong challenge that the lesson's own homework reproduces (340-351).
+
+**G7 · should-fix · p1-03 and p1-01 — the micro contract's handle value is
+given for the S&P and never for the NASDAQ, which is the section's main market.**
+Episode 3 states it: micros are *"essentially two dollars per handle … or 50 cents
+per tick"* (302-311), immediately contrasted with NQ's *"twenty dollars per
+handle and there's four ticks in each handle"* (308-312). Both figures are right
+(MNQ is $2/point, $0.50/tick). **Episode 6 states it a second time**, in the same
+contrast — *"there's micros, you're only trading two dollars per handle there, it's
+not twenty dollars per handle … or 50 cents each tick"* (ep6:267-270) — so the
+figure is in **two** of Part 1's seven episodes and reaches **neither** lesson.
+**p1-03 and p1-06 both omit it.** What the
+reader has instead is p1-01's table row *"Micros — **$5 per handle**"*, which is
+correct **for the S&P micro** and correctly sourced (ep1:734-737, *"while you're
+not making fifty dollars per handle on e-mini S&P you're making five dollars per
+handle"*), sitting in a table whose other rows are all ES.
+
+The problem is what happens across the two lessons: p1-02 establishes **NQ as the
+main focus of the mentorship** and gives NQ at $20/handle, but no lesson in Part 1
+gives **MNQ at $2**. A reader who takes p1-01's "$5 per handle" into a micro
+NASDAQ position is out by 2.5×, and there is no way to derive $2 from $20 without
+knowing the 1/10 ratio. This is a number a reader uses to size a trade, so it
+lands as should-fix rather than a nit. *Fix:* one row in p1-03, or a contract
+label on p1-01's row.
+
+**G8 · nit · p1-03 — the episode's live worked trade is dropped, and it is the
+bullish mirror.** The last third of episode 3 (1217-1505) is a live long on NQ:
+a bullish FVG after a bullish market structure shift with an imbalance in a
+premium above, sized at **3.25%**, held through **$455** of drawdown, collapsed at
+the low end of the target for **$1,190** (1449-1467). The lesson keeps every
+*teaching* from that segment — the two-FVG rule, the risk parameters, the
+watch-the-chart point, the desensitising point — and drops the trade. Recorded as
+a nit rather than a should-fix precisely because the lesson's rule callout already
+states both directions, so this is not the **A8/C9/D13** one-sidedness pattern; the
+loss is a worked example, not a rule. Also dropped from the same stretch: ICT
+noting the model as taught is deliberately partial — *"there are ways to know when
+to sell short right above that, not even wait for the shift in market
+structure"* (269-277) and *"that's all I'm going to give you on the free
+mentorship level"* (735-736) — which p1-01 covers thematically as the
+stripped-down model.
+
+**G9 · nit · p1-03 — two scope statements dropped.** (a) *"this works in forex
+too, it's not just limited to futures"* (539-542) — p1-01 carries the forex point,
+so the reader is not short of it. (b) ICT's explicit refusal to extend the claim
+to crypto: *"I'm not going to co-sign the crypto markets because … only my
+students are reporting that this stuff works there, I don't even mess around with
+it that much"* (556-561). That is a limit on where the model is claimed to work,
+and §1's prefer-under-claiming reasoning makes a stated limit worth keeping.
+
+#### Noted, not a finding (episodes 3–4)
+
+**p1-03 de-garbles a second abbreviated number, correctly.** The slippage example
+renders as *"you may think you're getting in at 14 62 but by the time your order
+is executed and confirmed you're in 14 664 … and it filled you at 14 661, that's
+positive slippage"* (642-650). "14 62" is ICT's shorthand; the lesson writes
+**14,662**, which is the only value the bracketing 14,661 / 14,664 permits. Same
+family as p1-02's $17,000 margin reading.
+
+**Section 2 reports ICT risking 3–4.5% per trade; Section 1 teaches 1–2% as a
+ceiling. Both are faithfully sourced — this is one for batch N.** p1-03 has
+*"comfortable 3–3.5%"* and *"maximum 4.5% when trading competitively"*
+(ep3:1419-1425, exact), and the live trade in that episode is sized at 3.25%.
+Section 1 has *"ideally **2% risk, no more**, as a new trader"*
+([m2-01/lesson.html:358](../content/s1-ict-core/m2/m2-01/lesson.html#L358)) and
+*"**one percent makes millionaires** — 2% is the industry standard and you're
+doing half of it"* (m2-04:482). A reader taking both sections at face value gets
+a 4.5× spread in position size with no reconciliation. **p1-03 hedges it
+correctly** — *"This is stated as a personal parameter, **not** a suggestion for
+your size"* — and both numbers are what their own sources say, so neither lesson
+is wrong and there is nothing to fix inside either. Recording it as a
+**cross-section** item for batch N, which is where terminology and figures that
+collide across sections belong.
+
+---
+
+**Episode 5 added below.**
+
+**p1-05 is clean on fidelity as well.** Verified across the whole lesson: the
+scope statement including the Russell 2000 and the Asian-range exclusion
+(ep5:31-40), the four delivery-month codes and third-Friday expiration (48-73),
+the front-month / next-month-out naming (76-81), the open-interest rollover rule
+(105-121, near-verbatim), the barchart.com route including *"the first one, that's
+the cash, you don't want to look at that"* (82-89), the 15-minute bellwether
+framing (159-172), the 8:30-clone-lunch-clone layout (184-203), the New York local
+time insistence and its stated reason (204-224), the noon-to-1:00 no-trade rule
+*"not even in demo"* (226-234), the before-11:00 preference (246-264), the
+three-candle swing definitions including *"it does not matter if the candles are up
+or down closes"* (334-354, verbatim), the look-for-the-first-one rule (773-779),
+the 5-minute drop-down (354-364), the third-drive-needn't-clear reasoning
+(409-423), displacement and the elephant (432-457), the four-step walk-through of
+passes and the final smash-down (496-525), the these-patterns-fail /
+Murphy's-Law warning (459-479), the 1:30 rule and its stated reason (765-790), the
+too-clean-level point (798-803), spooling and *"it does not matter what the volume
+is"* (818-846), the two-patterns callout including *"you don't need breakers, you
+don't need an order block"* (876-896, verbatim), the 3:40/3:50/4:00
+market-on-close phenomenon (643-656), the NASDAQ 1:30 example (897-952), the
+floor-has-dropped-out feel (941-952), the not-25-or-30-trades close (1073-1086),
+the three daily profiles with the 200 + 200 = 400 measured move (710-724), the
+Forex-daily-range parallel re-based to New York (678-696), the stand-aside-when-
+noisy rule (996-1007) and the July/August caveat (1055-1058).
+
+**Its attribution is intact, which is worth noting against G6:** the three drives
+pattern is credited to *"Linda Raschke and Larry Connors' Street Smarts"* and to
+its original name (ep5:372-402), and the lesson keeps both.
+
+**G10 · should-fix · p1-05 vs p1-03 — the lesson says order blocks are out of
+scope, two lessons after the section taught them as the entry reference, with no
+reconciliation.** p1-05 line 25: *"**Order blocks are deliberately kept out of this
+mentorship** — there are models that don't rely on them at all. The **fair value
+gap is the main focus**."* Its two-patterns callout goes further: *"no fifteen
+gimmicky names, no breakers, no order blocks."* But **p1-03 is built on the order
+block** — a whole `<h3>` defining it as a change in the state of delivery, the
+series-open as the reference level, and the entry stated as *"the **opening price
+of the order block**, inside the fair value gap"* (p1-03 lesson lines 29-33).
+
+Both lessons are faithful to their own episodes: ep3 teaches the order block at
+length, and ep5 says *"yes I'll look for order blocks **but I'm going to try to
+stay away from order blocks** in this lesson, in this mentorship really, because I
+have models that don't even rely on order blocks"* (159-172). So ICT himself
+narrows the model between episodes 3 and 5 — but a reader working through Part 1
+in order meets a core entry technique in L3 and is told in L5 that it isn't part of
+the model, with nothing joining the two.
+
+Two smaller things in the same finding: p1-05 hardens ICT's *"I'm going to **try**
+to stay away"* into *"deliberately kept out"*, and the reader is left unable to
+tell whether p1-03's entry still stands.
+
+**Episode 7 settles what the answer should be, which makes the fix concrete.**
+ICT returns to the complaint and resolves it in practice: *"I went in long in close
+proximity to this **order block** … I promised I wasn't going to teach order blocks
+that much in this mentorship, and some of you have been leaving comments 'oh I'm
+not into this now because you're not teaching order blocks' … I'm going to teach it
+the way I want to teach it, okay, **it works**"* (ep7:480-493). So the order block
+is still live as a reference — p1-07's own entry is taken *at* one, and the lesson
+correctly says so (*"in close proximity to an order block, with no gap of its own
+required"*). *Fix:* one clause in p1-05 — the order block from L3 remains a valid
+reference while the fair value gap is the primary pattern from here on — or a
+forward note in p1-03. No new sourcing needed; ep7 supplies the wording.
+
+**G11 · nit · p1-05 — two morning-session diagnostics are dropped.** (a) **Rising
+swing lows as an accumulation tell:** *"if you start seeing the swing lows that
+are forming — every candle has a higher low to the left and higher low to the
+right — if they start building up and every time they create a new one it's going
+higher, **that's an underpinning of the marketplace that's showing
+accumulation**"* (615-624), which ICT stacks with the relative-equal-highs /
+retail-resistance read and the crowd's crash expectation (596-637). The lesson
+carries the equal-lows half in its NASDAQ example but not this progressive-low
+tell, which is the closest thing episode 5 offers to a bias signal.
+(b) **The lunch-hour swing point is explicitly excluded** — *"especially if you
+start seeing the swing lows, **not the one in lunch time, ignore that one**"*
+(615-617). The lesson tells the reader not to *trade* the lunch hour but not to
+exclude its swing points when marking levels, which is a different instruction and
+one a reader annotating a chart will need.
+
+**G12 · nit · p1-05 — two framing points dropped.** (a) Why the mentorship is on
+index futures at all: *"right now in the last couple months really **Forex has
+been rather funky**, and because of that we have transitioned to index futures …
+there are times of the year where I teach index futures because they're
+predominantly more liquid"* (1037-1054). The lesson states the scope without the
+reason for it. (b) ICT's direct instruction against live trading, and his own
+practice: *"**I'm actually telling you not to trade with live funds** … I'm not
+going to do it in 2023, I'm not going to do it forever … even in my paid
+mentorship group I don't trade live funds there because for my protection I'm
+doing what I'm showing you right here **in a demo**"* (1087-1102). p1-01 carries
+the not-an-enticement framing, so the reader is not without it, but the explicit
+instruction is stronger than what survives.
+
+#### Noted, not a finding (episode 5)
+
+**p1-05 resolved a notes-vs-transcript conflict in the transcript's favour, and it
+got it right.** `notes/2022-mentorship/ep-05.md` reads *"Afternoon follows the
+trend most of the time, **7:30 starts algo**"*. The transcript is unambiguous:
+*"at 1:30 that's usually when I'm wanting to start trading the afternoon … why
+1:30, because **there's an algorithm macro that starts running at 1:30**"*
+(780-790). The lesson uses **1:30** throughout and ties it to the macro exactly as
+ICT does. This is the **inverse of E1**, where a lesson took a note-taker's line
+over its transcript and inverted a definition — and it is direct evidence for the
+method note added in batch E: when a note line and the transcript disagree, the
+transcript is the one to follow, and a note figure that appears nowhere in the
+audio is the tell. Worth recording as the positive case of that rule.
+
+**Two more de-garbles, both correct.** *"Russell 200000"* (33) → Russell 2000, and
+*"the three little **endings** pattern"* (400) → *"three little indians"*, which is
+the actual name of the pattern in *Street Smarts*. Third and fourth instances of
+the pattern noted for p1-02 and p1-03.
+
+---
+
+**Episodes 6–7 added below, completing the batch.**
+
+**p1-06 and p1-07 are both clean on fidelity, and p1-06 is the most numerically
+exact lesson in the batch.** Its live trade is reproduced to the tick — short
+**2 minis at 14,792.5**, first partial **14,675**, limit filling the rest at
+**14,647** (ep6:408-414), *"60 handles"* in *"eleven"* one-minute candles and
+*"over a thousand dollars in a matter of time that would probably be longer spent
+for someone that smokes a cigarette"* (372-378), inside a **120-handle** move
+(396-400). Every figure matches. The three-candle criteria (111-120), the
+candle-1-low / candle-2-resides / candle-3-high mapping (161-166), the paint
+roller (123-129), the after-a-run-into-buy-side-liquidity condition (146-152),
+the entry one tick above candle 3 with the stop above candle 1 or 2 and the
+take-the-wider-one advice (167-177), the displacement range (192-199), the
+no-gap-no-trade rule (213-218), the bullish mirror (219-237), the don't-mutate-it
+warning (238-243), the 9:30-first-run-is-opposite rule (318-327), the
+three-entries walk-through (331-356), the internal/external split with partials at
+the internal (424-434), and the don't-roll-the-stop-early passage (380-393) all
+check out. Even the waved-away return is quoted accurately (420-423).
+
+p1-07 likewise: the four-down-candle range (7-40), the two up-closed candles
+(135-140), *"being right is not equivalent to being profitable"* (180-181,
+verbatim), the magic-bullet passage and the grey area (192-221), the full leverage
+ladder — 4.5% max / 3.5% preferred / counter-trend dialled back / **under 1% for
+you, "about a half percent or a quarter percent"** (97-127, 243-252), the
+consolidation hurdle and *"Intel"* (51-61), *"no trading? no"* → intraday
+liquidity pools, nimble, surgical strike, don't overstay (260-272), *"I don't know
+… is not ignorance, it's not an absence of skill, it's honesty"* (1114-1118,
+verbatim), the use-the-extreme rule (281-288), *"algorithms run on time and price,
+not price and time"* (696-699, verbatim), the whole S&P-times-the-NASDAQ sequence
+including **10:36**, entry **14,505.5**, exit **14,622.75**, **117 handles** and
+**$2,345** (449-450, 928-931, 1340-1348 — all exact), the Dow/NASDAQ/S&P stacking
+(542-554), confirmation-not-signal (555-570), the blown-accounts-in-the-'90s
+admission (618-634), *"the Dow is not going down because buyers are coming in"* →
+an unwillingness to deliver (679-686, verbatim), the macro definition (687-690,
+verbatim), the George Angell single-contract technique and the feedback loop
+(764-851), the **~$750** cost of the leaders and the **~$1,100** net day
+(976, 1348-1350), the demo-can't-give-you-this limitation (898-909), the stop just
+below the entry candle's low (388-395), *"I'm afraid to be wrong"* (716-729), and
+the closing $60,000 / $144,000 / car-note contrast (1142-1181).
+
+**G13 · should-fix · p1-07 — the narrative principle is stated as the reason the
+whole model exists, and only its divergence-specific corollary survives.** Episode
+7 has a passage on why ICT teaches this way at all:
+
+> *"they have been fooled by listening to people talk about the **left side of the
+> chart** all the time and they can't execute on the right side … if your educator
+> can't trade on the **hard right edge of the chart** it … creates a false sense
+> of confidence that quickly gets evaporated when you trade with a live account,
+> or creates **analysis paralysis** … they call it SMC, smart money concepts, and
+> they'll think this is what's going to have to happen in the chart, and it isn't,
+> because **they're lacking narrative** … what's the logic, why should the market
+> do what it's doing? **It's not enough to see how a low is taken out and expect
+> it to go higher** … there has to be some greater context behind it"*
+> (340-376)
+
+The lesson does carry narrative — but only inside the *Cracks in correlation*
+callout, as the thing a divergence needs before you trade it (*"hunting
+divergences with **no narrative** behind why the pattern should even form"*). As a
+general principle it is absent, and so is the left-side/right-side critique that
+motivates it. This is the closest thing Part 1 has to a statement of its own
+method, and it is the answer to "why do I need all these conditions rather than
+just the pattern?" — the question the whole part provokes.
+
+**G14 · nit · p1-06 — the time-based-chart defence is dropped.** The lesson
+correctly carries *"time is the most crucial element"* (ep6:34-36), but not ICT's
+argument for it against the alternative: *"there's some out there that will say
+time-based charts are useless — that's because they don't know how to use a
+time-based chart, because **algorithms, the first element they operate under is
+time**. Hello, quants"* (108-110), stated alongside his dismissal of volume
+profile and depth-of-market as *"a religion … your interpretation is a private
+interpretation"* (100-107). Conspicuous because p1-06 is the lesson that makes
+time primary.
+
+**G15 · nit · p1-07 — three closing-section drops.** (a) **ICT's own stated
+numbers**: *"it's 51 plus percent … in two weeks of trading"* on the shown account
+(1068-1077), and *"I'm pulling out **$6,000 a week** consistently … the high 90% of
+you could live pretty nice on $6,000 a week"* (1186-1193) — plus the community poll
+asking whether **20% a month** is a respectable return, which came back
+predominantly yes (1088-1093). The lesson keeps only the modest half of the
+argument (car note, half the rent) and the $60,000/$144,000 contrast. §1 prefers
+under-claiming so this is safe, and it is recorded partly because **20% a month is
+exactly Section 1's stated optimal goal** (m2-04's *"+20% month — the optimal
+trading goal"*), which is a cross-section resonance batch N may want.
+(b) **"My goal is no losing days"** and the drawdown-correction stance —
+*"I refuse to let my negative day stay negative at the close"* (1406-1408), *"I fix
+the draw down, I know how to do that"* (1056), both explicitly hedged as
+*"not something that you should have as a goal coming out of the gates as a new
+student"* (1046-1049). Distinctive, contestable, and hedged in the source; the
+lesson drops it entirely. (c) **Larry Williams** is named alongside the floor
+trader and George Angell as a source of ICT's S&P insights (766-771); the lesson
+credits floor traders and Angell. Angell *is* the right attribution for the
+one-contract technique, so this is the mildest instance of the **B4 / E10 / G6**
+family.
+
+#### Quiz quality
+
+**All 44 questions across Part 1 are source-traceable.** Every correct option and
+every `e` checks against that episode's own transcript or notes — no repeat of
+**C2** or **E1**, where an explanation restated something the source did not
+support. Several `e` fields quote the transcript directly and **every quotation
+checked is accurate to the word**: p1-04's *"8:30 in the morning starts the hunt —
+basically that's what 8:30 in the morning is to me"* and *"this is a 5 minute
+chart, this is the time frame you start with and you work down"*; p1-05's
+*"don't trade during that time, not even in demo"* and *"that's the only two
+patterns you need"*; p1-06's *"quick"*/displacement line; p1-07's *"No trading?
+No."*, *"The Dow is not going down because buyers are coming in"* and *"I'm not
+telling you to use 3 and a half percent"*.
+
+**G16 · should-fix — p1-06's quiz is the one badly-constructed set in Part 1, and
+it is an outlier by a wide margin.** Measured the D15/E19/F14 way:
+
+| Lesson | n | strict | expected score | median margin | not-longest | max spread |
+|---|---|---|---|---|---|---|
+| p1-01 | 5 | **0%** | **15%** | — | **100%** | 3 |
+| p1-02 | 6 | 50% | 69% | 1 | 50% | 3 |
+| p1-03 | 6 | 17% | 42% | 1 | 83% | 6 |
+| p1-04 | 6 | 33% | 50% | 3 | 67% | 4 |
+| p1-05 | 7 | 29% | 32% | 4 | 71% | 9 |
+| **p1-06** | 8 | **75%** | **75%** | **6** | **25%** | **15** |
+| p1-07 | 6 | 17% | 25% | 1 | 83% | 4 |
+| **Part 1** | **44** | **34%** | **46%** | 3 | **66%** | 15 |
+
+**Part 1 as a whole is well constructed** — 46% expected against Section 1's
+quizzes at 76%, and consistent with **C17**'s figure for p1–p6 (36% strict / 43%
+expected across 306 questions). **p1-01 is the best-constructed quiz found
+anywhere in the corpus so far: a longest-clicker scores 15%, *below* the 25%
+chance rate**, because the correct option is never uniquely longest in any of its
+five questions. p1-07 (25%) and p1-05 (32%) are also at or below chance.
+
+p1-06 breaks the pattern: **6 of 8 correct options are uniquely the longest, by a
+median of 6 characters**, and it holds the batch's only question over spread 10 —
+[`p1-06/quiz.js:58`](../content/s2-2022-mentorship/p1/p1-06/quiz.js#L58), *"When
+may the protective stop be rolled down?"*, whose options run 38 / 44 / 45 / **53**
+and where the correct answer wins by **8**. Four more win by 6:
+`quiz.js:10` (candle three), `quiz.js:26` (the displacement range),
+`quiz.js:50` (internal vs external, spread 10) and p1-05's `quiz.js:34`
+(spooling). *Fix:* the same **mirror-pair / parallel-set** technique **C17**,
+**D15** and **F14** identified — and p1-06 is unusually suited to it, since its
+subject is a three-candle formation whose bullish and bearish versions are exact
+inversions. `quiz.js:2` already does it correctly (*"The low of candle number
+one"* vs *"The high of candle number one"*, 26 vs 27 characters), so the technique
+is present in the lesson and just needs applying to the other six.
+
+**Not re-flagged:** 43 of Part 1's 44 questions mark `a: 0`, the exception being
+`p1-02/quiz.js` q1 at `a: 1`. **D14** settled that the `a`-index is harmless
+(options Fisher-Yates shuffle at render), and it is noted here only because batch
+D recorded Section 2 as uniformly `a: 0` — Part 1 has one exception.
+
+#### Consistency — clean
+
+Verified mechanically:
+
+- All 7 lessons carry `data-month="p1"`; ids are `p1-NN`; **all 6 slugs present
+  match their id prefix**, and p1-01 correctly has **no** `data-slug` — with the
+  omission annotated in the markup (`<!-- no fig-slot: the notes carry no charts
+  for this episode -->`), which is the Section 2 convention the structural
+  observations noted Section 1 lacks.
+- **Chart counts match the harvested notes exactly, 1:1 and in order** — ep1 0,
+  ep2 2, ep3 2, ep4 2, ep5 2, ep6 3, ep7 4 = **15**, against 15 files in
+  `notes/2022-mentorship/raw/` and 15 in `images/`. This is the Section 2
+  equivalent of the **A12** check and it comes back clean. ep1 having no charts is
+  correct: `notes/2022-mentorship/ep-01.md` is five bullets with no image
+  references.
+- **All 7 `video.txt` URLs appear in
+  [`docs/s2-2022-mentorship-videos.md`](s2-2022-mentorship-videos.md)** and each
+  maps to the right lesson id in that table (rows 10-16). The plan calls that
+  table the only permitted source for a Section 2 video URL, so this is the §1
+  check for videos and it passes for all seven.
+- One episode = one lesson throughout, per plan §3: p1-01…p1-07 ↔ episodes 1…7,
+  no re-cutting or merging.
+- `python build.py` and `python verify.py` pass, 0 JS errors.
+
+#### Batch G summary
+
+| | |
+|---|---|
+| Lessons audited | 7 (episodes 1–7, ~294 KB of transcript) |
+| Findings | **16** — 0 blockers, **6** should-fix, **10** nits |
+| Fidelity findings | **zero** |
+| Quiz questions traceable | **44 of 44** |
+
+**The headline is that Part 1 has no fidelity findings at all — the first batch in
+this audit to manage that.** Every substantive claim across seven lessons traces
+to that episode's own transcript or notes, and the numbers are exact where they
+matter: p1-06's trade to the tick, p1-07's 117 handles and $2,345, p1-04's
+4419/4382, p1-02's 60/120-handle counts. The lessons are ~3× denser than Section
+1's, which gave far more room for drift, and none appeared.
+
+Three things about *why* it holds up, worth carrying into batches H–L:
+
+1. **One episode per lesson removes the failure mode that produced Section 1's
+   blockers.** **A2**, **C1**, **C2**, **D1** and **E1** all involved material
+   migrating between lessons or in from outside the teaching. With a 1:1 mapping
+   there is nowhere for that to come from, and the batch found no instance.
+2. **The lessons follow the transcript when the notes disagree.** ep-05's notes
+   say *"7:30 starts algo"*; the lesson says 1:30, which is what the transcript
+   says (see the note under episode 5). That is exactly the discipline **E1**
+   lacked, and it is the single most useful signal this batch produced.
+3. **The de-garbling is consistently sound.** Five mangled numbers or names were
+   silently corrected — $177,000 → $17,000, "14 62" → 14,662, "Russell 200000" →
+   Russell 2000, "three little endings" → three little indians, and a dropped
+   negation in ep7's *"now every single day is going to be a down clos candle"* →
+   *"a bearish bias does not mean every single day closes down"*. Every one is
+   right, and each is checkable against its own sentence.
+
+**The weak dimension is coverage, as in Section 1 — but with a different shape.**
+Ten of the sixteen findings are omissions, and they cluster into two kinds:
+**attribution** (**G6** the order block's provenance, **G15**(c) Larry Williams)
+and **the reasoning behind the method** (**G13** narrative and the
+left-side/right-side critique, **G14** the time-based-chart defence, **G12**(a) why
+futures rather than forex, **G2**/**G3** the demo-baller framing and the
+demo→live shift). Part 1 reproduces *what* to do with unusual fidelity and drops a
+noticeable amount of *why*.
+
+**Two genuinely cross-lesson defects, both fixable with one clause each:**
+**G10** (p1-05 declares order blocks out of scope two lessons after p1-03 taught
+them as the entry reference) and **G7** (the micro NASDAQ handle value is stated
+in **two** episodes and reaches neither lesson, leaving a reader with the S&P
+micro's $5 for a section whose main market is NQ).
+
+**Both quiz leads reverse relative to Section 1.** Part 1 scores **46% expected**
+against Section 1's quizzes at 76% — and **p1-01 at 15% is the best-constructed
+quiz in the corpus**, below the chance rate. The one exception, **p1-06 at 75%**
+(**G16**), is the only Section-1-shaped quiz in the batch.
 
 ---
 
