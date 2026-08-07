@@ -22,8 +22,19 @@ Started 2026-08-07.
 | Section 2 — 2022 Mentorship (Parts 1–6) | 40 | 306 | 40 | yes | — | 40 |
 | **Total** | **78** | **451** | **85** | 2 | 339 | 78 |
 
-Sources: `transcripts/` (79 `.txt`), `notes/2022-mentorship/` (39 `ep-NN.md`,
-Section 2 only). Both git-ignored, local-only.
+Sources: `transcripts/` (79 `.txt`), `notes/ict-core/` (Section 1) and
+`notes/2022-mentorship/` (39 `ep-NN.md`, Section 2). All git-ignored, local-only.
+
+> **Source-set correction, 2026-08-07.** Batch A was originally run against the
+> Section 1 **transcripts only**, because ICT's Section 1 notes were not in the
+> repo. They have since been harvested from Notion into `notes/ict-core/`
+> (see [`notes/ict-core/INDEX.md`](../notes/ict-core/INDEX.md) for the page-ID
+> map and fetch method). §1 permits **both** the transcripts and the notes, so
+> every Section 1 batch must be checked against both. Month 1 has been
+> re-verified; the effect on batch A's findings is recorded inline below —
+> **one finding (A1) is withdrawn**, one is strengthened, one is added, and the
+> open question (A12) is resolved. Batches B–E must fetch that month's notes
+> *before* reading its transcripts.
 
 ---
 
@@ -58,11 +69,11 @@ go-ahead.
 
 | # | Batch | Lessons | Quiz Qs | Status |
 |---|---|---|---|---|
-| A | S1 · Month 1 | m1-01 … m1-08 (8) | 39 | ☑ 2026-08-07 |
-| B | S1 · Month 2 | m2-01 … m2-08 (8) | 37 | ☐ |
-| C | S1 · Month 3 | m3-01 … m3-08 (8) | 25 | ☐ |
-| D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☐ |
-| E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☐ |
+| A | S1 · Month 1 | m1-01 … m1-08 (8) | 39 | ☑ 2026-08-07 (notes + transcripts) |
+| B | S1 · Month 2 | m2-01 … m2-08 (8) | 37 | ☐ fetch notes first |
+| C | S1 · Month 3 | m3-01 … m3-08 (8) | 25 | ☐ fetch notes first |
+| D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☐ fetch notes first |
+| E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☐ fetch notes first |
 | F | S1 · summary + exam | `summary.html`, `exam.js` | 45 | ☐ |
 | G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☐ |
 | H | S2 · Part 2 | p2-01 … p2-06 (6) | 49 | ☐ |
@@ -120,42 +131,52 @@ line or note section that does (or does not) support the claim.
 
 ### Batch A — Section 1, Month 1
 
-Sources read: all 8 `transcripts/Month 1/*.txt`. Lessons, quizzes, `video.txt`
-and slugs checked for all of m1-01 … m1-08.
+Sources read: all 8 `transcripts/Month 1/*.txt` **and** all 8
+`notes/ict-core/m1-NN.md`. Lessons, quizzes, `video.txt` and slugs checked for
+all of m1-01 … m1-08.
 
-**Headline:** fidelity is genuinely good. Every substantive claim across the
-eight lessons traces to its own transcript, usually closely enough to point at a
-line. Two exceptions are logged below, one of which is a real invention. The
+**Headline:** fidelity is genuinely good — better than the first pass suggested.
+Every substantive claim across the eight lessons traces to that lesson's own
+transcript or its own note page, usually closely enough to point at a line. The
 weakest dimension is not fidelity but **quiz construction** — the correct option
 is the longest of the four in 31 of Month 1's 39 questions.
 
 #### Content fidelity (§1)
 
-**A1 · should-fix · [m1-02/lesson.html:37-46](../content/s1-ict-core/m1/m1-02/lesson.html#L37-L46)** —
-The Weekly Template table attributes two days ICT never names. His transcript
-gives only: *"Sunday's open consolidation, then there's an expansion move in
-Monday, then there's a reversal on Tuesday or Monday, and then there's another
-expansion move, then it goes back in consolidation midweek, and then it's either
-going to reverse or it's going to retrace"*
-(`How Market Makers Condition The Market.txt:582-597`). The lesson renders the
-unnamed fourth step as **"Wednesday — Another expansion"** and the unnamed final
-step as **"Friday — Reverse or retrace"**. Neither day appears anywhere in the
-transcript (`grep -i wednesday|thursday|friday` returns nothing). A learner reads
-this as a rule ICT gave. It also contradicts itself: the row below "Wednesday"
-is "Midweek — Consolidation", and Wednesday *is* midweek.
-*Fix:* relabel those two rows to the source's own vagueness ("Then" / "Late
-week"), keeping the sequence intact.
+**A1 · ~~should-fix~~ → WITHDRAWN · m1-02** —
+*Originally logged as an invention: the Weekly Template's "Wednesday — Another
+expansion" and "Friday — Reverse or retrace" rows, neither day appearing anywhere
+in the transcript.* **This finding is wrong and is withdrawn.** Both days are
+explicit in ICT's notes, which the first pass did not have:
+
+```
+Same thing happens on the weekly
+Sunday open = consolidation
+Monday = expansion
+Tuesday = reversal
+Wednesday = expansion
+Thursday = consolidation midweek
+Friday = reverse or retrace
+```
+
+(`notes/ict-core/m1-02.md`). The lesson reproduces this faithfully. The apparent
+self-contradiction I flagged ("Wednesday" followed by "Midweek") is also not the
+lesson's doing — the notes say *"Thursday = consolidation midweek"*, and the
+lesson **under-claims** it as plain "Midweek", which is the direction §1 asks for.
+No action. If anything that row could gain the day label the notes give it.
 
 **A2 · nit · [m1-04/lesson.html:15](../content/s1-ict-core/m1/m1-04/lesson.html#L15)** —
-*"Only fib **pure, obvious** swings"* is not in m1-04's transcript (`grep -i
-"pure|sloppy|questionable"` on *Equilibrium Vs. Discount* returns nothing
-relevant). It is verbatim ICT, but from the **next** lesson's transcript
-(*Equilibrium Vs. Premium*: *"if it looks sloppy… obvious price swings are the
-ones we look at"*, lines 266-274), where m1-05 already carries it correctly. So
-the rule is taught one lesson before it is sourced. Same-month sibling
-borrowing — harmless in substance, but it is the pattern §1 exists to prevent.
+*"Only fib **pure, obvious** swings"* appears in neither m1-04's transcript nor
+m1-04's notes. It is verbatim ICT, but from the **next** lesson — and now
+traceable to both of m1-05's sources: the notes say *"If its a good and **pure
+and obvious** price swing then we measure it and put a fib on it"*
+(`notes/ict-core/m1-05.md`, near-verbatim to the lesson's wording, so that is
+plainly where it was written from), and the transcript says *"if it looks
+sloppy… obvious price swings are the ones we look at"* (lines 266-274). m1-05
+already carries the rule correctly. So it is taught one lesson before it is
+sourced — harmless in substance, but it is the pattern §1 exists to prevent.
 The rest of that bullet (the Sunday-candle exclusion) *is* in m1-04's own
-transcript at lines 396-403.
+transcript (lines 396-403) and its own notes.
 
 **A3 · nit · [m1-02/lesson.html:10](../content/s1-ict-core/m1/m1-02/lesson.html#L10)** —
 *"that's not your broker, it's the interbank feed"* over-tightens ICT, who says
@@ -166,8 +187,21 @@ a "both" into an "either/or".
 
 #### Coverage gaps
 
-**A4 · should-fix · m1-04** — the lesson carries no risk management, though its
-transcript states it plainly twice:
+A5–A9 were re-checked against `notes/ict-core/` — each is a **transcript-only**
+gap (the notes do not carry those points either), so none changes severity. Two
+things the notes settled in the lesson's favour, and which are therefore *not*
+gaps:
+
+- m1-03's *"Three charts total: the executable, the 15-minute MTF, and the HTF"*
+  reads like the lesson glossing ICT. It is not — the notes say exactly
+  *"Use 3 different charts / 1. executable chart / 2. MTF, 15m / 3. HTF"*.
+- m1-08's three protraction times are confirmed twice over. The notes give two
+  renderings — *"1. 00 GMT 2. Midnight New York 3. 1100 GMT, New York open"* and
+  *"MNO, 7am NY, 8pm NY"* — which agree with each other (11:00 GMT = 7 AM NY,
+  00 GMT = 8 PM NY) and with the lesson.
+
+**A4 · should-fix — strengthened by the notes · m1-04** — the lesson carries no
+risk management, though its transcript states it plainly twice:
 
 - *"if we understand this is the low we draw our fib from, a stop loss has to be
   below there on this time frame"* (lines 786-789) — explicit stop placement.
@@ -176,9 +210,18 @@ transcript states it plainly twice:
   that low it starts from, it can't go below that"* (lines 771-778) — the
   invalidation condition for the whole setup.
 
-m1-04 is the lesson that teaches buying discounts; it tells the reader where to
-enter and where to exit but never where the idea is wrong. This is the largest
-single omission found in Month 1.
+**The notes carry it too**, as a standalone line: *"The low where the impulse
+starts from, it should not go below that"* (`notes/ict-core/m1-04.md`). So this
+rule survives in **both** of ICT's records of the lesson and in neither the
+lesson nor its quiz. m1-04 teaches buying discounts; it tells the reader where to
+enter and where to exit but never where the idea is wrong. Now the clearest
+finding in batch A.
+
+**A13 · nit · [m1-04/lesson.html:38](../content/s1-ict-core/m1/m1-04/lesson.html#L38)** —
+*(new, from the notes)* the lesson says markets reach for stops *"in grades of
+**10 and 20 pips** above a high"*. The notes say *"Price reaches to 10-20 pips
+above a high to reach for stops, **sometimes 30**"* (`notes/ict-core/m1-04.md`).
+The upper bound is dropped, which understates the range a reader should expect.
 
 **A5 · nit · m1-01** — omits the three prerequisite series ICT names by name and
 tells students to work through (*Market Maker Series*, *Precision Trading
@@ -263,15 +306,30 @@ Verified mechanically and by reading; nothing to fix:
   the two `summary.html` files — deferred to batches F and M).
 - `python build.py` and `python verify.py` both pass; 0 JS errors.
 
-#### Open question for the owner
+#### A12 — RESOLVED (was: open question for the owner)
 
-**A12** — m1-04, m1-05, m1-06 and m1-08 have **no `.fig-slot`**, so they render
-chart-free, and m1-04/05/06 are exactly the lessons whose transcripts are
-30-60 minutes of ICT walking a chart. Whether that is correct is **not verifiable
-from what is in the repo**: `notes/` contains `2022-mentorship/` only, so Section
-1's chart provenance (the Notion scrape) is not available locally to check
-against. Flagging rather than guessing (§1). If the Section 1 notes had figures
-for these four, they were never harvested.
+*Originally flagged as unverifiable: m1-04, m1-05, m1-06 and m1-08 render
+chart-free, and three of them are lessons where ICT talks over a chart for
+30-60 minutes, but Section 1's notes were not in the repo to check against.*
+
+**Now verified, and the answer is clean.** Every Month 1 note page's image count
+matches `images/` exactly, 1:1 and in order:
+
+| Lesson | Charts in notes | PNGs in `images/` | |
+|---|---|---|---|
+| m1-01 | 8 | 8 | ✓ |
+| m1-02 | 4 | 4 | ✓ |
+| m1-03 | 1 | 1 | ✓ |
+| m1-04 | 0 | none | ✓ correctly no `.fig-slot` |
+| m1-05 | 0 | none | ✓ correctly no `.fig-slot` |
+| m1-06 | 0 | none | ✓ correctly no `.fig-slot` |
+| m1-07 | 5 | 5 | ✓ |
+| m1-08 | 0 | none | ✓ correctly no `.fig-slot` |
+
+The four chart-free lessons are chart-free **in ICT's notes**. Nothing was
+missed by the scrape, and no `.fig-slot` is absent that should be present. The
+"S1 omits the no-fig-slot comment that S2 writes" cosmetic point stands, but it
+is purely stylistic.
 
 ---
 
@@ -287,10 +345,22 @@ spot-checked resolves to the right video.
 
 ## Method notes
 
-- **Per batch:** read only that batch's lessons, quizzes and transcripts, then
-  log findings here with file/line refs and a severity. Transcripts outside the
-  current batch are deliberately not read — they are large and would exhaust
-  context.
+- **Per batch:** read only that batch's lessons, quizzes, **notes and
+  transcripts**, then log findings here with file/line refs and a severity.
+  Sources outside the current batch are deliberately not read — they are large
+  and would exhaust context.
+- **Both sources, always.** §1 permits ICT's notes *and* the transcripts. Batch A
+  was first run against transcripts alone and produced a false positive (A1) as a
+  direct result. For Sections 1 and 2 alike, **fetch/read that batch's notes
+  first** — they are short, they are what the lesson was most likely written
+  from, and they resolve most "is this invented?" questions in one line.
+- **Fetching Section 1 notes** (batches B-E): use the Notion connector against
+  `https://cobalt-sight-9b7.notion.site/<page-id>`, taking page IDs from
+  [`notes/ict-core/INDEX.md`](../notes/ict-core/INDEX.md). WebFetch will not work
+  (SPA shell) and the `app.notion.com/p/<id>` form 404s. Strip the presigned S3
+  image URLs when saving — they expire in 5 minutes and are enormous; keep an
+  `![chart NN]` placeholder so counts and layout survive, which is what makes the
+  notes-vs-`images/` cross-check in A12 possible.
 - **Quiz option-length measurement (finding A10)** is mechanical and rerunnable.
   A throwaway script in the session scratchpad parses every `quiz.js` / `exam.js`
   with `\{\s*q:\s*"…"\s*,\s*o:\s*\[…\]\s*,\s*a:\s*(\d+)` and reports, per batch,

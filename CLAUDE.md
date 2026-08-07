@@ -168,7 +168,9 @@ When writing an ad-hoc browser check, remember only the **active** lesson sectio
 ## 6. Source material & tooling
 
 - **Transcripts:** `transcripts/Month N/…txt` (Section 1) and `transcripts/2022 Mentorship/…Episode N.txt` (Section 2) — the primary source for lesson enrichment. Git-ignored; local only.
+- **Section 1 notes:** `notes/ict-core/mN-NN.md`, harvested from the Notion notes site. Git-ignored. [`notes/ict-core/INDEX.md`](notes/ict-core/INDEX.md) holds the page-ID map for all 38 lessons and the fetch recipe — **read it before re-fetching**: Notion sites are SPAs so WebFetch returns only the shell, you must use the Notion connector against `cobalt-sight-9b7.notion.site/<page-id>` (the `app.notion.com/p/<id>` form 404s for these), and the image URLs are presigned with a 5-minute expiry.
 - **Section 2 notes:** `notes/2022-mentorship/ep-NN.md` plus `raw/*.png`, harvested from the Notion notes page. Git-ignored. The Notion image URLs expire after 5 minutes, so the local copy is the permanent one — see the plan doc before re-fetching.
+- **Both sources count.** For either section, §1 permits the transcript *and* ICT's notes. Check a claim against both before calling it unsourced — the notes are terse and are often what a lesson was actually written from.
 - **Mentorship notes & charts:** from ICT's (Inner Circle Trader) mentorships. Charts are scraped from the notes into `images/`. The scraper (Playwright, resumable via a manifest) has historically lived in the session scratchpad, not the repo.
 - **Notes fidelity:** the transcripts and ICT's mentorship notes are the *only* permitted inputs (see §1). Preserve attribution to the original creators in the README's Credits section through any refactor.
 
