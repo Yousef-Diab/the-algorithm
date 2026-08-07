@@ -803,13 +803,15 @@ and E, where 9 more lessons sit at 2–3 questions.
 
 #### Noted, not a finding
 
-**m3-06 asks not to be published.** ICT closes the lesson: *"keep it close to
-your vest, in other words **don't share it with the general public**… everything
-that's been shown here today in this teaching again please please don't make a
-common knowledge"* (`Macro Economic To Micro Technical.txt:498-524`). This is
-the only lesson in Month 3 with such a request, and the course reproduces the
-content in full. Flagging for the owner's awareness — it is a question about the
-project, not a content defect, and it is not mine to decide.
+**m3-06 asks not to be published — resolved, no action.** ICT closes the lesson:
+*"keep it close to your vest, in other words **don't share it with the general
+public**… please please don't make a common knowledge"*
+(`Macro Economic To Micro Technical.txt:498-524`), the only such request in
+Month 3. **Owner's answer (2026-08-07): moot.** The request was made to a
+private mentorship cohort; ICT has since published the mentorship on his own
+YouTube channel, so the material is public by his own act — and each lesson here
+links back to his video (`CLAUDE.md` §3). Recorded so later batches don't
+re-raise it if the line recurs.
 
 ---
 
