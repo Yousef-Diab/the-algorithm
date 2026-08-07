@@ -1,4 +1,4 @@
 [
   {q:"If the market is bearish, where do we look to sell?",o:["Down below the old lows","Above old highs, into buy stops","Right at the equilibrium","At the daily opening price"],a:1,e:"Sell above old highs into the liquidity pool of buy stops — sell to the buyers, buy from the sellers."},
-  {q:"A sweep extends beyond 25 pips. What is it probably?",o:["Still just a normal sweep","A continuation, not a sweep","A full-blown reversal","A fair value gap forming"],a:1,e:"Expect 10–20 pip sweeps; beyond 25 pips it's probably a continuation of the decline. Buy under the low — never FOMO at or above it."}
+  {q:"How do you locate where other traders' stops sit?",o:["Read the broker's order book depth","Roleplay: where would my own stop be?","Wait for a volume spike to reveal it","Measure a fixed distance off the high"],a:1,e:"Roleplay it: 'if I was short right now, where would my buy stop be? If I was long, where would my sell stop be?' — that shows you where other traders' stops are resting."}
  ]

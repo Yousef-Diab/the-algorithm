@@ -68,9 +68,9 @@
   },
 
   {
-    q: "What does the 6% per month model require?",
-    o: ["20 pips a week at 1.5% risk", "80 pips a week at 4% risk", "20 pips a day at 1.5% risk", "50 pips a week at 0.5% risk"], a: 0,
-    e: "6% of equity compounding per month doubles your money every year, and it only takes 20 pips per week, 1.5% risk and a 1:1 ratio. (Month 2, Lesson 1)"
+    q: "Greed puts a trader into the position. What does it become?",
+    o: ["Fear, the moment the trade is live", "Hope that carries through to exit", "Patience once the stop is placed", "Relief as soon as it moves right"], a: 0,
+    e: "Greed puts you into the trade; once the transaction starts it transfers into fear. Respect the risk side before you execute. (Month 2, Lesson 1)"
   },
 
   {
@@ -226,9 +226,9 @@
   },
 
   {
-    q: "Price moves 40 pips beyond an old low. What does that suggest?",
-    o: ["Not a sweep — likely a continuation", "A textbook sweep of the sell stops", "A confirmed breaker has just formed", "The mean threshold has been reset"], a: 0,
-    e: "Expect a 10–20 pip sweep. If it moves beyond 25 pips it's probably not a sweep — it's likely a continuation of the decline. (Month 4, Lesson 10)"
+    q: "The higher-timeframe bias is bullish. What do you wait for?",
+    o: ["An old low to be taken out first", "A close above the previous high", "Three consecutive up-close candles", "The weekly open to be reclaimed"], a: 0,
+    e: "The trick is knowing the underlying HTF bias. If it wants to go higher, wait for an old low to be taken out — then be a buyer, under the low rather than at or above it. (Month 4, Lesson 10)"
   },
 
   {
@@ -268,8 +268,8 @@
   },
 
   {
-    q: "A 1-hour orderblock offers only a 20-pip target. What do you do?",
-    o: ["Pass — you want 40+ pips", "Take it with double size", "Take it and hold for more", "Move down to the 5-minute"], a: 0,
-    e: "A 1h orderblock with only a 20-pip target is no trade — you want 40+ pips. Match the timeframe to the pip goal; one setup a week is enough. (Month 4, Lesson 2)"
+    q: "Which two disciplines does ICT say cover every setup?",
+    o: ["Turtle soups or a return to fair value", "Breakouts or moving-average crosses", "Trendline breaks or chart patterns", "News trading or the session scalp"], a: 0,
+    e: "Two disciplines cover it all: turtle soups — buying sell-stops, selling buy-stops — or a return to fair value, buying internal range liquidity. Pick whichever the chart shows most clearly. (Month 4, Lesson 2)"
   }
 ];

@@ -74,9 +74,9 @@
   },
 
   {
-    q: "In the halo system, what do two halos mark?",
-    o: ["An intermediate-term high or low", "A long-term swing high or low", "A short-term high or low only", "The high or low of the session"], a: 0,
-    e: "One halo is a short-term high, two halos an intermediate-term high, three halos a long-term swing high. ICT credits this way of deciphering market structure to Larry Williams. (Part 2, Lesson 4)"
+    q: "A down-close candle prints after a run-up. Is it an order block?",
+    o: ["Not automatically — read the context", "Yes, every down close after a rally", "Only if it closes below its own open", "Only on the daily and 4-hour charts"], a: 0,
+    e: "People who don't really understand order blocks buy any down close candle after a run-up and conclude it is a bullish order block. It is not — in that example the real context was the imbalance. (Part 2, Lesson 4)"
   },
 
   {
