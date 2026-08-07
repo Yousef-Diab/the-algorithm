@@ -73,7 +73,7 @@ go-ahead.
 | B | S1 · Month 2 | m2-01 … m2-08 (8) | 37 | ☑ 2026-08-07 (notes + transcripts) |
 | C | S1 · Month 3 | m3-01 … m3-08 (8) | 25 | ☑ 2026-08-07 (notes + transcripts) |
 | D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☑ 2026-08-07 (notes + transcripts) |
-| E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☐ fetch notes first |
+| E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☑ 2026-08-07 (notes + transcripts) |
 | F | S1 · summary + exam | `summary.html`, `exam.js` | 45 | ☐ |
 | G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☐ |
 | H | S2 · Part 2 | p2-01 … p2-06 (6) | 49 | ☐ |
@@ -120,6 +120,20 @@ batch, against how much material each lesson actually carries.
 > joint-lowest question count, its entire bullish mirror untested); m4-04 and
 > m4-05 also sit below C18's floor of 4, each with half the lesson untested.
 > m4-01, m4-02 and m4-07 are proportionate.
+>
+> **Verdict (batch E), and Section 1 is now complete on this question: four more
+> lessons** — see **E18**. Month 4b's counts are not *inverse* to the material as
+> Month 3's and Month 4a's were, they are simply **uncorrelated** with it: the
+> second-longest transcript in the month (m4-10, 531 lines) carries the same two
+> questions as the shortest (m4-08, 211 lines). m4-10 and m4-11 are the worst
+> cases, and m4-11's is compounded by **E1** — one of its two questions tests an
+> incorrect definition, leaving effectively one working question for an 8-chart
+> lesson. m4-09 and m4-13 are fine.
+>
+> **Section 1 total: 11 of 38 lessons are under-tested** on C18's floor —
+> m3-01, m3-03, m3-04, m3-05, m4-04, m4-05, m4-06, m4-10, m4-11, m4-12, m4-14 —
+> plus m4-03 and m4-08 at the margin. All of Months 1–2 are proportionate, so
+> this is entirely a Months 3–4 defect, as the first pass suspected.
 
 **S1 · `p3-01` slug with no images.** `build.py` warns that
 `content/s2-2022-mentorship/p3/p3-01` declares
@@ -1191,6 +1205,511 @@ and it is **harmless** — the renderer Fisher-Yates shuffles options at render
 time, so `a` sets no on-screen position (§3). Recorded so a later batch does not
 mistake it for a tell.
 
+### Batch E — Section 1, Month 4b (m4-08 … m4-14)
+
+Sources read: the 7 matching `transcripts/Month 4/*.txt` **and** all 7
+`notes/ict-core/m4-NN.md` (fetched from Notion at the start of this batch).
+m4-01 … m4-07 deliberately not re-read — they are batch D, cited rather than
+re-checked. The one exception is a 28-line window of `Orderblocks.txt` (132-159)
+read to verify the forward reference in **E7**.
+
+**Headline: five of the seven lessons are as faithful as batch D, and the sixth
+contains the audit's third blocker.** m4-12, m4-13 and m4-14 are excellent —
+m4-12 reproduces ICT's three-candle FVG framing to the pip (105.00 → 104.75,
+"about 25 pips"), m4-13's whole three-step trap mechanic checks out line by line
+including the "~30 pips" retail gets before the reversal, and m4-14's measured
+move is right including the target being hit "off by one pip". But **m4-11
+defines the liquidity void as its own opposite** (**E1**), and it does so from a
+note-taker addition that post-dates the teaching by six years — the D1 pattern
+again, this time landing on the definition of the lesson's title.
+
+Coverage is once more the weak dimension, and this batch has a distinct shape:
+**four of the seven lessons teach what a thing *is* and never say how to trade
+it.** m4-10 gives the entry zone and the stop but never the order type or the
+target; m4-11 never says the entry is the stop-run low below the void; m4-12 has
+no entry technique at all; m4-13 criticises retail for having no qualified target
+and then supplies none. And **the wick-vs-body question m4-03 explicitly deferred
+to this stretch is answered in two of these transcripts and dropped from both
+lessons** (**E7**).
+
+On the quiz side both leads from the prompt are confirmed and neither needs
+correcting: the counts are again out of proportion (**E18**) and Month 4b is
+**90% strict / 92% expected score** — the worst stretch in the corpus (**E19**).
+
+#### Content fidelity (§1)
+
+**E1 · blocker · [m4-11/lesson.html:9](../content/s1-ict-core/m4/m4-11/lesson.html#L9)
+and [m4-11/quiz.js:2](../content/s1-ict-core/m4/m4-11/quiz.js#L2)** —
+**the liquidity void is defined as its opposite.** The lesson opens: a liquidity
+void is *"where absolutely **no trading took place** — e.g. a big news candle
+(CPI) where **neither buyside nor sellside** was offered."* ICT's definition is
+that **one** side was offered and the other was not, and he states it four times:
+
+> *"a liquidity void is a range in price delivery where **one side** of the
+> market liquidity is shown in wide or long one-sided ranges or candles"* (7-11)
+>
+> *"it was all on s[ell] side liquidity **only very little buying took place**
+> in that rundown"* (101-103)
+>
+> *"remember it's a **void of buy side liquidity** that causes downward ranges
+> like this which is what we call a liquidity void"* (111-114)
+>
+> *"again it's **the absence of buyers or buy side liquidity**"* (125-126)
+
+The mechanism depends on it entirely: price returns to deliver the *missing*
+side, and *"when it does that price action has been balanced out… it's been
+offered on the down move and it's been offered on the buy move up"* (153-158).
+**The lesson's own later bullets assume the correct definition and therefore
+contradict its first one** — line 13 says a void is *"big candles delivered to
+one side"* and line 14 says *"once both sides have been offered, price is
+balanced out"*. Neither is possible if no trading took place.
+
+Where it came from: the note page, verbatim — *"Liquidity void is where there was
+absolutely no trading taking place at all… neither buyside or sellside was
+offered. Take the **10-11-2022** CPI candle as example"*
+(`notes/ict-core/m4-11.md`). That date is **six years after this teaching**
+(transcript line 3: *"the ICT mentorship content for December 2016"*), so the
+example — and the gloss built on it — is the note-taker's own, not ICT's. Same
+shape as **D1**, but D1 was one clause in a rule; this is the definition of the
+lesson's subject.
+
+Why it is a blocker rather than a should-fix: *"no trading took place at all"* is
+a precise description of a **gap**, which is what the **vacuum block** is —
+m4-09's own transcript says *"there's absolutely no way for any trader to
+execute, there's **no trade between those two price points**"* (m4-09:105-108).
+So the lesson collapses the distinction between m4-09 and m4-11, two adjacent
+lessons, and a reader hunting for candles where nothing traded will never
+identify a liquidity void. The quiz `e` carries it and manages to
+self-contradict inside one sentence: *"A liquidity void is where absolutely no
+trading took place — big one-sided candles delivered to one side."*
+*Fix:* use the transcript's definition (a one-sided range; a void of the *other*
+side's liquidity). The lesson's remaining bullets already assume it, so this is a
+two-line repair — and it doubles as the fix for **E19**'s q1 (see there).
+
+**E2 · should-fix · [m4-11/lesson.html:10](../content/s1-ict-core/m4/m4-11/lesson.html#L10)** —
+the same source, the same error, one line later: *"Voids where there was **no
+trading at all** are the best draw on liquidity."* Traceable only to the note
+page (*"Liquidity voids where there was no trading at all, those are the best for
+a draw on liquidity"*) and nowhere in the transcript, which makes no such ranking
+claim and attaches "draw" to price rather than to liquidity — *"the ultimate
+**draw on price** was to get up to that 104.76 level"* (176-177). Inherits
+**E1**; §1's prefer-under-claiming would drop the superlative.
+
+**E3 · nit · [m4-09/lesson.html:11](../content/s1-ict-core/m4/m4-09/lesson.html#L11)** —
+**"breakaway" is attached to the wrong discriminator.** The lesson makes the
+label depend on where the gap starts: *"A gap up from a discount after a decline
+= a breakaway gap (strength). A gap after an extended rally = an exhaustion gap
+/ capitulation."* The exhaustion half is exactly right (61-71). The breakaway
+half is not the source's usage — ICT uses it two other ways: as a plain synonym
+for the whole concept, *"a vacuum block is nothing more than a breakaway gap"*
+(343-344), and specifically for a gap that **stays unfilled**, *"but if it stays
+open we would label that while we're bullish as a breakaway gap and it would show
+willingness and strength"* (363-367). Both readings are in the notes too. The
+discount-origin setup is real and is ICT's preferred one — *"if we gap up away
+from a market that's in a discount"* (82-85), and the notes say plainly *"Vacuum
+block is the best when we're in a retracement on a bullish market… if we gap up
+from a market that has been in discount"* — so `quiz.js:2`'s "best gap" answer
+stands. Only the name has been reassigned.
+
+**E4 · nit · [m4-08/lesson.html:9](../content/s1-ict-core/m4/m4-08/lesson.html#L9)** —
+a quotation moved to its neighbour, the same shape as **D2**. The lesson calls
+the propulsion candle *"highly sensitive, 'predisposed to go higher.'"* In the
+transcript that clause describes the **prior** orderblock the propulsion candle
+drops into, not the propulsion candle itself:
+
+> *"what makes it propulsion is that it's already dropped back down into a[n]
+> o[rder] block **that's already predisposed to go higher** / then we created
+> another higher order block that touches the initial one / that new higher level
+> bullish order block… will be **highly sensitive**"* (22-29)
+
+"Highly sensitive" is correctly attributed; the quoted phrase belongs to the
+block below it. Nothing is taught wrongly — the propulsion candle inherits the
+bias — but it is a verbatim quote on the wrong object.
+
+#### Coverage gaps
+
+**E5 · should-fix · m4-11** — **the entry is missing, and it is the whole trade.**
+The lesson says a void gets filled and never says where you buy. ICT's sequence
+is explicit and he walks it twice: sell stops build below the short-term lows
+beneath the void (*"while price is showing a short-term support level like this
+what's going to be building up below those lows — **sell stops**"*, 131-137);
+those stops get run (159-160); and **that run is what funds the move that closes
+the void**:
+
+> *"note again the stops that were ran below that low here right before the void
+> was closed — **that low would be the buying opportunity**"* (179-183)
+>
+> *"that run on those [sell] stops was necessary for them to **facilitate new
+> l[ong]s** so that way if they're going to take out the 104.76 they're going to
+> make it worth their while, you're going to pick up some buy orders around
+> 104.05"* (195-200)
+
+The lesson's line 15 gestures at the same event but keeps only the note-taker's
+colour — *"sometimes it first drops lower, **faking people out**, then fills
+completely"* — where the transcript has the mechanism: it comes back down to run
+the equal lows and *then* completes the fill (164-170). A reader is told a void
+is a magnet and given no way to trade it.
+
+**E6 · should-fix · m4-10** — **the order type and the exit are both absent.**
+The lesson's sweep-mechanics callout says to buy under the low, but not that the
+order rests there in advance:
+
+> *"when [the] underlying market is bullish, **before** price trades under the
+> recent low you're going to place a **buy limit order** just below or at the
+> recent low — you're buying the sell stops like a bank trader or any other smart
+> money entity would"* (232-239)
+
+— nor the validation condition that turns the setup on (*"validation of this
+setup or condition is when the low is violated… and the sell stops become market
+orders to sell at market"*, 223-227). The exit is dropped too, though ICT names
+it in the framework and then in all four worked examples: *"wait for a repricing
+for the market to trade above an old high so we can unload that position, or
+trade up into a bearish order block take profits, or trade up into a fair value
+gap or a liquidity void"* (153-158), realised at 133.60 on USDCAD, at the
+101.25 / 101.30 / 101.45 layers on USDCHF, and at 124.75 on cable. The lesson
+carries the accumulate/distribute idea only as an aside in a "Notes" callout, not
+as the exit rule. Same shape as **D9**.
+
+**E7 · should-fix · m4-12 and m4-13** — **the wick-vs-body question m4-03
+deferred to this stretch is answered in both transcripts and dropped from both
+lessons.** m4-03 tells the reader *"Use wicks only where they overlap FVGs;
+otherwise focus on bodies"*
+([m4-03/lesson.html:16](../content/s1-ict-core/m4/m4-03/lesson.html#L16)), which
+is the lesson's rendering of ICT's promise:
+
+> *"i'm using the bodies of the candles, you may end up using the wick… and when
+> we talk about wicks **i'm going to overlap order blocks with fair value gaps
+> because that's going to be the answer to many of your questions as it relates
+> to when do we use the wicks and when do we use the b[odies] of the candles**"*
+> (`Orderblocks.txt:134-148`)
+
+The answer arrives twice in batch E, and both times the lesson omits it:
+
+- **m4-12**, where the FVG overlap actually happens: *"look at the bod[ies']
+  close on this candle right here, the close is 104.72, that's exactly the high
+  on this candle's close 104.72 — **the wick trades through the body but the
+  bodies of the candle completely close in here**… this is exactly what i'm
+  referring to as **efficiency in terms of the price delivery**"* (330-344). The
+  gap is filled at the bodies; the wick through it does not count.
+- **m4-13**, more plainly still, as a student question answered outright: *"now
+  the question is going to be, Michael, do i use the high or do i use the body?
+  **You use the body**, why — because of the condition that's here, we have a
+  wick and price has already traded several times through here"* (472-483).
+
+Grepped: neither m4-12 nor m4-13 contains the word "wick" or "body". The only
+survivor anywhere in Month 4b is m4-11's *"Watch how the bodies close a void
+in"*, which states the observation without the rule. So the single most-promised
+rule in the month is missing from the two lessons that were meant to deliver it.
+
+**E8 · should-fix · m4-14** — **the first worked example is dropped, and it is the
+month's only integrated setup.** Before the measured move, ICT maps *both* sides
+of liquidity around a double top on one chart (9-162): above it a **liquidity
+void** (the 77.42 opening down to the 77.00 high), below it a **fair value gap**
+and a **bullish orderblock** at the last down candle's open. He then poses two
+competing resolutions —
+
+> *"here are the two scenarios"* … *"if price drops down to that level we could
+> reasonably expect price to go back up and clear out these buy stops, **or** the
+> market could come up trade into this void, close it in, and then trade lower to
+> close this fair value gap"* (105-120)
+
+— explains which side resolves first (*"we know they're going to be looking for
+this side of the liquidity first"*, 122-124), and the target lands **to the pip**
+(the high at 77.42 against the candle open at 77.42, 145-151). This is the only
+place in Section 1 where the void, the FVG, the orderblock, the double top and
+the buy-stop pool are drawn on one chart and traded as a sequence — i.e. it
+operationalises m4-03, m4-11 and m4-12 together. The lesson keeps only the second
+example.
+
+**E9 · should-fix · m4-12** — **no entry technique at all.** 450 transcript lines
+and the lesson explains what an FVG is, why it fills, and never how to take it.
+The second half of the transcript (253-441) is a worked entry, twice over:
+
+- the refined sell at the two-pip gap — *"we can be a seller at a more refined
+  price level… we said that we could be a seller at **104.70 on a limit**; when
+  price trades back up to that level, if it doesn't give us an opportunity to go
+  on a limit we can trade it right as it hits it live"* (319-329);
+- a second FVG at 104.55 traded to a stated objective — *"we could be a seller at
+  104.55 or 104.50 looking for a move down below 104.15 to 104.10"* (407-409),
+  which then delivers (410-441).
+
+It also introduces **"perfect delivery"** as a completeness test — a range where
+buy side *and* sell side have both been offered is *"a full block of delivery
+[efficiency] up and down, both ranges on both sides of the delivery of price"*
+(417-424) and is therefore finished. The lesson uses the phrase "perfect
+delivery" once, parenthetically, without the test.
+
+**E10 · should-fix · m4-13** — **the attribution ICT insists on is dropped.** He
+spends twenty lines crediting **Nick Van Nice** for releasing hidden /
+trend-following divergence, and explicitly correcting the credit usually given to
+George Lane:
+
+> *"it's been never really associated to who discovered it, but **Nick Van Nice**
+> — he was the guy that released it to the trading community at large. **George
+> Lane gets a lot of credit and falsely** i might add; he was not the creator of
+> stochastic, he's not the inventor if you will of divergence… it's one of those
+> pet peeves of mine… i have to keep reminding the folks that are in trading, if
+> they talk about divergence they probably should be thanking a guy that they'll
+> probably never even meet"* (79-100)
+
+The lesson teaches Type 2 hidden divergence with no attribution. Same shape as
+**B4** (ICT crediting Chris Laurie, dropped) but stronger: ICT frames this one as
+a correction of a false credit and asks the reader to carry it forward, and
+`CLAUDE.md` §6 asks that attribution to original creators survive changes.
+
+**E11 · should-fix · m4-13** — **the lesson faults retail for having no target
+and then gives none itself.** Its step 1 says retail sells the divergence *"with
+no qualified target"* — which is ICT's point (*"what they're looking for is 'get
+me in at the low and i'll figure out where i'm going to get out later on'"*,
+322-326). His own contrast is that he has both:
+
+> *"so we're doing two things: we're bringing prognostication, we're forecasting,
+> and we still have targeting, so we know what we're looking for for entry —
+> we're going to **go long around 96.45 with an exit around 97.08**"* (519-526)
+
+and the low prints at exactly 96.45 (544) before price clears 97.28 and 97.60
+(567-570). The invalidation is stated just as plainly — *"we do **not** expect
+that low to be violated"*, and *"we expect the stochastic to trade lower than
+this low in the indicator but not show it in price"* (491-502) — so the lesson
+omits the entry, the target and the falsification condition of its own worked
+example.
+
+**E12 · should-fix · m4-10** — **liquidity itself is never defined**, in the
+lesson whose title is Liquidity Pools. The transcript's first sentence is the
+definition — *"liquidity is the **open interest of buyers and sellers** in the
+market, and can be further defined by those entities at or near specific price
+levels"* (5-8) — and the pool follows from it: *"above old highs there's **a pool
+or a collection of orders** that traders will build up"* (91-93). The lesson uses
+"pool of liquidity" as a given.
+
+**E13 · nit · m4-11** — two structural drops. (a) **The void is
+timeframe-relative and the lesson doesn't say so**, though ICT demonstrates it by
+walking the same void across three charts — many small candles on the 1-minute
+(63-70), *"only showing as one big five minute candle"* (119-123), *"that big one
+single 15 minute candle"* (209-213). Conspicuous because its sibling m4-12 makes
+exactly this point for FVGs, and the two lessons are each other's
+cross-reference. (b) **ICT's name for the gap he trades here is dropped** — he
+calls it a **"common gap"** (289-296), distinct from m4-09's breakaway/exhaustion
+and m4-12's FVG. In a stretch that is largely gap taxonomy, losing one of the
+four names costs the reader the taxonomy.
+
+**E14 · nit · m4-09** — two drops. (a) The session filter: a gap like this is a
+New York event, *"highly unlikely that it does it in London"* (234-241) — also in
+the notes. (b) A go/no-go filter on the post-fill rally: *"we want to see that low
+be cleanly broke through, **we don't want to see it hesitate here because
+otherwise that would be a bearish order block**"* (308-314). The lesson has the
+warning sign for *after* the rally (its `.callout.warn`) but not this one for the
+rally's start.
+
+**E15 · nit · m4-08** — two drops from the bullish worked example: that **three
+consecutive down candles are framed as one bullish orderblock** and confirmed
+when price trades through the highest of them (63-92), and the premium/discount
+framing that sets the trade up — price traded down but *"falls short of
+equilibrium"* (66-75). The first matters because the propulsion candle in the
+example lands on a *grouped* block, not a single candle.
+
+**E16 · nit · m4-13 and m4-14** — two cross-lesson threads dropped. (a) The
+divergence trap **fires three more times** on the way up, which is the practical
+lesson: *"another bearish divergence… this is probably the top now, it's got to
+eventually happen… price doesn't make a sell-off, it just goes higher and it
+ultimately punches one more time up and then it gives off a s[ell]"* (m4-13:
+578-606). (b) m4-14 deliberately puts a momentum indicator on its own chart to
+tie back to m4-13 — *"just for completeness sake in this month's teaching, let's
+put a momentum indicator up… retail is going to think this is a sell… we're
+thinking it's going up to 74.45"* (m4-14:211-224). Each lesson drops the other's
+hand.
+
+#### Consistency
+
+**E17 · should-fix — m4-04's target has no definition anywhere.** Batch D
+recorded that m4-04's stated target is *"the liquidity void's mean threshold"*
+(**D14**), and **D16** correctly ruled it a different object from the candle's
+mean threshold — the midpoint of a void, not of a candle — and therefore not a
+reopening of the B12 → C8 thread. Confirmed, and the thread stays closed: m4-08
+and m4-09 both use "mean threshold" in m4-03's canonical sense (50% of the
+*body*; the gap treated as its own candle), and neither m4-11 nor m4-12 uses the
+term at all. **But the void's own midpoint is defined nowhere.** Grepped: the
+strings "mean threshold", "midway", "midpoint" and "50 percent" do not occur in
+either the m4-11 or the m4-12 transcript, nor in their note pages, nor in the
+m4-11 lesson. So m4-04 points forward at a measure the liquidity-void lesson
+never introduces. Either m4-04 should say what it means by it, or m4-11 should
+define it — but under §1 it can only be defined if a source supports it, and in
+this batch none does. **Flagging the gap rather than filling it.**
+
+**Otherwise clean.** All 7 lessons carry `data-month="m4"`; ids are `m4-NN`; all
+7 slugs match their id prefix; no `(L4)`-style cross-references appear (grepped).
+**All 7 note pages' chart counts match `images/` exactly** — 5 / 6 / 5 / 8 / 6 /
+2 / 3, 1:1 and in order, with no chart-free lessons. That completes Section 1:
+**all 38 note pages match `images/` 1:1**. `build.py` and `verify.py` pass, 0 JS
+errors.
+
+#### Quiz quality
+
+**18 of 20 questions are source-traceable.** The two exceptions are both in
+m4-11 and both are **E1**: q1's correct option *"Where no trading took place"* is
+the note-taker's definition rather than ICT's, and its `e` restates it while
+simultaneously contradicting it. Everything else checks out against that lesson's
+own transcript or note page — including all four of m4-13's, which are the
+best-written set in the month.
+
+**E18 · should-fix — the counts are out of proportion again, for four lessons.**
+Carrying **C18**'s floor of 4 questions for any lesson with a multi-step
+procedure or a rules table:
+
+| Lesson | Transcript lines | Charts | Quiz Qs | |
+|---|---|---|---|---|
+| m4-08 | 211 *(shortest in Month 4)* | 5 | **2** | low but near-proportionate |
+| m4-09 | 396 | 6 | 4 | ok — one question per bullet |
+| m4-10 | **531** | 5 | **2** | **worst in the batch** |
+| m4-11 | 343 | **8** | **2** | under-tested |
+| m4-12 | 450 | 6 | **3** | under-tested |
+| m4-13 | **621** *(longest in the batch)* | 2 | 4 | at floor |
+| m4-14 | 362 | 3 | **3** | under-tested |
+
+Unlike Month 3 the counts are not strictly *inverse* to the material — they are
+simply **uncorrelated with it**. The second-longest transcript in the month
+(m4-10, 531 lines) carries the same two questions as the shortest (m4-08, 211
+lines), and m4-13 at 621 lines carries the same four as m4-09 at 396.
+
+What goes untested:
+
+- **m4-10 (2 Qs)** — the entire **Sweep mechanics** callout is a three-rule table
+  (10–20 pip sweep / 30–50 pip stop / beyond 25 pips is not a sweep) and nothing
+  touches it; nor the premium-discount frame, nor the HTF-bias-then-wait rule,
+  which is the lesson's stated "trick". The two questions cover where to sell and
+  the roleplay.
+- **m4-11 (2 Qs)** — with q1 testing the wrong definition (**E1**), effectively
+  one working question for an 8-chart lesson. Untested: displacement and
+  balance, the no-time-limit rule, selling inside the gap, and the bodies rule.
+- **m4-14 (3 Qs)** — the **double-bottom mirror** is untested (only the top is
+  asked), as is the timeframe scaling that is the lesson's only callout (15m
+  10–20 pips vs the hourly's measured range) and the spike-reversal consequence.
+  Same one-sidedness as **D14**'s m4-05 and m4-06.
+- **m4-12 (3 Qs)** — the three questions are well chosen (framing, timeframe
+  relativity, rangey style), but the turtle-soup + EQH rationale, "perfect
+  delivery" and the bodies-fill rule (**E7**) are all absent.
+- **m4-08 (2 Qs)** — the **bearish mirror** is untested, again the D14 shape,
+  though this is the mildest case in the batch: 211 lines and a single-mechanism
+  concept.
+
+*Recommendation:* +2 each for m4-10 and m4-11, +1 each for m4-12, m4-13 and
+m4-14, +1 for m4-08. As in **C18** and **D14** the material is already in the
+lessons — except m4-11, where **E1** must be fixed before its q1 can be
+rewritten.
+
+#### E19 — A10/C17/D15 re-measured on Month 4b: **the worst stretch in the corpus, and D15's diagnosis holds**
+
+Measured D15's way — ties counted as *not* a tell (**C17**), and the margin taken
+over the **second-longest** option rather than as a max-min spread:
+
+| | n | strict (uniquely longest) | expected score | median margin *(when uniquely longest)* | spread > 10 |
+|---|---|---|---|---|---|
+| m1 | 39 | 72% | 76% | 5 | **36%** |
+| m2 | 37 | 65% | 68% | 4 | 27% |
+| m3 | 25 | 52% | 61% | 4 | 24% |
+| m4a *(batch D)* | 24 | 83% | 88% | 3 | 17% |
+| **m4b *(batch E)*** | **20** | **90%** | **92%** | 3.5 | 20% |
+| m4 all | 44 | 86% | 90% | 3 | 18% |
+
+**Confirmed exactly as the lead predicted: 90% strict, 92% expected.** 18 of the
+20 questions have the correct option uniquely the longest. A reader who knows
+nothing and always clicks the longest scores **92%** on this stretch, against a
+corpus average of 52% and a chance rate of 25% — and past the 80% exam pass mark
+with room to spare.
+
+**D15's diagnosis needs no correction, and this batch is the cleanest
+demonstration of it yet.** The margins are tiny: m4-12 q3 wins by **1**
+character (22 vs 21), m4-13 q1 by **1** (19 vs 18), m4-12 q1 by **2**, and eight
+more by 3. Nothing looks wrong to a reader eyeballing one question — m4-13 q3 and
+q4 both run 25 / 26 / 26 / 29, which satisfies §3's "within ~5 characters" — yet
+across the set the correct option is on top eighteen times out of twenty. §3's
+rule is necessary and not sufficient, exactly as D15 said.
+
+Only two questions in the batch defeat a longest-clicker, and both are worth
+copying:
+
+- **[`m4-14/quiz.js:4`](../content/s1-ict-core/m4/m4-14/quiz.js#L4)** — the
+  correct option is **shorter** than a distractor (35 vs 36; lens 33/35/36/36).
+  The only question in Month 4b where length points the wrong way.
+- **[`m4-10/quiz.js:3`](../content/s1-ict-core/m4/m4-10/quiz.js#L3)** — a clean
+  tie at the top: `"Roleplay: where would my own stop be?"` (37) against
+  `"Measure a fixed distance off the high"` (37), with the other two at 34 and 36.
+  Zero margin, and the tie was free.
+
+**The mirror-pair fix (C17, D15) suits this batch better than any so far**, and
+in three cases it also *improves* the distractor, because the wrong answer becomes
+the genuine opposite concept rather than a throwaway:
+
+- [`m4-12/quiz.js:2`](../content/s1-ict-core/m4/m4-12/quiz.js#L2) —
+  `"Left candle low to right candle high"` (36) mirrors to
+  `"Left candle high to right candle low"` (36), an exact match by construction
+  and a far better distractor than the present `"The wick of the down candle
+  itself"` (34). Margin 2 → 0.
+- [`m4-11/quiz.js:2`](../content/s1-ict-core/m4/m4-11/quiz.js#L2) — fixing
+  **E1** hands this one over for free: `"Only one side of liquidity offered"`
+  (34) against `"Both sides of liquidity offered"` (30) and the *pool*'s
+  definition as a third option. Better still, phrase the mirror so it is
+  **longer** than the answer, which reverses the tell instead of neutralising it.
+- [`m4-09/quiz.js:2`](../content/s1-ict-core/m4/m4-09/quiz.js#L2) —
+  `"A breakaway gap from a discount"` (31) against
+  `"An exhaustion gap from a premium"` (32) is the actual contrast ICT draws
+  (**E3**), and the distractor is one character longer. Margin 7 → −1.
+- [`m4-13/quiz.js:3`](../content/s1-ict-core/m4/m4-13/quiz.js#L3) — the two
+  divergence types are *already* mirrors and merely mis-trimmed:
+  `"Higher low in price, lower stochastic low"` (41) against
+  `"Higher high in price, lower momentum"` (36). Making the type-1 distractor
+  `"Higher high in price, lower momentum high"` (40) takes the margin to 1. This
+  question also carries the batch's worst **spread** — its other two options are
+  `"Equal highs"` (11) and `"A gap"` (5), a spread of 36 — so it is the one
+  question in Month 4b with *both* A10's problem and D15's.
+
+Four questions exceed spread 10 (20%): m4-09 q1 and q2, m4-13 q2, m4-14 q2. Only
+m4-13 q2 is egregious.
+
+*Measurement note:* D15's "median margin" column is conditional on the correct
+option being uniquely longest — reproduced exactly (m1 5, m2 4, m3 4, m4 3). The
+unconditional median across all questions is 3 for m1, m2, m4 and 2 for m3, which
+is a different and less useful statistic. Recording this so a later batch
+reproduces the same column.
+
+#### Noted, not a finding
+
+**Every gap in this batch is a different object, and the lessons mostly keep them
+straight.** Month 4b introduces four gap-like things in five lessons — the vacuum
+block (m4-09), the liquidity void (m4-11), the common gap inside a void (m4-11),
+and the fair value gap (m4-12) — and the sources cross-reference them constantly
+(m4-12:6-13 defines the FVG partly *by* the void; m4-14 maps a void and an FVG on
+one chart). The lessons carry the overlap correctly (m4-12's line 19 is explicit
+about it). **E1** is the one place where two of them are conflated, and **E13**(b)
+the one place a name is lost. Worth recording because the taxonomy is the
+month's real content and a later batch may see the terms recur in Section 2.
+
+**ICT names a fifth gap type that is never taught.** *"There's a lot of
+information about fair value gaps and breakaway gaps and **measuring gaps**
+that's going to be coming your way in the form of the December study notes"*
+(m4-12:216-220). "Measuring gap" appears nowhere else in Section 1. The PDF study
+notes ICT refers to are not among the permitted sources, so there is nothing to
+write from — noting the dangling term, not proposing a fix.
+
+**The five supplementary teachings explain the shape of Month 4b.** m4-10's
+transcript closes by announcing five extra pre-recorded videos for the week of
+Christmas covering *"these liquidity pool runs, fair value gaps, liquidity voids,
+o[rder] blocks, mitigation blocks and reclaimed order blocks"* (516-530), and
+m4-11 and m4-12 both repeat the promise. That is why the month runs to fourteen
+lessons rather than eight, and why several of them are short. Useful context for
+judging **E18**'s counts: the thin lessons are thin because the *teachings* were
+supplementary — but m4-10 and m4-11, the two worst-tested, are core teachings 4
+and 5 of 8, not supplements.
+
+**Thin note pages again did not predict trouble — but a thin page plus a long
+transcript did.** m4-13 has the thinnest page in Month 4b (two charts, six lines
+of prose) against the batch's longest transcript, and the lesson is the
+best-written in the batch. m4-11's page is one of the fuller ones and produced
+the batch's blocker. Batch D's conclusion stands: page length is not the
+predictor. What **did** predict **E1** is a note page containing a **dated
+example that post-dates the teaching** — a concrete, greppable signal worth
+carrying into batch F and Section 2.
+
 ---
 
 ## Fixed in flight
@@ -1227,7 +1746,17 @@ spot-checked resolves to the right video.
   how often the option at index `a` is the longest of the four and how often the
   max-min spread exceeds 10 characters. It is not committed (throwaway
   exploration belongs in the scratchpad per `CLAUDE.md` §5); the regex above is
-  enough to reconstruct it.
+  enough to reconstruct it. **Report it D15's way, not A10's** — count a tie as
+  *not* a tell (**C17**), and take the margin over the **second-longest** option
+  rather than as a max-min spread (**D15**). D15's "median margin" column is
+  conditional on the correct option being uniquely longest; see the measurement
+  note in **E19**.
 - **Video links** are checked by fetching the YouTube watch page and comparing
   its `<title>` to the lesson's `data-title`.
-- Nothing in `content/` was edited in batch A.
+- **Grep a new note page for dated examples.** Batch E's blocker (**E1**) came
+  from a note page citing a **2022** chart on a **2016** teaching — the
+  note-taker's own addition, and it contradicted the transcript. Together with
+  **D1**'s *"that's what i saw in another video"*, the reliable signal that a note
+  line is an import is not the page's length (batches C and D settled that) but
+  an **attribution or a date that does not belong to this teaching**.
+- Nothing in `content/` was edited in batches A–E.
