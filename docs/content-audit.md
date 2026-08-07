@@ -70,7 +70,7 @@ go-ahead.
 | # | Batch | Lessons | Quiz Qs | Status |
 |---|---|---|---|---|
 | A | S1 · Month 1 | m1-01 … m1-08 (8) | 39 | ☑ 2026-08-07 (notes + transcripts) |
-| B | S1 · Month 2 | m2-01 … m2-08 (8) | 37 | ☐ fetch notes first |
+| B | S1 · Month 2 | m2-01 … m2-08 (8) | 37 | ☑ 2026-08-07 (notes + transcripts) |
 | C | S1 · Month 3 | m3-01 … m3-08 (8) | 25 | ☐ fetch notes first |
 | D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☐ fetch notes first |
 | E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☐ fetch notes first |
@@ -330,6 +330,152 @@ The four chart-free lessons are chart-free **in ICT's notes**. Nothing was
 missed by the scrape, and no `.fig-slot` is absent that should be present. The
 "S1 omits the no-fig-slot comment that S2 writes" cosmetic point stands, but it
 is purely stylistic.
+
+### Batch B — Section 1, Month 2
+
+Sources read: all 8 `transcripts/Month 2/*.txt` **and** all 8
+`notes/ict-core/m2-NN.md` (fetched from Notion at the start of this batch).
+
+**Headline:** the strongest month audited so far on fidelity. Month 2 is heavy
+with specific numbers — price levels, pip counts, percentage tables — and
+**almost all of them check out to the digit**. m2-04's six-row accuracy/RR table
+(+2/+8/+15/+28/+40/+20%) is correct in every row; m2-06's "seven things in
+agreement" framework (2 of 4, 2 of 3, 1 of each of 3) matches the transcript's
+structure exactly; m2-08's measured moves (108.75→109.25, 108.85→109.80, the
+109.90 terminus on the daily bearish OB) are verbatim. Two numeric problems in
+m2-02 are the only fidelity findings, and one traces to a garbled transcript.
+
+#### Content fidelity (§1)
+
+**B1 · should-fix · [m2-02/lesson.html:22](../content/s1-ict-core/m2/m2-02/lesson.html#L22)** —
+*"the same move that gives the hourly trader 1:1 gives you 3:1"* is not in the
+source, and it is wrong at the point being described. ICT's actual claim is
+narrower: *"as we hit the entry that would be assumed on the hourly chart at that
+7542 level, we're hitting that level here with lower risk and we're getting a
+3 to 1 reward ratio"* (`Framing Low Risk Trade Setups.txt:209-217`). At the
+moment price reaches 7542 the hourly trader is **being filled** — they are at
+0R, not 1:1. The comparison is invented and it overstates by a full R.
+*Fix:* say what ICT says — by the time the hourly entry fills, the refined trade
+is already at 3R.
+
+**B2 · should-fix · [m2-02/lesson.html:19](../content/s1-ict-core/m2/m2-02/lesson.html#L19)** —
+the 15-minute row reads *"buyer at 7520, stop 7507 — **17 pips**"*. **7520 − 7507
+= 13.** ICT does say "17 pip stop loss" (line 157), which implies the stop is
+**7503**. The transcript renders the level as `757` in both places it appears —
+once for the 15-minute stop and once for the 5-minute stop — and the two cannot
+both be right: 7507 makes the 5-minute row's *"less than 10 Pips… eight Pips"*
+correct (7515 − 7507 = 8 ✓), while 7503 makes the 15-minute row's 17 correct.
+The lesson picked 7507 for both and inherited the contradiction into a row a
+reader can check with mental arithmetic. The notes don't disambiguate.
+*Fix (per §1's prefer-under-claiming):* drop the explicit stop price from the
+15-minute row and keep ICT's stated "17 pips", or mark the level approximate.
+
+#### Coverage gaps
+
+**B3 · should-fix · m2-06** — the lesson is *about* the decision framework, yet
+omits the ordered hierarchy the transcript spends ~150 lines laying out before
+it reaches the three perspectives (`The Secrets To Selecting High Reward
+Setups.txt:166-320`): **patience → what defines a tradeable environment → trade
+parameters (what makes it a buy or sell) → executable criteria (what negates it,
+where the stop goes, is it still a buy after a stop-out) → why the trade should
+pan out**. The lesson jumps to "process-oriented thinking" and the 7-count. The
+hierarchy is the spine of the source, and it answers the "what do I do first"
+question the lesson otherwise leaves open.
+
+**B4 · nit · m2-06** — the *"you can't copy someone else"* line is ICT quoting
+and crediting **Chris Laurie** by name (line 1684). The lesson carries the idea
+without the attribution. `CLAUDE.md` §6 asks that attribution to original
+creators survive changes.
+
+**B5 · nit · m2-06** — the transcript explicitly permits skipping top-down
+analysis altogether: *"you can trade really without the monthly weekly and daily
+chart and trade on an idea relative to the commitment of traders and sentiment"*
+(1035-1049). The lesson carries the weaker version ("only one timeframe needed").
+
+**B6 · nit · m2-04** — two asides dropped: the half-percent case (*"what if you
+were to drop that risk per trade down to a half a percent — would you be upset
+with 10% return per month?"*, 387-393), and the point that the 20%/month goal
+**buys you the cushion to trade only half the year** — *"there are some months in
+the year that you don't really want to be trading"* (431-441).
+
+**B7 · nit · m2-01** — *"once you get one or two [big payouts] in your month you
+can now start lowering your risk-to-reward… you can get bread and butter
+scenarios, two to one, three to one"* (332-345) — the permission to downshift
+after a big win is absent.
+
+**B8 · nit · m2-03** — the fallback for traders who can't refine to a 10-pip
+stop: stuck with the 1-hour 20-pip setup, a 50-pip run on the second portion
+still makes *"over ten percent right there"* (398-441). The lesson's numbers all
+assume the refined entry.
+
+**B9 · nit · m2-07** — asymmetric detail. The false **bull** flag gets its price
+(76.97, matched to the pip on the 5m and 15m); the false **bear** flag half gets
+none, though the transcript supplies them — 74.70 entry, equal highs cleared at
+75.68 / 75.73, and the pattern-trader's projected 73.55 target versus the actual
+74.42 low (549-554, 634-670).
+
+**B10 · nit · m2-05** — the transcript's second devil's-advocate cascade (330-381):
+two stop-outs in a row, risk stepping 2% → 1% → 0.5%, and even at 0.5% the run
+mitigates the original 2%. The lesson gestures at it ("One trade doesn't have to
+erase all your losses") without the worked case.
+
+#### Quiz quality
+
+All 37 questions are **source-traceable** — every correct option and every `e`
+checks out. Month 2 is the most *uneven* month so far on the §3 length rule:
+several quizzes are models of good construction, a few are not.
+
+**B11 · should-fix · [m2-02/quiz.js:3](../content/s1-ict-core/m2/m2-02/quiz.js#L3)** —
+the worst single question in Months 1-2. Q2's options run 36 / 30 / 17 / **10**
+characters; the correct answer is the longest and `"It doesn't"` is a 10-character
+throwaway nobody picks. Spread 26.
+
+Others over spread 13: m2-06 q5 (26 vs `"Random"` at 6), m2-05 q3 (33 vs 17),
+m2-05 q4 — note q4 is *inverted*, the correct option is the shortest —
+m2-04 q1 (26 vs 12), m2-04 q5 (18 vs `"Guess"` at 5), m2-07 q5 (34 vs 20).
+
+**Worth copying elsewhere**, since these show the fix costs nothing:
+m2-04 q4 (all four options 27-29 chars), m2-05 q2 (32-35), m2-05 q4 (30-33),
+m2-01 q5 (10-15), and the numeric answers in m2-04 q2 / m2-06 q1, where options
+like `1%` / `2%` / `5%` / `10%` make length meaningless by construction.
+
+Month 2 scores 27/37 (73%) correct-is-longest against Month 1's 79% — see
+**A10** for the corpus-wide picture.
+
+#### Consistency
+
+**B12 · nit · terminology drift within the month** — "mean threshold" is defined
+twice, differently. m2-04 calls it *"the middle of the down candle"*
+([lesson.html:18](../content/s1-ict-core/m2/m2-04/lesson.html#L18)); m2-07 calls
+it *"body-low to body-high midpoint"*
+([lesson.html:15](../content/s1-ict-core/m2/m2-07/lesson.html#L15)). **Both are
+verbatim from their own transcripts** (m2-04:60-66, m2-07:416-419), so neither is
+a §1 breach — but a reader meeting both may not realise they are the same
+measure. The notes settle it in favour of the body reading: *"Mean treshold is
+from body high/low to body low/high, not the wicks"* (`notes/ict-core/m2-07.md`).
+A one-clause cross-reference in m2-04 would close it.
+
+Otherwise clean: all 8 lessons carry `data-month="m2"`, ids are `m2-NN`, the 6
+slugs present match their id prefix, and **all 8 note pages' chart counts match
+`images/` exactly** — 4 / 4 / 0 / 5 / 0 / 9 / 5 / 4, with m2-03 and m2-05
+correctly carrying no `.fig-slot`. `build.py` and `verify.py` pass, 0 JS errors.
+
+#### Noted, not a finding
+
+**m2-04's position-sizing formula silently corrects ICT.** The transcript
+inverts the arithmetic — *"if you have 25 stop you divide that by 50 dollars"*
+(486-488) — which yields 0.5, not a per-pip value. The lesson states it the right
+way round ("1% of $5,000 = $50; divide by your stop… for your dollar-per-pip
+leverage"), as does the quiz (`Risk $ ÷ stop pips`). This is a departure from the
+literal source in the direction of correctness, and it preserves ICT's intent.
+Flagging for visibility rather than repair.
+
+#### Quiz-count verdict (m2-03, 3 questions)
+
+**Not a defect.** m2-03's note page is three lines, and its transcript largely
+re-walks the case study already built in m2-01 and m2-02. Three questions is
+proportionate to the genuinely new material. The count question remains live for
+Months 3-4 (batches C-E), where the 2-question lessons cluster.
 
 ---
 
