@@ -78,7 +78,7 @@ go-ahead.
 | G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☑ 2026-08-07 (notes + transcripts) |
 | H | S2 · Part 2 | p2-01 … p2-06 (6) | 49 | ☑ 2026-08-08 (notes + transcripts) |
 | I | S2 · Part 3 | p3-01 … p3-06 (6) | 47 | ☑ 2026-08-08 (notes + transcripts) |
-| J | S2 · Part 4 | p4-01 … p4-06 (6) | 45 | ☐ |
+| J | S2 · Part 4 | p4-01 … p4-06 (6) | 45 | ☑ 2026-08-08 (notes + transcripts) |
 | K | S2 · Part 5 | p5-01 … p5-07 (7) | 57 | ☐ |
 | L | S2 · Part 6 | p6-01 … p6-08 (8) | 64 | ☐ |
 | M | S2 · summary + exam | `summary.html`, `exam.js` | 40 | ☐ |
@@ -4877,6 +4877,721 @@ sentence as the *order block*, which is the only arithmetic that works (*"just
 below … that daily bullish order block at 4504"*). And ep16:1293's *"white golf"*
 becomes **Wyckoff**. That is twelve across Section 2, still all correct.
 
+### Batch J — Section 2, Part 4 (p4-01 … p4-06 / episodes 20–25)
+
+Sources: `transcripts/2022 Mentorship/…Episode {20..25}.txt` (229 KB) and
+`notes/2022-mentorship/ep-{20..25}.md` (**3.1 KB — the thinnest note set of any
+batch**). One episode per lesson throughout, per the plan's §3 map.
+
+**Mechanical checks, run first — all clean.**
+
+| Check | Result |
+|---|---|
+| Charts: notes `![]` refs → `raw/*.png` → `images/*.png` | **1 / 1 / 1 / 1 / 2 / 6 = 12** on all three counts, in order |
+| `video.txt` vs `docs/s2-2022-mentorship-videos.md` | rows **29–34**, ep20→`p4-01` … ep25→`p4-06`, all six URLs present and correctly mapped |
+| Quiz questions | **45** (7/8/9/6/7/8), every one `a: 0`, all six files in the `{ q:` format |
+| `build.py` warnings | **zero** (unchanged) |
+
+#### Content fidelity (§1) — episodes 20–22
+
+**J1 · should-fix · `p4-02:70`** — **two dollar figures merged into a range that
+describes neither.** The lesson says holding *"one of the two contracts would have
+been roughly **$8,000 to $12,000**."* The transcript gives the two numbers for two
+different position sizes: *"if I would have just held on to what I had in the
+morning … I could have done around **twelve thousand dollars** today alone"*
+(ep21:539-542) — that is what he was actually carrying — and, separately,
+*"wishing I just would have had at least one of the two contracts I had on, one
+still and just let it run and I could have done … about **eight grand** or so"*
+(ep21:655-660) — that is one contract. The range is manufactured by putting both
+figures behind the same subject. Nothing is invented, but a reader learns the
+wrong per-contract arithmetic.
+
+**J2 · should-fix · `p4-02:40`** — **the hindsight qualifier is dropped from the
+lesson's single strongest read, and this is the third instance of a lesson
+preferring the note over the transcript (H5's family).** The callout states the
+two-opening-price test as a live tell: *"That combination is **the tell**:
+extremely bearish."* ICT states it with an explicit qualifier —
+
+> *"did we rally above the opening price at midnight? no. did we rally above the
+> opening price at 8 30? no. and we're bearish. what does that indicate to you?
+> **obviously with the benefit of hindsight** it's extremely bearish"*
+> (ep21:499-512)
+
+`ep-21.md` carries it **without** the qualifier (*"When bearish and price doesn't
+rally above MNO and 830 for a fake rally, it means were extremely bearish so look
+where its drawing to and how you can get involved"*), and the lesson follows the
+note. Both are permitted sources so nothing is unsourced — but batch **I** asked
+for *"(c) a third instance of a lesson preferring the note's phrasing over the
+transcript's"* and this is it, after **H5** (p2-02's scope qualifier) and p3-02's
+composite quotation. Unlike those two it has a consequence: the reader is left
+believing the test is callable in real time.
+
+Nothing else in episodes 20–22 fails fidelity. Every number checks: p4-01's
+99.92 / 99.95, the entry 1.09244 (*"1.0924 and four pipettes"*, ep20:440), the stop
+1.09365 (*"1.0936 and a half"*, 443), the 1.09301 drawdown and *"about five pips"*
+(447-457); p4-02's 4320, 15-20 handles, the 3:00am London break; p4-03's entire
+execution — 13,334.75 low, 13,335 entry (*"only a quarter of a point above"*),
+13,339.5 heat = 4.5 handles, six contracts bought back at 13,285 even, the 13,409
+scalp exit against a wanted 13,425, ~$740 (ep22:937-997, 1121-1136).
+
+**Three more silent de-garbles, all correct** (running total **15** across Section 2):
+
+| Source | Rendered | Where |
+|---|---|---|
+| *"an **enemy term** high … they're both **enemy and term** highs"* | **intermediate term high** | ep22:706-721 → `p4-03:49` |
+| *"retraces back up into this up closed candle … **pay a shorter block**"* | **bearish order block** | ep22:739-742 → `p4-03:54` |
+| *"retraced back in **bear shoulder block**"* / *"rallies up to a **fair shoulder block**"* | **bearish order block** | ep21:362, 1093 → `p4-02:39,44` |
+
+Each is forced by its own sentence — an up-close candle retraced into during a
+bearish market **is** a bearish order block, and *"enemy term"* has no other reading
+beside *"intermediate term"* in a passage that also says *"intermediate term high
+by definition"* (ep22:711).
+
+**And the transcript still beats the notes.** `ep-21.md` says *"**DXY and ES are
+correlated**"*; the transcript and the lesson both say **inverted** (ep21:163-165,
+`p4-02:18`). Fourth clean instance of the discipline **E1** lacked.
+
+#### Coverage gaps — episodes 20–22
+
+**J3 · should-fix · `p4-03:54-55`** — **the subordination rule is dropped**, and it
+is the objection ICT stops to answer. Narrating his own entry he is standing inside
+a **bullish** order block on the 1-minute while short:
+
+> *"some of you might look at this and say oh but this is that order block, fair
+> value gap here — and what happens if it rallies? well it does a little bit. But
+> **what's it subordinate to?** All the things I outlined over here and on the five
+> minute chart with a higher swing high. So the market structure is bearish —
+> **I'm not looking at this setup.**"* (ep22:789-800)
+
+The lesson keeps the calibration step (refine the 5-minute order block down to the
+1-minute) and the *"I'm telling you how to read the tape"* disclaimer, but never
+states the rule that an opposing lower-timeframe setup is **subordinate** to the
+higher-timeframe structure and is therefore ignored. Batch **I** recorded p3-05 as
+*adding* the parent/subordinate rule to the four-way order block definition; ep22
+restates it in the sharpest form in Section 2 and p4-03 lets it go.
+
+**J4 · should-fix · `p4-02:58-59`** — **the option not to trade is removed.** The
+lesson's answer to a market too heavy to rally is to drop to the 2- and 1-minute
+charts and use small imbalances, framed by **L59**'s *"Either you get in … or you
+miss the move entirely."* ICT offers a third choice, and prefaces it with a warning
+the lesson also drops:
+
+> *"so it takes a little bit of **courage** to get in here and trade these types of
+> setups — but that's what you do, **or you don't do anything and you just tape
+> read, you watch it**"* (ep21:1082-1090)
+
+Same shape as **I10**: the lesson keeps the instruction and drops what the source
+said about its limits.
+
+**J5 · nit · `p4-02:71`** — **the Bitcoin call record is compressed to one clause.**
+ICT lists nine dated public calls (7,500 → 20,000; *"right before 20,000 I said it
+wasn't going to 20,000, it was 19,700"*; → 6,000, called 3,000, went to ~3,200;
+→ 20,000 by Christmas 2020; → 30,000, *"off by about 18 hours"*, hit on 2 January
+2021; → 55,000 and 66,000, *"we went just a little bit above 66,000"*) at
+ep21:963-986. The lesson keeps only *"He called Bitcoin's runs publicly for years
+and never traded a single one with real money."* The **point** survives intact —
+this is the "permission to be human" section, not a Bitcoin lesson — so it is a nit,
+not a coverage failure. Logged because it is dated provenance of ICT's own history,
+the family **G6/I9/I12/I15** established. **But Part 4 breaks that streak in the
+same lesson:** `p4-02:61` keeps *"**1992, 1993, 1994** — I blew account after
+account after account"* (ep21:917-919) verbatim. What p4-02 drops is only the
+round-number version (*"almost 30 years"*, ep21:208; *"three decades"*, 921).
+
+**J6 · nit · `p4-02:45`** — the **micro-contract and paper-trading fallback** is
+dropped from the two-gaps callout: *"you can trade a micro — or maybe you could, I
+shouldn't say that you can, I don't know what all of your risk parameters are …
+while you're learning in paper trading obviously you can use anything because it's
+all hypothetical money"* (ep21:606-614). The lesson keeps *"you may not like that
+much risk and may not be able to take the trade"* but not the way out. Mild because
+**p4-03:43** supplies the micros fallback three pages later.
+
+**J7 · nit · `p4-01:8`** — the episode's **opening hedge on the algorithm** never
+reaches the lesson: *"this is just one piece of price action in the delivery that
+the algorithm **will likely — not every single instance, but it will likely
+repeat**"* (ep20:15-22). It is the first thing ICT says after the greeting, and it
+qualifies the whole demonstration that follows.
+
+**J8 · nit · `p4-01:30`** — *"and **I'm not trying to trade forex right now**"*
+(ep20:337-338) is dropped. The lesson keeps *"He took neither side of it"* and the
+*"I went to sleep"* quote, so the behaviour is there; the reason is not.
+
+**J9 · nit · `p4-03:82`** — the standard-deviation projection is stated without the
+caveat ICT attached on the spot: *"this was a little bit excited because it went
+**below** an important low, but that's enough for government work"* (ep22:1312-1315).
+The lesson says only that the projections *"give a good idea of where the low should
+form."*
+
+**J10 · nit · `p4-03:38`** — the demo framing of the big-stop lesson is dropped:
+*"so when you're practicing on your demo account keep that in mind, that way you're
+not trying to overextend yourself"* (ep22:501-503).
+
+**J11 · nit · `p4-03`** — the **TradingView humility and the pinned-tips
+invitation** are dropped: *"admittedly most everything I know about TradingView
+**my own students have taught me** … there's going to be a comment posted and
+pinned by me underneath this video, it'll be TradingView tips"* (ep22:35-50),
+echoed at 759-766. The lesson teaches four TradingView procedures (bullseye/magnet,
+compare-pane, fib style, price note + shift) and presents all four as his.
+
+#### Noted, not a finding (episodes 20–22)
+
+- **`p4-01:50`'s GBPUSD is note-sourced, not invented.** *"Use the **dollar index
+  for EURUSD and GBPUSD** bias"* — ep20's transcript never mentions cable; the line
+  is `ep-20.md`'s first bullet verbatim (*"Use DXY for EURUSD and GBPUSD bias"*).
+  Permitted source, so it stands.
+- **`p4-03:14`'s *"that's high probability"* is likewise the note page**, not the
+  transcript: ep22:245-252 gives the mechanism (bodies inside, wicks reaching for
+  liquidity, *"the bulk of the volume is being held inside this imbalance"*) and
+  `ep-22.md` supplies the verdict (*"If the bodies of the candles respect the FVG
+  that's says a lot, that's high probability"*). The quiz quotes the note, correctly.
+- **`p4-03:75`'s repricing rule is note-only too** — *"If ES enters a sell program …
+  it will likely reprice to the low where something was respected and not the low
+  where a SSL purge already occurred"* is `ep-22.md`'s last bullet and appears
+  nowhere in the 48 KB transcript. Sourced; flagged only because three of Part 4's
+  first three lessons each carry one note-only claim.
+- **`p4-01:19`'s London killzone is 2:00am–5:00am New York** (ep20:246-256), which
+  is the fourth part to state it and the fourth to agree — see the forex table below.
+- **The hedge test, per lesson.** p4-01 drops two (**J7**, **J8**) and keeps
+  *"close to the outlined level, **not exactly on it, and that is fine**"* and *"I'm
+  not convinced the dollar's top was in."* p4-02 drops three (**J2**, **J4**,
+  **J6**) and keeps five, including *"this is one of those times where I didn't get
+  it right and I have no problem telling you"*, *"Power of Three was in effect —
+  just so small it may not be useful to you"*, *"you may not be able to take the
+  trade; that's part of the game"*, *"it doesn't mean the concepts don't work"* and
+  *"those entries aren't scalable with the model shared publicly."* p4-03 drops two
+  minor ones (**J9**, **J10**) and keeps ICT's own SMT hedge verbatim — *"they
+  generally move together in tandem — **not all the time**"* (ep22:1200-1201) — plus
+  *"this isn't always going to happen"*, *"it's not always"* on overbought premiums,
+  and *"the best thing that can happen is for me to get it wrong sometimes."*
+  **Lesson-by-lesson variance again, exactly as batch I concluded**; p4-03 is the
+  batch's p3-06.
+
+#### The C9 cross-check — **p4-03 does not close it**
+
+The batch lead asked whether Section 2's SMT lesson supplies the cell **C9** found
+missing from `m3-05`: ICT's fourth condition, *"when the dollar index **fails to
+make a higher high** while foreign currencies make a lower low … they'll rally the
+market higher, the dollar index will sell off"*
+(`Institutional Market Structure.txt:156-183`) — the rule for spotting a dollar
+**top**. **It does not, and it could not have.** Two reasons, both worth recording
+so batches K/L don't re-run the same test the same way:
+
+1. **It is a different pairing.** m3-05's SMT is **DXY against foreign currency** —
+   an inverse pair, which is why its framework is a four-cell table with
+   symmetrical and non-symmetrical rows. p4-03's is **NQ against ES** — two
+   positively-correlated composites, where the divergence is read as *one index
+   failing to confirm the other's stop run*. The two are the same technique on
+   different instruments; the missing cell is not a cell of p4-03's table.
+2. **p4-03's one-sidedness is the source's, not the author's.** ICT teaches only
+   the bearish direction in episode 22: *"so **if we're bearish** and we're
+   expecting lower prices and we see this but the s p doesn't do it, that's showing
+   you that this is a stop run and it shows that s p is really weak"* (ep22:1202-1210).
+   There is no bullish mirror in the episode to drop. So this is **not** a new
+   **A8/C9/C10/D13/E18/F10** one-sidedness finding — the lesson reproduces what the
+   source contains.
+
+**Net effect on C9: unchanged. It stays a rewrite of `m3-05`, not a
+cross-reference.** What Part 4 *does* add for batch N is a corpus-level
+observation: after five of the nine SMT lessons (m2-06, m3-05, m3-06, p4-03 read;
+p5-03, p6-01, p6-02, p6-05, p6-07 still to come in K/L), **a reader has been given
+no rule for reading SMT in the bullish direction anywhere.** Whether that holds is
+a batch-K/L question, not a batch-J one.
+
+#### The pyramiding cross-check — **four sites, no drift, and p4-03 adds a condition**
+
+| Site | Ladder | Rationale given |
+|---|---|---|
+| `p2-06:58-63` | **3 → 2 → 1** micros | Biggest first so later entries have equity behind them; *"one, then two, then three is an inverted pyramid"* |
+| `p3-03:100-101` | **5 → 3 → 2** | Biggest first; *"one, then two, then four, then eight — I've roasted accounts doing it"* |
+| **`p4-03:59-65`** | **3 → 2 → 1** | Biggest first; five contracts of built-in equity make the last one's 4.5 handles of heat *"insignificant"* |
+| `summary.html:117,351,367` | **3 → 2 → 1** | *"Pyramid biggest first — never one, then two, then three"* |
+
+The ladders differ because the trades differ; **the rule is identical at all four
+sites** and the two anti-patterns (1-2-3 and 1-2-4-8) are compatible statements of
+the same error. **p4-03 adds one condition the other three do not state**: *where*
+the adds go. *"I'm adding the last one here **at logical precise areas** — it's not
+randomness, it's not willy-nilly, it's not flipping a coin, it's not guessing,
+there's logic here"* (ep22:956-960), each add sitting on a named structure (the
+retrace into the bearish order block, the next fair value gap). The other three
+lessons give the *sizing* rule without the *placement* rule. Not a finding — an
+input to batch M, where `summary.html` states the sizing rule alone.
+
+#### The forex cross-check — extended to four parts, still no drift
+
+| Lesson | Session | Time stated | Source |
+|---|---|---|---|
+| p1-03, p1-05 | — | (batch I: agree) | — |
+| p2-01 | London open | 2:00am–5:00am NY | ep8:259-273 |
+| p3-04, p3-05 | — | (batch I: agree) | — |
+| **p4-01:19** | **London open** | **2:00am–5:00am NY** | **ep20:246-256** |
+| **p4-02:31-32** | **London open / New York** | **2:00–5:00am / 8:30–11:00** | **ep21:381-390, 708-720** |
+
+**Four parts, six lessons, no drift to the minute.** p4-02 adds the New York
+session's own window (8:30–11:00) and the 9:30 equity open as a *third*, distinct
+time, and keeps them separate exactly as ICT does (*"don't get confused with the New
+York midnight candle's opening price"*, ep21:713-720). **H7**'s worry is now dead
+four parts running.
+
+#### Content fidelity (§1) — episodes 23–25: **clean, no findings**
+
+Three lessons, 121 KB of transcript, and nothing fails §1. Every figure checks:
+p4-04's 13,150 (ICT self-corrects mid-sentence — *"around that thirteen thousand
+six — I'm sorry thirteen thousand one fifty"*, ep23:234-236 — and the lesson takes
+the correction) and the 13,437 projection that the market then hit (ep23:246-247,
+343-344); p4-06's 4044.5 equilibrium (*"the 40 44 and a half level is equilibrium or
+50 of the range"*, ep25:1084-1086), the $5-vs-$50 micro/mini handle values
+(ep25:1307-1309), the three-months-then-two-or-three-months = six months
+(ep25:1680-1693), and the 27 minutes late (ep25:1466).
+
+**Three more silent de-garbles, all correct — and two of them are H1-shaped
+sentence repairs, not mangled figures.** Running total **18 across Section 2**.
+
+1. **ep23:128-140 is self-contradictory as transcribed.** ICT says *"the vocabulary
+   I'm using here is **running** the tuesday high, **not sweeping** the tuesday
+   high"* and then, in the next breath, defines the term against the same move:
+   *"the difference between sweeping would be like what it's done here, that will be
+   a sweep, that's a real shallow little run above that red line, that's tuesday's
+   high, okay so **it swept that** and we're coming back down."* `p4-04:21` resolves
+   it as **swept**, which is the only reading his own two definitions permit — price
+   went shallow above the level and came back into the range, which is exactly what
+   he then defines *sweeping* as. **Second H1-shaped repair in Section 2 that went
+   the right way** (after ep19's *"you don't need to wait for 8 30"*).
+2. **ep24:1077-1079** — *"that way you don't have to worry about **how hard do i
+   need to know** you don't need to know that"* → `p4-05:49` renders *"how far into
+   it does it need to go. You don't need to know that."* Forced by the two sentences
+   before it (*"it doesn't have to completely close it … anywhere between here and
+   here is good"*). **Third H1-shaped repair.**
+3. **ep24:907** — *"notice i said **indoor**"* → **endure** (`p4-05:53` and its quiz
+   `e`). Trivial homophone, but the whole callout turns on it.
+
+**And one de-garble the lesson declined to make, by dropping the passage instead** —
+see **J12**. ep25 renders Wyckoff as *"white golf"* twice (882, 1709), the same
+mis-transcription batch **I** logged at ep16:1293. Where `p3-03` took that repair,
+p4-06 omits both passages. That is a coverage decision, not a de-garbling failure,
+but it is worth separating the two so the running total stays honest.
+
+#### Coverage gaps — episodes 23–25
+
+**J12 · should-fix · `p4-06`** — **ICT distances his method from Wyckoff twice and
+claims authorship, and neither passage reaches the lesson.**
+
+> *"I'm showing you how to look at the marketplace like smart money, **not like
+> [Wyckoff]** … all these things that people like to attribute — this is not it.
+> **This is mine.** I'm telling you how these markets operate."* (ep25:880-887)
+>
+> *"you want to be like **the composite man** — this is what the composite man's
+> doing, **he's not looking at [Wyckoff] schematics** … they're looking at
+> liquidity like this, they're looking at how the market's going to allow them to
+> **fleece the uninitiated**."* (ep25:1707-1719)
+
+This is the **attribution family** (**G6**, and batch **H**'s finding that Section 2
+does assert ICT's ownership of his concepts). Section 2 names Wyckoff exactly
+**once** — `p3-03:92`, inside a list of things the algorithm is *not* following
+(*"no harmonics, no supply and demand zones, no Elliott wave, no Wyckoff, no
+Gann"*) — so a reader gets the dismissal without ever meeting the distinction ICT
+actually draws, and never meets the **composite man** at all, though ICT holds it up
+as the thing to become.
+
+**J13 · should-fix · `p4-05:50` and `p4-06:64`** — **"this may not be for you" is
+dropped from both lessons, and it is the same hedge in both.** p4-05 ends on the
+promise (*"you're going to learn how to read price better than you ever imagined"*)
+and p4-06 ends on the six-month timeline and *"I am absolutely confident that you
+will have found your model."* Both keep the promise and drop the release ICT
+attached to it:
+
+> *"it's up to you to go through the charts, see if it fits you. **If it doesn't fit
+> you, folks, there's a lot of other ways to trade. There's lots of ways to trade,
+> you don't need to trade my way.**"* (ep24:768-773)
+>
+> *"you will decide at that moment if this is something that fits you. **If it
+> doesn't fit you there's no harm in that** … I have people that paid me that said
+> *I just can't make this work for me*, and I have other people that are killing it.
+> **What's the difference? Personality and capacity.**"* (ep25:1596-1608)
+
+Two lessons, two independent statements, both omitted. This is the **H14 / I10**
+shape — keep the claim, drop the limit — and it is the only place in Part 4 where
+the same hedge goes missing twice.
+
+**J14 · nit · `p4-04:26`** — the live *"if I'm wrong"* on his own call is dropped:
+*"if it can drop down to that blue shaded area it might just — **if I'm wrong** it
+might just go down to that little bull's eye and then run higher from there, **I'm
+hoping it doesn't do that**"* (ep23:143-147). The lesson states the call cleanly.
+
+**J15 · nit · `p4-04:9`** — the **demo instruction** attached to the live narration
+is dropped: *"there's a couple ways to use this information — **you can do a trade
+here with your demo account, compliance reasons**"* (ep23:43-46). `p4-04:41` carries
+the *"not an invitation"* risk warning, which covers the substance; what is missing
+is the specific instruction about how the viewer should engage.
+
+**J16 · nit · `p4-05:12`** — the term **"smooth criminal highs"** is normalised away.
+The community post says *"drop a horizontal line across those **smooth criminal
+highs** in both index — I'll explain what that is in a moment"* (ep24:158-161); the
+lesson renders it as *"mark the relative equal highs on both."* The reading is right
+(ICT never defines the phrase separately and treats them as relative equal highs for
+the rest of the episode), but an ICT coinage quoted verbatim from his own post is
+gone.
+
+**J17 · nit · `p4-05:21`** — the stated target is dropped. *"if it trades back down
+into a fair value gap inside that displacement then I can go long and **I'll look
+for a run into that 4303**"* (ep24:189-195). The lesson describes the same setup
+*"targeting the relative equal highs above"* without the number. Defensible — the
+episode covers both the Nasdaq and the e-mini S&P charts and never says which
+instrument 4303 belongs to, though the level only fits ES — so this sits alongside
+the *"14,500 points"* and *"45 32 the 45 40"* omissions rather than against them.
+
+**J18 · nit · `p4-05`** — **a fourth dated provenance goes missing**, with an
+external attribution attached to it: *"that's what I shared, that other guy
+**Corbs**' video about — I'm sure he has a strategy, but … he just lost control of
+himself and started doing things that made no sense … **I know I've done it a lot in
+the 90s**, I know exactly what he was talking about"* (ep24:883-895). The lesson's
+loss section carries the lesson and not the decade. With **G6**, **I9**, **I12**,
+**I15** that makes five; but see the counter-case at **J5** — `p4-02:61` keeps
+*"1992, 1993, 1994"* in full, so Part 4 does not simply replicate Part 3's streak.
+
+**J19 · nit · `p4-06:12`** — *"I'm showing you where it's going to go before it
+happens **when it's applicable**. **I'm not promising to do that, I'm not an oracle
+for you**"* (ep25:564-568) is dropped, and the lesson opens its backdrop section
+with *"called in advance."* Logged as a nit rather than a should-fix because p4-06 is
+the batch's strongest hedge-keeper — see the tabulation below.
+
+**J20 · nit · `p4-06:63`** — *"I've done **12 specific trading models** in my private
+mentorship"* (ep25:1638-1640) is dropped from the callout that describes that group
+as *"so rich with material that students can't settle."* The number is what makes
+the observation concrete.
+
+**J21 · nit · `p4-06:9`** — a **cross-reference is available and not taken**. ICT
+frames the whole lesson against something he taught earlier in the same series:
+*"what is it I'm teaching you? Liquidity. I'm showing you that **market efficiency
+paradigm that I taught early in this series**"* (ep25:482-486). The lesson explains
+what the model is about without pointing back to the lesson that named the paradigm.
+
+**J22 · nit · `p4-05:29`** — the lesson's strongest point is left one step short.
+*"The model proved itself by keeping him out"* would land harder with what ICT
+volunteers: *"unfortunately today it didn't give me the setup … **because I was
+going to trade it. I was going to enter at the low, run the highs, go short** and
+write it down that way too. I was going to do it"* (ep24:1105-1111). He did not
+merely fail to find a setup; he had planned the trade.
+
+#### The thin-notes hypothesis — **fourth test, and it fails again**
+
+`ep-24.md` is **95 bytes** — the thinnest note page in Section 2 — and reads, in
+full, *"Ranting and Model diagrams"* plus two image references. It fronts a 43.3 KB
+transcript and an 11.8 KB lesson whose title promises a **named procedure** (*"the
+Two Entry Patterns"*), which batch **C** identified as exactly the shape an invented
+mechanism attaches to.
+
+**Nothing is invented.** Both entry patterns are ICT's, stated step by step
+(ep24:971-1012 for pattern one, 1056-1090 for pattern two) and closed by him with
+*"that's the two entry strategies for this model"* (1092-1093). The filter that
+`p4-05:45` calls *"the filter that removes the low-probability trades"* is his
+sentence verbatim — *"that's how you filter out these trades that may not be high
+probability"* (994-997). Every line of the accountability section traces to
+ep24:223-500 and 690-720.
+
+And the **D1/E1 tell is absent** as well as the invented mechanism: grepped for a
+dated example or an attribution belonging to another teaching, `ep-24.md` has
+neither — it has no prose beyond four words. **So the hypothesis batch C raised and
+batch D first falsified now stands falsified four times** (m3-08's one-line page,
+ep-14's 137-byte page, and now ep-24's 95-byte page, against batch C's two
+blockers). **Page length does not predict invented mechanism.** What predicts it is
+the D1/E1 tell — an attribution or a date that does not belong to this teaching —
+and that is a property of the page's *content*, not its size. This test can be
+retired.
+
+#### The rebalancing cross-check — **compatible, and the extension is ICT's own**
+
+The batch lead asked whether `p4-06`'s *named theory* is compatible with the way
+Part 2 already uses the word 25 times. **It is, and the widening is in the source,
+not the lesson.**
+
+| | Sense used | Object rebalanced |
+|---|---|---|
+| p2-04, **p2-05**, p2-06 | price returns into an imbalance and fills it | **a fair value gap** — *"every single time price rebalances an imbalance, the swing created at that moment is an intermediate term high or low"* (`p2-05:24`) |
+| **p4-06** | price retraces to a level that undoes a whole prior session's move | **a daily range** — *"it's **rebalancing that entire monday range**, it's going back to the previous day prior to monday, it's old low on friday"* (ep25:926-932) |
+
+The second sense is ICT's phrasing verbatim, and `ep-25.md` states it the same way
+(*"if there's no FVG use the PDH/PDL like this and look to rebalance the down/up
+move of the previous day"*). So this is **not** a **B12/C8** terminology drift, and
+**Section 2 still has no instance of that family** after four parts.
+
+One observation for batch M rather than a finding: `p4-06:21` poses the routine as a
+question — *"is there a fair value gap in [the last three days]?"* — answers *"on
+this occasion there wasn't"*, and works only the **no-gap** branch. The **with-gap**
+branch is never stated, in the lesson or in episode 25. It is taught at length in
+Part 2, so the fix is a pointer, not new sourcing — the same shape as the Power of
+Three forward reference batch **H** proposed for m2-06.
+
+#### The hedge test, per lesson — episodes 23–25
+
+| Lesson | Dropped | Kept |
+|---|---|---|
+| p4-04 | 2 (**J14**, **J15**) | 4 — *"I'm not Spiderman … you may take one of the eight and never take the other seven"*, *"I'm not worried about being that accurate"*, *"I don't want you thinking this is an invitation … very very risky, extremely risky"*, *"that's a gambler's setup"* |
+| p4-05 | 5 (**J13**a, **J16**, **J17**, **J18**, **J22**) | 4 — *"not always, but sometimes"* on the model preventing bad trades, *"it doesn't mean the model's broke"*, *"not that you'll copy his results"*, *"endure — not be defeated"* |
+| **p4-06** | **2** (**J13**b, **J19**) | **6** — *"usually, not always, never guaranteed"*, *"not 100% … if I had it I wouldn't give it to you, it doesn't exist and I don't have it"*, *"expect to lose money if you're going to trade with live money"*, *"that is not a promise of profitability or a win rate"*, *"in Asia, not that often"*, *"that's as far as I'm going to go with it"* |
+
+**p4-06 is Part 4's p3-06** — the longest transcript in the batch, the highest
+retention, and it keeps the two most load-bearing hedges (the seasonal *"not
+always"* and the *"no secret recipe"*). Batch **I**'s correction holds a second
+time: **hedge-dropping is lesson-by-lesson variance, not a Section 2 editorial
+policy.** Across all six lessons Part 4 drops **13** and keeps **19** — the best
+ratio of any Section 2 part so far, and the fix remains per-lesson.
+
+#### Quiz quality — Part 4
+
+**All 45 questions are traceable.** Every correct option and every `e` resolves to
+that episode's transcript or note page. One `e` quotes the **note** rather than the
+transcript — `p4-03` Q2's *"that says a lot, that's high probability"*, which is
+`ep-22.md`'s wording — and it is a permitted source quoted correctly.
+
+**Option length — leading with F14's column, as the method notes require:**
+
+| | n | **correct not longest** | strict | expected score | median margin | spread > 10 |
+|---|---|---|---|---|---|---|
+| p4-01 | 7 | **29%** | **71%** | **71%** | 3 | — |
+| p4-02 | 8 | 62% | 38% | 44% | 6 | — |
+| p4-03 | 9 | 56% | 44% | 44% | 8 | — |
+| p4-04 | 6 | 67% | 33% | 33% | **10** | — |
+| **p4-05** | 7 | **100%** | **0%** | **7%** | — | — |
+| p4-06 | 8 | 50% | 50% | 56% | 4 | — |
+| **Part 4** | **45** | **60%** | **40%** | **43%** | **6** | **24%** |
+| *p1* | *44* | *66%* | *34%* | *46%* | *3* | *2%* |
+| *p2* | *49* | *84%* | *16%* | *29%* | *2* | *0%* |
+| *p3* | *47* | *51%* | *49%* | *50%* | *2* | *11%* |
+
+**Answering the standing question directly: neither a clean recovery nor a clean
+second-half decline — and the two halves of the measurement disagree.**
+
+- On the **headline** metrics Part 4 *does* recover from Part 3: 60% not-longest
+  against 51%, 43% expected against 50%. It sits between Part 1 and Part 3 and well
+  behind **Part 2, which remains the peak** (84% / 29%).
+- On the **conspicuousness** metrics Part 4 is the **worst in Section 2 by a wide
+  margin**: a median margin of **6 characters** where p1–p3 run 2–3, and **24%** of
+  questions with a max-min spread over 10 where p2 has **0%** and p3 has 11%. So
+  when Part 4's correct option *is* the longest, it is longest by roughly twice the
+  usual amount.
+
+That combination is the finding, and it is a new shape: **Part 4's problem is not
+how often the answer is conspicuous but how conspicuous it is when it is.**
+**p4-04:Q4** is the extreme — *"Above the high of the nearest up-close candle to the
+left"* at 57 characters against distractors of 43/38/44, a **13-character margin over
+the runner-up** and a **19-character spread**, the largest single tell in the batch.
+**p4-02, p4-03 and p4-04** all carry median margins of 6–10, against 2–3 everywhere
+else in Section 2.
+
+**J23 · nit · `p4-01`** — **the batch's Section-1-shaped quiz, and the p3-03 /
+p1-06 / G16 analogue.** At **71% strict / 71% expected** it is the only Part 4 quiz
+above Section 1's whole-section 76%-adjacent band, and its shape is the familiar one:
+five of seven correct options are uniquely the longest, three of them by 3-4
+characters over the runner-up and one (Q1's *"An energetic move away from the gap and
+the level taken out"*, 59 chars against 50/45/48) by 9. As predicted, at 7 questions
+it drags the part total less than **I7**'s 11-question p3-03 did — remove p4-01 and
+Part 4 goes to **38 questions, 68% not-longest, 38% expected**, which *is* a recovery
+toward Part 2. One lesson accounts for the whole difference.
+
+**p4-05 is the best-constructed quiz in the four parts audited so far — but the
+batch lead's prediction that it would be the corpus best is wrong, and can be checked
+now.** At **0% strict / 7% expected / 100% not-longest** it displaces **p2-03** (11%),
+but the corpus record is **`p6-07` at 3.6%** (7 questions, 0% strict, 100%
+not-longest), which sits in Part 6 and has not been audited. Current corpus ranking:
+**p6-07 3.6% · p4-05 7.1% · p2-03 11.1% · p6-01 14.3% · p1-01 15.0%.** Batch **G**'s
+*"p1-01 at 15% is the best-constructed quiz in the corpus"* is therefore superseded
+twice over; batch **L** should expect to find the technique at its most developed.
+
+**What p4-05 does, since F14 asked for the mechanism and Part 2 supplied three.**
+A fourth technique, and the cleanest yet: **the correct option is deliberately the
+plainest sentence in the set, and the distractors are the ones carrying the
+machinery.** Q1's answer is *"A short-term low taken out with displacement"* (44)
+against *"Any close back below the relative equal highs"* (45); Q6's is *"Losses come,
+but must not defeat you"* (36) — the shortest of its four — against *"Losses can be
+avoided with enough back testing"* (46). Every one of the seven distractor sets is
+built from *plausible-sounding trading vocabulary the lesson never uses*, which makes
+them long **and** wrong, while the answer stays short **and** right. Length is
+neutralised as a signal because the *content* rule generating the options is
+length-blind. That is a stronger mechanism than "trim the correct option", because it
+does not require the author to measure anything.
+
+#### Quiz-count proportionality (D14/E18/I11) — **Part 4 passes, and plainly so**
+
+Batch **I**'s two-denominator table:
+
+| Lesson | Transcript | Qs | **KB per question** | Lesson | **Qs per KB of lesson** |
+|---|---|---|---|---|---|
+| p4-01 | 18.9 KB | 7 | **2.7** | 8.3 KB | 0.84 |
+| p4-02 | 40.0 KB | 8 | 5.0 | 12.7 KB | 0.63 |
+| p4-03 | 47.1 KB | 9 | 5.2 | 17.6 KB | 0.51 |
+| p4-04 | 16.5 KB | 6 | **2.7** | 7.7 KB | 0.78 |
+| p4-05 | 42.3 KB | 7 | 6.1 | 11.6 KB | 0.61 |
+| p4-06 | **59.4 KB** | 8 | **7.4** | 14.5 KB | 0.55 |
+| **Part 4** | **224.2 KB** | **45** | **5.0** | **72.4 KB** | **0.62** |
+
+**No failure at either denominator.** The worst case, p4-06 at 7.4 KB/Q, is well
+inside the band that batch I called acceptable — its two failures were **p3-05 at
+10.8** and **p3-06 at 19.1**. Part 4's ratio of extremes is **2.7 : 1** (p4-06 against
+p4-01/p4-04); Part 3's was **5.0 : 1**. On the second denominator the spread is
+0.51–0.84, the tightest of any part measured. **C18**'s floor of 4 is not
+approached — the minimum is 6. Say it plainly: **Part 4 is the first Section 2 part
+where question counts track the material at both denominators**, and the whole of
+Section 1's Months 3–4 defect is absent here.
+
+#### Consistency
+
+Clean, with one isolated deviation.
+
+- ids `p4-01`…`p4-06`, **five characters each** as the engine requires; `data-month="p4"` on all six; every `data-slug` prefix matches its lesson id; all three slots (`.fig-slot`, `.quiz`, `.lesson-footer`) present in all six.
+- Part 4 carries **no `(Lx)` cross-references at all**, so nothing can be dead.
+- **J24 · nit · `p4-05:37,47`** — **the two `.src` spans in Part 4 are the only two
+  in the corpus that are not lesson pointers.** `CLAUDE.md` §3 documents `.src` as
+  *"an optional `<span class="src">(L4)</span>` **lesson pointer**"*, and of ~70
+  uses across `content/` every other one is a reference (`(L2)`, `(P3 L3)`,
+  `(L2, L5, L6, P3 L5–L6)`). p4-05 uses it twice for a **directional label** —
+  `(bearish)` and `(bearish; reverse it for longs)`. Renders fine and reads fine;
+  it is the **F11**(b) family — a class used for something other than its documented
+  job — and it is the cheapest fix in the batch.
+- **`intermediate term` is 0 hyphenated / 4 unhyphenated in Part 4** — a small
+  correction to batch **I**'s table, which recorded 3. The fourth is
+  `p4-03:49`'s sentence-initial *"Intermediate term high"*; all four sit in p4-03
+  (2 in `lesson.html`, 2 in `quiz.js`). Corpus totals become **7 hyphenated / 29
+  unhyphenated**, and **I**'s live observation stands unchanged: the hyphenated form
+  survives only in Section 1, Part 1 and the section-level pages, so
+  `summary.html` and `exam.js` still use a spelling no lesson from p2 onward uses.
+- **Quiz-file formatting**: all six Part 4 files use the compact `{ q:` form, so
+  **I17**'s measurement trap does not bite. The regex reconciles to 45.
+
+#### Noted, not a finding (episodes 23–25)
+
+- **`p4-04:32`'s "discount" is the lesson's label, not ICT's word.** He says *"where's
+  50 of that — below 50 is where that fair value gap is, that's in turquoise, so
+  that's the target"* (ep23:263-275) without naming it. Labelling below-equilibrium
+  as a discount is exactly the definition ICT gives in the previous episode
+  (ep22:1300-1302, carried at `p4-03:80`), so it is an in-corpus inference rather
+  than outside knowledge. Logged only because it is the batch's one place where the
+  lesson supplies a term the episode did not.
+- **`p4-04:35`'s reconstruction of the eight setups is sound.** ICT counts them aloud
+  (*"one, two, three, four, five, six, seven, eight — there's eight trades in this
+  whole entire thing"*, ep23:278-287) and enumerates them later (415-463). The
+  lesson's list matches item for item, including the eighth *"after the recording
+  stopped"* (ep23:460-463).
+- **Chris Laurie, third source, third omission.** ep25:86-92 has ICT invoking him by
+  name a third time — *"Mr Chris Laurie can come here and tell me if I'm teaching or
+  trading anything like him, because I promise you **none of this is found in his
+  stuff**, period"*. With **B4** (m2-06, ICT crediting him) and **H20** (p2-06,
+  distinguishing his method) that is **three sources, three directions, and zero
+  appearances in `content/`** — grep confirms the name is absent corpus-wide.
+  Strengthens batch **H**'s third batch-N item from a pair to a trio.
+- **`p4-06`'s Baby Pips 2010 date is kept** (`p4-06:20`, ep25:584-588) — worth noting
+  against **G6**, which is precisely the loss of *"first mentioned it in 2010 on Baby
+  Pips"* from p1-03. The date the corpus drops in Part 1 it keeps in Part 4, attached
+  to a different concept. A batch-N fix for G6 can therefore cite p4-06 as the
+  in-corpus template as well as p1-02.
+
+#### Batch J summary
+
+| | |
+|---|---|
+| Lessons audited | 6 (episodes 20–25, **224 KB of transcript**) |
+| Findings | **24** — 0 blockers, **6** should-fix, **18** nits |
+| Fidelity findings | **2** (**J1**, **J2**) |
+| Quiz questions traceable | **45 of 45** |
+| Fixed in flight | none |
+
+**The headline is that Part 4 is the strongest part in Section 2 on everything
+except one thing.** Two of the four review dimensions come back better than any
+previous batch: **quiz-count proportionality passes at both denominators for the
+first time in Section 2** (no lesson worse than 7.4 KB/question against Part 3's
+19.1), and **hedge retention is the best ratio yet** (19 kept, 13 dropped, and
+p4-06 keeps six of eight). Consistency is clean but for a two-site `.src` misuse.
+The weak dimension is **coverage**, as in every Section 2 batch, but the drop rate
+is lower and the individual losses are smaller — 18 of 24 findings are nits, the
+highest nit share of any batch in the audit.
+
+**The exception is option length, and it fails in a way no previous part did.**
+Part 4 recovers on the headline metrics (60% not-longest, 43% expected — better than
+Parts 1 and 3, well behind Part 2) but is the **worst part in Section 2 on median
+margin (6 characters against 2–3) and on spread over 10 (24% against 0–11%)**. The
+problem is severity, not frequency: when the answer is the longest option here, it is
+longest by about twice the usual amount. `p4-04:Q4` is the extreme at a 13-character
+margin. And the distribution is bimodal — `p4-01` at 71%/71% sits in the same part as
+`p4-05` at 0%/7%, and removing p4-01 alone moves the part to 68%/38%.
+
+**Do the Part 1–3 conclusions replicate? All four, and one of them for the first time
+with a mechanism attached:**
+
+1. **One episode per lesson prevents migration defects — replicates, fourth time.**
+   Twenty-five Section 2 lessons audited, no instance of material crossing between
+   lessons or arriving from outside the teaching (**A2**, **C1**, **C2**, **D1**,
+   **E1**'s failure mode). **J1** is the closest thing and it is not migration — two
+   figures from the *same* episode merged behind one subject.
+2. **The transcript beats the notes — replicates** (`ep-21.md`'s *"DXY and ES are
+   correlated"* against the lesson's correct *inverted*). **But the H5 watch-list
+   item is now at three instances and has produced its first consequence** — **J2**,
+   where `ep-21.md` states the two-opening-price test without the *"with the benefit
+   of hindsight"* qualifier the transcript attaches, and the lesson follows the note.
+   Batch I asked for a third instance; this is it, and unlike **H5** and p3-02's
+   composite quotation it changes what a reader believes they can do in real time.
+   **Three instances is now a pattern, and it should go to batch N as one.**
+3. **The de-garbling is sound — replicates, six more times, all correct.** *"enemy
+   term high"* → intermediate term high, *"pay a shorter block"* / *"bear shoulder
+   block"* / *"fair shoulder block"* → bearish order block, *"indoor"* → endure, and
+   **two more H1-shaped sentence repairs that went the right way** (ep23's
+   run/sweep self-contradiction, ep24's *"how hard do i need to know"*).
+   **Eighteen silent corrections across Parts 1–4, all correct**; **H1** is still the
+   only repair that went the wrong way, and its tell — a reversed verb rather than a
+   mangled figure — is the same tell ep23:128 carried and p4-04 read correctly.
+4. **Hedges are dropped lesson-by-lesson, not by policy — replicates, and p4-06 is
+   the second template after p3-06.** The batch's two heaviest transcripts sit at
+   opposite ends: p4-05 (42 KB) drops five, p4-06 (59 KB) drops two and keeps six.
+
+**What contradicts an earlier reading — three things:**
+
+- **The C9 lead does not pay out, and it could not have.** The batch's headline lead
+  was that `p4-03` might supply the SMT cell **C9** found missing from `m3-05`. It
+  does not: p4-03's SMT is **NQ against ES** (positively correlated) where m3-05's is
+  **DXY against foreign currency** (inverse), and ICT teaches only the bearish
+  direction in episode 22, so there is no mirror in the source to drop. **C9 stays a
+  rewrite of m3-05, not a cross-reference**, and p4-03's one-sidedness is *not* a new
+  **A8/C9** finding because it is the source's.
+- **The prediction that `p4-05` would be the corpus's best-constructed quiz is
+  wrong.** It displaces **p2-03** but `p6-07` at **3.6%** is ahead of it — measurable
+  now, auditable in batch L. Batch **G**'s *"p1-01 is the best in the corpus"* is
+  superseded twice over.
+- **The thin-notes hypothesis is falsified a fourth time and should be retired.**
+  `ep-24.md` is 95 bytes fronting a 43 KB transcript and a lesson titled after a
+  named procedure — batch C's worst-case profile — and `p4-05` invents nothing. Page
+  length does not predict invented mechanism; the **D1/E1** tell (an attribution or
+  date belonging to another teaching) does, and it is a property of a page's content,
+  not its size.
+
+**Two verdicts closed, so batches K–L need not revisit them:**
+
+- **Pyramiding — four sites, no drift.** p2-06 (3→2→1), p3-03 (5→3→2), p4-03
+  (3→2→1) and `summary.html` all teach *biggest position first*; the ladders differ
+  because the trades differ, and the two anti-patterns (1-2-3, 1-2-4-8) are the same
+  error stated twice. **p4-03 adds a placement rule the other three lack** — each add
+  must sit on a named structure, *"not randomness, not willy-nilly, not flipping a
+  coin"* — which is an input to batch M, since the summary carries the sizing rule
+  alone.
+- **Rebalancing — no terminology drift.** p2 rebalances *a gap*, p4-06 rebalances *a
+  daily range*, and the widening is ICT's own wording in episode 25, corroborated by
+  `ep-25.md`. **Section 2 still has no B12/C8 instance after four parts.**
+
+**Four items carried to batch N:**
+
+1. **The H5 family, now three instances and consequential** — a lesson preferring
+   the note's phrasing where the transcript qualifies it (**H5**, p3-02, **J2**).
+2. **`intermediate term` hyphenation** — corpus totals corrected to **7 / 29**;
+   the review pages remain the natural place to normalise from.
+3. **Chris Laurie — three sources, three omissions, zero appearances.**
+4. **The `.src` misuse at `p4-05:37,47`** (**J24**) — two sites, cosmetic, and the
+   only non-pointer uses of the class in the corpus.
+
+**Input to batches K–L.** Watch for: (a) whether the **margin/spread** severity that
+distinguishes Part 4 continues, since it is invisible to the strict-longest metric
+that batches A–I led with; (b) whether **any** Section 2 lesson gives the **bullish**
+SMT reading — five of the nine SMT lessons are now read (m2-06, m3-05, m3-06, p4-03,
+plus Section 1's) and none does, with p5-03, p6-01, p6-02, p6-05 and p6-07 left;
+(c) `p6-07`'s quiz, which the corpus measurement says is the best-constructed in the
+audit; (d) whether **Wyckoff and the composite man** (**J12**) recur — Section 2
+names Wyckoff once and never in the sense ICT actually uses it.
+
 ---
 
 ## Fixed in flight
@@ -5010,4 +5725,5 @@ fixed — the summary's "40 questions" against the exam's 45 (**F7**) and the
   right lesson id. Batch I found a third corroborating source for two of them —
   some `ep-NN.md` note pages carry the episode's video link inline (ep-14, ep-15).
 - Nothing in `content/` was edited in batches A–H. **Batch I made one edit** — the
-  `p3-01` `.fig-slot`, recorded under *Fixed in flight*.
+  `p3-01` `.fig-slot`, recorded under *Fixed in flight*. **Batch J made none**;
+  `build.py` still emits zero warnings, so that entry remains the only one.
