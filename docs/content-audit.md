@@ -72,7 +72,7 @@ go-ahead.
 | A | S1 · Month 1 | m1-01 … m1-08 (8) | 39 | ☑ 2026-08-07 (notes + transcripts) |
 | B | S1 · Month 2 | m2-01 … m2-08 (8) | 37 | ☑ 2026-08-07 (notes + transcripts) |
 | C | S1 · Month 3 | m3-01 … m3-08 (8) | 25 | ☑ 2026-08-07 (notes + transcripts) |
-| D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☐ fetch notes first |
+| D | S1 · Month 4a | m4-01 … m4-07 (7) | 24 | ☑ 2026-08-07 (notes + transcripts) |
 | E | S1 · Month 4b | m4-08 … m4-14 (7) | 20 | ☐ fetch notes first |
 | F | S1 · summary + exam | `summary.html`, `exam.js` | 45 | ☐ |
 | G | S2 · Part 1 | p1-01 … p1-07 (7) | 44 | ☐ |
@@ -114,6 +114,12 @@ batch, against how much material each lesson actually carries.
 > Month 3's question counts run *inverse* to the material — see **C18**. Four
 > lessons are under-tested (m3-01, m3-03, m3-04, m3-05); m3-02, m3-07 and m3-08
 > are fine and m3-06 is generous.
+>
+> **Verdict (batch D): the same defect, in three more lessons** — see **D14**.
+> m4-06 is the worst case in Section 1 so far (longest transcript in its month,
+> joint-lowest question count, its entire bullish mirror untested); m4-04 and
+> m4-05 also sit below C18's floor of 4, each with half the lesson untested.
+> m4-01, m4-02 and m4-07 are proportionate.
 
 **S1 · `p3-01` slug with no images.** `build.py` warns that
 `content/s2-2022-mentorship/p3/p3-01` declares
@@ -294,6 +300,15 @@ m1-02 q2 (38 vs 25), m1-04 q2/q4/q5 (all 37-39 vs 24-26).
 *Fix shape (per §3):* trim the correct option to a concise phrase and push the
 citation into `e`; inflate the terse distractors into full plausible statements.
 No content changes needed — this is pure option-text balancing.
+
+> **Correction, batch D — this fix shape is right for Month 1 and wrong for
+> Month 4.** It treats the tell as *conspicuousness* (one long option beside
+> short throwaways), which is Month 1's problem: 35% of its questions have a
+> spread over 10 characters. Month 4 has the **highest** tell in the corpus (86%
+> strict, 90% expected score) and the **lowest** spread of any Section 1 month
+> (18%) — its options are already comparable, and the correct one merely wins by
+> a median of **3 characters**. Balancing spread would barely dent it. See
+> **D15** for the measurement and the technique that does work.
 *Tooling:* the measurement script is reproducible; see note under
 *Method* below.
 
@@ -812,6 +827,369 @@ private mentorship cohort; ICT has since published the mentorship on his own
 YouTube channel, so the material is public by his own act — and each lesson here
 links back to his video (`CLAUDE.md` §3). Recorded so later batches don't
 re-raise it if the line recurs.
+
+### Batch D — Section 1, Month 4a (m4-01 … m4-07)
+
+Sources read: the 7 matching `transcripts/Month 4/*.txt` **and** all 7
+`notes/ict-core/m4-NN.md` (fetched from Notion at the start of this batch).
+m4-08 … m4-14 deliberately not read — they are batch E.
+
+**Headline: fidelity is the best of any Section 1 batch so far, and the quiz
+problem is worse and differently shaped than expected.** Every substantive claim
+across the seven lessons traces to that lesson's own transcript or note page,
+usually to a line — m4-03 reproduces ICT's entire orderblock procedure (twelve
+separate rules) without a slip, and m4-02's whole pip-goal table checks out
+number by number against lines 788-919. There is **one** fidelity finding in the
+batch (**D1**) and it is a should-fix, not a blocker. Batch C's warning that thin
+note pages predict invented mechanism **did not reproduce**: m4-05 and m4-07 have
+the two thinnest note pages in the month (five lines of prose each) and both
+lessons are clean, because their transcripts are tightly structured.
+
+The real defects are elsewhere. Coverage is the weak dimension — six substantive
+omissions, including **m4-02 never defining internal/external range liquidity**,
+the two words its own bullets lean on. And **A10's option-length tell is
+confirmed as Month 4's outstanding problem but its shape is not what A10 and C17
+described** — see **D15**, which corrects the recommended fix.
+
+#### Content fidelity (§1)
+
+**D1 · should-fix · [m4-05/lesson.html:26](../content/s1-ict-core/m4/m4-05/lesson.html#L26)** —
+*"A breaker uses the **entire candle range and the bodies**."* These are two
+different rules and the lesson asserts both in one clause. The transcript states
+only the first, and states it as a deliberate choice:
+
+> *"it's trading inside the range that's created with this last up candle **why
+> am i using this one and not this one here because this one was the highest one
+> prior to the drop down and we're using the entire range**"*
+> (`ICT Breaker Block.txt:230-236`)
+
+"and the bodies" traces to exactly one line, in the note page — *"ICT also likes
+to use the bodies of the breaker, instead of the whole candle, **thats what i saw
+in another video**"* (`notes/ict-core/m4-05.md`). The note-taker is flagging it as
+an import from a **different teaching**, and the word *instead* makes it an
+alternative to the entire-range rule, not an addition to it. The lesson joins the
+two with "and", so a reader is told to use the whole candle and the bodies at the
+same time. [`m4-05/quiz.js:3`](../content/s1-ict-core/m4/m4-05/quiz.js#L3)'s `e`
+repeats the merged phrase.
+*Fix:* say "the entire candle range", per this lesson's transcript. If the body
+variant is worth keeping, mark it as the alternative the note calls it.
+
+**D2 · nit · [m4-07/lesson.html:12](../content/s1-ict-core/m4/m4-07/lesson.html#L12)** —
+the quoted phrase *"like X-ray vision"* is attached to the **buy** model (old
+sell-side *down* candles being reclaimed). ICT says it in the **sell** model, of
+*up* candles: *"we can match that up and see it **like x-ray vision** into price
+action by looking at every single up candle that has a small displacement"*
+(`Reclaimed ICT Orderblock.txt:205-209`). The technique is symmetric so nothing
+is taught wrongly; it is a verbatim quotation moved to its mirror.
+
+#### Coverage gaps
+
+**D3 · should-fix · m4-02** — **the lesson never defines internal or external
+range liquidity.** Both terms appear in its first two bullets and carry the
+entire lesson, and the reader is given only two parentheticals — "(e.g. an
+orderblock)" and "(old highs/lows)". The transcript opens with the definitions,
+as its first thirty lines:
+
+> *"external range liquidity — the current trading range will have buy side
+> liquidity above the range high… sell side liquidity below the range low…
+> secondly we have internal range of liquidity — when the current trading range
+> is likely to remain, liquidity voids will fill in… fair value gaps will also
+> fill in… order blocks inside the trading range will be populated with new buys
+> and or sells"* (`Reinforcing Liquidity Concepts & Price Delivery.txt:7-46`)
+
+Notably the definition of *internal* is broader than the lesson's usage: it is
+voids, FVGs **and** orderblocks, not just orderblocks.
+
+**D4 · should-fix · m4-02** — **the timeframe-relativity of the two, which is the
+module's central idea, is absent.** The same run is external on one chart and
+internal on another:
+
+> *"every time we create a new higher high… **that is a run on external range
+> liquidity on this time frame being the daily, but on the monthly chart it's
+> still internal range liquidity** because you're just inside of a larger monthly
+> range"* (249-260)
+
+The note page carries it independently and just as plainly — *"We can run
+external range liquidity on the daily but on the monthly it can still be
+internal"* (`notes/ict-core/m4-02.md`). **In both of ICT's records and in neither
+the lesson nor its quiz.** Without it, the lesson's "entries internal, exits
+external" rule reads as a property of price levels rather than of the timeframe
+you framed them on, and a reader has no way to reconcile "exit at external
+liquidity" with "hold for the monthly objective".
+
+**D5 · should-fix · m4-01** — **the transmission mechanism is missing: the lesson
+never says how interest rates actually move the dollar.** It asserts rates are
+the #1 driver and then teaches only the divergence pattern. ICT closes the
+chain, twice, and the second time flags the trap that the charts are *bond
+prices*, not rates:
+
+> *"if the interest rate markets are dropping lower that means interest rates are
+> going to go higher which means the interest rate is going to drive the dollar
+> index higher; if the dollar index is going to go higher that's going to drive
+> foreign currencies lower"* (459-466)
+>
+> *"as these interest rates on charts **as they move up or trend higher that's
+> actually interest rates declining** and that's going to be bearish for dollar"*
+> (533-538)
+
+This is the one thing in the lesson a reader cannot reconstruct for themselves,
+and the inversion is a genuine tripwire — a chart of the 30-year going up means
+rates going *down*. The lesson's kv table and rule callout both talk about the
+triad "making higher highs" with no note that this is price, not yield.
+
+**D6 · should-fix · m4-03** — **the liquidity-based bias block is compressed to a
+single clause.** The lesson says only "always in the direction of the
+monthly/weekly/daily bias". The transcript spends ~120 lines (324-448) building
+the rule set that clause stands in for, and two parts of it are actionable and
+absent:
+
+- **Where the target comes from.** *"you want to be primarily looking to see
+  what's near term on the daily chart, what liquidity is resting on that daily
+  chart… and then preferably look for something in the weekly chart that would
+  support even higher, because if you have something higher on the weekly chart
+  you probably will have a lot better odds"* (358-441). The lesson tells the
+  reader to exit into external range liquidity but never how to pick which one.
+- **The hierarchy between the three timeframes.** *"the daily chart is the most
+  dynamic of these three… that weekly chart will have a lot longer time period
+  required to change direction versus the daily chart that can go up and down
+  multiple times and still maintain the bearish nature of the weekly and the
+  monthly"* (373-393) — i.e. why a daily reversal does not invalidate the bias.
+
+**D7 · should-fix · m4-03** — **the scale-out-and-add-back technique is dropped
+entirely.** The lesson's only exit guidance is "exit into external range
+liquidity". ICT works a three-stage exit and re-entry:
+
+> *"even after taking this level out here you can **take partial profits** out
+> here… take a little bit more profits out at an old **weekly high** here… and
+> then **leave a little bit on**, and when price comes back down we can now **add
+> back on the positions we took off** here and here, add them here as new longs"*
+> (804-818)
+
+This is the one place in Month 4 that describes managing a position after entry
+rather than opening one.
+
+**D8 · should-fix · m4-06** — **the turtle-soup contrast that motivates the whole
+lesson is absent.** ICT spends the first quarter of the transcript (22-320)
+establishing the familiar pattern — false breaks at major highs and lows, turtle
+soup long and turtle soup sell — precisely so he can then say the rejection block
+is *"a different approach to looking at distribution and accumulation"* (346-352)
+for the case where price never makes the new high or low:
+
+> *"some of you probably understand that higher high failure swing and lower low
+> failure swing, or turtle soup long and turtle soup sell — **some of you
+> probably aren't aware that there are other distribution and accumulation
+> patterns that take place at highs and lows**"* (250-274)
+
+The lesson opens straight into the rejection block. Its "No higher high is
+required" clause is the residue of the contrast, but the reader is never told
+what the rejection block is an alternative *to*, which is the question "when do I
+use this instead of a turtle soup?"
+
+**D9 · nit · m4-06** — the rejection block as a **profit target**, not just an
+entry, is dropped: *"we can anticipate levels like this to be taking profits at
+if we're short… we could look at the take profit objectives to be **covering the
+short just below the lowest open or close in the previous swing low**"*
+(1111-1138). The lesson gives three entry choices and no exit use. Its sibling
+m4-03 *does* carry the equivalent (bearish OBs as profit-taking targets), so the
+omission reads as an oversight — the same shape as **C13**.
+
+**D10 · nit · m4-05** — the patience filter before the breaker confirms:
+*"initially it may come up and flirt with that same old low and give an
+indication it may want to view that as a resistance price point — **we're more
+inclined to wait to see if it wants to show a real significant price move
+higher**"* (19-25). The lesson jumps to the confirmed structure shift.
+
+**D11 · nit · m4-04** — two drops. (a) There is **no time limit** on the setup:
+*"there's no rule as to how long it takes before that low is violated, we just
+note it and when it's broken it's seen as a short-term support level that's given
+way"* (100-106) — a reader will ask this. (b) The exit discipline once the target
+is reached — *"we would be **collapsing our trade and moving to the sidelines
+waiting for new developments**"* (199-201), which the note page records verbatim
+(*"Collapse the trade and wait for new developments"*). In both sources.
+
+**D12 · nit · m4-01** — the caveat that one divergence is not always enough:
+*"cable failed to make a higher high when euro dollar made the higher high and
+dollar made the lower low, so it's not always just simply looking for a
+divergence in one specific location or one asset — **you have to blend a couple
+things sometimes** to get to understanding what the smart money is doing"*
+(435-444). Also in the notes (*"You have to blend a couple things sometimes to
+know what smart money is doing, so multiple assets"*). The lesson's rule callout
+presents the green light as a single clean test.
+
+**D13 · nit · m4-02** — three smaller drops: the fallback *"if you can't
+ascertain where the market's going on a monthly you just simply drop down into a
+weekly chart"* (704-707, also in the notes); the position-trader passage where
+the same orderblock is revisited three or four times while the position is built,
+averaging 113.25-113.50 (396-412); and the bearish mirror of the whole method
+(960-976) — the lesson is buy-side only, the same one-sidedness as **A8** and
+**C9**, though milder here because the mechanism is plainly symmetric.
+
+#### Quiz quality
+
+**All 24 questions are source-traceable.** Every correct option and every `e`
+checks out against that lesson's own transcript or note page — no repeat of
+**C2**, where an explanation restated an invention. The one wobble is
+`m4-05/quiz.js:3`'s `e`, which inherits **D1**'s merged phrase from the lesson.
+
+**D14 · should-fix — the quiz counts are again inverse to the material, for three
+lessons.** Carrying **C18**'s test forward (a floor of 4 questions for any lesson
+with a multi-step procedure or a rules table):
+
+| Lesson | Transcript lines | Charts | Quiz Qs | |
+|---|---|---|---|---|
+| m4-01 | 553 | 11 | 4 | ok |
+| m4-02 | **1078** | 5 | 4 | ok |
+| m4-03 | 962 | **20** | 4 | at floor, thinnest per unit of material |
+| m4-04 | 339 | 15 | **3** | under-tested |
+| m4-05 | 253 | 15 | **3** | under-tested |
+| m4-06 | **1197** | 13 | **3** | **worst in the batch** |
+| m4-07 | 299 | 5 | 3 | ok |
+
+- **m4-06 (3 Qs)** — the longest transcript in Month 4 and the joint-lowest
+  question count. The **entire bullish mirror** goes untested, as do two of the
+  three entry choices (only "sell on weakness" is asked) and the closing rule
+  that a wicky old high is swept at the **bodies**, not the wicks.
+- **m4-04 (3 Qs)** — the stop placement, the target (the liquidity void's mean
+  threshold) and the "buyer's remorse" / support-turns-resistance mechanic are
+  all untested; the three questions cover the structure shift, the A-B-C return
+  and the body rule.
+- **m4-05 (3 Qs)** — all three questions are the bullish breaker or generic. The
+  **bearish breaker**, which is half the lesson, is untested.
+- **m4-03 (4 Qs)** — at the floor, but it carries twelve stated rules across
+  three blocks. Untested: the 5-pip spread add, stop placement, raising to 50%,
+  the internal→external pairing, the stop-run/bigger-block substitution, the
+  top-down refinement, and the bearish-OB profit-taking rule.
+
+*Recommendation:* +1 each for m4-04, m4-05 and m4-06 (m4-06 arguably +2), and +2
+for m4-03. As in **C18**, the material is already in the lessons — no new
+sourcing needed.
+
+#### D15 — A10/C17 re-measured on Month 4: the tell is confirmed, but the fix A10 prescribed will not remove it
+
+Month 4 is the corpus outlier, as A10 said and C17 restated: **86% strict** (the
+correct option is uniquely the longest in 38 of 44), and a reader who knows
+nothing and always clicks the longest scores **90%** — past the 80% exam pass
+mark, against a corpus average of 52%. Batch D's own seven lessons are 20/24
+(83%) for an **88%** expected score. All confirmed; nothing to correct there.
+
+**What is wrong is the diagnosis of *why*, and therefore the fix.** A10 read the
+tell as conspicuousness — one long correct option beside short throwaway
+distractors ("It doesn't", "Guess", "Random") — and prescribed *"trim the correct
+option and inflate the terse distractors"*. That is Month **1**'s problem. It is
+not Month 4's. Measured side by side, the two months are near-opposites:
+
+| | correct uniquely longest | spread > 10 chars | median margin over 2nd-longest |
+|---|---|---|---|
+| m1 | 71% | **35%** | 5 |
+| m2 | 64% | 27% | 4 |
+| m3 | 52% | 24% | 4 |
+| **m4** | **86%** | **18%** *(lowest in Section 1)* | **3** *(26 of 38 within 4 chars)* |
+
+**Month 4 has the highest tell in the corpus and the *smallest* spread of any
+Section 1 month.** Its options are not lopsided; they are tidy. m4-03 q1 runs
+25 / 30 / 31 / 34, m4-05 q1 runs 24 / 26 / 29 / 32, m4-04 q3 runs 17 / 20 / 23 /
+24 — four comparable phrases each time, and the correct one on top by three
+characters, over and over. Nothing looks wrong to a reader eyeballing a single
+question; the signal only exists across the set.
+
+The consequence matters for any fix: **`CLAUDE.md` §3's rule — "keep all four
+options comparable in length (aim within ~5 characters)" — is necessary but not
+sufficient, and Month 4 is the proof.** Most of these questions already satisfy
+it, or come close, and are still a 90% giveaway. Balancing the spread would leave
+the tell almost untouched.
+
+*Fix shape for Month 4 (superseding A10's for this month):* the correct option
+must not be **reliably at the top of the sorted order**, which means at least
+some questions need the correct option written *shorter* than a distractor, not
+merely comparable. The cheapest route is the technique **C17** identified in
+Month 3 — **mirror-pair distractors**, where the wrong option is the correct one
+with its terms swapped, so the two match by construction and no margin exists to
+read. Month 4 is unusually well suited to it, being fourteen definitional lessons
+whose concepts come in mirrored pairs. Three that would take the treatment
+directly:
+
+- `m4-05/quiz.js:2` — `"Old low swept, swing high broken"` (32) invites
+  `"Old high swept, swing low broken"` (32) as the distractor. That is the actual
+  bearish breaker, so it is a *better* distractor than the present
+  `"An old high gets taken out"` (26), and it kills the margin.
+- `m4-02/quiz.js:2` — `"Entries internal, exits external"` (32) already has its
+  mirror `"Entries external, exits internal"` (32) as option 0. **This is the one
+  question in the batch with no margin at all** and it got there for free.
+- `m4-06/quiz.js:2` — `"Highest wick to highest body"` (28) mirrors to
+  `"Highest body to highest wick"` (28).
+
+**Also worth copying:** `m4-07/quiz.js:4` (21 / 22 / 23 / 24 — correct is neither
+longest nor shortest) and `m4-06/quiz.js:4` (5 / 12 / 12 / 14 — the correct
+`"Distribution"` ties with a distractor). Two of the four questions in the batch
+that a longest-clicker gets wrong are in m4-07 and m4-06, so the technique is
+already present in the batch and just needs applying consistently.
+
+#### Consistency
+
+**D16 — the mean-threshold thread (B12 → C8) closes here, in the lesson's
+favour.** m4-03 gives the fourth and by far the most precise rendering, and it
+**agrees** with the notes' body reading that m2-07 and m3-02 pointed to:
+
+> *"the best orderblocks will not see price trade down below the midway point of
+> **the entire body of the candle** — you're going to measure the open to the
+> close on the down candle to measure where the middle of it is, **do not use the
+> wicks**, don't use the very high or the very low"* (`Orderblocks.txt:247-273`)
+
+and the note page independently: *"50% measured from the body open to close, the
+mean threshold"* (`notes/ict-core/m4-03.md`). The lesson reproduces it exactly —
+*"the 50% mean threshold (measured open-to-close, not the wicks)"* — including
+ICT's tolerance that *"it can stab through it just by a little bit"*.
+
+So all four renderings describe the same measure, and **m4-03 is the canonical
+one**. The single cross-reference B12 proposed should therefore point *here*:
+add one clause to m2-04 ("the middle of the down candle") and m3-02 ("the middle
+of the orderblock candle") noting the measure is **body open-to-close, not the
+wicks — see m4-03**. That closes three lessons with one edit and needs no new
+sourcing. (m4-04's *"mean threshold of a liquidity void"* is a different object —
+the midpoint of a void, not of a candle — and is correct as written.)
+
+**Otherwise clean.** All 7 lessons carry `data-month="m4"`; ids are `m4-NN`; all
+7 slugs match their id prefix; no `(L4)`-style cross-references appear. **All 7
+note pages' chart counts match `images/` exactly** — 11 / 5 / 20 / 15 / 15 / 13 /
+5, 1:1 and in order, with no chart-free lessons. `build.py` and `verify.py` pass,
+0 JS errors.
+
+#### Noted, not a finding
+
+**Thin note pages did *not* predict invented mechanism this time.** Batch C's
+lead — that m3-07 and m3-08's blockers both landed in lessons with nearly empty
+note pages — was checked first and does not reproduce. m4-05 (15 charts, five
+lines of prose) and m4-07 (5 charts, four lines, and it never defines "reclaimed
+orderblock" in prose at all) are the two thinnest pages in Month 4, and both
+lessons are faithful. The difference looks like the transcript: Month 3's trap
+lessons trail off into asides, while `ICT Breaker Block.txt` and
+`Reclaimed ICT Orderblock.txt` are short, tightly structured and give the
+definition twice each. Thin notes are a reason to read the transcript harder, not
+a predictor on their own.
+
+**m4-03 silently resolves an ambiguity in the notes, correctly.** The note page
+reads *"ICT wants to see 2/3 rallies away, so 2/3 the size of the orderblock"* —
+which reads as the fraction two-thirds. The transcript settles it: *"what i like
+to look for is **two to three heights or the range** if you will of the order
+block, i want to see **at least two to three times that** as a rally away"*
+(741-776). The lesson has "a rally of **2–3×** the orderblock's body height",
+which is right, and the quiz `e` agrees. Same shape as m2-04's silently-corrected
+position-sizing formula — flagging for visibility, not repair.
+
+**m4-04's "No higher high needed" is sourced, just not from m4-04.** Its own
+transcript says only *"it's a failure swing with a confirmation break in market
+structure"* (61-62); the explicit statement lives two lessons later — *"price
+does not need to make a higher high to have a failure swing"*
+(`ICT Rejection Block.txt:544-550`). Since a failure swing means exactly that,
+and the source is inside the same month, this is a fair gloss rather than an
+**A2**-style import. No action.
+
+**Every question in Section 1 marks `a:1`; every question in Section 2 and both
+exams marks `a:0`.** Mechanically confirmed across all 536 questions (m1 and m2
+have 9 exceptions between them). This is an authoring template showing through
+and it is **harmless** — the renderer Fisher-Yates shuffles options at render
+time, so `a` sets no on-screen position (§3). Recorded so a later batch does not
+mistake it for a tell.
 
 ---
 
