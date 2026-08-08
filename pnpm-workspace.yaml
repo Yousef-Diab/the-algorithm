@@ -1,0 +1,3 @@
+# pnpm 11 project settings (see https://pnpm.io/settings)
+allowBuilds:
+  esbuild: true

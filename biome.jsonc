@@ -1,0 +1,79 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["ultracite/biome/core", "ultracite/biome/react"],
+  "files": {
+    "includes": [
+      "!.astro",
+      "!content",
+      "!.claude",
+      "!.agents",
+      "!.vscode",
+      "!images",
+      "!public",
+      "!dist",
+      "!node_modules",
+      "!transcripts",
+      "!notes",
+      "!engine",
+      "!index.html",
+      "!.github"
+    ]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "useImageSize": "off"
+      },
+      "suspicious": {
+        "noDuplicateProperties": "off",
+        "noLeakedRender": "off"
+      },
+      "performance": {
+        "noJsxPropsBind": "off"
+      },
+      "style": {
+        "useFilenamingConvention": "off"
+      },
+      "nursery": {
+        "useSortedClasses": "off"
+      },
+      "a11y": {
+        "noNoninteractiveElementInteractions": "off",
+        "useKeyWithClickEvents": "off"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "assist": {
+        "actions": {
+          "source": {
+            "organizeImports": "off"
+          }
+        }
+      },
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["verify.mjs"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noAwaitInLoops": "off"
+          }
+        }
+      }
+    }
+  ]
+}
