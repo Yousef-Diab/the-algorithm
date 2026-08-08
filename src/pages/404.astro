@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { u } from "../lib/course";
+---
+<BaseLayout title="Page not found — The Algorithm">
+  <div id="app">
+    <main id="main" tabindex="-1">
+      <div class="inner" style="padding: 90px 32px; text-align: center">
+        <h1 style="font-size: 42px; font-weight: 700">404</h1>
+        <p style="color: var(--muted); margin: 12px 0 28px">
+          That page doesn't exist.
+        </p>
+        <a class="btn primary" href={u('')}>
+          Back to the course →
+        </a>
+      </div>
+    </main>
+  </div>
+</BaseLayout>

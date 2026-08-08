@@ -1,0 +1,95 @@
+---
+import CourseLayout from "../../../../layouts/CourseLayout.astro";
+import Quiz from "../../../../components/Quiz";
+import Notes from "../../../../components/Notes";
+import LessonFooter from "../../../../components/LessonFooter";
+import Figure from "../../../../components/Figure.astro";
+import { getCollection } from "astro:content";
+import { getGraph } from "../../../../lib/graph";
+import { u } from "../../../../lib/course";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  return lessons.map((l) => ({
+    params: {
+      lesson: l.data.id,
+      month: l.data.month,
+      section: l.data.section,
+    },
+    props: { lessonId: l.data.id },
+  }));
+}
+
+const { lessonId } = Astro.props;
+const graph = await getGraph();
+const all = graph.allLessons;
+const lesson = all.find((l) => l.data.id === lessonId)!;
+const idx = all.indexOf(lesson);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx < all.length - 1 ? all[idx + 1] : null;
+
+let figShown = false;
+---
+<CourseLayout
+  activeId={lesson.data.id}
+  title={`${lesson.data.title} — ${lesson.data.crumb} · The Algorithm`}
+  description={lesson.data.desc}
+>
+  <article
+    class="lesson"
+    id={lesson.data.id}
+    data-month={lesson.data.month}
+  >
+    <div class="lesson-hero">
+      <div class="crumb">{lesson.data.crumb}</div>
+      <h1>{lesson.data.title}</h1>
+      <div class="desc" set:html={lesson.data.desc} />
+    </div>
+
+    {lesson.data.video && (
+      <a
+        class="lesson-video"
+        href={lesson.data.video}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="lv-ico">▶</span>
+        <span>
+          Watch the original video <span class="lv-sub">· on YouTube</span>
+        </span>
+      </a>
+    )}
+
+    {lesson.data.segments.map((seg) =>
+      seg.t === 'h' ? (
+        <Fragment set:html={seg.html} />
+      ) : seg.count > 0 ? (
+        (() => {
+          const first = !figShown;
+          figShown = true;
+          return <Figure slug={seg.slug} count={seg.count} first={first} />;
+        })()
+      ) : null,
+    )}
+
+    <Quiz client:visible quizKey={lesson.data.id} questions={lesson.data.quiz} />
+    <Notes client:load lessonId={lesson.data.id} />
+    <LessonFooter
+      client:load
+      lessonId={lesson.data.id}
+      prevHref={
+        prev
+          ? u(`course/${prev.data.section}/${prev.data.month}/${prev.data.id}`)
+          : u('course')
+      }
+      prevLabel={prev ? prev.data.title : 'Home'}
+      nextHref={
+        next
+          ? u(`course/${next.data.section}/${next.data.month}/${next.data.id}`)
+          : u('course')
+      }
+      nextLabel={next ? next.data.title : ''}
+      isLast={!next}
+    />
+  </article>
+</CourseLayout>

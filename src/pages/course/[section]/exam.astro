@@ -1,0 +1,55 @@
+---
+import CourseLayout from "../../../layouts/CourseLayout.astro";
+import Exam from "../../../components/Exam";
+import { getCollection } from "astro:content";
+import { getGraph } from "../../../lib/graph";
+import { u } from "../../../lib/course";
+
+export async function getStaticPaths() {
+  const sections = await getCollection("sections");
+  return sections
+    .filter((s) => s.data.exam && s.data.exam.length > 0)
+    .map((s) => ({
+      params: { section: s.data.id },
+      props: { sectionId: s.data.id },
+    }));
+}
+
+const { sectionId } = Astro.props;
+const graph = await getGraph();
+const sec = graph.sections.find((s) => s.data.id === sectionId)!;
+const questions = sec.data.exam!;
+const n = questions.length;
+---
+<CourseLayout
+  activeId={`${sectionId}-exam`}
+  title={`Final Exam — ${sec.data.title} · The Algorithm`}
+  description={`${n} questions drawn from every lesson in this section. Nothing is graded until you submit — and you can retake it as many times as you like.`}
+>
+  <article class="lesson" id={`${sectionId}-exam`} data-kind="exam" data-section={sectionId}>
+    <div class="lesson-hero">
+      <div class="crumb">
+        {sec.data.short || sec.data.title} · Section Review
+      </div>
+      <h1>Final Exam</h1>
+      <div class="desc">
+        {n} questions drawn from every lesson in this section. Nothing is
+        graded until you submit — and you can retake it as many times as you
+        like.
+      </div>
+    </div>
+
+    <Exam client:visible sectionId={sectionId} questions={questions} />
+
+    <div class="lesson-footer">
+      {sec.data.summary && (
+        <a class="btn" href={u(`course/${sectionId}/review`)}>
+          ← Section Summary
+        </a>
+      )}
+      <a class="btn primary" href={u('course')}>
+        Home
+      </a>
+    </div>
+  </article>
+</CourseLayout>

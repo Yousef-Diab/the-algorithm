@@ -1,0 +1,32 @@
+---
+import { u } from "../lib/course";
+---
+<footer class="site-footer">
+  <p>
+    The Algorithm — an interactive course built from ICT's mentorship notes and
+    original video transcripts. Not affiliated with ICT or any trading firm.
+    Trading involves risk.
+  </p>
+  <a href={u('course')}>Back to the course</a>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 26px 0 44px;
+    text-align: center;
+    color: var(--dim);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .site-footer p {
+    margin: 0 auto 10px;
+    max-width: 560px;
+  }
+  .site-footer a {
+    color: var(--muted);
+  }
+  .site-footer a:hover {
+    color: var(--accent);
+  }
+</style>

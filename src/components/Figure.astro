@@ -1,0 +1,29 @@
+---
+import { u } from "../lib/course";
+
+interface Props {
+  count: number;
+  /** Emit the "Charts from the notes" heading once, before the first figure segment. */
+  first?: boolean;
+  slug: string;
+}
+const { slug, count, first = false } = Astro.props;
+const pad = (i: number) => String(i).padStart(2, "0");
+---
+{
+  first && count > 0 && <h3>Charts from the notes</h3>
+}
+<div class={count > 2 ? 'gallery' : ''}>
+  {Array.from({ length: count }, (_, k) => k + 1).map((i) => (
+    <figure class="fig">
+      <img
+        loading="lazy"
+        src={u(`images/${slug}-${pad(i)}.png`)}
+        alt={`${slug} chart ${i}`}
+        data-cap={`Note chart ${i} of ${count}`}
+        onerror="this.closest('figure').remove()"
+      />
+      <figcaption>Note chart {i} of {count} — click to zoom</figcaption>
+    </figure>
+  ))}
+</div>

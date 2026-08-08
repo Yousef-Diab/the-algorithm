@@ -1,0 +1,137 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar";
+import Lightbox from "../components/Lightbox";
+import { u } from "../lib/course";
+import { getGraph } from "../lib/graph";
+
+interface Props {
+  /** Current lesson id for the sidebar .active state (lesson/review/exam pages). */
+  activeId?: string | null;
+  description?: string;
+  title?: string;
+}
+const { activeId = null, title, description } = Astro.props;
+const graph = await getGraph();
+const nav = graph.sections.map((s) => ({
+  examHref: s.data.exam?.length ? u(`course/${s.data.id}/exam`) : null,
+  id: s.data.id,
+  months: s.months.map((m) => ({
+    head: m.data.title.split("—")[0].trim(),
+    id: m.data.id,
+    lessons: m.lessons.map((l) => ({ id: l.data.id, title: l.data.title })),
+  })),
+  reviewHref: s.data.summary ? u(`course/${s.data.id}/review`) : null,
+  short: s.data.short,
+  title: s.data.title,
+}));
+---
+<BaseLayout title={title} description={description}>
+  <div id="app">
+    <Header variant="course" />
+    <div id="body">
+      <Sidebar client:load nav={nav} activeId={activeId} totalLessons={graph.totalLessons} />
+      <main id="main" tabindex="-1">
+        <div class="inner">
+          <slot />
+        </div>
+      </main>
+    </div>
+    <Lightbox client:load />
+  </div>
+  <script>
+    // Flip cards: mouse click + Enter/Space (keyboard accessibility). The
+    // delegation stays on `document` (which survives client-side swaps), and
+    // the per-element attributes are re-applied on astro:page-load because
+    // bundled scripts only run once.
+    const setupFlips = () => {
+      document.querySelectorAll<HTMLElement>('.flip').forEach((el) => {
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-pressed', 'false');
+      });
+    };
+    const toggleFlip = (flip: HTMLElement) => {
+      flip.classList.toggle('flipped');
+      flip.setAttribute('aria-pressed', String(flip.classList.contains('flipped')));
+    };
+    document.addEventListener('click', (e) => {
+      const flip = (e.target as HTMLElement).closest('.flip') as HTMLElement | null;
+      if (flip) toggleFlip(flip);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const flip = (e.target as HTMLElement).closest('.flip') as HTMLElement | null;
+      if (flip) {
+        e.preventDefault();
+        toggleFlip(flip);
+      }
+    });
+    document.addEventListener('astro:page-load', setupFlips);
+    setupFlips();
+  </script>
+  <script>
+    // Sidebar: with view transitions the page no longer fully reloads, but
+    // the sidebar is still a fresh element per navigation and would reset to
+    // the top. Persist its scroll position (per tab, in sessionStorage) and
+    // restore it before each page swap paints so the active lesson stays
+    // exactly where the user left it. If the saved position doesn't show the
+    // active item (first visit, direct URL, next/prev links), bring it into
+    // view with a minimal scroll instead.
+    const SIDEBAR_SCROLL_KEY = 'ict-sidebar-scroll';
+    const seen = new WeakSet<HTMLElement>();
+
+    const saveScroll = (sidebar: HTMLElement) => {
+      try {
+        sessionStorage.setItem(SIDEBAR_SCROLL_KEY, String(sidebar.scrollTop));
+      } catch {
+        /* storage unavailable (private mode) — ignore */
+      }
+    };
+
+    const setupSidebar = () => {
+      const sidebar = document.getElementById('sidebar');
+      if (!sidebar || seen.has(sidebar)) return;
+      seen.add(sidebar);
+      // Persist on scroll (debounced) so any navigation keeps the last position.
+      let scrollTimer: ReturnType<typeof setTimeout> | undefined;
+      sidebar.addEventListener('scroll', () => {
+        if (scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => saveScroll(sidebar), 120);
+      });
+      // Restore the saved position (browsers clamp values beyond scrollHeight).
+      let restored = 0;
+      try {
+        restored = Number(sessionStorage.getItem(SIDEBAR_SCROLL_KEY)) || 0;
+      } catch {
+        /* ignore */
+      }
+      sidebar.scrollTop = restored;
+      // If the active item is outside the visible viewport, scroll it in.
+      const active = sidebar.querySelector('.nav-lesson.active');
+      if (active) {
+        const top = active.offsetTop;
+        const bottom = top + active.offsetHeight;
+        if (top < sidebar.scrollTop || bottom > sidebar.scrollTop + sidebar.clientHeight) {
+          active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
+      }
+    };
+
+    // Persist immediately when a sidebar link is clicked, before navigation
+    // starts (also covers clicks that happen before React hydrates).
+    document.addEventListener('click', (e) => {
+      const link = (e.target as HTMLElement).closest('a');
+      if (link && link.matches('#sidebar a')) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) saveScroll(sidebar);
+      }
+    });
+
+    // Restore before the new page paints: on the initial load and after
+    // every client-side swap (each swap brings a fresh #sidebar element).
+    document.addEventListener('astro:after-swap', setupSidebar);
+    setupSidebar();
+  </script>
+</BaseLayout>

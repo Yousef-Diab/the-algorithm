@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { u } from "../lib/course";
+import { chartCount, getGraph } from "../lib/graph";
+
+const graph = await getGraph();
+
+const stats = (s: (typeof graph.sections)[number]) => {
+  const lessons = s.months.reduce((a, m) => a + m.lessons.length, 0);
+  const charts = s.months.reduce(
+    (a, m) => a + m.lessons.reduce((x, l) => x + chartCount(l), 0),
+    0
+  );
+  return { charts, lessons, months: s.months.length };
+};
+
+const firstLesson = (s: (typeof graph.sections)[number]) => {
+  const l = s.months[0]?.lessons[0];
+  return l
+    ? u(`course/${s.data.id}/${l.data.month}/${l.data.id}`)
+    : u("course");
+};
+---
+<BaseLayout
+  title="The Algorithm — Learn how price is really delivered"
+  description="An interactive course built from ICT's Mentorships — lessons across two sections, with charts, lesson checks, personal notes and a final exam per section. All saved locally in your browser."
+>
+  <div id="app">
+    <Header variant="landing" />
+    <main id="main" tabindex="-1">
+      <div class="inner">
+        <section class="home-hero">
+          <h1>
+            Learn how price is <em>really delivered</em>.
+          </h1>
+          <p>
+            An interactive course built from ICT's Mentorships —{' '}
+            {graph.totalLessons} lessons across {graph.sections.length}{' '}
+            sections. Every word comes from ICT's mentorship notes and the
+            original ICT video transcripts; every chart is pulled from the
+            notes.
+          </p>
+          <div class="cta">
+            <a class="btn primary start" href={u('course')}>
+              Start the course →
+            </a>
+          </div>
+        </section>
+
+        <h2 class="home-h">The course in two sections</h2>
+        <div class="month-cards">
+          {graph.sections.map((s, i) => {
+            const c = stats(s);
+            return (
+              <a class="mcard sec-card" href={firstLesson(s)}>
+                <div class="m-num">Section {i + 1}</div>
+                <h3>{s.data.title}</h3>
+                <p>{s.data.desc}</p>
+                <div class="m-prog">
+                  {c.lessons} lessons · {c.months} {c.months === 1 ? 'month' : 'months'} ·{' '}
+                  {c.charts} charts
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        <h2 class="home-h">What you get</h2>
+        <p class="home-sub">
+          Everything runs in your browser — no accounts, no tracking, and your
+          progress stays on your device.
+        </p>
+        <ul class="feat-list">
+          <li>
+            <b>{graph.totalLessons} lessons</b> across two sections — flip the
+            concept cards, study the charts, then take a lesson check after
+            each one.
+          </li>
+          <li>
+            <b>{graph.totalCharts} charts</b> straight from the mentorship
+            notes — click any chart to zoom and browse.
+          </li>
+          <li>
+            <b>Personal notes</b> on every lesson, saved locally on your
+            device.
+          </li>
+          <li>
+            <b>Section summaries and final exams</b> — an 80% pass mark, and
+            you can retake them as often as you like.
+          </li>
+          <li>
+            <b>Progress tracking</b> — your completed lessons, quiz answers and
+            exam scores are saved automatically in your browser.
+          </li>
+        </ul>
+
+        <div class="cta cta-bottom">
+          <a class="btn primary start" href={u('course')}>
+            Start the course →
+          </a>
+        </div>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+</BaseLayout>
+
+<style>
+  .cta {
+    margin-top: 28px;
+  }
+  .cta-bottom {
+    margin: 8px 0 46px;
+  }
+  .btn.start {
+    font-size: 16px;
+    padding: 13px 26px;
+    border-radius: 11px;
+  }
+  .mcard.sec-card {
+    background: linear-gradient(180deg, var(--panel), var(--panel2));
+  }
+  .feat-list {
+    margin: 10px 0 0 22px;
+    max-width: 640px;
+  }
+  .feat-list li {
+    margin: 9px 0;
+    color: var(--muted);
+  }
+  .feat-list b {
+    color: var(--text);
+  }
+</style>

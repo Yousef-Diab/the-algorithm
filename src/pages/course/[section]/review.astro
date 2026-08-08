@@ -1,0 +1,52 @@
+---
+import CourseLayout from "../../../layouts/CourseLayout.astro";
+import { getCollection } from "astro:content";
+import { getGraph } from "../../../lib/graph";
+import { u } from "../../../lib/course";
+
+export async function getStaticPaths() {
+  const sections = await getCollection("sections");
+  return sections
+    .filter((s) => s.data.summary)
+    .map((s) => ({
+      params: { section: s.data.id },
+      props: { sectionId: s.data.id },
+    }));
+}
+
+const { sectionId } = Astro.props;
+const graph = await getGraph();
+const sec = graph.sections.find((s) => s.data.id === sectionId)!;
+const lessonCount = sec.months.reduce((a, m) => a + m.lessons.length, 0);
+---
+<CourseLayout
+  activeId={`${sectionId}-review`}
+  title={`Section Summary — ${sec.data.title} · The Algorithm`}
+  description="Every concept from the lessons condensed onto one page, in the order it was taught."
+>
+  <article class="lesson" id={`${sectionId}-review`} data-kind="review" data-section={sectionId}>
+    <div class="lesson-hero">
+      <div class="crumb">
+        {sec.data.short || sec.data.title} · Section Review
+      </div>
+      <h1>Section Summary</h1>
+      <div class="desc">
+        Every concept from the lessons condensed onto one page, in the order it
+        was taught.
+      </div>
+    </div>
+
+    <Fragment set:html={sec.data.summary} />
+
+    <div class="lesson-footer">
+      <a class="btn" href={u('course')}>
+        ← Home
+      </a>
+      {sec.data.exam && sec.data.exam.length > 0 && (
+        <a class="btn primary" href={u(`course/${sectionId}/exam`)}>
+          Take the final exam →
+        </a>
+      )}
+    </div>
+  </article>
+</CourseLayout>

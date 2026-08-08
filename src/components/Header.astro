@@ -1,0 +1,25 @@
+---
+import ThemeToggle from "./ThemeToggle";
+import { u } from "../lib/course";
+
+interface Props {
+  variant?: "landing" | "course";
+}
+const { variant = "course" } = Astro.props;
+const brandHref = variant === "landing" ? u("") : u("course");
+---
+<header id="topbar">
+  <div class="left">
+    {variant === 'course' && (
+      <button id="menu-toggle" data-menu-toggle type="button" aria-label="Open the lesson list" aria-expanded="false">
+        <span aria-hidden="true">☰</span>
+        <span class="mt-label">Lessons</span>
+      </button>
+    )}
+    <a class="brand-inline" href={brandHref}>
+      <span class="b-mark" aria-hidden="true">A</span>
+      <h1>The <span>Algorithm</span></h1>
+    </a>
+  </div>
+  <ThemeToggle client:load />
+</header>

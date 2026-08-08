@@ -1,0 +1,65 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  description?: string;
+  title?: string;
+}
+const {
+  title = "The Algorithm — an interactive ICT mentorship course",
+  description = "An interactive course built from ICT's Mentorships: lessons, charts, quizzes, personal notes and final exams — saved locally in your browser.",
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en" data-theme="trading">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161b28'/%3E%3Ctext x='16' y='22.5' font-family='Segoe UI,Arial' font-size='17' font-weight='700' fill='%23e8b45a' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E"
+    />
+    <ClientRouter />
+    <script is:inline>
+      // Apply the saved theme before first paint (no flash of wrong theme).
+      (function () {
+        try {
+          var t = localStorage.getItem('ict-theme');
+          if (t !== 'light' && t !== 'dark' && t !== 'system') t = 'system';
+          var dark =
+            t === 'dark' ||
+            (t === 'system' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.setAttribute(
+            'data-theme',
+            dark ? 'trading' : 'trading-light'
+          );
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+        } catch (e) {
+          /* storage unavailable — keep the default dark theme */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+  <script>
+    // With view transitions the page no longer fully reloads, so the window
+    // would keep its scroll position between navigations. Match the old
+    // full-reload behaviour: forward navigations start at the top of the
+    // page, while back/forward history keeps its restored position.
+    document.addEventListener('astro:after-swap', () => {
+      if (
+        document.documentElement.getAttribute('data-astro-transition') !== 'back'
+      ) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+    });
+  </script>
+</html>

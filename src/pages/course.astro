@@ -1,0 +1,127 @@
+---
+import CourseLayout from "../layouts/CourseLayout.astro";
+import ResetPanel from "../components/ResetPanel";
+import CourseProgress from "../components/CourseProgress";
+import { chartCount, getGraph } from "../lib/graph";
+import { u } from "../lib/course";
+
+const graph = await getGraph();
+
+const progressMonths = graph.sections.flatMap((s) =>
+  s.months.map((m) => ({
+    charts: m.lessons.reduce((acc, l) => acc + chartCount(l), 0),
+    id: m.data.id,
+    total: m.lessons.length,
+  }))
+);
+const progressSections = graph.sections.map((s) => ({
+  id: s.data.id,
+  monthIds: s.months.map((m) => m.data.id),
+}));
+---
+<CourseLayout
+  title="The course — The Algorithm"
+  description="Pick a section and work through the months in order — flip the concept cards, study the charts, then take each lesson check."
+>
+  <section class="home-hero">
+    <h1>The course</h1>
+    <p>
+      Everything in one place — pick a section and work through the months in
+      order. Flip the concept cards, study every chart, then take the lesson
+      check.
+    </p>
+  </section>
+
+  {graph.sections.map((s) => (
+    <div class="month-cards" key={s.data.id}>
+      {graph.sections.length > 1 && <div class="sec-head">{s.data.title}</div>}
+      {s.months.map((m, mi) => {
+        const first = m.lessons[0];
+        const charts = m.lessons.reduce((acc, l) => acc + chartCount(l), 0);
+        const inner = (
+          <>
+            <div class="m-num">
+              {m.data.label} {mi + 1}
+            </div>
+            <h3>{m.data.title.split('— ')[1] || m.data.title}</h3>
+            <p>{m.data.desc}</p>
+            <div class="m-prog" data-prog={m.data.id}>
+              {m.lessons.length === 0
+                ? 'No lessons yet'
+                : `0/${m.lessons.length} lessons · ${charts} charts`}
+            </div>
+          </>
+        );
+        return first ? (
+          <a
+            class="mcard"
+            href={u(`course/${s.data.id}/${m.data.id}/${first.data.id}`)}
+          >
+            {inner}
+          </a>
+        ) : (
+          <div class="mcard empty" aria-disabled="true">
+            {inner}
+          </div>
+        );
+      })}
+    </div>
+  ))}
+
+  <div class="notice">
+    <b>How to use this course:</b> work through the lessons in order — the
+    material builds from one lesson to the next. Flip the concept cards, study
+    every chart (click to zoom), then take the lesson check. Your progress and
+    quiz answers are saved in your browser automatically.
+  </div>
+
+  <h2 class="home-h">Revise &amp; test yourself</h2>
+  <p class="home-sub">
+    When you've worked through a section, the summary re-teaches the whole
+    thing in one read and the final exam tells you what to go back to.
+  </p>
+
+  <div class="review-cards">
+    {graph.sections.map((s) => {
+      const lessonCount = s.months.reduce(
+        (a, m) => a + m.lessons.length,
+        0,
+      );
+      return (
+        <Fragment key={s.data.id}>
+          {s.data.summary && (
+            <a class="rcard" href={u(`course/${s.data.id}/review`)}>
+              <div class="r-num">Revision</div>
+              <h3>{s.data.title} — Summary</h3>
+              <p>
+                Every concept from the lessons condensed onto one page, in the
+                order it was taught.
+              </p>
+              <div class="r-prog">
+                {lessonCount} lessons · {s.months.length}{' '}
+                {s.months.length === 1 ? 'month' : 'months'} ·{' '}
+                <span data-summary-prog={s.data.id}>…</span>
+              </div>
+            </a>
+          )}
+          {s.data.exam && s.data.exam.length > 0 && (
+            <a class="rcard" href={u(`course/${s.data.id}/exam`)}>
+              <div class="r-num">Assessment</div>
+              <h3>{s.data.title} — Final Exam</h3>
+              <p>
+                {s.data.exam.length} questions across every month. Nothing is
+                graded until you submit.
+              </p>
+              <div class="r-prog" data-exam-best={s.data.id}>
+                Not attempted yet
+              </div>
+            </a>
+          )}
+        </Fragment>
+      );
+    })}
+  </div>
+
+  <ResetPanel client:visible />
+  <CourseProgress client:load months={progressMonths} sections={progressSections} />
+</CourseLayout>
