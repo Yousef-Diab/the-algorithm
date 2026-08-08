@@ -4,12 +4,23 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
-// GitHub Pages serves this repo at https://<owner>.github.io/the-algorithm/,
-// so `site` + `base` must be set for every generated URL to resolve.
+// Deployment is env-driven so the same config works on both hosts:
+//   - GitHub Pages (default): serves this repo at
+//     https://yousef-diab.github.io/the-algorithm/, so `site` + `base` are
+//     set here to match. Every generated URL then resolves.
+//   - Coolify (or any root-level host): build with `BASE_PATH=/` (and
+//     optionally `SITE_URL=https://your-domain`) so assets resolve from the
+//     domain root — serve the static `dist/` output directly.
+const site = process.env.SITE_URL ?? "https://yousef-diab.github.io";
+const rawBase = process.env.BASE_PATH ?? "/the-algorithm";
+const base = rawBase === "" ? "/" : rawBase;
+
 export default defineConfig({
-  base: "/the-algorithm",
+  base,
   integrations: [react()],
-  site: "https://ritspunterprise.github.io",
+  // Explicit static output: no adapter, no SSR — pure prerendered site.
+  output: "static",
+  site,
   vite: {
     plugins: [tailwindcss()],
   },

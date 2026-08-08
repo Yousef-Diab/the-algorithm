@@ -10,7 +10,10 @@ import { dirname, extname, join, normalize } from "node:path";
 import { chromium } from "playwright";
 
 const DIST = join(process.cwd(), "dist");
-const BASE = "/the-algorithm";
+// Base path must match the one baked into the build (see astro.config.mjs):
+// "/the-algorithm" for GitHub Pages, "" (root) for Coolify builds. Setting
+// BASE_PATH at verify time keeps the checks aligned with the built site.
+const BASE = (process.env.BASE_PATH ?? "/the-algorithm").replace(/\/+$/, "");
 const MIME = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
