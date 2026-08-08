@@ -9,6 +9,11 @@ agents update the `Unreleased` section before reporting work as done.
 ## Unreleased
 
 ### Added
+- New site footer shown on every page (landing and all course pages) with the
+  course credits — "Made with ♥ by Yousef Diab and Ritspun" — plus a GitHub
+  link to the repository for collaboration, an "About this course" note, a
+  quick "Back to the course" link and a small copyright line; the footer
+  stacks into a single column on small screens.
 - Sidebar sections now open and close with a smooth slide + fade animation
   (the lesson list expands/collapses via animated grid rows with an opacity
   crossfade), and the desktop full collapse fades the sidebar out/in instead
@@ -56,6 +61,15 @@ agents update the `Unreleased` section before reporting work as done.
   non-null-assertion rules off).
 
 ### Changed
+- Agent skills reorganized: the Python-era skills (`async-python-patterns`,
+  `dbos-python`, `pydantic-ai`, `pydantic-models-py`,
+  `python-development-python-scaffold`, `python-fastapi-development`,
+  `python-packaging`, `python-patterns`, `python-performance-optimization`,
+  `python-pro`, `python-testing-patterns`) were removed from `.agents/skills/`,
+  and the remaining skill library now lives in both `.agents/skills/` and
+  `.claude/skills/` (byte-identical mirrors) so agent runtimes reading either
+  location get the same set; the `add-content` skill is now also present under
+  `.agents/skills/`.
 - Personal notes no longer auto-save while typing. A "Save notes" button now
   saves them on demand, and a brief "✓ Saved" confirmation appears next to it
   and fades out on its own; until you save, a subtle "Unsaved changes" hint
@@ -142,6 +156,32 @@ agents update the `Unreleased` section before reporting work as done.
 ### Documentation
 - `AGENTS.md` rewritten for the Astro stack (commands, architecture, authoring
   conventions unchanged).
+- `CLAUDE.md` updated to match the current Astro stack and merged with
+  `AGENTS.md`: both agent guides now share the golden rules (content purity,
+  build-artifact discipline, changelog, protect main, task planning), the Astro
+  architecture and project structure, content-authoring conventions, the common
+  tasks table, lightbox implementation notes, source material & tooling, the
+  development workflow, lint & format rules and the Ultracite code standards.
+  The pre-Astro Python-era content of `CLAUDE.md` (old `build.py`/`engine`/
+  `verify.py` architecture, SPA verification quirks and future direction) is
+  preserved in a clearly-marked legacy reference section.
+- `AGENTS.md` gained the pieces it was missing from `CLAUDE.md`: the common
+  tasks table, chart-lightbox implementation notes, a source material &
+  tooling section, and the `ict-sidebar-collapsed` /
+  `ict-sidebar-scroll` storage keys in the State section; the development
+  workflow now lists `pnpm check` and clarifies that `pnpm verify` runs against
+  the existing `dist/` after `pnpm build`. It also gained the full
+  "Legacy reference" appendix (pre-Astro `engine/`/`build.py` architecture,
+  SPA-era verification quirks and future direction).
+- `CLAUDE.md` gained the pieces it was missing from `AGENTS.md`: a dedicated
+  "The data model" section (sections/months/quiz/exam/video/image bullets) and
+  the "Development workflow" command block (`pnpm dev`/`build`/`verify`/
+  `check`/`preview`) at the top of the Verification section. Both files now
+  carry the same information.
+- `AGENTS.md` and `CLAUDE.md` now mirror each other exactly: the same content,
+  section order and numbering (§1–§12), with only the file-specific identity
+  differing — each guide's H1 title and its §12 self-reference name their own
+  file (`AGENTS.md` vs `CLAUDE.md`).
 
 ### Verification
 - `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
