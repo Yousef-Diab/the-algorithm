@@ -287,7 +287,7 @@ ICT also pins it as *"after four GMT on the Forex LTD demo account"* (lines
 
 #### Quiz quality
 
-**A10 · should-fix · corpus-wide, surfaced in Month 1** — **option length gives
+**A10 · should-fix · FIXED · corpus-wide, surfaced in Month 1** — **option length gives
 the answer away.** Since the renderer shuffles positions (§3), length is the only
 remaining tell, and it is a strong one. Measured across every question in the
 repo (536 parsed: 451 quiz + 85 exam):
@@ -804,7 +804,7 @@ Only two questions in the month are genuinely conspicuous:
 - **[`m3-08/quiz.js:5`](../content/s1-ict-core/m3/m3-08/quiz.js#L5)** — spread **20**: correct `"The HTF premium/discount array"` (30) against `"The volume"` (10). Worst in Month 3.
 - **[`m3-01/quiz.js:2`](../content/s1-ict-core/m3/m3-01/quiz.js#L2)** — spread 16: correct `"Orderblocks, stop runs, liquidity voids"` (39) against `"Doji, hammer, engulfing"` (23).
 
-#### C18 · should-fix — Quiz-count verdict for Month 3: **it is a defect** (for 4 of 8 lessons)
+#### C18 · should-fix · FIXED — Quiz-count verdict for Month 3: **it is a defect** (for 4 of 8 lessons)
 
 Batches A and B ruled the thin counts *not* a defect for Months 1–2, because
 they tracked how much material each lesson carried. **Month 3 breaks that
@@ -1053,7 +1053,7 @@ checks out against that lesson's own transcript or note page — no repeat of
 **C2**, where an explanation restated an invention. The one wobble is
 `m4-05/quiz.js:3`'s `e`, which inherits **D1**'s merged phrase from the lesson.
 
-**D14 · should-fix — the quiz counts are again inverse to the material, for three
+**D14 · should-fix · FIXED — the quiz counts are again inverse to the material, for three
 lessons.** Carrying **C18**'s test forward (a floor of 4 questions for any lesson
 with a multi-step procedure or a rules table):
 
@@ -1294,7 +1294,7 @@ trading took place — big one-sided candles delivered to one side."*
 side's liquidity). The lesson's remaining bullets already assume it, so this is a
 two-line repair — and it doubles as the fix for **E19**'s q1 (see there).
 
-**E2 · should-fix · [m4-11/lesson.html:10](../content/s1-ict-core/m4/m4-11/lesson.html#L10)** —
+**E2 · should-fix · FIXED · [m4-11/lesson.html:10](../content/s1-ict-core/m4/m4-11/lesson.html#L10)** —
 the same source, the same error, one line later: *"Voids where there was **no
 trading at all** are the best draw on liquidity."* Traceable only to the note
 page (*"Liquidity voids where there was no trading at all, those are the best for
@@ -1560,7 +1560,7 @@ simultaneously contradicting it. Everything else checks out against that lesson'
 own transcript or note page — including all four of m4-13's, which are the
 best-written set in the month.
 
-**E18 · should-fix — the counts are out of proportion again, for four lessons.**
+**E18 · should-fix · FIXED — the counts are out of proportion again, for four lessons.**
 Carrying **C18**'s floor of 4 questions for any lesson with a multi-step
 procedure or a rules table:
 
@@ -4371,7 +4371,7 @@ as **I3**, **I4** and **I9**: the claim survives, the qualification does not.
 *Fix:* one clause in the opening paragraph, plus the win-rate/RR point as a
 `.callout` — the material is two sentences of ICT.
 
-**I11 · should-fix · p3-05** — **the batch's proportionality finding: six
+**I11 · should-fix · FIXED · p3-05** — **the batch's proportionality finding: six
 questions do not cover this lesson.** Per the lead, C18's floor is not the test
 here (6 > 4); **D14/E18**'s is, and p3-05 fails it on both denominators:
 
@@ -6905,7 +6905,7 @@ imbalance becomes visible while writing.
 
 #### Instalment 3 — episode 39 (`p6-06`; 84 KB, the largest single transcript in Section 2)
 
-**L28 · should-fix ·
+**L28 · should-fix · FIXED ·
 [p6-06/quiz.js](../content/s2-2022-mentorship/p6/p6-06/quiz.js)** —
 **the I11 inverse distribution recurs, and this is the second-worst
 proportionality case in the corpus.** Six questions for **84.1 KB** of transcript
@@ -8096,7 +8096,7 @@ states.** The nearest thing to an exception is **Q21** (the 11:30 rule), whose
 claim appears only in the reference table at `summary.html:334` and not in the
 Part 3 body — which still satisfies the rule. There is no **F6** here.
 
-**M10 · should-fix — Part 6 is under-sampled on all three denominators, and Part 1
+**M10 · should-fix · FIXED — Part 6 is under-sampled on all three denominators, and Part 1
 over-sampled.** Running the **D14 / E18 / I11** proportionality test at exam level:
 
 | Part | Qs | Lessons | Lesson KB | Summary KB | Qs/lesson | Qs/lesson-KB | Qs/summary-KB |
@@ -8120,7 +8120,7 @@ to within 0.12 questions per lesson — it does **not** wash out. Recommended:
 **+2 to +3 for Part 6**, from the untested material named in **M11**; nothing needs
 removing elsewhere.
 
-**M11 · should-fix — ten lessons are uncited, and six of them are genuinely
+**M11 · should-fix · FIXED — ten lessons are uncited, and six of them are genuinely
 untested.** Per **F8**'s mandatory caveat, a lesson absent from the citation labels
 is not evidence it is untested; each of the ten was checked against what the 40
 questions actually test.
@@ -9226,6 +9226,22 @@ target), then Months 1–2. §3's *"within ~5 characters"* rule is **necessary b
 not sufficient** — that is **D15**'s conclusion, confirmed five times since, and
 Month 4 is the proof: its median margin is 3 characters and it still scores 90%.
 
+> **Correction to this tier, made during the fix pass (see *Fixes applied*).**
+> **The not-longest column is a *two-tailed* metric and this table reads as though
+> it were one-tailed.** *"Chance is ~75%"* is stated correctly above, but the target
+> is then given as *"the S1 exam's 69%"* and every framing treats higher as better.
+> It is not: at **100%** not-longest, *"eliminate the longest option"* lifts a blind
+> guess from 25% to **33%** — the same exploitable tell as 14%, mirrored. Building
+> Month 4 the obvious way produced exactly that, and it had to be tuned **back down**
+> to 75%. **Read the target as ~75% from either side.** A future set reporting 90%+
+> here is as defective as one reporting 14%.
+>
+> Two smaller corrections to the Tier 3 table above: **`m4-08` is not marginal** —
+> it fails **C18**/**E18**'s proportionality test like the other eleven, and was
+> added (+2); and **`p3-06`'s stand-aside rule is a Part 3 lesson**, so it was filed
+> in the exam's Part 3 block rather than under this table's *"S2 exam, Part 6"*
+> heading, which would have broken **M9**. Items 4–6 under *Contradicting the audit*.
+
 ### What the audit certifies as clean — do not re-litigate
 
 Each of these was **measured**, not assumed, and several were re-derived in batch
@@ -9298,15 +9314,22 @@ would be introducing the exact defect the audit exists to find.
 
 ## Fixes applied
 
-The fix pass, **2026-08-08**, run against the repair plan above. **Tier 1 (all six
-blockers) and Tier 2 (the one-line edits) are complete.** Tiers 3 and 4 are
-untouched and remain open.
+The fix pass, **2026-08-08**, run against the repair plan above. **All four tiers
+are complete.** Tiers 1 and 2 ran first (below); Tiers 3 and 4 followed in the same
+pass.
 
 Every replacement below is quoted from the source named in its last column.
 `python build.py` emits **zero warnings** and `python verify.py` reports
-**78 lessons, 339 images, 78 video links, 451 quiz questions, 2 summary pages,
-85 exam questions across 2 exams, 0 JS errors** — the pre-fix baseline, unchanged,
-which is the point: no counts moved, so nothing was added or dropped structurally.
+**78 lessons, 339 images, 78 video links, 476 quiz questions, 2 summary pages,
+88 exam questions across 2 exams, 0 JS errors**.
+
+Only the two question counts moved, which is the Tier 3 deliverable: **451 → 476**
+quiz (+25) and **85 → 88** exam (+3), 28 new questions in total. Every other figure
+is the pre-fix baseline unchanged — 78 lessons, 339 images, 78 video links, 2
+summary pages, 2 exams, 0 JS errors — so nothing was added or dropped structurally
+and no chart, video or page was disturbed. All 28 additions are **appends**, so the
+`ict-quiz` keys (`"{quizKey}-{qIndex}"`) of existing questions still point at the
+same questions.
 
 ### Tier 1 — the six blockers, all closed
 
@@ -9351,6 +9374,125 @@ and `p6-05` was not read into it.
 | `p6-05/lesson.html:10` | **Added** the authorship caveat as a `.callout.warn` — *"because I'm the author of these concepts I have a lot of tools at my disposal… a little bit better understanding of price delivery than the average student of mine"*, plus its restatement at the end of the episode. **Added to the lesson, not to the summary** — see the correction under the Tier 2 table above. | **L15**, **M14**, from `ep38:73-82` and `807-809` |
 | `docs/content-audit.md` | **C18**'s header gains `· should-fix`; the four published figures corrected in place (`intermediate-term` 7/29 → **10/33** in both the batch L text and **M18**; S2 quizzes expected **42% → 43%** and spread-over-10 **11% → 10%**; *"p3-06"* → **`p3-05`, +3** in the roll-up's Part 3 recommendation; **F1**'s row counts to **two above / one below**). All repaired findings marked `· FIXED` in place. | **N13**, **N3**, **N14**, **N15** |
 
+### Tier 3 — the new questions (28: 25 quiz + 3 exam)
+
+**The floor of 4 (C18) is now met by every lesson the audit named.** The twelve
+targeted lessons all sit at exactly 4; Section 2's two sit at 9 and 10.
+
+**Section 1 — +18 across twelve lessons.** Each new question's correct option and
+`e` is traceable to that lesson's own transcript or notes, per §1; the distractors
+are wrong *mechanisms* and are not sourced (they are wrong on purpose).
+
+| Lesson | + | What the new questions test | Source of the correct option and `e` |
+|---|---|---|---|
+| **E2** · `m4-11/lesson.html:10` | — | **Not a question — the bullet.** *"Voids where there was **no trading at all** are the best draw on liquidity"* → *"price typically wants to **revisit this porous range** — a void of contrarian liquidity is itself **the draw on price**."* This was the last surviving site of the note-only framing **E1** was graded a blocker for. | `m4-11` transcript **12-14** (*"price typically will want to revisit this porous range or void of contrarian liquidity"*) and **176-178** (*"the ultimate draw on price was to get up to that 104.76 level closing in that liquidity void"*) |
+| `m3-01` | +2 | Whose sell stops sit below the clean equal monthly lows; and *"you only need one good pattern — don't force it."* | transcript **916-925** (*"large funds… long-term trend following funds will have stop loss orders right below that low… they will leave stops in for a very very long time"*); **1304** + **1378** |
+| `m3-03` | +1 | When classic support/resistance actually works on a retracement. | `notes/ict-core/m3-03.md` (*"it will retrace back to an old high, thats when support and resistance does work, because it has an unfullfilled objective to the upside"*) |
+| `m3-04` | +2 | How far back the monthly OHLC study goes; which of two down candles begins the block. | `notes/ict-core/m3-04.md` (*"Study every open high low and close of the last 3 months"*; *"He uses the left orderblock because its larger then the one to the right"*) |
+| `m3-05` | +2 | What to do with reversal patterns in a symmetrical condition; how institutional market structure is identified in forex. | transcript **55-66** / **105-114** (*"the idea of stalking reversal patterns in this condition is not high probability and it should be avoided"*); **20-38** (*"we compare every price swing in the dollar index with the foreign currency that we trade"*) |
+| `m4-04` | +1 | Which candle at the short-term low is the focus once structure shifts. | `notes/ict-core/m4-04.md` (*"we will be focusing on the last down candle, because thats where the last orders where placed before the short rally up"*) |
+| `m4-05` | +1 | How a breaker differs from a mitigation block. | `notes/ict-core/m4-05.md` (*"a breaker is a 1 time thing, where as a mitigation block can form constantly"*) |
+| `m4-06` | +1 | What the swing high or low must have for a rejection block. | `notes/ict-core/m4-06.md`, the one line **bold + underlined** in the notes (*"The key is it has to be a swing low/high that has a wick or wicks"*) |
+| `m4-08` | +2 | What a mean-threshold break gives you; how the bearish version forms. **Added despite being listed *at the margin*** — see *Contradicting the audit*, item 2. | `notes/ict-core/m4-08.md` (*"If it breaks the mean threshold of the propulsion block, chances are its not a good trade"*); `m4-08/lesson.html:12` |
+| `m4-10` | +2 | What a run beyond 25 pips means; the choppy Friday after a trending week. | `notes/ict-core/m4-10.md` (*"If it starts moving beyond 25 pips its probably not a sweep and its likely a contuniuation of the decline"*; *"the market will likely see a choppy day on friday because they want to take profit"*) |
+| `m4-11` | +2 | How long a void takes to fill; selling inside the gap with a limit order. | transcript **38-53** (*"there's no specific time limit… it's all going to be relative to what you see in price action around that void"*); **295-303** (*"in that price Gap we can be a seller at that specific price level"*) |
+| `m4-12` | +1 | What made the example FVG a high-probability trade. | `notes/ict-core/m4-12.md` (*"we already took SSL beneath that low with a turtle soup, we have EQH there and above the EQH we have a FVG. High probability trade"*) |
+| `m4-14` | +1 | What replaces the 10–20 pip stop-run rule on the hourly. | `notes/ict-core/m4-14.md` (*"Normally we think of 10-20 pip sweeps but thats on the 15m, on the 1h we can use this to get more precise"*) |
+
+**Section 2 — +7 across two lessons** (**I11**, **L28**; `p3-05` 6 → 9, `p6-06` 6 → 10).
+
+| Lesson | + | What the new questions test | Source |
+|---|---|---|---|
+| `p3-05` | +3 | How many days' highs and lows to mark; whether you can enter a new position from a phone; what sets the money at risk on the low threshold entry. | ep-18 transcript **566-578** (*"do that for the last three days… you're never going to run out of trades ever"*); **640-666** (*"entering a brand new position on your phone no — you don't see enough data it's just too compressed"*); **1055-1090** (*"that higher risk in terms of number of pips not in terms of the amount of money… you can manage the amount of leverage you're using"*) |
+| `p6-06` | +4 | What 8:30 is in the model; what removes the daily range's programmed boundaries; the one-contract arithmetic; what to do after a losing trade. | ep-39 transcript **1165-1169** (*"at 8 30 that's when the news embargo lifts"*); **1340-1360** (*"the daily range has those limitations programmed into it as well until manual intervention is brought in"*); **1560-1580** (*"one point… is worth fifty dollars… that's 250 dollars a day… that's 1250 a week"*); **2350-2375** (*"losing trades is like getting a flat tire"*) |
+
+**S2 exam — +3** (**M10**, **M11**; 40 → 43). All three name the lesson they test,
+preserving **M9**'s 40-of-40 certification.
+
+| Block | Question | Source |
+|---|---|---|
+| **Part 3** | *"The market you follow is sloppy… what is the response?"* → close the charts and go do something else. **Filed under Part 3, not Part 6** — see *Contradicting the audit*, item 3. | `p3-06/lesson.html:11-12`, a lesson (*"there's absolutely zero, nothing in this chart, nothing to trade on, not one thing"*) — cited `(Part 3, Lesson 6)` |
+| **Part 6** | *"Which chart gives the strongest daily bias, and what do you ask of it?"* → the weekly, and where it will **reach for**. | `p6-07/lesson.html:71-75`, Rule 2 of the keys to daily bias — cited `(Part 6, Lesson 7)` |
+| **Part 6** | *"How does ICT define narrative?"* | `p6-05/lesson.html:32`, the definition verbatim — cited `(Part 6, Lesson 5)` |
+
+**`s2 summary.html:390`** — *"40 questions across all six parts"* → **43**. This is
+**F7**'s exact defect at its second site, and it only became a defect when the three
+exam questions landed; see *Contradicting the audit*, item 4.
+
+#### Which lessons reached the floor, and which did not
+
+**All twelve targeted lessons reached 4. Nothing was blocked by a §1 gap** — every
+one of the eighteen Section 1 additions came from material the lesson already
+carried and the notes or transcript already stated, and in no case did a lesson run
+out of sourced material before the fourth question. Section 2's two had a large
+surplus (`p3-05` and `p6-06` are among the corpus's densest lessons).
+
+**Three lessons remain below the floor and were deliberately not touched:**
+`m2-03` (3), `m3-02` (3), `m4-07` (3). These are the three the audit judged
+**proportionate** — the finding is that their coverage matches their material, not
+that their material is missing. They were left alone on the audit's own instruction,
+so **no §1 reason is claimed for them and their sources were not re-read**; that
+judgement stands unre-litigated.
+
+Section 1's per-lesson range is now **3–6**; Section 2's is unchanged at **5–12**.
+
+### Tier 4 — option-length construction
+
+**Re-measured first.** The published figures were reproduced exactly, on all six
+columns and all nine rows, before any edit — confirming the fix pass's four changed
+option sets (`m3-07` q4, `m4-11` q1, `s1 exam.js` q39, `m4-07` q3) had not moved
+them. The script reconciles to **451 quiz + 85 exam = 536** on the pre-Tier-3 tree
+and **476 + 88 = 564** after, using **D15**'s method with **F14**'s leading column
+and the `\s*` regex from the method notes (**I17**). It is throwaway and lives in the
+session scratchpad, not the repo.
+
+**91 option sets were rewritten** (Month 1: 21, Month 2: 18, Month 3: 9,
+Month 4: 39, Section 2: 4). **No `q`, no `a` and no `e` was changed by Tier 4** — only
+option text, so no stored `ict-quiz` result changed meaning. Distractors were
+lengthened into plausible wrong *mechanisms* (technique 4) rather than the correct
+option being padded, and whole-set parallel construction (technique 1) was used
+wherever four permutations of the same terms existed — `m4-13`'s Type-2 divergence
+question is the clearest case, going from a 36-character spread with two
+one-word throwaways (*"Equal highs"*, *"A gap"*) to four same-shape statements
+spanning 2 characters.
+
+| | n (before → after) | **not-longest** | expected | median margin | max margin | spread > 10 |
+|---|---|---|---|---|---|---|
+| **S1 quizzes** | 145 → 163 | **29% → 75%** | **76% → 32%** | 4 → 2 | 8 → 5 | 26% → **1%** |
+| — Month 1 | 39 → 39 | 28% → **74%** | 76% → 29% | 5 → 2 | 8 → 4 | 36% → **0%** |
+| — Month 2 | 37 → 37 | 35% → **76%** | 68% → 27% | 4 → 2 | 7 → 4 | 27% → 3% |
+| — Month 3 | 25 → 32 | 48% → **75%** | 61% → 33% | 4 → 3 | 7 → 5 | 24% → **0%** |
+| — **Month 4** | 44 → 55 | **14% → 75%** | **90% → 37%** | 3 → 1.5 | 7 → 3 | 18% → 2% |
+| S1 exam | 45 → 45 | 69% *(untouched)* | 42% | 1 | 5 | 0% |
+| S2 quizzes | 306 → 313 | 64% → 65% | 43% → 41% | 3 → 3 | **20 → 9** | 10% → 9% |
+| S2 exam | 40 → 43 | 62% → 65% | 45% → 43% | 2 → 2 | 2 → 2 | 0% |
+| **Corpus** | 536 → 564 | **55% → 68%** | **52% → 39%** | 3 → 2 | **20 → 9** | 13% → **5%** |
+
+**Month 4 was the target and is now the corpus's best-constructed quiz set**: a
+knowledge-free guesser picking the longest option scores **37%**, down from **90%**,
+against the 80% exam pass mark it used to clear. Its median margin is 1.5 characters
+and its widest is 3.
+
+**All four Section 1 months landed at 74–76%, not higher, on purpose** — the metric's
+optimum is chance, not its maximum. See *Contradicting the audit*, item 1; this is
+the one place the plan's framing had to be corrected rather than followed.
+
+**Month 3 was finished too**, though the plan's work order stopped at Months 1–2.
+Leaving one month of a section at 59% while its three siblings sat at 75% would have
+left the inconsistency the tier exists to remove, and it cost sixteen option edits.
+
+**Section 2 was left at its aggregate**, as the audit scoped it — 65% is within a
+rounding of chance and it was never the problem. But **its four questions with a
+margin ≥ 10 were repaired** (`p3-03` at 20, `p4-04` at 13, `p6-05` at 14, `p4-03` at
+10), which is what drops its max margin from 20 to 9 while the aggregate barely
+moves. See *Contradicting the audit*, item 5.
+
+**N16 was not done.** The one-sidedness family (**A8**, **C9**, **C10**, **D13**,
+**E18**, **F10**) is still open — six Section 1 sites where the mirror side is
+dropped. It is a should-fix in no tier, it is genuinely *"roughly six sentences and
+needs no new sourcing"*, and nothing in Tier 3 or Tier 4 touched it. It remains the
+cheapest unclaimed item in the document.
+
 ### What was deliberately not done
 
 - **M14's summary recommendation was not carried out**, and the Tier 2 table in the
@@ -9366,28 +9508,68 @@ and `p6-05` was not read into it.
   rather than spelled), the two pyramid ladders, the five-candle-fractal qualifier,
   the `back test` variants, the two section house styles, and the exam/quiz stem
   re-use.
-- **Tier 3 (~28 new questions) and Tier 4 (option-length rewriting) are untouched.**
-  The single exception the plan allowed — `m3-07`'s q4 — was rewritten rather than
-  cut, so no question count moved anywhere in the corpus (451 quiz + 85 exam, as
-  before).
-- **E2** (`m4-11/lesson.html:10`, *"Voids where there was no trading at all are the
-  best draw on liquidity"*) is a should-fix outside both tiers and was left in
-  place. It now reads oddly against the repaired definition above it, because it
-  refers to a category the lesson no longer defines. **It should lead Tier 3's
-  Section 1 work.**
+- **Tier 3 and Tier 4 were untouched at the end of the Tier 1–2 pass**; both were
+  completed afterwards and are recorded in their own sections above. The one thing
+  carried across is that the Tier 1–2 pass moved no question count: its single
+  allowed exception, `m3-07`'s q4, was rewritten rather than cut. All 28 additions
+  belong to Tier 3.
+- **E2** (`m4-11/lesson.html:10`) was left in place by the Tier 1–2 pass and flagged
+  there as the thing that **should lead Tier 3's Section 1 work**. It did — it is the
+  first row of the Tier 3 table, and it is now repaired.
+- **N16 was not done** (the one-sidedness family, six Section 1 sites). It is a
+  should-fix in no tier and remains open; see the note closing the Tier 4 section.
+- **Section 2's quizzes were not rewritten for option length**, only its four
+  margin ≥ 10 outliers. Its aggregate was never the defect.
 
 ### Nothing was blocked by a §1 gap
 
-No replacement in either tier required a source the audit had not already quoted,
+No replacement in Tiers 1 or 2 required a source the audit had not already quoted,
 and none needed new authoring beyond `m3-07` q4 and `s1 exam.js` q39 — both of
 which the plan specified and both of which are traceable to their own lesson's
-transcript. There is nothing to flag as unfixable.
+transcript.
 
-### Contradicting the audit — three things
+**Tier 3 held to the same standard, and this is the tier where a §1 gap would have
+shown up**, because it is the only one that authors new material. It did not:
+each of the 28 questions was written after re-reading that lesson's own notes or
+transcript, every correct option and `e` is quoted or paraphrased from a line
+recorded in the Tier 3 table, and **no lesson exhausted its sourced material before
+reaching the floor of 4**. Nothing had to be capped at 3 for want of a source, and
+nothing was invented to reach the floor. Tier 4 authored no new claims at all — it
+changed only distractor and option wording, never a `q`, an `a` or an `e`.
 
-Each batch found at least one; the fix pass finds three, and two of them are the
-same class of error batch N found in the plan itself: **a defect measured at one
-site when it exists at two.**
+There is nothing in any tier to flag as unfixable.
+
+#### One state-model correction, caught on the final check
+
+**`ict-exam`'s `picks` are keyed by question *index*, not by option text — only the
+*value* is text.** `CLAUDE.md` §3 reads *"`picks` are stored by **option text**,
+since options re-shuffle on every render"*, which is true of the value and easy to
+read as true of the key. `app.js:300` is `picks[qi] = o.text`.
+
+This matters because the Part 3 exam question was first filed **inside the Part 3
+block**, mid-array, which read as the tidy choice. Doing so shifted the index of
+**19** later questions and would have silently re-pointed the stored picks of anyone
+holding an un-submitted exam — the exact failure the append-only rule exists to
+prevent, in the one file where the documented state model appeared to permit an
+insertion. **All three exam additions are now appended**, under a comment in
+`exam.js` recording why they sit outside their part blocks.
+
+A mechanical check confirms the final state: **536 pre-existing questions verified in
+place** (same stem, same correct option, same order) and **28 appended**, across all
+80 quiz and exam files. The only in-place changes are six correct-option *rewordings*
+from Tier 4, all in `quiz.js` files — which `ict-quiz` keys by index, so no stored
+result moves — and each preserves its meaning with the precision pushed into `e`,
+per §3.
+
+### Contradicting the audit — eight things
+
+Each batch found at least one. The Tier 1–2 pass found three, two of them the same
+class of error batch N found in the plan itself — **a defect measured at one site
+when it exists at two**. Tiers 3 and 4 found five more, and the most important is
+the first: **a metric the whole tier is built on is two-tailed, and the plan treats
+it as one-tailed.**
+
+*Items 1–3 are the Tier 1–2 pass; items 4–8 are Tiers 3 and 4.*
 
 1. **E1 is two sites in `m4-11/lesson.html`, not one.** The audit names `:9`, the
    first bullet. The **hero `desc` at `:5`** carried the identical reversed
@@ -9415,6 +9597,79 @@ site when it exists at two.**
    `.src` instead — which is exactly why **N10**'s CSS fix had to land first, since
    a `.src` inside a `.tag` did not render before it. **The two Tier 2 items are
    coupled, and the plan lists them as independent.**
+
+4. **The not-longest metric is *two-tailed*, and Tier 4 treats it as one-tailed.
+   This is the most consequential correction in the fix pass.** The plan states the
+   chance level correctly — *"the share of questions where the correct option is not
+   the longest. **Chance is ~75%**"* — and then sets the goal as *"14% → **the S1
+   exam's 69%** is the target"*, with every surrounding sentence reading as
+   *higher is better* (*"the metric to move"*, *"every other set is between 62% and
+   69%"*).
+
+   Built the obvious way — lengthening every conspicuous distractor — **Month 4 went
+   to 100% not-longest**, and that is not the fix. At 100%, *"eliminate the longest
+   option"* converts a blind 25% guess into a **33%** one: the same exploitable
+   regularity as before, pointing the other way. The 44 original questions handed a
+   longest-picker 90%; a 100% set hands an eliminator a third. **Only ~75% — chance
+   — is unexploitable in both directions**, which is why an unbiased corpus lands
+   there and why the S1 exam's 69% looked good in the first place. It is not a
+   ceiling to climb toward; it is the value the exam happens to sit near.
+
+   So Month 4 was deliberately **tuned back down from 100% to 75%**, by restoring a
+   uniquely-longest correct option on 14 of its 55 questions at margins of 1–3
+   characters — margins at the S1 exam's own median of 1, far too small to read off
+   a screen. Months 1, 2 and 3 were built to the same target and landed at 74%, 76%
+   and 75%. **The published table should be read as a two-sided target of ~75%, and
+   any future section that reports 90%+ on this column has the same defect as one
+   reporting 14%.**
+
+5. **`m4-08` is not *at the margin* — it is the twelfth instance of the same
+   defect.** The plan lists the eleven under-tested lessons, then `m4-08` separately
+   with *"+2 if you want it"*, and records that the audit *"did not commit"*. But the
+   basis for the eleven is **C18**/**E18**'s test — coverage out of proportion to
+   material — and `m4-08` fails it the same way: two questions against a five-bullet
+   lesson carrying at least two untested sourced claims (the mean-threshold break as
+   *immediate feedback to reverse or stand aside*, and the bearish mirror). Both were
+   written from the lesson's own note page without difficulty. **The marginal call
+   appears to come from the lesson being short, not from its material being thin** —
+   which is the same length-versus-content confusion batches C and D settled for note
+   pages. Added; `m4-08` is at 4.
+
+6. **The plan files `p3-06`'s stand-aside rule under *"S2 exam, Part 6"*, and it is a
+   Part 3 lesson.** All three named exam candidates sit under a heading reading
+   *"S2 exam, Part 6 — +2 to +3"*, but `p3-06` is Part 3, Lesson 6. Adding it to the
+   Part 6 block would have broken **M9** — the audit's own certification that
+   Section 2's **40 of 40** exam questions name the lesson the question actually
+   tests, *"the first clean set in the corpus"*. The two genuinely-Part-6 candidates
+   (`p6-07`'s keys to daily bias, `p6-05`'s narrative definition) went to Part 6,
+   fixing **M10**'s under-sampling; `p3-06`'s went to the Part 3 block cited
+   `(Part 3, Lesson 6)`, fixing that **M11** coverage gap where it belongs. **The two
+   findings are separable and the plan's heading fuses them.**
+
+7. **F7 is a coupling, not a typo — and its second site was correct until Tier 3
+   made it wrong.** The Tier 1–2 pass fixed `s1 summary.html:311` (*"40 questions"* →
+   45) and could not have found a second site, because `s2 summary.html:390`'s
+   *"40 questions across all six parts"* **was accurate** at the time. Adding three
+   exam questions broke it, and it was fixed in the same pass. This is a different
+   shape from items 1 and 2: not a defect measured at one site when it exists at two,
+   but **a latent dependency between `exam.js` and the summary page that nothing
+   enforces**. `verify.py` counts exam questions and checks the summary renders, but
+   never compares the two, so the next exam edit will silently desynchronise them
+   again. Both pages are correct today (45 and 43). **If one check is ever added to
+   `verify.py`, this is the one** — it is the only content figure in the corpus that
+   a build can already compute and doesn't.
+
+8. **An aggregate near chance can still hide a fat tail, and Section 2's did.** The
+   audit grades S2's quizzes acceptable at 64% not-longest and moves on — correctly,
+   as an aggregate. But **F14**'s column is a *count*, and the method notes report
+   median margin only conditionally, so neither figure sees magnitude. Section 2 held
+   four questions with the correct option longer than every distractor by **10 to 20
+   characters** — `p3-03` at 20 (a 58-character correct option against a 38-character
+   runner-up), `p6-05` at 14, `p4-04` at 13, `p4-03` at 10. Any one of those is
+   readable at a glance, and they were invisible in a 306-question mean. All four
+   fixed: S2's **max margin falls 20 → 9** while its not-longest moves 64% → 65%,
+   which is precisely the point. **A future measurement should report the max margin
+   and the count over 10, not just the share and the median.**
 
 ## Fixed in flight
 

@@ -64,5 +64,49 @@
     ],
     a: 0,
     e: "Multiple levels of sell side had been taken without much movement, and the up-close candle above should have capped price as bearish institutional order flow. When price reached back up into that order block instead, the next objective became buy side above the high — so he took a partial rather than waiting for the stop."
+  },
+  {
+    q: "What happens at 8:30 that makes it the model's first element of time?",
+    o: [
+      "The news embargo lifts",
+      "Equities open for the day",
+      "New York lunch begins",
+      "The macro close run starts"
+    ],
+    a: 0,
+    e: "At 8:30 New York local time the news embargo lifts — that is when the economic report or news event lands, and it is the first element of time in the model. The other three are 9:30 (equities open), 1:30 (the afternoon setup after lunch) and 3:00–4:00 (the market-on-close macro)."
+  },
+  {
+    q: "What removes the boundaries programmed into the daily range?",
+    o: [
+      "Manual intervention — an FOMC",
+      "A close beyond the previous week",
+      "Volume above the daily average",
+      "A gap left open on the daily"
+    ],
+    a: 0,
+    e: "Like the maps in a video game, the daily range has those limitations programmed into it — until manual intervention is brought in and the initial boundaries are removed. That is someone literally sending price to a specific level, abruptly and aggressively: an FOMC or rate announcement."
+  },
+  {
+    q: "One E-mini S&P contract, five points a day. What does that come to in a week?",
+    o: [
+      "25 points, or $1,250",
+      "5 points, or $250",
+      "50 points, or $2,500",
+      "10 points, or $500"
+    ],
+    a: 0,
+    e: "On one contract of the mini S&P, one point in your favour or against you is worth fifty dollars. Fifty times five is $250 a day; done consistently every single day that is 25 handles a week — $1,250."
+  },
+  {
+    q: "What are you supposed to do after a losing trade?",
+    o: [
+      "Stop — don't win it back now",
+      "Double the size on the next",
+      "Switch to a different market",
+      "Trade the afternoon session too"
+    ],
+    a: 0,
+    e: "Stop, and don't rush to win it back. A losing trade is like getting a flat tire: it costs a little money and time and delays you, but it doesn't keep you from getting where you're going. Sometimes the next day gives it back, with interest."
   }
 ]
