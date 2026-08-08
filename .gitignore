@@ -1,2 +1,8 @@
 /transcripts/
 /notes/
+
+# Astro (new stack)
+node_modules/
+dist/
+.astro/
+/public/images/
