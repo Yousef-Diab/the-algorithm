@@ -135,6 +135,13 @@ agents update the `Unreleased` section before reporting work as done.
   install → build → verify workflow.
 
 ### Fixed
+- `pnpm-workspace.yaml` declared no `packages`, so pnpm 9.x (the version
+  Nixpacks installs on Coolify) failed with "packages field missing or empty".
+  The root is now declared as the only workspace package (`packages: ["."]`).
+- `package.json` now pins the package manager (`packageManager: pnpm@11.20.0`)
+  so Nixpacks uses the same pnpm version as local development, and declares
+  `engines.node >= 22.12.0` (Astro 7's requirement — Nixpacks was selecting
+  Node 22.11.0, which would have failed the build).
 - Theme switcher could transiently flip the page to the OS theme right after
   load: the toggle's mount effect applied the initial `system` state before
   the saved preference, so on reload the page could flash the wrong theme

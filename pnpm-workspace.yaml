@@ -1,3 +1,8 @@
 # pnpm 11 project settings (see https://pnpm.io/settings)
+# The `packages` field declares the root as the only workspace package; it is
+# required by older pnpm (e.g. 9.x used by Nixpacks) which enter workspace mode
+# whenever this file exists.
+packages:
+  - "."
 allowBuilds:
   esbuild: true
