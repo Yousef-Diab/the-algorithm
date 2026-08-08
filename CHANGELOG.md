@@ -56,6 +56,21 @@ agents update the `Unreleased` section before reporting work as done.
   non-null-assertion rules off).
 
 ### Changed
+- Personal notes no longer auto-save while typing. A "Save notes" button now
+  saves them on demand, and a brief "✓ Saved" confirmation appears next to it
+  and fades out on its own; until you save, a subtle "Unsaved changes" hint
+  shows so it is clear your typing is not written to `localStorage` yet.
+- The "Save notes" button is styled as an accent-outlined action (accent
+  border, soft accent-tinted fill and accent-coloured label) so it stands out
+  from the page background and reads as useful at a glance; when there is
+  nothing to save it falls back to a neutral, muted look that clearly signals
+  it is not yet needed.
+- The lesson footer buttons (previous / mark complete / next) now stack into
+  full-width rows on narrow screens (≤640px) instead of wrapping and
+  colliding, so long lesson titles can never overlap on mobile; they also get
+  extra padding (12px vertical / 24px horizontal) on small screens and are
+  allowed to grow past DaisyUI's fixed 2.5rem height, so wrapped two-line
+  labels never sit flush against the button edges or overflow the button.
 - The mobile drawer no longer casts the large soft box-shadow glow around its
   edges. Instead, when the drawer opens, the page content behind it is dimmed
   and slightly blurred by a dark scrim (`drawer-scrim`) that spans from just
@@ -129,6 +144,11 @@ agents update the `Unreleased` section before reporting work as done.
   conventions unchanged).
 
 ### Verification
+- `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
+  notes save-button and responsive footer work: 84 routes, 78 lessons
+  (titles, charts, quiz grade/reset, video links, notes box + save button),
+  lightbox open/browse/zoom/close, both final exams (submit, 80% pass,
+  retake), theme switcher persistence, and zero page/console errors.
 - `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
   drawer-scrim work (glow removed, backdrop dims and blurs the content behind
   the open mobile drawer, scrim click closes it): 84 routes, 78 lessons

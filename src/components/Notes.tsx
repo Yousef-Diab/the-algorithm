@@ -8,8 +8,10 @@ const NOTES_KEY = "ict-notes";
 
 export default function Notes({ lessonId }: Props) {
   const [value, setValue] = useState("");
+  const [savedValue, setSavedValue] = useState("");
   const [status, setStatus] = useState("");
   const loaded = useRef(false);
+  const hideTimer = useRef(0);
 
   useEffect(() => {
     // biome-ignore lint/suspicious/noUnnecessaryConditions: loaded ref mutates after mount; biome cannot see ref writes
@@ -21,33 +23,34 @@ export default function Notes({ lessonId }: Props) {
       const all = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {};
       if (typeof all[lessonId] === "string") {
         setValue(all[lessonId]);
+        setSavedValue(all[lessonId]);
       }
     } catch {
       /* ignore */
     }
   }, [lessonId]);
 
-  useEffect(() => {
-    // biome-ignore lint/suspicious/noUnnecessaryConditions: loaded ref mutates after mount; biome cannot see ref writes
-    if (!loaded.current) {
-      return;
-    }
-    const t = setTimeout(() => {
-      try {
-        const all = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {};
-        if (value) {
-          all[lessonId] = value;
-        } else {
-          delete all[lessonId];
-        }
-        localStorage.setItem(NOTES_KEY, JSON.stringify(all));
-        setStatus("Saved");
-      } catch {
-        /* ignore */
+  useEffect(() => () => window.clearTimeout(hideTimer.current), []);
+
+  const dirty = value !== savedValue;
+
+  const save = () => {
+    try {
+      const all = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {};
+      if (value) {
+        all[lessonId] = value;
+      } else {
+        delete all[lessonId];
       }
-    }, 400);
-    return () => clearTimeout(t);
-  }, [value, lessonId]);
+      localStorage.setItem(NOTES_KEY, JSON.stringify(all));
+      setSavedValue(value);
+      setStatus("✓ Saved");
+      window.clearTimeout(hideTimer.current);
+      hideTimer.current = window.setTimeout(() => setStatus(""), 2200);
+    } catch {
+      /* ignore */
+    }
+  };
 
   return (
     <div className="notes">
@@ -62,8 +65,21 @@ export default function Notes({ lessonId }: Props) {
         placeholder="Jot down anything you want to remember about this lesson…"
         value={value}
       />
-      <div aria-live="polite" className="notes-status">
-        {status}
+      <div className="notes-actions">
+        <button
+          className="btn save-btn"
+          disabled={!dirty}
+          onClick={save}
+          type="button"
+        >
+          Save notes
+        </button>
+        <div
+          aria-live="polite"
+          className={`notes-status${dirty && !status ? " unsaved" : ""}`}
+        >
+          {status || (dirty ? "Unsaved changes" : "")}
+        </div>
       </div>
     </div>
   );

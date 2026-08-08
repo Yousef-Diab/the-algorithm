@@ -306,6 +306,9 @@ for (const exp of lessonExpect) {
   if (!(await page.locator(".notes-area").count())) {
     fail(`${exp.id}: notes box missing`);
   }
+  if (!(await page.locator(".save-btn").count())) {
+    fail(`${exp.id}: notes save button missing`);
+  }
 }
 ok(
   `${lessonExpect.length} lessons: titles, charts, quizzes (4 opts, grade, reset), videos, notes`
