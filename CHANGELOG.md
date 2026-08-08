@@ -9,6 +9,23 @@ agents update the `Unreleased` section before reporting work as done.
 ## Unreleased
 
 ### Added
+- Sidebar sections now open and close with a smooth slide + fade animation
+  (the lesson list expands/collapses via animated grid rows with an opacity
+  crossfade), and the desktop full collapse fades the sidebar out/in instead
+  of snapping shut; the mobile drawer also fades its shadow in while sliding.
+- The mobile drawer now closes when tapping outside of it, so readers no
+  longer need to hit the toggle button or press Escape.
+- Sidebar months are now collapsible: each month header is a button with a
+  chevron that expands or collapses its lesson list, and all months are closed
+  by default except the one the user is currently working in.
+- Months auto-collapse when completed: as soon as the last lesson of an open
+  month is marked done, the month closes itself and the next incomplete month
+  in the same section opens in its place (or the review group, when the
+  section ends there), keeping the sidebar focused on what comes next.
+- Full sidebar collapse on desktop: the "Lessons" button in the topbar now
+  hides the entire sidebar so readers can focus on the content, and the choice
+  is remembered in `localStorage` (`ict-sidebar-collapsed`) across page
+  navigations; on mobile the same button keeps its drawer behaviour.
 - Sidebar scroll position is persisted across page navigations: the course
   sidebar now restores the exact scroll position the user left it at, so the
   active lesson stays in view instead of resetting to the top on every link
@@ -39,6 +56,25 @@ agents update the `Unreleased` section before reporting work as done.
   non-null-assertion rules off).
 
 ### Changed
+- The mobile drawer no longer casts the large soft box-shadow glow around its
+  edges. Instead, when the drawer opens, the page content behind it is dimmed
+  and slightly blurred by a dark scrim (`drawer-scrim`) that spans from just
+  below the topbar down to the bottom of the screen, so the topbar and the
+  sidebar keep their normal colours and the content clearly recedes into the
+  background; tapping the scrim closes the drawer as well.
+- The "The Algorithm" brand in the topbar is now centered on mobile instead
+  of sitting at the left edge, while the menu and theme buttons stay at the
+  edges; on very small screens (≤480px) the "Lessons" label collapses to the
+  icon, the theme button collapses to its icon too, and the brand shrinks
+  slightly so nothing overlaps.
+- Month headers in the sidebar went from static headings to accessible
+  `<button>` elements with `aria-expanded`, a focus outline and an animated
+  chevron that rotates when the month is open; the review group uses the same
+  pattern for its "Section Summary" and "Final Exam" links.
+- The topbar "Lessons" button is now visible on desktop (not only on mobile)
+  and its `aria-label` was updated to "Show or hide the lesson list"; the
+  desktop collapse state is re-applied before paint on every navigation so the
+  sidebar never flashes open between pages.
 - Navigation between pages now uses smooth client-side view transitions
   (Astro `ClientRouter`): links crossfade instead of hard-reloading, matching
   the old full-reload behaviour of starting forward navigations at the top of
@@ -76,16 +112,39 @@ agents update the `Unreleased` section before reporting work as done.
   `nav-lessonactive`), so neither `.nav-lesson` nor `.nav-lesson.active`
   matched and the item rendered as a bare inline link; class names now join
   with spaces, matching the original app's behavior.
+- Sidebar `aria-expanded` and the `collapsed`/`open` classes could stay stale
+  when resizing across the 900px breakpoint: the desktop check was evaluated
+  only at render/event time, so the state was not re-synced after a viewport
+  change (e.g. the topbar button kept `aria-expanded="true"` in a closed
+  mobile drawer). The breakpoint is now observed reactively via
+  `useSyncExternalStore`, and a leftover mobile drawer is cleared when the
+  viewport grows back to desktop.
+- On very narrow phones (≤480px) the centered brand could overlap the theme
+  button: the toggle's "System" label pushed it into the logo's right edge.
+  The theme button now collapses to its icon on small screens (same pattern as
+  the "Lessons" label), keeping the brand centered with room to spare.
 
 ### Documentation
 - `AGENTS.md` rewritten for the Astro stack (commands, architecture, authoring
   conventions unchanged).
 
 ### Verification
-- `pnpm verify` passes all headless checks: 84 routes, 78 lessons (titles,
-  charts, quiz grade/reset, video links, notes), lightbox open/browse/zoom/
-  close, both final exams (submit, 80% pass, retake), theme switcher
-  persistence, and zero page/console errors.
+- `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
+  drawer-scrim work (glow removed, backdrop dims and blurs the content behind
+  the open mobile drawer, scrim click closes it): 84 routes, 78 lessons
+  (titles, charts, quiz grade/reset, video links, notes), lightbox
+  open/browse/zoom/close, both final exams (submit, 80% pass, retake), theme
+  switcher persistence, and zero page/console errors.
+- `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
+  sidebar animation, tap-outside-to-close and centered-mobile-brand work: 84
+  routes, 78 lessons (titles, charts, quiz grade/reset, video links, notes),
+  lightbox open/browse/zoom/close, both final exams (submit, 80% pass,
+  retake), theme switcher persistence, and zero page/console errors.
+- (Previous round, collapsible sidebar + breakpoint sync) `pnpm check`,
+  `pnpm build` (85 pages) and `pnpm verify` all pass: 84 routes, 78 lessons
+  (titles, charts, quiz grade/reset, video links, notes), lightbox
+  open/browse/zoom/close, both final exams (submit, 80% pass, retake), theme
+  switcher persistence, and zero page/console errors.
 
 ## 1.0.0 — 2026-08-07
 
