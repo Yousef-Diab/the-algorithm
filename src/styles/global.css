@@ -134,6 +134,7 @@ a:hover {
 
 /* Interactive elements must not select text when clicked */
 .nav-lesson,
+.month-head,
 .q .opt,
 .exam .opt,
 .btn,
@@ -207,11 +208,51 @@ a:hover {
   overflow-y: auto;
   background: var(--bg2);
   border-right: 1px solid var(--border);
+  transition:
+    width 0.25s ease,
+    opacity 0.2s ease;
+}
+#sidebar.collapsed {
+  visibility: hidden;
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-right: none;
+  opacity: 0;
+  transition:
+    width 0.25s ease,
+    opacity 0.2s ease,
+    visibility 0s linear 0.25s;
 }
 #main {
   flex: 1;
   min-width: 0;
   padding: 0 0 80px;
+}
+/* Mobile drawer backdrop: dims and blurs the content behind the open drawer so
+   the topbar and the drawer keep their normal colors. Positioned below the
+   topbar and below the drawer's z-index; inert (opacity 0, no pointer events)
+   until the drawer opens on mobile, and the element is always rendered as a
+   sibling of the drawer so its translateX transform can't become its
+   containing block. */
+.drawer-scrim {
+  position: fixed;
+  top: var(--topbar);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 45;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  transition: opacity 0.25s ease;
+}
+.drawer-scrim.open {
+  pointer-events: auto;
+  opacity: 1;
 }
 .inner {
   max-width: 880px;
@@ -258,7 +299,28 @@ a:hover {
   color: var(--muted);
 }
 .month-group {
+  display: grid;
+  visibility: hidden;
+  grid-template-rows: 0fr;
   margin-top: 6px;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.25s ease,
+    visibility 0s linear 0.3s;
+}
+.month-group.open {
+  visibility: visible;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.25s ease,
+    visibility 0s linear 0s;
+}
+.month-group-inner {
+  min-height: 0;
+  overflow: hidden;
 }
 .nav-section {
   padding: 16px 20px 4px;
@@ -270,19 +332,45 @@ a:hover {
 }
 .month-head {
   display: flex;
+  gap: 8px;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 12px 20px 6px;
+  font-family: var(--font);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
-.month-head h2 {
+.month-head .mt {
+  flex: 1;
   font-size: 12px;
+  font-weight: 600;
   color: var(--gold);
   text-transform: uppercase;
   letter-spacing: 1.2px;
+  transition: opacity 0.15s;
+}
+.month-head:hover .mt {
+  opacity: 0.85;
+}
+.month-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 .month-head .count {
   font-size: 11px;
   color: var(--dim);
+}
+.month-head .chev {
+  font-size: 10px;
+  color: var(--dim);
+  transition: transform 0.2s;
+}
+.month-head.open .chev {
+  transform: rotate(180deg);
 }
 .nav-lesson {
   display: flex;
@@ -336,7 +424,7 @@ a:hover {
   font-size: 11px;
   color: var(--dim);
 }
-.review-group .month-head h2 {
+.review-group .month-head .mt {
   color: var(--green);
 }
 .nav-lesson .dot.rdot {
@@ -1222,7 +1310,7 @@ body.lb-lock {
   color: var(--gold);
 }
 #menu-toggle {
-  display: none;
+  display: inline-flex;
   gap: 7px;
   align-items: center;
   padding: 7px 11px;
@@ -1311,6 +1399,16 @@ body.lb-lock {
 
 /* ---------- mobile ---------- */
 @media (max-width: 900px) {
+  #topbar {
+    position: relative;
+  }
+  /* Center the brand on the topbar while the menu and theme buttons stay at
+     the edges. */
+  #topbar .brand-inline {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   #sidebar {
     position: fixed;
     top: var(--topbar);
@@ -1321,14 +1419,23 @@ body.lb-lock {
     min-width: 300px;
     height: auto;
     transform: translateX(-100%);
-    transition: transform 0.25s;
+    transition: transform 0.25s ease;
   }
   #sidebar.open {
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
     transform: none;
   }
+  /* Never allow the desktop collapse class to hide the drawer on mobile */
+  #sidebar.collapsed {
+    visibility: visible;
+    width: 300px;
+    min-width: 300px;
+    padding: 0 0 40px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    opacity: 1;
+  }
   #menu-toggle {
-    display: block;
+    display: inline-flex;
   }
   .inner {
     padding: 0 18px;
@@ -1368,6 +1475,24 @@ body.lb-lock {
   }
   .exam-actions .btn {
     flex: 1;
+  }
+}
+
+/* ---------- small phones ---------- */
+@media (max-width: 480px) {
+  #topbar {
+    padding: 0 12px;
+  }
+  /* Keep the centered brand from colliding with the edge buttons */
+  #menu-toggle .mt-label {
+    display: none;
+  }
+  .theme-btn span:not(.tb-ico) {
+    display: none;
+  }
+  #topbar .brand-inline h1 {
+    font-size: 13.5px;
+    letter-spacing: 0.2px;
   }
 }
 

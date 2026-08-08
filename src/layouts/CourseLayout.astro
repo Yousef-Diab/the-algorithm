@@ -129,9 +129,32 @@ const nav = graph.sections.map((s) => ({
       }
     });
 
+    // Desktop collapse state is owned by the React island, but with view
+    // transitions the island remounts after paint, so the sidebar would flash
+    // expanded on every navigation. Apply the persisted state from localStorage
+    // as early as possible instead (the island reads the same key, so they can
+    // never disagree for long).
+    const COLLAPSED_KEY = 'ict-sidebar-collapsed';
+    const isDesktop = () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(min-width: 901px)').matches;
+    const applyCollapsed = () => {
+      const sidebar = document.getElementById('sidebar');
+      if (!sidebar || !isDesktop()) return;
+      let collapsed = false;
+      try {
+        collapsed = localStorage.getItem(COLLAPSED_KEY) === '1';
+      } catch {
+        /* ignore */
+      }
+      sidebar.classList.toggle('collapsed', collapsed);
+    };
+
     // Restore before the new page paints: on the initial load and after
     // every client-side swap (each swap brings a fresh #sidebar element).
     document.addEventListener('astro:after-swap', setupSidebar);
+    document.addEventListener('astro:after-swap', applyCollapsed);
     setupSidebar();
+    applyCollapsed();
   </script>
 </BaseLayout>
