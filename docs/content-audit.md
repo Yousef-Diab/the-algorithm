@@ -398,7 +398,7 @@ m2-02 are the only fidelity findings, and one traces to a garbled transcript.
 
 #### Content fidelity (§1)
 
-**B1 · should-fix · [m2-02/lesson.html:22](../content/s1-ict-core/m2/m2-02/lesson.html#L22)** —
+**B1 · should-fix · FIXED · [m2-02/lesson.html:22](../content/s1-ict-core/m2/m2-02/lesson.html#L22)** —
 *"the same move that gives the hourly trader 1:1 gives you 3:1"* is not in the
 source, and it is wrong at the point being described. ICT's actual claim is
 narrower: *"as we hit the entry that would be assumed on the hourly chart at that
@@ -409,7 +409,7 @@ moment price reaches 7542 the hourly trader is **being filled** — they are at
 *Fix:* say what ICT says — by the time the hourly entry fills, the refined trade
 is already at 3R.
 
-**B2 · should-fix · [m2-02/lesson.html:19](../content/s1-ict-core/m2/m2-02/lesson.html#L19)** —
+**B2 · should-fix · FIXED · [m2-02/lesson.html:19](../content/s1-ict-core/m2/m2-02/lesson.html#L19)** —
 the 15-minute row reads *"buyer at 7520, stop 7507 — **17 pips**"*. **7520 − 7507
 = 13.** ICT does say "17 pip stop loss" (line 157), which implies the stop is
 **7503**. The transcript renders the level as `757` in both places it appears —
@@ -599,7 +599,7 @@ traceable to either source**.
 *Fix:* either cut the bullet and q4, or reduce both to what ICT says — the
 triangle appears here, its breakout failed, and the mentorship treats it later.
 
-**C3 · should-fix · [m3-07/lesson.html:10](../content/s1-ict-core/m3/m3-07/lesson.html#L10)** —
+**C3 · should-fix · FIXED · [m3-07/lesson.html:10](../content/s1-ict-core/m3/m3-07/lesson.html#L10)** —
 **a quotation ICT did not say**, set in italics and quotation marks as if
 verbatim: *"If everyone's looking at the same thing and everyone can't win, the
 majority has to be wrong."* The words "majority", "everyone can't win" and any
@@ -612,7 +612,7 @@ flipping a coin"* (288-289). But manufacturing a quote is exactly what §1 exist
 to prevent, and there are three real ones to use instead.
 *Fix:* drop the quotation marks and italics, or swap in one of the three above.
 
-**C4 · should-fix · [m3-01/lesson.html:27](../content/s1-ict-core/m3/m3-01/lesson.html#L27)
+**C4 · should-fix · FIXED · [m3-01/lesson.html:27](../content/s1-ict-core/m3/m3-01/lesson.html#L27)
 and [m3-01/quiz.js:2](../content/s1-ict-core/m3/m3-01/quiz.js#L2)** — the lesson
 and its quiz name **two different triads**. The `<h3>` is *"ICT's Only 3
 Setups"* and the flip cards read **trade inside the range / orderblocks &
@@ -875,7 +875,7 @@ described** — see **D15**, which corrects the recommended fix.
 
 #### Content fidelity (§1)
 
-**D1 · should-fix · [m4-05/lesson.html:26](../content/s1-ict-core/m4/m4-05/lesson.html#L26)** —
+**D1 · should-fix · FIXED · [m4-05/lesson.html:26](../content/s1-ict-core/m4/m4-05/lesson.html#L26)** —
 *"A breaker uses the **entire candle range and the bodies**."* These are two
 different rules and the lesson asserts both in one clause. The transcript states
 only the first, and states it as a deliberate choice:
@@ -1812,7 +1812,7 @@ C2's repair removes the concept from the course, that distractor starts
 referencing a term the reader has never met, which is a weak distractor even
 though it is a permissible one.
 
-**F3 · should-fix ·
+**F3 · should-fix · FIXED ·
 [summary.html:222](../content/s1-ict-core/summary.html#L222)** —
 **C3 propagates, and is *promoted* from quotation to assertion.** m3-07 sets the
 manufactured line in italics and quotation marks — *"If everyone's looking at the
@@ -1825,7 +1825,7 @@ worse, not better: it now reads as the course's own assertion rather than as
 ICT's words, so a reader has no cue that it is a paraphrase at all. The three
 real ICT lines **C3** identified are still the fix.
 
-**F4 · should-fix ·
+**F4 · should-fix · FIXED ·
 [summary.html:223](../content/s1-ict-core/summary.html#L223)** —
 **C7 propagates verbatim.** *"trying to pick tops and bottoms is the **single
 worst thing** a trader can do."* ICT: *"picking tops and bottoms is **one of the
@@ -1836,7 +1836,7 @@ the exam. (m3-08's other C7 half — "retail sells the right shoulder" — is **
 carried over; the summary says only that the stops above the head and shoulders
 are the engineered liquidity, which is correct.)
 
-**F5 · should-fix ·
+**F5 · should-fix · FIXED ·
 [summary.html:123](../content/s1-ict-core/summary.html#L123)** —
 **B1 propagates: *"the same move that pays the hourly trader 1:1 pays you
 3:1."*** **B1** showed this comparison is not in the source and overstates by a
@@ -2789,7 +2789,7 @@ patterns you need"*; p1-06's *"quick"*/displacement line; p1-07's *"No trading?
 No."*, *"The Dow is not going down because buyers are coming in"* and *"I'm not
 telling you to use 3 and a half percent"*.
 
-**G16 · should-fix — p1-06's quiz is the one badly-constructed set in Part 1, and
+**G16 · should-fix · FIXED — p1-06's quiz is the one badly-constructed set in Part 1, and
 it is an outlier by a wide margin.** Measured the D15/E19/F14 way:
 
 | Lesson | n | strict | expected score | median margin | not-longest | max spread |
@@ -2944,7 +2944,7 @@ close (199-212), the four down-close candles anchored to the daily bullish order
 block (160-170), and the order-block definition verbatim (171-181). No fidelity
 finding in p2-02.
 
-**H1 · should-fix ·
+**H1 · should-fix · FIXED ·
 [p2-01/lesson.html:16](../content/s2-2022-mentorship/p2/p2-01/lesson.html#L16)** —
 **ICT's stated reason for disliking the yen pairs is reversed.** The lesson's
 warn callout says they *"tend to **lack** the double return to a specific level
@@ -2994,7 +2994,7 @@ prescription (reduce frequency, wait for the better setup) that answer *why*.
 Same family as **A4** — the lesson tells the reader what to do and not where the
 idea costs them money.
 
-**H3 · should-fix · p2-02 and G7 — the micro risk figure implies $1 per handle,
+**H3 · should-fix · FIXED · p2-02 and G7 — the micro risk figure implies $1 per handle,
 which is wrong, and it now conflicts with p1-01's $5.** The lesson reproduces
 ICT's sizing: *"about **14.25 handles of risk**, roughly **$85 on six micros to
 make about $300** — somewhere near **3.5 to 1**"* (ep9:528-540). On MNQ, which is
@@ -3355,7 +3355,7 @@ that Section 2 gets this discipline right where **E1** did not.
 
 #### Coverage gaps (episode 12)
 
-**H14 · should-fix · p2-05 — the algorithmic rationale for the whole taxonomy is
+**H14 · should-fix · FIXED · p2-05 — the algorithmic rationale for the whole taxonomy is
 dropped, and it is the answer to "why should I classify highs at all?"** This is
 the pattern the batch lead predicted would hurt most in p2-05, and it does. Two
 passages, both absent:
@@ -3535,7 +3535,7 @@ long on a demo before I risk money*. The safety gate is the one that went
 missing, in the lesson whose subject is readiness. Same family as **A4** (m1-04's
 missing risk management) and **H2**.
 
-**H19 · should-fix · p2-06 — the $256,000 context is dropped, and with it ICT's
+**H19 · should-fix · FIXED · p2-06 — the $256,000 context is dropped, and with it ICT's
 own hedge on the number the lesson does report.** The lesson presents
 *"$10,000 → **$12,111** in one morning, over **21%** on one trade"* cleanly. The
 episode opens by explaining why that demonstration exists at all:
@@ -3895,7 +3895,7 @@ carries 4.3 KB of lesson from a 3.8 KB transcript; p3-02 carries 6.7 KB from
   (98-108), the $1,255 on two trades less ~$15 commissions (172-176), and the
   latency-test explanation for the high commissions (184-189).
 
-**I1 · should-fix · [p3-01/lesson.html:22](../content/s2-2022-mentorship/p3/p3-01/lesson.html#L22)
+**I1 · should-fix · FIXED · [p3-01/lesson.html:22](../content/s2-2022-mentorship/p3/p3-01/lesson.html#L22)
 and [p3-01/quiz.js:4](../content/s2-2022-mentorship/p3/p3-01/quiz.js#L4)** —
 **a rationale the source never gives, and the quiz makes it a question.** The
 lesson ends the paragraph on the expected pause with *"**Anticipating the pause is
@@ -4021,7 +4021,7 @@ The one claim that looks like drift on a literal reading of the transcript is no
 
 #### Coverage gaps — episode 16
 
-**I4 · should-fix · [p3-03/lesson.html:8](../content/s2-2022-mentorship/p3/p3-03/lesson.html#L8)** —
+**I4 · should-fix · FIXED · [p3-03/lesson.html:8](../content/s2-2022-mentorship/p3/p3-03/lesson.html#L8)** —
 **both of ICT's hindsight caveats are dropped, and this is the batch's strongest
 confirmation that batch H's pattern replicates.** The lesson opens by saying the
 whole Friday "gets walked through, setup by setup" and then presents six setups
@@ -4335,7 +4335,7 @@ revisited in batches J–L.**
 
 #### Coverage gaps — episode 18
 
-**I10 · should-fix · [p3-05/lesson.html:8](../content/s2-2022-mentorship/p3/p3-05/lesson.html#L8)** —
+**I10 · should-fix · FIXED · [p3-05/lesson.html:8](../content/s2-2022-mentorship/p3/p3-05/lesson.html#L8)** —
 **the lesson keeps ICT's answer and drops the half of it that says the answer
 isn't a guarantee.** The lesson opens by stating the question — *"if you only had
 one way of doing it, what would you do, and what does that look like on the chart,
@@ -4900,7 +4900,7 @@ batch**). One episode per lesson throughout, per the plan's §3 map.
 
 #### Content fidelity (§1) — episodes 20–22
 
-**J1 · should-fix · `p4-02:70`** — **two dollar figures merged into a range that
+**J1 · should-fix · FIXED · `p4-02:70`** — **two dollar figures merged into a range that
 describes neither.** The lesson says holding *"one of the two contracts would have
 been roughly **$8,000 to $12,000**."* The transcript gives the two numbers for two
 different position sizes: *"if I would have just held on to what I had in the
@@ -4912,7 +4912,7 @@ still and just let it run and I could have done … about **eight grand** or so"
 figures behind the same subject. Nothing is invented, but a reader learns the
 wrong per-contract arithmetic.
 
-**J2 · should-fix · `p4-02:40`** — **the hindsight qualifier is dropped from the
+**J2 · should-fix · FIXED · `p4-02:40`** — **the hindsight qualifier is dropped from the
 lesson's single strongest read, and this is the third instance of a lesson
 preferring the note over the transcript (H5's family).** The callout states the
 two-opening-price test as a live tell: *"That combination is **the tell**:
@@ -5197,7 +5197,7 @@ Gann"*) — so a reader gets the dismissal without ever meeting the distinction 
 actually draws, and never meets the **composite man** at all, though ICT holds it up
 as the thing to become.
 
-**J13 · should-fix · `p4-05:50` and `p4-06:64`** — **"this may not be for you" is
+**J13 · should-fix · FIXED · `p4-05:50` and `p4-06:64`** — **"this may not be for you" is
 dropped from both lessons, and it is the same hedge in both.** p4-05 ends on the
 promise (*"you're going to learn how to read price better than you ever imagined"*)
 and p4-06 ends on the six-month timeline and *"I am absolutely confident that you
@@ -5628,7 +5628,7 @@ the 6th (ep27:20-23, 269, 329-346, 606-608).
 The three fidelity findings in this instalment are all in **p5-03**, and they are
 all in one place: the entry table.
 
-**K1 · should-fix · `p5-03/lesson.html:26-31` — the entry table shows three fills
+**K1 · should-fix · FIXED · `p5-03/lesson.html:26-31` — the entry table shows three fills
 where episode 29 shows two.**
 
 The `kv` lists *First fill* (3994.50), *Second fill* (3996.25, seven ticks of
@@ -5653,7 +5653,7 @@ This is the **J1 shape** — two descriptions of one event from the same episode
 placed behind separate subjects — not migration; nothing arrived from outside the
 teaching.
 
-**K2 · should-fix · `p5-03/lesson.html:32` — the close-proximity entry is attached
+**K2 · should-fix · FIXED · `p5-03/lesson.html:32` — the close-proximity entry is attached
 to the wrong fill, which inverts the point of the lesson.**
 
 The callout reads *"What the second entry actually was — That fill was **not
@@ -5675,7 +5675,7 @@ mistake that motivates it. **A2 / D2 / E4 family** (a verbatim characterisation
 attached to the wrong object) — the fourth instance in the corpus and the first
 in Section 2.
 
-**K3 · should-fix · `p5-03/lesson.html:27` — "less than one handle of heat"
+**K3 · should-fix · FIXED · `p5-03/lesson.html:27` — "less than one handle of heat"
 contradicts the two numbers printed beside it.**
 
 The row reads *"**3994.50** — the candle's low was 3993.25, **less than one handle
@@ -5702,7 +5702,7 @@ checked.
 
 #### Coverage gaps — episodes 26–29
 
-**K4 · should-fix · `p5-02` — "I'm the author of this algorithm … you have to
+**K4 · should-fix · FIXED · `p5-02` — "I'm the author of this algorithm … you have to
 understand my language first" is dropped. Third site in the H14 family.**
 
 > "the idea of me seeing it before it happens that's proof of concept and it's
@@ -6435,7 +6435,7 @@ a rule (*"if the low already took SSL then the low doesn't need to get taken out
 **THEY'RE PROTECTED LOWS**"*), so `p6-02` drops the first statement of an idea the
 part later builds on — checked against `p6-07` in instalment 4.
 
-**L5 · should-fix · `p6-02` coverage** — **the lesson never says the example sits
+**L5 · should-fix · FIXED · `p6-02` coverage** — **the lesson never says the example sits
 outside the model.** ICT raises it twice, unprompted, because his audience had
 already asked: *"what about the times you said for the model … teaching you
 something that is **outside the model** as the reasons why you're not going to
@@ -6501,7 +6501,7 @@ side in the afternoon."* Conditioned on a pre-holiday Friday, which is why it is
 nit rather than a should-fix. Worth carrying to the `p6-05` read, since that
 lesson is titled *"…Trading the Afternoon"* — see the cross-check in instalment 2.
 
-**L11 · should-fix ·
+**L11 · should-fix · FIXED ·
 [p6-03/lesson.html:22](../content/s2-2022-mentorship/p6/p6-03/lesson.html#L22)** —
 **the day's two trades are presented as one, and the source is ambiguous about
 which numbers belong to which.** ICT is explicit that there were two: the morning
@@ -6713,7 +6713,7 @@ low, **it's early on in the day**."* `p6-05:32` states *"narrative alone is not 
 entry"* in general terms; this is the trade he passed on to prove it, and the answer
 to the lesson's own agenda question about *managing* a bias rather than changing it.
 
-**L20 · should-fix · `p6-04` coverage** — **the live-money warning is dropped in
+**L20 · should-fix · FIXED · `p6-04` coverage** — **the live-money warning is dropped in
 full, and it is the safety frame on the whole lesson.** ep37:71-85:
 
 > *"if you're out here trying to gamble with live money — **which is what none of
@@ -6739,7 +6739,7 @@ not: *"**not all the time but most of the time** they lose their precision"*
 (ep37:176-177). The repeated *"can be"* preserves the register, which is why this is
 a nit and **L22** is not.
 
-**L22 · should-fix ·
+**L22 · should-fix · FIXED ·
 [p6-04/lesson.html:50](../content/s2-2022-mentorship/p6/p6-04/lesson.html#L50)** —
 **a timetable the source refuses to give, and `p5-02` keeps the refusal.** The
 lesson: *"Do it for **weeks and months, certainly through the first year**, and you
@@ -6770,7 +6770,7 @@ gives one short, covered below the short-term low. Same shape as **L11** and muc
 smaller — the re-entry's figures are on the Twitter vignette, not in the episode, so
 there is nothing to state beyond its existence.
 
-**L25 · should-fix ·
+**L25 · should-fix · FIXED ·
 [p6-04/quiz.js](../content/s2-2022-mentorship/p6/p6-04/quiz.js)** —
 **the worst-constructed quiz in the corpus, and it fails in a way no previous one
 did: frequency without severity.** 80% strict-longest / 80% expected score beats
@@ -6930,7 +6930,7 @@ failing setup. What the lesson teaches and never tests:
 
 *Fix:* roughly **+4 questions**, all sourced from material already in the lesson.
 
-**L29 · should-fix ·
+**L29 · should-fix · FIXED ·
 [p6-06/lesson.html:98](../content/s2-2022-mentorship/p6/p6-06/lesson.html#L98)** —
 **the lesson's strongest negative claim is stated absolutely and ICT concedes the
 opposite twenty lines later.** The lesson: *"This is why support and resistance is
@@ -6950,7 +6950,7 @@ declines to assert, and a reader who has made money on levels is told the method
 cannot work. Same family as **L21** and **L22** — a possibility qualifier removed —
 but attached to the most categorical statement in the lesson.
 
-**L30 · should-fix · `p6-06` coverage** — **two rules from the son's model are
+**L30 · should-fix · FIXED · `p6-06` coverage** — **two rules from the son's model are
 dropped, and both are the ones that stop him trading.** The lesson gives the model
 in detail — the four times, the pattern, five points, one live trade — and omits
 both of its brakes:
@@ -7131,7 +7131,7 @@ difference that the *content* is right. *Fix:* keep the teaching, attribute the
 label — or state it in ICT's own formulation (*"a low that has already taken sell
 side does not need to be taken again"*). Direct input to batch M.
 
-**L37 · should-fix · `p6-07` coverage** — **the six-rule bias procedure is
+**L37 · should-fix · FIXED · `p6-07` coverage** — **the six-rule bias procedure is
 presented without the qualifier ICT attaches to it in the same breath.** `p6-07`
 renders the keys to daily bias as six numbered `.callout rule` blocks. In the
 transcript, Rule 1 arrives with two hedges attached:
@@ -9320,8 +9320,18 @@ The fix pass, **2026-08-08**, run against the repair plan above. **All four tier
 are complete.** Tiers 1 and 2 ran first (below); Tiers 3 and 4 followed in the same
 pass. A fifth, **unscheduled** pass followed the tiers and closed the four items
 the plan never owned — **K11**, **N16**, **M14**'s summary half and **F7**'s
-missing enforcement; it has its own section at the end, and the "not done" notes
-inside the Tier 3/4 sections below are the record as it stood then, not now.
+missing enforcement — and a **Tier 5** then authored 31 of the findings the plan
+never scheduled at all. Both have their own sections at the end, and the "not
+done" notes inside the Tier 3/4 sections below are the record as it stood then,
+not now.
+
+**Running total, counted off the `· FIXED` marks in this document: 6 blockers,
+55 should-fix and 14 nits repaired**, against the audit's 6 / 95 / 158. What
+remains open is **~40 should-fix and ~143 nits**, and the Tier 5 section states
+which of them were declined and why. (The mechanical count finds 6 / 94 / 157
+`**ID · severity` headers — two findings are recorded inside prose or tables
+rather than as headers, which is the same ±2 reconciliation gap the audit's own
+roll-ups carry.)
 
 Every replacement below is quoted from the source named in its last column.
 `python build.py` emits **zero warnings** and `python verify.py` reports
@@ -9761,9 +9771,11 @@ today (45 and 43), so the check passes on the current tree.
 The remaining **77 should-fix / 147 nits** were read via the two roll-ups and
 batch N and sorted by *whether the corpus says something the source does not*
 (a §1 defect) rather than *whether the source says more than the corpus*
-(condensation, which is what a lesson is). The proposal is recorded in the
-handover, not here, because it needs agreement before any of it is authored.
-Two housekeeping results from that read are recorded below as contradictions.
+(condensation, which is what a lesson is). Four groups were proposed —
+**5A** fidelity, **5B** dropped hedges, **5C** taught-but-not-tradeable, **5D**
+option length — and agreement was given for 5A, 5B and 5D. **They were authored
+in the same session and are recorded in the Tier 5 section below.** Two
+housekeeping results from that read are recorded here as contradictions.
 
 #### Contradicting the audit — five more things
 
@@ -9821,6 +9833,126 @@ Two housekeeping results from that read are recorded below as contradictions.
    indifferent to it — but **any future tooling that reads these files as JS will
    trip on it**, and the audit records the hazard without ever recording that a
    live instance of it is sitting in the tree.
+
+### Tier 5 — the triage, authored
+
+Run **2026-08-08**, immediately after the unscheduled pass above, on the triage it
+opened. The remaining 75 should-fix were sorted by *does the corpus say something
+the source does not* (a §1 defect) rather than *does the source say more than the
+corpus* (condensation, which is what a lesson is). **Three of the four proposed
+groups were authored — 31 findings across 26 files. 5C was not** (see below).
+
+`python build.py` emits **zero warnings** and `python verify.py` reports
+**78 lessons, 339 images, 78 video links, 476 quiz questions, 2 summary pages,
+88 exam questions across 2 exams, 0 JS errors** — unchanged on every figure,
+including both question counts. **No question was added, removed or reordered**;
+two quizzes had option text rewritten and two had a single question re-authored
+in place.
+
+#### 5A — fidelity: eighteen sites where the corpus said what the source did not
+
+| Finding | Site | What changed | Source |
+|---|---|---|---|
+| **C3** | `m3-07/lesson.html:10` | The **manufactured quotation** — *"If everyone's looking at the same thing and everyone can't win, the majority has to be wrong"* — replaced by the three real lines C3 identified: *"price has no awareness of your trendline… price only respects where the actual liquidity is"*, the banks *"don't care what you're scribbling all over your charts"*, and confidence in a line being *"really associated closely to flipping a coin."* | `Trendline Phantoms.txt:68-76`, `127-134`, `285-292` |
+| **F3** | `s1 summary.html:222` | C3's propagation, which had been **promoted from quotation to assertion**. *"the majority has to be wrong"* → *"price has no awareness of the line — it only respects where the liquidity actually is."* | same |
+| **F4** | `s1 summary.html:223` | *"the **single worst thing** a trader can do"* → ICT's actual register: *"**one of the worst games to play**, especially for the new trader — even seasoned pros don't do it."* | `Head Shoulders Pattern.txt:108-120` |
+| **B1** | `m2-02/lesson.html:22` | The invented comparison *"the same move that gives the hourly trader 1:1 gives you 3:1"* → what the source says: by the time price reaches **7542**, where the hourly trader is **only just being filled**, the refined trade is already at **3R**. The overstatement was a full R. | `Framing Low Risk Trade Setups.txt:209-217` |
+| **F5** | `s1 summary.html:123` | B1's propagation, same replacement. | same |
+| **B2** | `m2-02/lesson.html:19` | *"buyer at 7520, stop 7507 — 17 pips"* (7520 − 7507 = **13**) → *"buyer at 7520, with ICT's stated **17-pip stop**"*. The explicit level is dropped rather than guessed, per §1; the 5-minute row keeps 7507, which is the reading that makes **its** arithmetic right. | B2's own analysis; transcript renders the level `757` at both sites |
+| **C4** | `m3-01/lesson.html:31` | The lesson's three flip cards and its own quiz named **two different triads**, so a reader could not answer the quiz from the lesson. Added ICT's second naming — *orderblocks, stop runs (turtle soup), liquidity voids* — as the same three from the other end. Quiz untouched. | `Timeframe Selection.txt:1345-1362` |
+| **D1** | `m4-05/lesson.html:26` | *"A breaker uses the **entire candle range and the bodies**"* — two rules asserted as one. Now the entire candle range only, with ICT's stated reason for the candle choice. **The "bodies" half is dropped, not demoted**: its only source is the note-taker's *"that's what I saw in another video"*, an outside-teaching import §1 does not permit. | `ICT Breaker Block.txt:230-236` |
+| **D1** | `m4-05/quiz.js:3` | The `e` that repeated the merged phrase. Options, `q` and `a` untouched. | same |
+| **H1** | `p2-01/lesson.html:16` | The **reversed verb**. *"they tend to **lack** the double return"* → *"they **tend to give** a double return to a specific level"*, plus the demonstration that settles the ambiguous sentence: swing high, rally through it, no fair value out there, drop back in, run again and take it. | `ep8:50-64` |
+| **H3** | `p2-02/lesson.html:49` | The $85-on-six-micros figure implies **$1 per handle** and contradicts `p2-06`'s **$2**. The number is ICT's own rough maths, so it stays — with the hedge he attaches to it (*"I'm roughing, I don't have a calculator"*), the two harder figures from the same breath ($54 of heat on six micros; **$20 per handle** on the mini), and a pointer to Lesson 6's **1 point = 4 ticks = $2**. | `ep9:536-562`; `ep13:344-352` via `p2-06` |
+| **I1** | `p3-01/lesson.html:22` | The unsourced purpose clause *"Anticipating the pause is what stops the pause from shaking you out"* deleted. | — |
+| **I1** | `p3-01/quiz.js:4` (index 2) | The question built on it re-pointed at what ICT does say: *"What does he expect price to do around 14,120–14,140?"* → **"Consolidate and reaccumulate for new longs"**. Re-authored **in its own slot** (one `ict-quiz` key re-points, not four). | `ep14:38-45` |
+| **J1** | `p4-02:70` | *"roughly **$8,000 to $12,000**"* — a range manufactured by putting two position sizes behind one subject. Split: **$12,000** for what he was actually carrying, **$8,000** for one contract held and let run. | `ep21:539-542`, `655-660` |
+| **K1** | `p5-03/lesson.html:27-28` | **Three fills where the episode has two.** *Second fill* and *The add* merged into one row — the 3996.25 seven-tick fill **is** the limit-order add. | `ep29:226-239`, `196-198`, `262-272` |
+| **K2** | `p5-03/lesson.html:31` | The close-proximity characterisation moved from the second fill back to the **first**, where the source puts it — and where it belongs, because the first is the one the Camtasia restart cost him, which is what motivates the rule. | `ep29:272-285`, `164-174` |
+| **K3** | `p5-03/lesson.html:27` | *"less than one handle of heat"* printed beside 3994.50 and 3993.25, which give **1.25**. Now states 1.25 and records that ICT talks himself down to *"less than one handle"* mid-sentence — the self-correction the same lesson resolved correctly one row below. | `ep29:276-277` |
+| **L11** | `p6-03/lesson.html:23` | Two trades presented as one. The management callout keeps the entry-and-partials chain; a new callout reports that ICT names **a second trade** and that **which figures belong to which is not resolvable from the episode** — flagged, not resolved, per §1. | `ep36:100-119`, `197-218` |
+| **L29** | `p6-06/lesson.html:98` | *"support and resistance is a fallacy"* stated flat, with ICT conceding the opposite twenty lines later. The concession restored, conditional as he states it: *"Can you make money with retail concepts? Yes. Yes you can — <strong>if</strong> you understand how to reprice like I'm teaching it."* | `ep39:1199-1207` |
+
+#### 5B — the dropped hedges: twelve sites where omission strengthened the claim
+
+Removing a qualifier makes the surviving claim stronger than the source, which is
+an over-claim by omission and cuts directly against §1's prefer-under-claiming.
+
+| Finding | Site | What was restored | Source |
+|---|---|---|---|
+| **H14** | `p2-05/lesson.html:38-39` | Both halves: **(a)** the algorithmic rationale that makes the taxonomy a stop-location forecast — *"it cannot see your stop… <strong>but it knows where people will have their stops based on these ideas</strong>"*; **(b)** ICT's epistemic hedge — *"I'm creating a language… <strong>not exactly like the algorithm does, but very, very close</strong>"*. | `ep12:806-841`, `851-862`, `1066-1075` |
+| **H19** | `p2-06/lesson.html:10` | The **$256,000** context behind the 21% morning, and both failure modes ICT names it to avoid: disbelief, and imitation with a live account. *"Either one of those things are not my goal."* Plus H19's third statement of the create-a-language hedge. | `ep13:17-31`, `863-883`, `1141-1165` |
+| **I4** | `p3-03/lesson.html:9` | Both **hindsight caveats** on a lesson that presents six setups found in review: *"obviously I have the benefit of hindsight here"*, and *"it's not contrived, it's not form-fitted, it's not cherry-picked."* | `ep16:81-84`, `1137-1150` |
+| **I10** | `p3-05/lesson.html:8-9` | *"**there is no method that hits every single time**… it's imperfect"*, the operator-ownership clause, *"if I had a way that I would never lose, I would have never came out publicly"* — plus the win-rate teaching that was **absent from Part 3 entirely**: *"a risk-to-reward model is essential for you to be net profitable. **That's not true.**"* | `ep18:117-135`, `377-380`, `388-401` |
+| **J2** | `p4-02:40` | The hindsight qualifier on the lesson's strongest read: *"obviously **with the benefit of hindsight**, it's extremely bearish."* The lesson had followed `ep-21.md`, which drops it — the third instance of preferring the note over the transcript, and the only one with a consequence. | `ep21:499-512` |
+| **J13** | `p4-05` tail | *"**If it doesn't fit you, folks, there's a lot of other ways to trade. You don't need to trade my way.**"* | `ep24:768-773` |
+| **J13** | `p4-06` tail | *"**If it doesn't fit you there's no harm in that**… What's the difference? Personality and capacity."* | `ep25:1596-1608` |
+| **K4** | `p5-02` tail | The authorship asymmetry: *"**I'm the author of this algorithm, so I can operate in it very efficiently. You, as a student of mine, you have to understand my language first.**"* | `ep27:421-434` |
+| **L5** | `p6-02/lesson.html:9` | That the whole example **sits outside the model** — raised twice, unprompted: *"teaching you something that is outside the model"*, *"I'm not limited to this model."* | `ep35:146-153`, `413-423` |
+| **L20** | `p6-04/lesson.html:9` | The **live-money warning** that frames the lesson: *"if you're out here trying to gamble with live money — which is what none of you should be doing"*, the paper-then-demo sequence, *"you've done that on your own — I've done nothing to instigate that"*, and *"I try to be responsible as a mentor."* | `ep37:71-85`, `151-153` |
+| **L22** | `p6-04/lesson.html:51` | The two qualifiers on the timetable: *"weeks and months — <strong>how much time I don't know</strong>, maybe half a year or so, certainly by the first year"*. Removes the cross-lesson conflict with `p5-02:54`'s no-timetable statement. | `ep37:637-645` |
+| **L30** | `p6-06/lesson.html:126` | The son's model's **two brakes**, both conditions for standing down: no medium/high-impact news → *"he shouldn't be engaging with his normal risk percentage"*; and no pattern → *"he has to just move to the sidelines and do nothing."* | `ep39:1259-1268`, `856-866` |
+| **L37** | `p6-07/lesson.html:63` | The qualifier on the six-rule bias procedure, from the same breath as Rule 1: *"**I'm not a hero**… a procedure and process that will lead to an outcome that **generally — not all the time, but generally** — yields a specific result"*, plus *"sometimes I get it wrong."* | `ep40:591-607`, `658-659` |
+
+#### 5D — the two option sets still below chance
+
+| Finding | File | Before | After |
+|---|---|---|---|
+| **G16** | `p1-06/quiz.js` | 8 questions, **25%** not-longest, max margin **8**, max spread **15** | **75%**, max margin **1**, max spread **6** |
+| **L25** | `p6-04/quiz.js` | 10 questions, **20%** not-longest, max margin **7**, max spread **13** | **70%**, max margin **1**, max spread **7** |
+
+Tier 4's discipline was kept exactly: **no `q`, no `a` and no `e` changed** — only
+option text — verified mechanically against `HEAD` for both files, so no stored
+`ict-quiz` result changed meaning. Distractors were lengthened into plausible wrong
+*mechanisms* rather than the correct option being padded.
+
+**Both were deliberately landed at chance, not at the maximum.** A first draft
+reached **100%** on both, which is the two-tailed over-correction Tier 4 warned
+about: at 100% *"eliminate the longest option"* turns a 25% guess into 33%. Four
+options were walked back to put the correct answer marginally longest again.
+
+#### What 5C was, and why it was not done
+
+**5C — "taught, but not tradeable"** (`D3`, `D4`, `E5`, `E6`, `E9`, `E11`, `E12`,
+`E17`, ~8 findings) was proposed with the honest caveat that it is *debatable as a
+defect*: batch E's shape is that four of seven Month 4b lessons teach what a thing
+**is** and never how to trade it, and `m4-02` never defines the two terms its own
+bullets carry. It is real, but it is a **completeness** judgement rather than a §1
+one — the lesson does not say anything the source doesn't. It was flagged as the
+author's call and the call was to leave it. **The ~37 remaining coverage findings
+were declined for the stronger version of the same reason**: the source saying
+more than the lesson is condensation working as designed, and authoring them all
+would roughly double Section 1's lesson lengths for no fidelity gain.
+
+#### Contradicting the audit — three more things
+
+1. **The published option-length figures use "not *uniquely* longest", and a
+   plausible reading of the method note gives the wrong answer by ~15 points.**
+   Re-measuring with `L[correct] < max(L)` — the obvious reading, "the correct
+   option is strictly shorter than the longest" — returns **S1 quizzes 60%, S1 exam
+   44%, corpus 54%**, against the published **75% / 69% / 68%**. The definition that
+   reproduces every published figure to the digit is **`L[correct] <= max(others)`**:
+   a correct option **tied** for longest counts as *not longest*. That is defensible
+   — a tie gives a guesser nothing — but it is nowhere stated, and Tier 4 drove
+   margins toward zero, which manufactures exactly the ties the two definitions
+   disagree about. **Any future measurement must state which it is using**; the
+   `I17` regex note is necessary but not sufficient.
+2. **`p3-03` is a third set below chance, and it is not a logged finding.**
+   Measured now: **27%** not-longest across 11 questions, max margin **7**. `I7`
+   filed only its single margin-20 question, which Tier 4 fixed, so the *set* was
+   never logged and appears in no list. It was left alone deliberately — it is
+   outside the agreed Tier 5 scope — but it means **G16 and L25 were not the only
+   two**, as the unscheduled pass's contradiction 4 asserted. The right statement is
+   that they were the only two *logged* ones.
+3. **`D1`'s fix is a deletion, and the audit's suggested alternative was unsafe.**
+   D1 offers *"if the body variant is worth keeping, mark it as the alternative the
+   note calls it."* But the note's own words are *"that's what I saw in **another
+   video**"* — an explicit import from a different teaching, which §1 forbids
+   regardless of how it is labelled. Marking it as an alternative would have kept
+   outside material in the lesson with a citation attached. It was dropped instead,
+   and the space filled with ICT's stated reason for the candle choice from this
+   lesson's own transcript. **A note page is a permitted source; a note page
+   reporting another teaching is not.**
 
 ## Fixed in flight
 
