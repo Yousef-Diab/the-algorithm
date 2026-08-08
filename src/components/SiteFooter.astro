@@ -1,32 +1,166 @@
 ---
 import { u } from "../lib/course";
+
+const REPO_URL = "https://github.com/RitSpunterprise/the-algorithm";
+const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
-  <p>
-    The Algorithm — an interactive course built from ICT's mentorship notes and
-    original video transcripts. Not affiliated with ICT or any trading firm.
-    Trading involves risk.
-  </p>
-  <a href={u('course')}>Back to the course</a>
+  <div class="inner">
+    <div class="f-grid">
+      <div class="f-col f-brand">
+        <a class="brand-link" href={u('')}>
+          <span class="b-mark" aria-hidden="true">A</span>
+          <span class="b-name">The <em>Algorithm</em></span>
+        </a>
+        <p class="f-desc">
+          An interactive course built from ICT's mentorship notes and original
+          video transcripts. Not affiliated with ICT or any trading firm.
+          Trading involves risk.
+        </p>
+      </div>
+
+      <div class="f-col f-made">
+        <p class="f-made-by">
+          Made with <span class="heart" aria-hidden="true">♥</span> by <strong>Yousef Diab</strong> and <strong>Ritspun</strong>
+        </p>
+        <p class="f-collab">If you want to collaborate:</p>
+        <a class="f-repo" href={REPO_URL} target="_blank" rel="noopener noreferrer">
+          <svg
+            viewBox="0 0 16 16"
+            width="17"
+            height="17"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+            />
+          </svg>
+          <span>github.com/RitSpunterprise/the-algorithm</span>
+        </a>
+      </div>
+
+      <div class="f-col f-links">
+        <p class="f-head">Course</p>
+        <a class="f-link" href={u('course')}>Back to the course</a>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <p>© {year} The Algorithm</p>
+    </div>
+  </div>
 </footer>
 
 <style>
   .site-footer {
     border-top: 1px solid var(--border);
-    padding: 26px 0 44px;
-    text-align: center;
+    background: var(--bg2);
     color: var(--dim);
     font-size: 13px;
     line-height: 1.7;
   }
-  .site-footer p {
-    margin: 0 auto 10px;
-    max-width: 560px;
+  .site-footer .inner {
+    padding-top: 30px;
+    padding-bottom: 0;
   }
-  .site-footer a {
+  .f-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1.2fr 1fr;
+    gap: 28px;
+    padding-bottom: 24px;
+  }
+  .f-col p {
+    margin: 0;
+  }
+  .brand-link {
+    display: inline-flex;
+    gap: 9px;
+    align-items: center;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .brand-link .b-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+  }
+  .brand-link .b-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .brand-link .b-name em {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .f-desc {
+    margin-top: 10px !important;
+    max-width: 380px;
+  }
+  .f-made-by {
     color: var(--muted);
   }
-  .site-footer a:hover {
+  .f-made-by strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .f-made-by .heart {
+    color: var(--red);
+  }
+  .f-collab {
+    margin-top: 6px !important;
+  }
+  .f-repo {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+    margin-top: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .f-repo:hover {
     color: var(--accent);
+  }
+  .f-repo svg {
+    flex: none;
+  }
+  .f-links .f-head {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .f-link {
+    display: inline-block;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .f-link:hover {
+    color: var(--accent);
+  }
+  .f-bottom {
+    padding: 12px 0 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 12px;
+  }
+  @media (max-width: 720px) {
+    .f-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .f-desc {
+      max-width: none;
+    }
   }
 </style>
