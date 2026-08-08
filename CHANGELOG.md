@@ -61,6 +61,18 @@ agents update the `Unreleased` section before reporting work as done.
   non-null-assertion rules off).
 
 ### Changed
+- `astro.config.mjs` is now env-driven: `site` and `base` default to the GitHub
+  Pages target (`https://yousef-diab.github.io` + `/the-algorithm`) but can be
+  overridden at build time with `SITE_URL` and `BASE_PATH` (e.g. `BASE_PATH=/`
+  for root-level hosts like Coolify).
+- `astro.config.mjs` now sets `output: "static"` explicitly, documenting that
+  the site is a pure prerendered build (no adapter, no SSR) — matching Astro's
+  default.
+- `verify.mjs` now derives its base path from `BASE_PATH` (defaulting to
+  `/the-algorithm`), so `pnpm verify` matches whichever base the site was built
+  with.
+- Site footer and README badges now point at the upstream repository
+  (`Yousef-Diab/the-algorithm`) instead of the fork.
 - Agent skills reorganized: the Python-era skills (`async-python-patterns`,
   `dbos-python`, `pydantic-ai`, `pydantic-models-py`,
   `python-development-python-scaffold`, `python-fastapi-development`,
@@ -154,6 +166,15 @@ agents update the `Unreleased` section before reporting work as done.
   the "Lessons" label), keeping the brand centered with room to spare.
 
 ### Documentation
+- `README.md` deploy section now documents both hosts: GitHub Pages via
+  `withastro/action@v6` with the defaults, and Coolify as a plain static build
+  (`BASE_PATH=/` env var, `dist/` as the output — no Dockerfile needed) —
+  including a table of the `SITE_URL` / `BASE_PATH` overrides.
+- `README.md` rewritten from scratch: dropped the outdated single-file Python
+  build description and now documents the current Astro 7 stack — features,
+  tech stack, quick start (pnpm dev/build/preview/verify/check), project
+  structure, course content, content model, verification & CI/CD, roadmap,
+  credits and disclaimer — in the standard top-repository README format.
 - `AGENTS.md` rewritten for the Astro stack (commands, architecture, authoring
   conventions unchanged).
 - `CLAUDE.md` updated to match the current Astro stack and merged with
@@ -184,6 +205,12 @@ agents update the `Unreleased` section before reporting work as done.
   file (`AGENTS.md` vs `CLAUDE.md`).
 
 ### Verification
+- `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
+  env-driven deployment config: `site` + `base` now read `SITE_URL` /
+  `BASE_PATH`, and `verify.mjs` derives its base from `BASE_PATH`. Verified in
+  both modes — default GitHub Pages (`/the-algorithm`) and root-level
+  (`BASE_PATH=/`, the Coolify case): 84 routes, 78 lessons, lightbox, exams,
+  review pages, theme switcher, zero page/console errors in each.
 - `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
   notes save-button and responsive footer work: 84 routes, 78 lessons
   (titles, charts, quiz grade/reset, video links, notes box + save button),

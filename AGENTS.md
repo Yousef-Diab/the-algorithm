@@ -381,7 +381,9 @@ It exits non-zero and lists the problems on any failure. One-time setup:
 `pnpm install --frozen-lockfile` → `pnpm check` (lint) → `pnpm build` → install
 Chromium → `pnpm verify`. `.github/workflows/deploy.yml` publishes `dist/` to
 GitHub Pages via `withastro/action@v6` (the `site` + `base` live in
-`astro.config.mjs` — paths are `/the-algorithm`).
+`astro.config.mjs` — paths are `/the-algorithm`; both are overridable at build
+time via `SITE_URL` / `BASE_PATH`, e.g. `BASE_PATH=/` for root-level hosts
+like Coolify, deployed as a static build with `dist/` as the output).
 
 ---
 
