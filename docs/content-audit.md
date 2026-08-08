@@ -82,7 +82,7 @@ go-ahead.
 | K | S2 · Part 5 | p5-01 … p5-07 (7) | 57 | ☑ 2026-08-08 (notes + transcripts) |
 | L | S2 · Part 6 | p6-01 … p6-08 (8) | 64 | ☑ 2026-08-08 (notes + transcripts) |
 | M | S2 · summary + exam | `summary.html`, `exam.js` | 40 | ☑ 2026-08-08 (all 40 lessons) |
-| N | Cross-cutting sweep | terminology, cross-refs, slugs, `data-month` | — | ☐ |
+| N | Cross-cutting sweep | terminology, cross-refs, slugs, `data-month`, reconciliation | — | ☑ 2026-08-08 (all 160 content files) |
 
 ---
 
@@ -8552,6 +8552,731 @@ cross-references (**F12**, **M7** — 72 of 72 across both summaries resolve);
 `data-kind` / `data-section` / slot correctness on all four review pages; and the
 build itself, which emits zero warnings and zero JS errors.
 
+### Batch N — the cross-cutting sweep
+
+The last batch, and a **synthesis** one: no lesson and no transcript was read
+whole. The work was eight corpus-wide mechanical scans over all **160 content
+files** (78 `lesson.html`, 78 `quiz.js`, 2 `summary.html`, 2 `exam.js`) plus
+targeted reads of the ~30 lines each reconciliation actually turned on. Every
+number published below was re-derived in this batch; where a re-derivation
+disagrees with a published one, the disagreement is stated and the earlier figure
+corrected.
+
+**Headline: the audit's single most consequential finding is not a new defect but
+a new *repair path* for the oldest one.** Section 1 already contains the correct
+definition of a liquidity void — in **`m1-06`, thirty-three lessons before
+`m4-11` gets it wrong** — and `m1-06/quiz.js` grades it as the right answer while
+`s1 exam.js` grades the opposite as the right answer to the same question
+(**N1**). So **E1/F1** is not a gap to be filled from outside; it is an internal
+contradiction with its own fix already written, in Section 1's own words. That
+also retires **M6**'s suggestion that Section 2's `p6-05` is the cheapest source
+for the wording — using it would have imported one section's material into the
+other, which is the thing §1 forbids.
+
+**Four of the brief's own figures did not reproduce.** The `intermediate-term`
+tally is **10/33, not 7/29** (**N3**); `kill zone` is **not** 0 (**N5**); the
+exam-repeats-a-quiz-stem count is **5, not 4** (**N2**); and *fourteen* Section 1
+lessons below the four-question floor are **fifteen** (**N13**). Three of the
+four are the last batch catching the arithmetic of earlier ones, which is what
+the brief asked it to do.
+
+**Eighteen findings: 0 blockers, 2 should-fix, 16 nits.** No new blocker exists
+anywhere in the corpus — the six are the six.
+
+#### The four declared dimensions of the batch, disposed of first
+
+**Slugs, ids, `data-month`, crumbs — re-verified from scratch, 78 of 78 clean.**
+Not taken on trust: a fresh scan checked, for every lesson, that `id` equals the
+folder name, that `data-month` equals both `id[:2]` and the containing
+directory, that every `data-slug`'s first five characters equal `id[:5]`, and
+that the `.crumb`'s *"Month N · Lesson M"* / *"Part N · Lesson M"* parses and
+matches the id in both fields. **Zero problems, four checks, 78 lessons.** This
+dimension is closed and should not be re-litigated.
+
+**Cross-references — closed at 72 of 72** (**F12** 24, **M7** 48), confirmed by
+the *Fixed in flight* exception never firing in either batch. Not re-run; nothing
+in `content/` changed since.
+
+**Terminology — the whole "split" is one fact, and it is not a defect (N4).**
+Every large variant pair in the corpus resolves to the same thing: **Section 1
+and Section 2 use different vocabularies, and each is internally consistent.**
+Measured across all 160 files:
+
+| Variant A | S1 | S2 | Variant B | S1 | S2 | |
+|---|---|---|---|---|---|---|
+| `orderblock` | **115** | **0** | `order block` | **1** | **201** | a clean divide, one leak |
+| `FVG` | **27** | 4 | `fair value gap` | 15 | **315** | the same divide, inverted |
+| `short-term` | 33 | 188 | `short term` | **0** | 4 | S2 tail only |
+| `long-term` | 9 | 17 | `long term` | **0** | 4 | S2 tail only |
+| `killzone` | 2 | 41 | `kill zone` | **0** | 2 | both quoted speech (**N5**) |
+| `intermediate-term` | 3 | 7 | `intermediate term` | **0** | 33 | (**N3**) |
+| `back testing` etc. | **0** | 44 | — | | | five variants, all S2 (**N6**) |
+
+Read down the S1 columns and the picture is unambiguous: **Section 1 never once
+uses `order block`, `short term`, `long term`, `kill zone` or `intermediate term`
+in its own prose.** The one exception is a single quiz question (**N4**). So there
+is no corpus-wide inconsistency to normalise — there are two house styles, one
+per section, and normalising them would be a cosmetic rewrite of 300+ sites for
+no reader benefit. The residue worth fixing is small and named in **N4**–**N6**.
+
+**`data-month`, chart counts, review-page structure, the build** — all confirmed
+clean and not re-derived beyond the scan above. `python build.py` emits **zero
+warnings**; `python verify.py` passes: *78 lessons, 339 images, 78 video links,
+451 quiz questions, 2 summary page(s), 85 exam questions across 2 exam(s), 0 JS
+errors.* **Nothing in `content/` was edited in this batch.**
+
+#### N1 — the liquidity-void repair path, and it changes E1/F1's scope
+
+**N1 · should-fix ·
+[m1-06/lesson.html:17](../content/s1-ict-core/m1/m1-06/lesson.html#L17),
+[m1-06/quiz.js:4](../content/s1-ict-core/m1/m1-06/quiz.js#L4) and
+[m4-02/lesson.html:37](../content/s1-ict-core/m4/m4-02/lesson.html#L37) against
+**E1**/**F1**'s four sites** — **Section 1 teaches the liquidity void correctly in
+Month 1 and incorrectly in Month 4, and its two exams grade mutually exclusive
+answers to the same question.**
+
+The correct definition is already there, in Section 1's own voice, from Section
+1's own source:
+
+> *"A **liquidity void**: sudden movement with large ranges, very little wicks,
+> quick — price spent very little time at those levels. It will want to trade
+> back up into that area and **close it in** later **(not always immediately)**."*
+> — `m1-06:17`
+
+and its quiz key is unambiguous:
+
+> *"What defines a liquidity void?"* → **`"Fast, one-sided, wickless range"`**,
+> `e:` *"Big-range, quick, one-sided movement."* — `m1-06/quiz.js:4`
+
+`m4-02:37` presupposes the same reading — *"a liquidity void / **big one-candle
+range** beneath your long"*. Against those three sites stand **E1**'s two
+(`m4-11:9`, `m4-11/quiz.js:2`) and **F1**'s two (`s1 summary.html:240`,
+`s1 exam.js:235-237`), all four asserting *"absolutely no trading took place"*.
+
+Three consequences, and they are what makes this worth a finding of its own:
+
+- **Two quiz keys in one section grade contradictory answers to the same
+  question.** `m1-06/quiz.js:4` marks *"fast, one-sided, wickless range"*
+  correct; `s1 exam.js` q39 marks *"a range where no trading took place"*
+  correct. The cross-file stem scan (**N2**) puts them at Jaccard 0.67 — near
+  enough that a reader meets both. This is the most concrete statement the audit
+  can make about **E1**, and no per-batch scope could have made it: `m1-06` is
+  batch A and `m4-11` is batch E.
+- **The repair needs no new sourcing and no cross-section import.** `m1-06`'s
+  wording drops straight into `m4-11:9`, `s1 summary.html:240` and
+  `s1 exam.js:235-237`. **M6** proposed `p6-05`'s *"not likely to occur most
+  times"* as the cheapest source for the qualifier; that remains true for the
+  *qualifier*, but for the **definition** — the part that is actually wrong —
+  Section 1 supplies itself. Taking `p6-05`'s wording into a Section 1 page would
+  be a §1 breach dressed as a fix.
+- **`m1-06:17`'s own hedge covers the `L14` contradiction too.** *"(not always
+  immediately)"* is Section 1 declining, in Month 1, to claim the unconditional
+  fill that `s1 summary.html:240` asserts in Month 4. So **the cross-section
+  contradiction L14 identified has an intra-Section-1 witness**, and the fix
+  stays entirely in Section 1 exactly as **M6** concluded — but for a stronger
+  reason than M6 had.
+
+*Scope, restated:* **E1/F1 is four files** — `m4-11/lesson.html`,
+`m4-11/quiz.js`, `s1 summary.html:240`, `s1 exam.js:235-237` — and `s1 exam.js`
+q39 needs a **new option set**, not a re-marked `a`, because **F1** established
+none of its four options states the correct definition. `m1-06/quiz.js:4`'s four
+options are the model.
+
+#### N2 — five exam questions reproduce their own lesson's quiz stem, and only one of them matters
+
+**N2 · nit — the cross-file stem sweep, and the ruling.** Run over all **536**
+questions in all **80** files, comparing question stems by token-set Jaccard
+(stopwords removed, hyphens split). At **≥ 0.75** it returns **6 pairs — one more
+than the brief's scan, which missed `m2-06`/`s1-exam` because it treated
+*"high-reward"* and *"high reward"* as different tokens**:
+
+| Pair | j | |
+|---|---|---|
+| `m2-06:Q1` / `s1-exam:Q16` | **1.00** | *"How many things in agreement make a high-reward setup?"* — **the pair the brief's scan missed** |
+| `m4-06:Q1` / `s1-exam:Q34` | **1.00** | *"How is a bearish rejection block framed?"* |
+| `m4-11:Q1` / `s1-exam:Q39` | **1.00** | *"What is a liquidity void?"* — the **E1/F1** pair |
+| `m4-13:Q2` / `s1-exam:Q41` | **1.00** | *"What is Type 2 (hidden) divergence?"* |
+| `p6-02:Q2` / `s2-exam:Q36` | **1.00** | *"What is the mean threshold of an order block?"* |
+| `m1-04:Q1` / `p2-04:Q2` | 0.75 | *"What defines a swing high?"* — the only cross-**section** pair (**N8**) |
+
+So the count is **4 in the S1 exam (of 45) and 1 in the S2 exam (of 40)**, not
+3 and 1. Dropping the threshold to 0.65 adds three more near-misses in the S1
+exam (`Q11`, `Q18`, and `m1-06:Q3`/`Q39`) and three inside Section 2's lessons
+(three different lessons asking *"what is an order block?"* from three different
+episodes) — the latter are correct by construction under one-episode-per-lesson
+and are not findings.
+
+**Ruling, stated once because the brief asks for it: re-using a lesson's quiz
+stem in the exam is not a defect.** An exam exists to re-test the section; the
+rate is 9% and 2.5%; and in every one of the five pairs the **option sets are
+entirely different**, so nothing is answerable from memory of the option
+positions. Two of the five are in fact *improvements* — `s1-exam:Q41`'s four
+options are four parallel price/momentum permutations (spread 2) against
+`m4-13:Q2`'s *"Equal highs"* / *"A gap"*, which are the absurdity-distractors
+batch L's fourth technique names. **A fix pass should copy the exam's option set
+back into the quiz, not remove the exam question.**
+
+**The one exception is `m4-11:Q1` / `s1-exam:Q39`.** Both carry **E1**'s inverted
+definition, so **E1's fix must rewrite two questions with the same stem**, and
+`m1-06/quiz.js:4` is the third question on the same subject and the one that is
+right (**N1**). That is the widening the brief asked to be checked, and it does
+not extend **F1** beyond the four files already named — `m4-11/quiz.js` was
+always in **E1**'s scope.
+
+#### N3–N6 — terminology, recounted
+
+**N3 · nit — `intermediate-term` is 10 hyphenated / 33 unhyphenated. Batch L's
+7/29 is wrong, and `M18` consumed it unchecked.** The recount covers all 160
+files. The earlier figure excluded the 80 quiz/exam files, which hold **2**
+hyphenated and **12** unhyphenated occurrences, and undercounted the rest.
+
+| | hyphenated | unhyphenated |
+|---|---|---|
+| S1 lessons (`m3-03`, `m4-06`) | 2 | 0 |
+| S1 `summary.html` | 1 | 0 |
+| S2 lessons (`p1-06`) | 1 | 0 |
+| S2 lessons (`p2-04/05/06`, `p3-04/05/06`, `p4-03`) | 0 | 21 |
+| S2 quizzes (`p1-06`) | 2 | 0 |
+| S2 quizzes (`p2-04/05/06`, `p4-03`) | 0 | 12 |
+| S2 `summary.html` + `exam.js` | 4 | 0 |
+| **Total** | **10** | **33** |
+
+**M18's conclusion survives intact and only its arithmetic fails.** The
+distribution claim — *the hyphenated form survives only in Section 1, Part 1 and
+the section-level pages* — is exactly right: all 10 hyphenated occurrences sit in
+`m3-03`, `m4-06`, `s1 summary.html`, `p1-06` (lesson + quiz), `s2 summary.html`
+and `s2 exam.js`, and **nowhere else**. Correct both figures in place; the
+finding stands.
+
+**N4 · nit — the `orderblock` / `order block` split is a section boundary, not an
+inconsistency, and it leaks exactly once.** `orderblock` is **115 occurrences,
+all in Section 1, 0 in Section 2**. `order block` is **202, of which 201 are in
+Section 2**. The single leak is
+[`m4-07/quiz.js:3`](../content/s1-ict-core/m4/m4-07/quiz.js#L3), and it is the
+worst possible shape for one — **the question uses both forms inside itself**:
+
+> *"What is a **reclaimed order block**?"* → options *"A brand-new
+> **orderblock**"*, *"A failed **orderblock** entirely"*
+
+Section 1's slugs, `months.js` titles and lesson headings all use *Orderblocks*,
+and changing a slug renames files in `images/`, so **prose and slugs are separate
+questions and only the prose one is open**. *Recommendation:* leave the section
+house styles alone; align the two option strings in `m4-07/quiz.js:3` to the
+stem's form (or the stem to theirs). One line, one file, and it is the only
+`order block`/`orderblock` edit the corpus needs.
+
+**N5 · nit — `kill zone` is not 0; it occurs twice, and both are correct.** The
+brief's scan reported 0 because it excluded quiz files. Both occurrences are in
+[`p4-01/quiz.js`](../content/s2-2022-mentorship/p4/p4-01/quiz.js) and both sit
+**inside verbatim ICT quotations** in the `e` field — *"that's the **kill zone**
+for London open"*, *"the **kill zone** for London open is still open"* — while
+the same file's own prose (both question stems, one option) says `killzone`. So
+the file is internally consistent and the exception is a quotation being quoted
+accurately. **Do not normalise it**: §1 makes the quoted form the right one.
+Recorded so a future find-and-replace does not "fix" it.
+
+**N6 · nit — `back test` has five variants, all in Section 2, and no lesson uses
+more than one.** `back testing` 28 · `backtest` 7 · `backtesting` 5 · `back-test`
+2 · `back-testing` 2 — **44 occurrences, 0 of them in Section 1**. The dominant
+form is `back testing` (64%). Per-file the usage is consistent, so no reader
+meets two forms in one place; this is the corpus's most fragmented term and its
+least consequential one. *Recommendation:* normalise to `back testing` in a fix
+pass, or leave it — it is a nit either way.
+
+**N7 · nit — `FVG` is used ten times in Section 1 before it is ever glossed.**
+Section 1 uses the abbreviation **27** times and expands it exactly once, in
+`m4-12`'s **title** (*"ICT Fair Value Gaps (FVG)"*) — the 34th of its 38 lessons.
+**Ten uses precede it**, in course order: `m1-06/lesson.html` (1),
+`m2-04/quiz.js` (2), `m4-01/quiz.js` (1), `m4-03/quiz.js` (1), `m4-06/quiz.js`
+(1) and `m4-09` (2 + 2). Two of those lessons do spell *fair value gap* in their
+own body first (`m1-06:18`, `m2-04:17`) without ever tying the two strings
+together. Section 2 does not have
+the problem: `p1-02` names the concept in its title and defines *"the **fair
+value gap**"* in the body at `:54`, and Section 2 then uses the long form 315
+times against 4. *Fix:* one parenthesis at `m1-06:18` — *"a fair value gap
+(FVG)"* — which is the first site in reading order.
+
+#### N8 — the swing high, and an explicit refusal
+
+**N8 · nit — the two sections' definitions of a swing high agree, and Section 2's
+qualifier must NOT be carried into Section 1.** This is the corpus's only
+cross-section near-duplicate question (**N2**), so it is the one place a
+consistency sweep could do real harm.
+
+| | Definition | Extra |
+|---|---|---|
+| `m1-04:14` (S1) | *"A swing high is **3 candles** — a high with a lower candle on the left and a lower candle on the right."* | *"Then you wait for the **4th candle** to be lower…"* |
+| `p2-03:28`, `p3-03:20`, `p6-07:21` (S2) | *"a high with a **lower high candle to the left** and a lower high candle to the right"* | *"**Not a fractal** — this is not a Williams fractal on MT4… **this is not five candles**"* |
+
+**They agree.** Three candles, middle highest, in both. Section 1 adds a
+confirmation step Section 2 does not; Section 2 adds a rejection of the
+five-candle MT4 fractal, at **three lesson sites plus `s2 summary.html:345`
+plus an exam distractor** — and Section 1 carries it **nowhere**.
+
+*Ruling: leave Section 1 alone.* Section 2's qualifier comes from episodes 10,
+16 and 40 — **Section 2's sources**. Adding it to `m1-04` because Section 2
+says it would be importing one mentorship's material into another, which is the
+exact failure mode §1 exists to prevent and the mechanism behind **A2**, **D1**
+and **E1**. Section 1 already rejects the five-candle reading implicitly and
+correctly, by grading *"5 candles plus rising volume"* wrong in
+[`m1-04/quiz.js:2`](../content/s1-ict-core/m1/m1-04/quiz.js#L2). **If Month 1's
+own transcript states the qualifier it may be added on that authority and no
+other** — which is a question for a fix pass with the Month 1 source open, not
+for this sweep. Flagged, not filled (§1).
+
+#### N9 — proper names: L13 discharged, one decline
+
+**N9 · nit — every proper name in the corpus is verified except one, and that one
+cannot be verified from the permitted sources.** A two-capitalised-word scan
+across all 160 files (HTML tags and entities stripped) returns exactly five
+person names, which confirms the brief's inventory is complete:
+
+**Linda Raschke** and **Larry Connors** (`p1-05`), **George Angell** (`p1-07`),
+**John Murphy** (`p2-05`), **Chris Lorie** (`p6-05`). Single-name references
+—`Elliott` (6), `Powell` (3), `Wyckoff`, `Gann`, `Barnum`, `Camtasia`,
+`TradingView` (15), `thinkorswim`, `forexfactory`, `Ameritrade`, `Baby Pips` — are
+each spelled **one way, every time**. `barchart` is lower-case at all three sites
+because all three are the domain `barchart.com`. **No garbled or drifting name
+exists in the corpus apart from the one L13 named.**
+
+**`Chris Lorie` (`p6-05:26`) — declined, deliberately.** The permitted sources do
+not settle it. `transcripts/2022 Mentorship/…Episode 38.txt` is an auto-caption
+and renders the name **three different ways in twenty-nine lines** — *"chris
+laurie"* (137), *"chris laurie"* (165), *"now i'm not knocking **chris lord**
+because"* (166) — and `notes/2022-mentorship/` does not contain the name at all
+(0 hits across all 39 pages). So *Lorie* is neither supported nor refuted by the
+sources; it is the lesson author's choice. Establishing the real spelling would
+require outside knowledge, which §1 forbids.
+
+*Disposition (the §1 one — flag the gap, don't fill it):* either drop the name and
+keep the teaching, which loses nothing — the passage's substance is ICT naming a
+position he rejects — or keep it with an inline note that the source is an
+auto-caption. **What must not happen is a silent re-spelling**, in either
+direction. This closes **L13**, and it closes it as an *unresolved* item on
+purpose.
+
+> **Scan hygiene, recorded for the next person:** a naive `grep -i amp` reports
+> hits in 52 files. That is the HTML entity `&amp;`, not the broker AMP
+> (`p5-06`/`p5-07` only). Any corpus-wide name scan must strip entities and tags
+> first — the scan above does.
+
+#### N10–N12 — the cosmetic and numeric reconciliations
+
+**N10 · nit — the `.src` CSS-scope fix covers four of the six sites, not six, and
+the other two are a different defect.** `class="src"` occurs in exactly **three
+files**: `s1 summary.html` (24), `s2 summary.html` (48), `p4-05/lesson.html` (2)
+— 74 spans. `engine/head.html:182` scopes the style as **`.lesson h4 .src`**, so:
+
+- **Four spans sit outside an `<h4>` and mis-render**: `s1 summary.html:33`
+  (**F11b**, inside a `.callout.rule`'s `<span class="tag">`) and
+  `s2 summary.html:12, 14, 15` (**M8**; `:12` in a tag, `:14`/`:15` in `.kv`
+  divs, unstyled). **Changing `.lesson h4 .src` to `.lesson .src` fixes all
+  four in one line** and is safe: the other 70 spans are already inside `.lesson
+  h4` and gain nothing, no `.src` exists outside a `.lesson`, and the two
+  tag-nested spans win on specificity (`.lesson .src` = 0-2-0 against `.tag`'s
+  0-1-0), so they stop inheriting the gold uppercase label styling.
+- **`p4-05:37` and `:47` (J24) are not affected by that change and are not a
+  rendering bug at all.** Both are correctly inside `<h4>` and render correctly.
+  Their defect is **semantic**: `.src` means *a lesson cross-reference*
+  everywhere else in the corpus, and these two use it for a **parenthetical
+  label** — `(bearish)` and `(bearish; reverse it for longs)`. That needs a
+  content edit or a second class, and the CSS change does nothing for it.
+
+So the brief's *"a single CSS-scope change may be cheaper than six content
+edits"* is **two-thirds right**: one line replaces four content edits, and two
+content edits remain. That is still the best trade in the repair plan.
+
+**N11 · nit —
+[`s2 summary.html:342`](../content/s2-2022-mentorship/summary.html#L342) collapses
+a distinction it draws in the same sentence.** The row reads *"1 handle | Four
+ticks — **$50** on ES, **$20** on NQ, **$5** on the micros."* It separates ES from
+NQ at full size and then merges them at micro size, where the lessons separate
+them too: `p1-01:46` and `p4-06:51` give **$5 per handle** for the micro **ES**
+(both in explicit contrast to the $50 e-mini ES), `p6-08:75` gives **$5 a point**
+for a micro against *"an E-mini contract is $50 a point"* — also ES — and
+`p2-06:62` gives **"Micro E-mini NASDAQ — 1 point = 4 ticks = $2"**. All four
+lessons are right; the summary's *"$5 on the micros"* is right for micro ES and
+**wrong for the micro NQ its own row has just named**. **M** recorded this as
+*noted, not a finding*; the row's internal ES/NQ split is what promotes it to
+one. *Fix:* *"$5 on micro ES, $2 on micro NQ"* — six words, and both numbers are
+already in the lessons.
+
+**N12 · nit — M16's Section 1 OTE item should be closed as no-action, not carried
+forward.** **M16** narrowed **L43** to *"Section 1's pages carry no equivalent
+note"*, implying a fix. Re-checked: Section 1 states the OTE band at four sites —
+`s1 summary.html:75, 80-81, 267` and `s1 exam.js:35-36` — and **every one says
+62 / 70.5 / 79. There is no discrepancy inside Section 1 to disclose.** (`70.5`
+appears exactly once in all of Section 2, at `p4-03/quiz.js:8`, and `62–70`
+appears nowhere in Section 1.)
+
+**M16** is right that `s2 summary.html:347` is the corpus's only disclosed
+internal discrepancy and right to praise it — but that is because **Section 2
+genuinely contradicts itself** (`p6-08:50`'s 62–70% against nine sites' 62–79%)
+and Section 1 does not. Adding *"(Section 2 states 62–70%)"* to a Section 1 page
+would put Section 2's material on a Section 1 page for no reason a Section 1
+reader can act on, and the two sections are different mentorships taught six
+years apart. *Ruling: no action. **L43** is fully closed by **M16**, and this
+batch closes the residue it left open.*
+
+#### N13–N15 — the audit's own arithmetic
+
+**N13 · nit — the corpus finding total is right by convention and the doc's own
+severity markers count 240, not 241.** Re-derived by parsing every
+`**<Batch><n> · <severity>**` header in this document:
+
+| Batch | blocker | should-fix | nit | total | published |
+|---|---|---|---|---|---|
+| A | — | 2 | 9 | 11 | 11 ✓ |
+| B | — | 4 | 8 | 12 | 12 ✓ |
+| **C** | **2** | **5** | **9** | **16** | **17 ✗** |
+| D | — | 8 | 6 | 14 | 14 ✓ |
+| E | 1 | 11 | 6 | 18 | 18 ✓ |
+| F | 1 | 6 | 4 | 11 | 11 ✓ |
+| G–M | — | 46 | 100 | 146 | 146 ✓ |
+| **Total** | **6** | **92** | **142** | **240** | **241** |
+
+**Twelve of thirteen batches reconcile exactly.** The single divergence is batch
+C, and it is not a miscount: **C18** (*"Quiz-count verdict for Month 3: it is a
+defect"*) is a genuine should-fix that was written with a descriptive header
+carrying no `· should-fix` marker, so it is invisible to a grep. **C17** is
+correctly excluded — it is a re-measurement, not a finding. *Fix:* add the
+severity marker to **C18**'s header; the published 241 / 6 / 93 / 142 is then
+correct as it stands. Numbering is otherwise contiguous in all thirteen batches
+(A's two gaps are **A1**, withdrawn, and **A12**, an open question resolved).
+
+**Section 1's option-length table also re-derives to the digit** — every cell of
+the roll-up's seven-row table and of **C17**'s corpus table reproduces exactly
+(536 questions, 45% strict, 52% expected). Two one-point rounding slips are worth
+correcting in place because they are quoted against each other elsewhere: the
+Section 2 roll-up gives S2 quizzes **42%** expected where **M13** and this
+re-derivation give **43%**, and gives spread-over-10 as **11%** where both give
+**10%**.
+
+**N14 · nit — the Section 2 roll-up names the wrong Part 3 lesson.** The roll-up
+reads *"`p3-06` (19.1 KB per question) and `p6-06` (14.0) are the only lessons
+that fail both denominators… Recommended additions: **+4** for `p6-06` (**L28**)
+and **Part 3's**."* But **I11** is filed *against `p3-05`*, its recommendation is
+**+3 for `p3-05`**, and it explicitly declines to make count the defect
+(*"`p3-01` carries the same six questions and they cover every beat of its
+lesson"*). `p3-06` has the worse ratio and **seven** questions that batch I found
+adequate. So **Part 3's outstanding site is `p3-05`, +3** — correct the roll-up's
+sentence, not I11.
+
+**N15 · nit — F1's row arithmetic is off in both directions.** **F1** says the
+vacuum-block row sits *"four rows above"* the liquidity-void row and the correct
+FVG formulation *"two rows below"*. In the ten-array table at
+[`s1 summary.html:231-241`](../content/s1-ict-core/summary.html#L231) the rows
+run … 7 Vacuum block · 8 Liquidity pool · **9 Liquidity void** · 10 Fair value
+gap. So it is **two rows above** and **one row below** — which makes **F1**'s
+point *stronger*, not weaker: the contradictory definition and its own correction
+are adjacent rows on a revision table. Substance unchanged; correct the two
+numbers.
+
+#### N16–N18 — the families, closed
+
+**N16 · should-fix — the one-sidedness family (A8, C9, C10, D13, E18, F10) is a
+real Section 1 defect, and the cause is compression.** Both readings the brief
+offered are partly right, and the measurement separates them:
+
+| | lessons | total | per lesson | *"reverse"* | *"flip it"* | *"vice versa"* |
+|---|---|---|---|---|---|---|
+| Section 1 | 38 | **118 KB** | **3.1 KB** | 17 | 5 | 2 |
+| Section 2 | 40 | **430 KB** | **10.8 KB** | 17 | 0 | 0 |
+
+**Section 1's lessons are 3.5× smaller and use the reverse-it shorthand at the
+same absolute rate — so per byte they lean on it 3.5× harder**, and `flip it` and
+`vice versa` are Section 1 idioms that Section 2 never uses. That is the
+mechanism: Section 1 was thematically re-cut into ~3 KB lessons and the mirror
+side is what compression drops first. Section 2 produced no instances in seven
+batches not because its author was more careful but because a 10.8 KB lesson has
+room to state both sides.
+
+So: **a real defect, whose cause is structural rather than a lapse of care, and
+whose fix is cheap.** Batches A–F established the mirror is present in Section
+1's own source at all six sites, so the repair is roughly six sentences and needs
+no new sourcing. **Section 1 owns it entirely**; no Section 2 file is involved.
+
+**N17 · nit — the citation-label family (C16, F9) is closed at four sites, all
+Section 1, and the corpus-wide sweep confirms it for the first time.** The
+Section 2 roll-up and **M9** asserted *"Section 2 adds none"*, but M9 measured
+only the two section-level pages. Swept across all 160 files: `"the notes"`
+occurs in **fourteen** files, and **all four Section 2 occurrences are the HTML
+comment** `<!-- no fig-slot: the notes carry no charts for this episode -->`
+(`p1-01:66`, `p2-01:54`, `p2-04:45`, `p3-01:39`) — invisible to a reader and not
+a citation. Section 2's reader-facing *"For your notes"* / *"Record this in your
+notes"* (`p1-02:44`, `p1-03:41,44`, `p2-03:68`) are instructions to the student,
+a different construction entirely. **The family stays at four sites — `m3-02:23`,
+`m3-04:17`, `m3-05:28` (C16) and `s1 exam.js:79` (F9) — and there is no fifth.**
+
+**N18 · nit — `p5-01` is the only `.fig-slot` omission that is inconsistent with
+its own section, and the Section 1 six should be left silent.** Re-measured:
+**11 lessons carry no `.fig-slot`.** Four annotate the omission (`p1-01`,
+`p2-01`, `p2-04`, `p3-01`) and seven are silent — `m1-04`, `m1-05`, `m1-06`,
+`m1-08`, `m2-03`, `m2-05` and `p5-01`.
+
+The right frame is per-section, not corpus-wide: **Section 1 omits silently in
+6 of 6 cases and Section 2 annotates in 4 of 5.** So `p5-01` is the only file
+out of step with its own section's convention, and **K17** already established
+its chart-free status is the most thoroughly confirmed in the corpus (no
+`ep-26.md`, no `raw/ep-26-*.png`, no `images/p5-01-*.png`). *Fix:* one comment
+line in `p5-01`. **Leave Section 1's six alone** — they are consistent with each
+other and with every other Section 1 lesson, and six edits to satisfy a
+convention Section 1 never adopted is churn.
+
+#### The remaining carried items — status, no new findings
+
+| Item | Status going out of the audit |
+|---|---|
+| **The three part-level hedges** (**M14**) | Unchanged and verified here. The **authorship caveat has zero sites in the whole corpus**: the string `author` occurs three times in all 160 files and all three are `m2-05`'s verb *authorize*. `live account` / `live fund` are **0 on both S2 pages** (the one near-hit is `:231`'s *"not live risk"*, counter-trend-specific and mis-referenced per **M5**) while occurring 16 times across **eleven Section 2 lessons and one quiz** — so the warning exists in the section and reaches neither page. The no-timetable qualifier is restored at `:261`. Two one-line additions to `s2 summary.html`, as **M14** said. |
+| **The two pyramid ladders** (**M15**) | Confirmed verbatim: `p2-06:59` *"three micros, then two, then one"*, `p4-03:59-61` *"3 / 2 / 1"*, `p3-03:100` *"five, then three, then two"*, and `s2 summary.html:351` *"3 + 2 + 1"* presented as **the** rule in the numbers table. All three agree on the principle (biggest first), so this is **not a contradiction and must not be normalised** — the honest fix is `s2 summary.html:351` naming the sizes as an example rather than a constant. **Deliberately unresolved**, per §1. |
+| **`p4-03`'s placement rule** (**M15**, J's carried item) | Confirmed absent. All four `pyramid` mentions in `s2 summary.html` are sizing; `p4-03:59-61`'s *"largest part of the framework → next fair value gap → after a retrace into the bearish order block"* reaches no summary. One row in the Part 4 block. **Closed as a coverage item.** |
+| **"Protected lows"** (**L36**, **M17**) | Confirmed: `protected` occurs **once** in `s2 summary.html` (`:306`) and **zero** times in `s2 exam.js`. Two sites total with `p6-07`. **M17**'s disposition stands unchanged. |
+| **Quiz-count proportionality** | Re-derived; see the repair plan below. |
+| **Option length** | Re-derived to the digit; see the repair plan below. |
+
+#### Batch N summary
+
+| | |
+|---|---|
+| Scope | **all 160 content files** — 78 lessons, 78 quizzes, 2 summaries, 2 exams |
+| Method | 8 corpus-wide mechanical scans + targeted reads; **no lesson or transcript read whole** |
+| Findings | **18** — **0 blockers**, 2 should-fix, 16 nits |
+| Structural re-verification | **78/78 clean** on id, `data-month`, `data-slug`, crumb (4 checks each) |
+| Published figures re-derived | **11**; **4 corrected** (**N2**, **N3**, **N5**, **N13**) |
+| New blockers | **none** — the corpus has six, and they are the six |
+| Fixed in flight | none; `content/` unchanged, build and verify pass |
+
+**Weakest dimension: consistency — by construction, since it is the only
+dimension left.** And the useful result is that it is the corpus's *strongest*
+dimension by some distance. Slugs, ids, `data-month` and crumbs are 78/78 clean
+on four independent checks; cross-references are 72/72; exam citations are 85/85
+resolvable and 40/40 semantically correct in Section 2; the terminology "splits"
+turn out to be two internally-consistent house styles rather than drift. **Not
+one of batch N's eighteen findings misleads a reader about the market.** The
+sixteen nits are the audit auditing itself.
+
+**Contradictions of earlier conclusions — five, and one of them is this batch's
+own headline.**
+
+1. **The E1/F1 repair path is not what M6 proposed.** M6 offered `p6-05` as *"the
+   cheapest place to state it once for the whole corpus"*. For the definition —
+   the part that is actually wrong — the fix is in `m1-06`, in Section 1, and
+   taking Section 2's wording instead would have been the §1 breach the audit
+   spent 258 findings guarding against (**N1**).
+2. **Batch L's `intermediate-term` count, and M18's confirmation of it, are both
+   wrong** — 10/33, not 7/29. M18's *conclusion* is exactly right; only its
+   arithmetic fails (**N3**). This is the specific error the brief predicted the
+   last batch might catch, and it was there.
+3. **The Section 2 roll-up names `p3-06` where I11 names `p3-05`** (**N14**), and
+   gives S2 quizzes' expected score as 42% where M13 and this re-derivation give
+   43%.
+4. **F1's row arithmetic is wrong in both directions, and wrong in F1's favour**
+   (**N15**).
+5. **The brief's own scans were right about almost everything and wrong about
+   four numbers** — the missed sixth stem pair, the `kill zone` zero, the
+   `intermediate-term` tally, and *fourteen* lessons below the floor where there
+   are fifteen. Recorded because the brief asked for it, and because three of the
+   four came from the same cause: **a scan that excluded the 80 quiz files.**
+
+---
+
+## Closing the audit
+
+Fourteen batches, **2026-08-07 to 2026-08-08**. **78 lessons, 451 quiz questions,
+2 revision summaries, 85 exam questions, ~2.4 MB of transcript and 78 note pages**
+read against `CLAUDE.md` §1 and §3.
+
+**259 findings — 6 blockers, 95 should-fix, 158 nits.**
+
+| | Lessons | Pages | blocker | should-fix | nit | total |
+|---|---|---|---|---|---|---|
+| Section 1 (A–F) | 38 | 2 | **4** | 37 | 42 | 83 |
+| Section 2 (G–L) | 40 | — | 0 | 48 | 92 | 140 |
+| Section 2 (M) | — | 2 | **2** | 8 | 8 | 18 |
+| Cross-cutting (N) | — | — | 0 | 2 | 16 | 18 |
+| **Total** | **78** | **4** | **6** | **95** | **158** | **259** |
+
+*(258 of the 259 carry an explicit severity marker; **C18** is a should-fix whose
+header lacks one — see **N13**.)*
+
+### The complete blocker list, with every file each one touches
+
+| # | Defect | Files | Notes |
+|---|---|---|---|
+| **C1** | Inverse head & shoulders taught backwards — faded **long at a discount** where ICT fades it **short from a premium** | `m3-08/lesson.html:18` | **Does not propagate.** Absent from `s1 summary.html` (**F**). One bullet; the source supports the rewrite sentence by sentence. |
+| **C2** | Triangle/wedge apex mechanism invented — *"apex"* and *"wedge"* occur nowhere in Month 3's sources; ICT explicitly **defers** the topic | `m3-07/lesson.html:19`, `m3-07/quiz.js:5`, `s1 summary.html:222` | **The only blocker tested by its own quiz.** Summary residue is one clause (*"Triangles and wedges are the same mechanism"*, **F2**). |
+| **E1** | Liquidity void defined as its **opposite** — *"absolutely no trading took place"* for a **one-sided range** | `m4-11/lesson.html:9`, `m4-11/quiz.js:2` | Traces to a note page citing a **2022** chart on a **2016** teaching. Corroborated from Section 2 by ep38 (**L14**). |
+| **F1** | **E1** reaching the section-level pages | `s1 summary.html:240`, `s1 exam.js:235-237` | q39 needs a **new option set**, not a re-marked `a`. |
+| **M1** | Midnight-open rule **stated backwards** and self-contradicting inside one sentence | `s2 summary.html:165` | One clause. The correct wording is already at `:286`, `:152` and `:327`. Nothing in `exam.js` tests it. |
+| **M2** | *"A gap and a breaker together is a big confluence"* — **zero support in any of the 40 Section 2 lessons** | `s2 summary.html:253` | Delete, or restate `p5-07:20-27`'s actual four conditions. No question tests it. |
+
+**Eight sites, six files.** Four of the six blockers are Section 1's, and **E1 is
+the only one that propagated** to a section-level page.
+
+### The prioritised repair plan
+
+**Tier 1 — the blockers, in cost order (six edits, ~1 hour).**
+
+1. **`s2 summary.html:253` (M2)** — delete one clause. No dependency.
+2. **`s2 summary.html:165` (M1)** — replace the reversed condition; **paste the
+   correct wording from `:286`**, two hundred lines up in the same file.
+3. **`m3-07/lesson.html:19` + `quiz.js:5` (C2)** — cut the bullet and the
+   question, or reduce both to what ICT actually says (*the triangle appears, its
+   breakout failed, the mentorship treats it later*). Then delete the six-word
+   residue at `s1 summary.html:222`.
+4. **`m3-08/lesson.html:18` (C1)** — rewrite as the short-side mirror.
+5. **E1/F1, four files, in this order** (**N1**): fix `m4-11/lesson.html:9`
+   using **`m1-06:17`'s own wording**; then `m4-11/quiz.js:2`; then
+   `s1 summary.html:240`; then re-author `s1 exam.js` q39 with a new option set
+   modelled on `m1-06/quiz.js:4`. Optionally add ICT's *"not likely to occur most
+   times"* qualifier — **but source it, per §1, from Section 1's material, not
+   from `p6-05`**.
+
+**Tier 2 — one-line edits (fourteen, ~1 hour).**
+
+| Fix | Site | Finding |
+|---|---|---|
+| CSS scope `.lesson h4 .src` → `.lesson .src` | `engine/head.html:182` | **N10** — fixes 4 sites at once |
+| Two `.src` cross-references pointing at the wrong part | `s2 summary.html:231, 176` | **M5** |
+| Three-drives exemption → the lesson's own reason | `s2 summary.html:71` | **M3** |
+| Break-even trigger → `p1-06:64`'s actual rule | `s2 summary.html:54` | **M4** |
+| Drop or attribute *"protected lows"* | `s2 summary.html:306` | **M17** |
+| Add ICT's rebalancing differentiation | `s2 summary.html`, Part 6 L5 block | **M6** |
+| Add the authorship caveat | `s2 summary.html`, same block | **M14** |
+| Add the live-funds warning | `s2 summary.html` | **M14** |
+| Add `p4-03`'s pyramid **placement** rule | `s2 summary.html`, Part 4 block | **M15** |
+| *"$5 on micro ES, $2 on micro NQ"* | `s2 summary.html:342` | **N11** |
+| Exam question count 40 → 45 | `s1 summary.html:311` | **F7** |
+| Align the two `orderblock` options to the stem | `m4-07/quiz.js:3` | **N4** |
+| Gloss the abbreviation once — *"a fair value gap (FVG)"* | `m1-06:18` | **N7** |
+| Add the no-charts comment | `p5-01/lesson.html` | **K17**, **N18** |
+| Add the missing severity marker | `docs/content-audit.md`, **C18**'s header | **N13** |
+| Correct four figures in this document | roll-ups: `intermediate-term` 7/29→10/33; S2 quizzes 42%→43%; *"p3-06"*→*"p3-05"*; **F1**'s row counts | **N3**, **N13**, **N14**, **N15** |
+
+**Tier 3 — new question authoring: 30 questions, and every one is writable from
+material already in the lessons.**
+
+| Where | Add | Basis |
+|---|---|---|
+| **Section 1 quizzes** — `m3-01` +2, `m3-03` +1, `m3-04` +2, `m3-05` +2, `m4-04` +1, `m4-05` +1, `m4-06` +1, `m4-10` +2, `m4-11` +2, `m4-12` +1, `m4-14` +1 | **+16** | **C18** / **D14** / **E18** — a floor of 4 for the 11 under-tested lessons |
+| `m4-08` (at the margin) | +2 | **E18** |
+| **Section 2 quizzes** — `p3-05` +3 (**I11**, **N14**), `p6-06` +4 (**L28**) | **+7** | both from untested material in the lesson |
+| **S2 exam, Part 6** | **+2 to +3** | **M10**/**M11** — `p6-07`'s six keys, `p6-05`'s narrative definition, `p3-06`'s stand-aside rule; fixes the under-sampling and the three worst coverage gaps together |
+| **S1 exam** q39 | rewrite (not add) | **F1** |
+| **Total new** | **≈ 28** | plus 2 rewrites |
+
+Re-derived here: the floor-of-4 repair is **+16 across the 11 named lessons**
+(**not** +18 — that figure includes `m4-08`, which the roll-up listed *at the
+margin*). **Fifteen** Section 1 lessons sit below the floor, of which the audit
+judged **11 under-tested**, 1 marginal (`m4-08`) and 3 proportionate (`m2-03`,
+`m3-02`, `m4-07`). Section 2 breaches the floor **zero** times — its range is
+5 to 12.
+
+**Tier 4 — option-length construction, the corpus's one real quality problem.**
+
+Final figures, re-derived in this batch across all 536 questions (**D15**'s way:
+ties count as *not* a tell per **C17**, margin over the second-longest, led by
+**F14**'s not-longest column):
+
+| | n | **not-longest** | strict | expected | median margin | max | spread > 10 |
+|---|---|---|---|---|---|---|---|
+| **S1 quizzes** | 145 | **29%** | **71%** | **76%** | 4 | +8 | **26%** |
+| — Month 1 | 39 | 28% | 72% | 76% | 5 | +8 | **36%** |
+| — Month 2 | 37 | 35% | 65% | 68% | 4 | +7 | 27% |
+| — Month 3 | 25 | 48% | 52% | 61% | 4 | +7 | 24% |
+| — **Month 4** | 44 | **14%** | **86%** | **90%** | 3 | +7 | 18% |
+| S1 exam | 45 | 69% | 31% | 42% | 1 | +5 | 0% |
+| S2 quizzes | 306 | 64% | 36% | **43%** | 3 | +20 | 10% |
+| S2 exam | 40 | 62% | 38% | 45% | 2 | **+2** | 0% |
+| **Corpus** | **536** | **55%** | **45%** | **52%** | 3 | +20 | 13% |
+
+**The metric to move is *not-longest*: the share of questions where the correct
+option is not the longest. Chance is ~75%.** Section 1's quizzes sit at **29%**
+and Month 4's at **14%**, which hands a knowledge-free guesser **90%** — past the
+80% exam pass mark. Every other set in the corpus is between 62% and 69%.
+
+The fix is a known quantity, not a research problem — **F14**'s three techniques
+plus batch L's fourth, all four demonstrated at scale by the S2 exam (**M13**):
+
+1. **Whole-set parallel construction** — four permutations of the same terms.
+2. **Deliberate exact ties** (S1 exam 24%, S2 exam 18%).
+3. **Let the correct option be the short one** (both exams ≈ 45%).
+4. **Every distractor a wrong *mechanism*, not an absurdity** — the technique
+   that generates the other three.
+
+**Order of work: Month 4's 44 questions first** (14% → the exam's 69% is the
+target), then Months 1–2. §3's *"within ~5 characters"* rule is **necessary but
+not sufficient** — that is **D15**'s conclusion, confirmed five times since, and
+Month 4 is the proof: its median margin is 3 characters and it still scores 90%.
+
+### What the audit certifies as clean — do not re-litigate
+
+Each of these was **measured**, not assumed, and several were re-derived in batch
+N specifically so a fix pass can trust them:
+
+- **Slugs, ids, `data-month`, crumbs — 78 of 78, on four independent checks.**
+- **Cross-references — 72 of 72 resolve** (**F12** 24, **M7** 48), including
+  Section 2's two-tier relative/absolute scheme, which never once mis-resolves a
+  bare `(Ln)` to the wrong part. The *Fixed in flight* exception for dead
+  cross-references was tested twice and **never fired**.
+- **Exam citations — 85 of 85 resolve to an existing lesson**, and Section 2's
+  **40 of 40 name the lesson the question actually tests** (**M9**), the first
+  clean set in the corpus.
+- **Source traceability — 536 of 536 questions traceable**, with exactly three
+  exceptions, all already logged as blockers or their consequences (**C2**'s
+  `m3-07` q4 and q1, **E1**'s `m4-11` q1 / **F1**'s exam q39).
+- **Duplicates — one in the corpus.** `p5-05` Q3/Q4 (**K11**). The sweep is
+  complete: same-file `e`-field Jaccard ≥ 0.40 over all 80 files returns that pair
+  and nothing else; identical correct-option text within a file returns **0**.
+- **Chart counts against `images/`** — 1:1 and in order for all 38 Section 1 note
+  pages (**A12** → E) and every Section 2 part (G, H, I, K).
+- **Review-page structure** — `id`, `data-kind`, `data-section` and the
+  `.review-footer` slot correct on all four pages.
+- **Proper names** — every name in the corpus spelled one way, every time, except
+  the one that cannot be settled (**N9**).
+- **The build** — `python build.py` **zero warnings**; `python verify.py` passes
+  with **0 JS errors**. `content/` was edited **once** in fourteen batches
+  (*Fixed in flight*, batch I).
+
+### Deliberately unresolved — flagged, not filled (§1)
+
+These are **not oversights.** In each case the sources are ambiguous or silent,
+and §1 requires under-claiming over inventing. A fix pass that "tidies" them
+would be introducing the exact defect the audit exists to find.
+
+| Item | Why it stays open |
+|---|---|
+| **The two OTE bands** — 62–79% at nine sites, 62–70% at `p6-08:50` (**L43**) | Both are faithful to their own episode. `s2 summary.html:347` already discloses the discrepancy in line — the **only** such disclosure in the corpus and the right disposition. **Section 1 needs no equivalent** (**N12**). |
+| **`Chris Lorie` / `Laurie` (`p6-05:26`)** (**L13**, **N9**) | The transcript is an auto-caption giving three renderings in 29 lines; the notes are silent. The permitted sources cannot settle it, and settling it would need outside knowledge. **Drop the name or annotate it — never re-spell it.** |
+| **The two pyramid ladders** — `3+2+1` vs `5-3-2` (**M15**, **N**) | All three sites agree on the **principle** (biggest first) and differ only in the example's sizes. Not a contradiction; `s2 summary.html:351` should present them as an example, not a constant. |
+| **The five-candle-fractal qualifier** (**N8**) | Section 2 states it at four sites; Section 1 nowhere. The definitions **agree**, so this is a coverage question — and adding it to Section 1 on Section 2's authority would be a cross-mentorship import. Only Month 1's own source can authorise it. |
+| **The `back test` variants** (**N6**) | Five forms, 44 occurrences, all Section 2, each file internally consistent. Normalising is optional polish. |
+| **The two section house styles** — `orderblock`/`order block`, `FVG`/`fair value gap` (**N4**) | Internally consistent per section; slugs and `images/` filenames are coupled to Section 1's. Not worth 300 edits. |
+| **Whether the exam may re-use a lesson quiz's stem** (**N2**) | Ruled **not a defect** at 9% / 2.5%, with different option sets throughout. Recorded so it is not "found" again. |
+
+### Method — the six things worth carrying to any future section
+
+1. **Read both sources.** Batch A ran on transcripts alone and produced a false
+   positive (**A1**) as a direct result.
+2. **The transcript beats the notes**, every time there was a conflict; and the
+   reliable signal that a note line is an import is **not** the page's length but
+   **an attribution or a date that does not belong to this teaching**
+   (**D1**, **E1**). The thin-notes hypothesis died three ways (J, K, L).
+3. **One episode per lesson prevents migration defects — in lessons.** Zero
+   blockers in Section 2's 40. The section-level pages are the one place the
+   many-to-one re-cutting operation still runs, and that is exactly where
+   Section 2's two blockers are (**M**).
+4. **A review page is tested against the lessons, not the transcripts** (§3), and
+   every exam question is checked **both** ways — traceable to a lesson *and*
+   present in the summary.
+5. **Measure option length the D15/F14 way** and lead with *not-longest*. The
+   `\s*` in the parsing regex is load-bearing — there are **three** quiz-file
+   formats and a literal `grep -c '{ q:'` returns 0 for 46 of the 80 files
+   (**I17**).
+6. **Run the mechanical sweeps across *all 160* files, including the 80 quiz
+   files.** Three of batch N's four corrections to published figures come from
+   scans that had excluded them.
+
 ---
 
 ## Fixed in flight
@@ -8606,7 +9331,8 @@ observations*, which was deferred to this batch.
 
 ### Nothing else
 
-*None through batch L.* Nothing else in `content/` has been edited. `build.py` and
+*None through batch N — the audit is complete.* Nothing else in `content/` has
+been edited. `build.py` and
 `verify.py` pass at every batch, the page has 0 JS errors, and all Section 1 HTML
 is well-formed (`summary.html` checked mechanically in batch F: zero unclosed
 tags, zero mismatched closers). Every video link spot-checked resolves to the
@@ -8689,6 +9415,14 @@ fixed — the summary's "40 questions" against the exam's 45 (**F7**) and the
   none**; `build.py` still emits zero warnings, so that entry remains the only one.
   Batch L did repair the audit *doc*: batch K's commit (`d508fa1`) had accidentally
   deleted the `## Fixed in flight` heading, orphaning its body text. Restored.
+  **Batches M and N made none either**, so that entry is still the only one and
+  the audit closes with `content/` edited exactly once in fourteen batches.
+- **Run every corpus-wide scan over all 160 content files, not just the 78
+  lessons and the 4 section-level pages.** Batch N's four corrections to published
+  figures (**N2**, **N3**, **N5**, **N13**) trace to scans that had excluded the 80
+  `quiz.js` / `exam.js` files, which hold a fifth of the corpus's prose. Strip HTML
+  entities and tags before any word-level scan — `&amp;` otherwise reports as the
+  broker *AMP* in 52 files (**N9**).
 - **Grep each quiz file for duplicate questions.** Batch K found the audit's first
   (**K11**, `p5-05` Q3 and Q4 — same claim, same answer, same transcript line).
   Nothing in the method through batch J would have surfaced it; the option-length
