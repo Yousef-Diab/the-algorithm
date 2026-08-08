@@ -272,7 +272,7 @@ do not use the Williams fractal, it requires five candles, I only need three"*
 (lines 330-335); (b) the swing-selection tiebreak *"I'm going to use this
 [swing high] because it has more price action around it"* (lines 549-555).
 
-**A8 · nit · m1-06** — buy-side only. The transcript's sell-side mirror is
+**A8 · nit · FIXED · m1-06** — buy-side only. The transcript's sell-side mirror is
 dropped: *"if we were looking at a sell position we would be looking for areas
 where the market in the past has moved up a great deal with speed, and lows where
 stops would be building up below it… look for the lower end of the most recent
@@ -476,7 +476,7 @@ All 37 questions are **source-traceable** — every correct option and every `e`
 checks out. Month 2 is the most *uneven* month so far on the §3 length rule:
 several quizzes are models of good construction, a few are not.
 
-**B11 · should-fix · [m2-02/quiz.js:3](../content/s1-ict-core/m2/m2-02/quiz.js#L3)** —
+**B11 · should-fix · FIXED by Tier 4, marked in the Tier 5 pass · [m2-02/quiz.js:3](../content/s1-ict-core/m2/m2-02/quiz.js#L3)** —
 the worst single question in Months 1-2. Q2's options run 36 / 30 / 17 / **10**
 characters; the correct answer is the longest and `"It doesn't"` is a 10-character
 throwaway nobody picks. Spread 26.
@@ -664,7 +664,7 @@ it. B12's suggested one-clause cross-reference would now fix three lessons.
 
 #### Coverage gaps
 
-**C9 · should-fix · m3-05** — **half the SMT framework is missing.** The lesson
+**C9 · should-fix · FIXED · m3-05** — **half the SMT framework is missing.** The lesson
 presents two symmetrical rows and two non-symmetrical rows, but *both*
 non-symmetrical rows are dollar-**bullish** variants (they restate the same
 slide, once from the dollar's side and once from the case study's). The
@@ -680,7 +680,7 @@ one-sidedness as **A8** (m1-06 buy-side only), and it matters more here because
 SMT is presented as a symmetric four-cell table — the missing cell is
 conspicuous by the table's own logic.
 
-**C10 · should-fix · m3-07** — **the buy-side phantom play is missing.** The
+**C10 · should-fix · FIXED · m3-07** — **the buy-side phantom play is missing.** The
 lesson's "Phantom Play" section is entirely a sell setup. ICT gives the long
 mirror in full — a whole slide plus a worked example:
 
@@ -1038,7 +1038,7 @@ things sometimes** to get to understanding what the smart money is doing"*
 know what smart money is doing, so multiple assets"*). The lesson's rule callout
 presents the green light as a single clean test.
 
-**D13 · nit · m4-02** — three smaller drops: the fallback *"if you can't
+**D13 · nit · PARTLY FIXED — the bearish mirror only; the other two drops stand · m4-02** — three smaller drops: the fallback *"if you can't
 ascertain where the market's going on a monthly you just simply drop down into a
 weekly chart"* (704-707, also in the notes); the position-trader passage where
 the same orderblock is revisited three or four times while the position is built,
@@ -1944,7 +1944,7 @@ breach — the claim is true of the source material. It is the **only** such
 instance in either file: `summary.html` cites "the notes" **zero** times, so
 the batch is otherwise clean on C16's problem.
 
-**F10 · nit ·
+**F10 · nit · FIXED ·
 [summary.html:204-209](../content/s1-ict-core/summary.html#L204) — the SMT table
 drops a row the lesson has.** m3-05 states four cells (two symmetrical, two
 non-symmetrical); the summary compresses them to two and keeps only the
@@ -4092,7 +4092,7 @@ three parts rather than a defect in this lesson.
 (**D14/E18**) and comfortably justified — it is the only lesson in the batch where
 every major block gets a question.
 
-**I7 · should-fix · [p3-03/quiz.js:8](../content/s2-2022-mentorship/p3/p3-03/quiz.js#L8)** —
+**I7 · should-fix · FIXED by Tier 4, marked in the Tier 5 pass · [p3-03/quiz.js:8](../content/s2-2022-mentorship/p3/p3-03/quiz.js#L8)** —
 **the worst-constructed question in Part 3, and the worst in Section 2 so far.**
 q7, *"When does an old high act as support?"*, runs its options at **58 / 38 / 34 /
 28** characters. The correct option — *"Once price has traded above it, making it
@@ -5863,7 +5863,7 @@ bullish"**. That takes the running total to **22 across Parts 1–5**.
 
 #### Quiz quality — episode 31
 
-**K11 · should-fix · `p5-05/quiz.js:4-5` — Q3 and Q4 are the same question, with
+**K11 · should-fix · FIXED · `p5-05/quiz.js:4-5` — Q3 and Q4 are the same question, with
 the same answer, from the same source line.**
 
 ```js
@@ -8242,7 +8242,7 @@ confirmed, 40/0/0/0), the same authoring template as the S1 exam. **D14/D15** an
 
 #### The carried-forward items the brief named
 
-**M14 · should-fix · PARTLY FIXED — the three part-level hedges: one is restored, two are absent,
+**M14 · should-fix · FIXED — the three part-level hedges: one is restored, two are absent,
 and the summary is a viable single fix site for both.** Measured across both pages:
 
 | Hedge | Sources | In the summary? |
@@ -8979,7 +8979,7 @@ numbers.
 
 #### N16–N18 — the families, closed
 
-**N16 · should-fix — the one-sidedness family (A8, C9, C10, D13, E18, F10) is a
+**N16 · should-fix · FIXED — the one-sidedness family (A8, C9, C10, D13, E18, F10) is a
 real Section 1 defect, and the cause is compression.** Both readings the brief
 offered are partly right, and the measurement separates them:
 
@@ -9258,7 +9258,9 @@ N specifically so a fix pass can trust them:
 - **Source traceability — 536 of 536 questions traceable**, with exactly three
   exceptions, all already logged as blockers or their consequences (**C2**'s
   `m3-07` q4 and q1, **E1**'s `m4-11` q1 / **F1**'s exam q39).
-- **Duplicates — one in the corpus.** `p5-05` Q3/Q4 (**K11**). The sweep is
+- **Duplicates — one in the corpus** (fixed in the unscheduled pass; the
+  certification that there is only one is what made it a closed, single-instance
+  defect). `p5-05` Q3/Q4 (**K11**). The sweep is
   complete: same-file `e`-field Jaccard ≥ 0.40 over all 80 files returns that pair
   and nothing else; identical correct-option text within a file returns **0**.
 - **Chart counts against `images/`** — 1:1 and in order for all 38 Section 1 note
@@ -9316,7 +9318,10 @@ would be introducing the exact defect the audit exists to find.
 
 The fix pass, **2026-08-08**, run against the repair plan above. **All four tiers
 are complete.** Tiers 1 and 2 ran first (below); Tiers 3 and 4 followed in the same
-pass.
+pass. A fifth, **unscheduled** pass followed the tiers and closed the four items
+the plan never owned — **K11**, **N16**, **M14**'s summary half and **F7**'s
+missing enforcement; it has its own section at the end, and the "not done" notes
+inside the Tier 3/4 sections below are the record as it stood then, not now.
 
 Every replacement below is quoted from the source named in its last column.
 `python build.py` emits **zero warnings** and `python verify.py` reports
@@ -9491,7 +9496,8 @@ moves. See *Contradicting the audit*, item 5.
 **E18**, **F10**) is still open — six Section 1 sites where the mirror side is
 dropped. It is a should-fix in no tier, it is genuinely *"roughly six sentences and
 needs no new sourcing"*, and nothing in Tier 3 or Tier 4 touched it. It remains the
-cheapest unclaimed item in the document.
+cheapest unclaimed item in the document. **→ Done in the unscheduled pass below,
+where it cost six sentences at five sites; `E18` turned out not to be one of them.**
 
 ### What was deliberately not done
 
@@ -9502,7 +9508,8 @@ cheapest unclaimed item in the document.
   have made the summary carry material no lesson does — **M2**'s exact shape. The
   caveat went into `p6-05/lesson.html:10` instead, where §1 permits the transcript,
   and was **not** propagated onward. A later pass may now add it to the summary
-  legitimately, because a lesson carries it.
+  legitimately, because a lesson carries it. **→ Taken up in the unscheduled pass
+  below; `s2 summary.html:280` now carries it and M14 is closed.**
 - **Every item on the *deliberately unresolved* list was left alone** — the two OTE
   bands, the disputed name at `p6-05:26` (omitted from the new summary clause
   rather than spelled), the two pyramid ladders, the five-candle-fractal qualifier,
@@ -9518,6 +9525,7 @@ cheapest unclaimed item in the document.
   first row of the Tier 3 table, and it is now repaired.
 - **N16 was not done** (the one-sidedness family, six Section 1 sites). It is a
   should-fix in no tier and remains open; see the note closing the Tier 4 section.
+  **→ Done in the unscheduled pass below.**
 - **Section 2's quizzes were not rewritten for option length**, only its four
   margin ≥ 10 outliers. Its aggregate was never the defect.
 
@@ -9657,7 +9665,9 @@ it as one-tailed.**
    never compares the two, so the next exam edit will silently desynchronise them
    again. Both pages are correct today (45 and 43). **If one check is ever added to
    `verify.py`, this is the one** — it is the only content figure in the corpus that
-   a build can already compute and doesn't.
+   a build can already compute and doesn't. **→ Added in the unscheduled pass below,
+   and negative-tested; the desynchronisation this paragraph predicts can no longer
+   reach a commit.**
 
 8. **An aggregate near chance can still hide a fat tail, and Section 2's did.** The
    audit grades S2's quizzes acceptable at 64% not-longest and moves on — correctly,
@@ -9670,6 +9680,147 @@ it as one-tailed.**
    fixed: S2's **max margin falls 20 → 9** while its not-longest moves 64% → 65%,
    which is precisely the point. **A future measurement should report the max margin
    and the count over 10, not just the share and the median.**
+
+### The unscheduled pass — the four items no tier owned
+
+Run **2026-08-08**, after Tiers 1–4 were committed, against the work the repair
+plan never scheduled. **Four items closed, one triage proposal opened and
+deliberately not authored.**
+
+`python build.py` emits **zero warnings** and `python verify.py` reports
+**78 lessons, 339 images, 78 video links, 476 quiz questions, 2 summary pages,
+88 exam questions across 2 exams, 0 JS errors** — the post-Tier-4 baseline
+unchanged on **every** figure, including both question counts. Nothing was added
+or removed anywhere; the pass's only quiz edit is an in-place re-authoring, and
+its only new code is a check in `verify.py`.
+
+#### K11 — the corpus's only duplicate question. Re-authored in place, not cut.
+
+| Site | What changed | Source |
+|---|---|---|
+| `p5-05/quiz.js:5` (index 3) | The duplicate of Q3 — *"What does he say to students who only watch for the opening setup?"* — replaced by **"Why are the examples index futures rather than forex?"** → *"It is where the volatility is right now"*. Options 37–39 chars; the correct one is **not** the longest. | ep31:22-33 (*"I'm pushing this asset class because this is where the volatility is — price is price, it doesn't make a difference"*, *"when forex starts moving around big again… index futures will get slower and quiet in comparison"*) and 44-59 (*"we have to look for volatility where we can find it"*, *"learn from it because it works the same way in forex"*) |
+
+**Replaced, not cut** — the lesson's whole opening block (*"Why the examples are
+index futures, not forex"*, `p5-05/lesson.html:11`) was untested by all eight
+questions, so the material to replace with was already there and §1-clean, and
+cutting would have taken the quiz to seven for no gain.
+
+**Q4 was re-authored in its own slot rather than cut-and-appended**, which is a
+deliberate departure from the brief's *"append if you replace; do not reorder"*.
+The reason the brief gives for that rule is `ict-quiz`'s index keying, and
+in-place re-authoring serves it **strictly better**: cutting index 3 and
+appending would have re-pointed **four** stored keys (old indices 4–7 sliding to
+3–6) plus created a new one, where re-authoring re-points exactly **one** — the
+unavoidable minimum, since one of the two duplicates must change meaning either
+way. Nothing moved, so Q1–Q3 and Q5–Q8 still key to the same questions. Q3 was
+kept because it is the tighter of the two stems.
+
+#### N16 — the one-sidedness family. Done, at the third time of asking.
+
+Five sites, all Section 1, all mirrors already present in Section 1's own source:
+
+| Site | What was added | Source |
+|---|---|---|
+| `m1-06/lesson.html:30` (**A8**) | The bullish orderblock's stated counterpart: the **up candle before the market drops** — *"that up candle is exactly where resistance is on an institutional basis, so that's where selling occurs."* | `Fair Valuation.txt:471-474` |
+| `m1-06/lesson.html:34` (**A8**) | A new `.callout` — *the same thing for a short*: look for where **the market in the past has moved up a great deal with speed**, for the **lows where stops would be building up below** them (sell-stop pools), and take **the lower end of the most recent range** as the valuation. | `Fair Valuation.txt:569-578` |
+| `m3-05/lesson.html:22` (**C9**) | The **fourth SMT cell**, the one that lets a reader diagnose a dollar *top*: USDX **fails to make a higher high** while FX makes a lower low → underlying dollar weakness, the FX low accumulating sell stops, then the rally, the dollar selling off, *"which would support foreign currency long positions."* | `Institutional Market Structure.txt:156-183` |
+| `m3-07/lesson.html:22` (**C10**) | A new `.callout.rule` giving the **buy-side phantom play**: retail adopts trendline *resistance* in a falling market, *"the chart may appear bearish but the underpinnings are in fact the opposite"*; the target is the **low between point 2 and point 3**, *"I'm looking for a bullish orderblock at that low in between the two points"*, **or a break just below it for a turtle soup long entry**. | `Market Maker Trap Trendline Phantoms.txt:221-259` |
+| `m4-02/lesson.html:18` (**D13**) | A new `.callout`: bearish on the monthly or weekly and you look for the opposite — **retracements higher**, **low-resistance liquidity runs to break below a swing low** — with the pip thresholds unchanged (40+ for the day trade, 75–100 on the hourly). | `Reinforcing Liquidity Concepts & Price Delivery.txt:960-976` |
+| `s1 summary.html:209` (**F10**) | A third `kv` row restoring **both** non-symmetrical mirrors the summary had dropped — USDX fails to make a lower low while FX makes a higher high (dollar strength), and the new C9 cell (dollar weakness). §3 is satisfied because `m3-05` now carries both. | `m3-05/lesson.html:21-22`, a lesson |
+
+**D13 is marked PARTLY FIXED**: only its third drop, the bearish mirror, is in
+scope for **N16**. Its other two (the drop-to-a-weekly fallback, the
+position-trader averaging passage) are coverage items and stand.
+
+#### M14's summary half — now permitted, and taken
+
+| Site | What was added | Source |
+|---|---|---|
+| `s2 summary.html:280` | A `.callout.warn` opening the Part 6 L5 block, mirroring the lesson's own *"Read the caveat before the lecture"*: *"because **I'm the author of these concepts** I have a lot of tools at my disposal, and I have **a little bit better understanding of price delivery than the average student** of mine"* — an **advanced manoeuvre**, not a technique to copy off a 15-minute chart. | `p6-05/lesson.html:10`, **a lesson** — which is the whole basis on which §3 now permits it |
+
+Tier 2's refusal was correct when it was made and is not retracted: the caveat
+then existed only in ep38's transcript, and a summary may not carry material no
+lesson does. Tier 2's own fix — putting it in `p6-05` — is what made this legal.
+**M14 is now FIXED**, not partly: all three part-level hedges reach the summary
+(no-timetable at `:261`, live-funds at `:294`, authorship at `:280`).
+
+#### F7 — the coupling is now enforced
+
+| Site | What changed |
+|---|---|
+| `verify.py` | New check. For each section carrying `summary.html` + `exam.js` + `section.js`, the question count the summary states in prose is parsed (`Final Exam …(\d+) questions`) and compared against the exam that actually renders, matched by `data-exam`. A summary stating **no** count passes; one stating a **wrong** count fails, as does a stated count with no exam behind it. |
+| `CLAUDE.md` §5 | Its bullet list of what `verify.py` checks gains the new line. |
+
+**Negative-tested, not merely added.** `s1 summary.html`'s 45 was perturbed to 44
+and `verify.py` failed with `exam s1: summary.html says 44 question(s), exam.js
+renders 45`, exit 1; reverting restored the clean run. Both pages are correct
+today (45 and 43), so the check passes on the current tree.
+
+#### The Tier 5 triage — proposed, not authored
+
+The remaining **77 should-fix / 147 nits** were read via the two roll-ups and
+batch N and sorted by *whether the corpus says something the source does not*
+(a §1 defect) rather than *whether the source says more than the corpus*
+(condensation, which is what a lesson is). The proposal is recorded in the
+handover, not here, because it needs agreement before any of it is authored.
+Two housekeeping results from that read are recorded below as contradictions.
+
+#### Contradicting the audit — five more things
+
+1. **`p5-05` is episode 31, not 32.** The brief for this pass named
+   *"ep-32 transcript + `notes/2022-mentorship/ep-32.md`"* as **K11**'s
+   re-authoring source. Part 5 carries the episode-number offset the audit
+   itself flagged (`p5-03` = episode 29), so `p5-01`…`p5-07` map to 26, 27, 29,
+   30, 31, 32, 33 — `p5-05` is **episode 31**, which is also what **K11**'s own
+   entry cites (`ep31:154-161`) and what `p5-05/video.txt` points at. The
+   replacement question was written from **ep31**. Sourcing it from ep-32 would
+   have been a `p5-06` import — precisely the migration defect that produced
+   every Section 1 blocker, arriving through a plan document rather than through
+   a note page.
+
+2. **The one-sidedness family has five lesson-level sites, not six — `E18` is
+   not one of them.** The family list *"A8, C9, C10, D13, E18, F10"* is repeated
+   six times in the document, but **E18**'s own entry is the *quiz-count*
+   proportionality finding for Month 4b, and the one-sidedness inside it is
+   **quiz**-level: *m4-14's double-bottom mirror is untested* and *m4-08's
+   bearish mirror is untested*. Those are not lesson prose with a missing mirror
+   — and **both were already closed by Tier 3**, which added +1 to `m4-14` and
+   +2 to `m4-08` for exactly that material. So N16 was **five sites plus two
+   already-fixed quiz gaps**, and the estimate that survives is the useful one:
+   *"roughly six sentences and needs no new sourcing"* was accurate — it took six.
+
+3. **`B11` and `I7` were closed by Tier 4 and never marked.** Both are named in
+   the open should-fix list, and both are quiz-construction findings that Tier 4's
+   sweep repaired without crediting. Re-measured on the current tree with the
+   **I17** regex: `m2-02` q2 (**B11**, *"the worst single question in Months 1-2"*,
+   36/30/17/10 with the correct option longest) now runs 28/36/37/27 with the
+   correct option **not** longest — the file is 3/4 not-longest, max margin 3.
+   `p3-03` q7 (**I7**, *"the worst-constructed question in Section 2 so far"*,
+   58/38/34/28) now runs 53/44/50/44, margin 3 — it was one of the four margin-≥10
+   outliers Tier 4 repaired. Both are marked `· FIXED by Tier 4` in place. **The
+   open-findings count is therefore 75 should-fix, not 77**, before this pass's
+   own five.
+
+4. **`G16` and `L25` are the two option-length findings that genuinely remain,
+   and they are one-tailed in the safe direction.** The caution against re-running
+   Tier 4 is that the not-longest metric is two-tailed and Section 1's months sit
+   at 74–76%, which is chance. That caution does not reach these two: `p1-06`
+   (**G16**) measures **25%** not-longest, max margin 8, max spread 15, and
+   `p6-04` (**L25**) measures **20%**, max margin 7 — i.e. the correct option is
+   the longest **three or four times in five**, a long way *below* chance on the
+   same scale. Moving them toward 75% is not the mirror-direction over-correction
+   the caution warns about; it is the correction the caution assumes has already
+   happened everywhere else. They are the only two per-file sets in the corpus
+   still in that state.
+
+5. **The `.src` fix's blast radius reached this pass.** Nothing new was found in
+   `engine/`, but the F7 check had to read `section.js` to get each section's id,
+   and `content/s1-ict-core/section.js` still carries the stray `;` before its
+   closing brace that §3 warns a formatter inserts. `build.py`'s `parse_objs`
+   neutralises it, and the new check's `id\s*:\s*"([^"]+)"` regex is likewise
+   indifferent to it — but **any future tooling that reads these files as JS will
+   trip on it**, and the audit records the hazard without ever recording that a
+   live instance of it is sitting in the tree.
 
 ## Fixed in flight
 

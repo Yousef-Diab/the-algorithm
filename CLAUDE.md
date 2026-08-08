@@ -154,6 +154,7 @@ Review pages are `.lesson` sections so routing works, but they carry `data-kind`
 - every quiz exposes a reset control that actually clears the graded state,
 - the lightbox opens, browses the lesson's charts, zooms, and closes on an outside click but not on a click on the image,
 - each section's `summary.html` and `exam.js` produce a page, and the exam grades to a real score on submit,
+- the question count each `summary.html` states in prose matches the exam that actually renders (a summary may state no count; it may not state a wrong one),
 - a video link renders for each lesson with a non-empty `video.txt`,
 - there are zero console/page JS errors.
 
