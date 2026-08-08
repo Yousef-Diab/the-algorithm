@@ -9918,11 +9918,22 @@ options were walked back to put the correct answer marginally longest again.
 defect*: batch E's shape is that four of seven Month 4b lessons teach what a thing
 **is** and never how to trade it, and `m4-02` never defines the two terms its own
 bullets carry. It is real, but it is a **completeness** judgement rather than a §1
-one — the lesson does not say anything the source doesn't. It was flagged as the
-author's call and the call was to leave it. **The ~37 remaining coverage findings
-were declined for the stronger version of the same reason**: the source saying
-more than the lesson is condensation working as designed, and authoring them all
-would roughly double Section 1's lesson lengths for no fidelity gain.
+one — the lesson does not say anything the source doesn't.
+
+**It was put to the author and declined**, in those terms: *"I am okay with the
+content of the lessons, no need to throw extra stuff in."* That is a scope
+decision, not a fidelity one, and it closes 5C — **`D3`, `D4`, `E5`, `E6`, `E9`,
+`E11`, `E12` and `E17` stay open and should not be re-proposed.** **The ~37
+remaining coverage findings were declined for the stronger version of the same
+reason**: the source saying more than the lesson is condensation working as
+designed, and authoring them all would roughly double Section 1's lesson lengths
+for no fidelity gain.
+
+**Where that leaves the corpus.** Everything the audit found where **the course
+says something its source does not** is now repaired — all 6 blockers and every
+5A/5B site. What remains open is, by construction, **material the source carries
+and the lessons chose not to**. That is a different class of finding, and the
+decision on it has been made.
 
 #### Contradicting the audit — three more things
 
