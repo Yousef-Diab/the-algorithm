@@ -549,7 +549,7 @@ where **A10's measurement needed correcting** (C17).
 
 #### Content fidelity (§1)
 
-**C1 · blocker · [m3-08/lesson.html:18](../content/s1-ict-core/m3/m3-08/lesson.html#L18)** —
+**C1 · blocker · FIXED · [m3-08/lesson.html:18](../content/s1-ict-core/m3/m3-08/lesson.html#L18)** —
 **the inverse head & shoulders is taught backwards.** The lesson says it is
 *"the mirror trap **at a discount** — sell stops below the 'head' are the target
 **before the real move up**."* ICT teaches the exact opposite, twice, and at
@@ -575,7 +575,7 @@ following this line takes the wrong side of the trade.
 *Fix:* rewrite as the short-side mirror; the source supports it sentence by
 sentence.
 
-**C2 · blocker · [m3-07/lesson.html:19](../content/s1-ict-core/m3/m3-07/lesson.html#L19)** —
+**C2 · blocker · FIXED · [m3-07/lesson.html:19](../content/s1-ict-core/m3/m3-07/lesson.html#L19)** —
 **the triangle's mechanism is invented, and the quiz tests the invention.** The
 lesson explains: *"The **triangle / wedge** is the same mechanism — converging
 trendlines just stack buy stops above and sell stops below the **apex** so the
@@ -804,7 +804,7 @@ Only two questions in the month are genuinely conspicuous:
 - **[`m3-08/quiz.js:5`](../content/s1-ict-core/m3/m3-08/quiz.js#L5)** — spread **20**: correct `"The HTF premium/discount array"` (30) against `"The volume"` (10). Worst in Month 3.
 - **[`m3-01/quiz.js:2`](../content/s1-ict-core/m3/m3-01/quiz.js#L2)** — spread 16: correct `"Orderblocks, stop runs, liquidity voids"` (39) against `"Doji, hammer, engulfing"` (23).
 
-#### C18 — Quiz-count verdict for Month 3: **it is a defect** (for 4 of 8 lessons)
+#### C18 · should-fix — Quiz-count verdict for Month 3: **it is a defect** (for 4 of 8 lessons)
 
 Batches A and B ruled the thin counts *not* a defect for Months 1–2, because
 they tracked how much material each lesson carried. **Month 3 breaks that
@@ -1246,7 +1246,7 @@ correcting: the counts are again out of proportion (**E18**) and Month 4b is
 
 #### Content fidelity (§1)
 
-**E1 · blocker · [m4-11/lesson.html:9](../content/s1-ict-core/m4/m4-11/lesson.html#L9)
+**E1 · blocker · FIXED · [m4-11/lesson.html:9](../content/s1-ict-core/m4/m4-11/lesson.html#L9)
 and [m4-11/quiz.js:2](../content/s1-ict-core/m4/m4-11/quiz.js#L2)** —
 **the liquidity void is defined as its opposite.** The lesson opens: a liquidity
 void is *"where absolutely **no trading took place** — e.g. a big news candle
@@ -1753,7 +1753,7 @@ account of why**, which is the transferable fix for **E19** (**F13**, **F14**).
 
 #### Content fidelity (§1) — and the §3 "re-states the lessons" test
 
-**F1 · blocker ·
+**F1 · blocker · FIXED ·
 [summary.html:240](../content/s1-ict-core/summary.html#L240) and
 [exam.js:235-237](../content/s1-ict-core/exam.js#L235)** —
 **E1 propagates to both pages, in the one slot where it does most damage: the
@@ -1764,12 +1764,14 @@ Three things make this worse than E1 was in m4-11:
 
 - **The self-contradiction is now inside a single table cell.** "No trading took
   place" and "once both sides have been offered" are one sentence apart.
-- **The vacuum block's row sits four rows above it** and reads *"a gap from a
+- **The vacuum block's row sits two rows above it** (**N15**; F1 published
+  *four*) and reads *"a gap from a
   volatility event … where **no trade could occur**."* So the summary hands the
   same definition to two different PD arrays inside one table. E1 noted that
   m4-11 collapses the m4-09 distinction; here the collapse is visible at a
   glance, on the page designed for side-by-side revision.
-- **The correct formulation is two rows *below*.** The FVG row says *"**Only one
+- **The correct formulation is one row *below*.** (**N15**; F1 published *two*.)
+  The FVG row says *"**Only one
   side of liquidity was offered** there, so price is drawn back to rebalance
   it"* — which is exactly ICT's liquidity-void definition
   (`m4-11` transcript 7-11, 111-114, 125-126, quoted in **E1**). The table
@@ -1792,7 +1794,7 @@ are neutral, and two of them *presuppose* the correct one — `summary.html:150`
 of which describe ranges where trading demonstrably occurred. So the repair is
 two cells, not eleven.
 
-**F2 · should-fix ·
+**F2 · should-fix · FIXED ·
 [summary.html:222](../content/s1-ict-core/summary.html#L222)** —
 **C2's residue: *"Triangles and wedges are the same mechanism."*** The invented
 apex mechanism is gone (the string "apex" appears in `summary.html` **zero**
@@ -1878,7 +1880,7 @@ from the summary, and examined once — the single worst-supported rule in
 Section 1. Whichever way it is fixed (a clause in the liquidity-pool row, or a
 line in the m4-10 block), the summary is the cheaper place.
 
-**F7 · should-fix ·
+**F7 · should-fix · FIXED ·
 [summary.html:311](../content/s1-ict-core/summary.html#L311)** — **the summary
 tells the reader the exam has 40 questions; it has 45.** *"take the **Final
 Exam** — **40 questions** across all four months."* `exam.js` holds 45 (verified
@@ -6182,7 +6184,7 @@ image sets, 78 quizzes, 4 review pages across 2 sections with zero warnings**.
 No `(Lx)` or `(Pn Lm)` cross-reference appears anywhere in Part 5, so there is
 nothing to resolve, and no `.src` misuse of the **J24** kind.
 
-**K17 · nit · `p5-01/lesson.html` — no `.fig-slot` and no annotating comment.**
+**K17 · nit · FIXED · `p5-01/lesson.html` — no `.fig-slot` and no annotating comment.**
 Episode 26 genuinely has no charts — **confirmed on all three counts**: there is no
 `ep-26.md` at all, `notes/2022-mentorship/raw/ep-26-*.png` is empty, and
 `images/p5-01-*.png` does not exist. Nothing is broken and `build.py` emits no
@@ -6650,7 +6652,7 @@ Three things follow, and they are not the same thing:
 severity. Recorded at should-fix because it changes F1's scope (three files plus a
 qualifier, rather than two cells) and its justification.
 
-**L15 · should-fix ·
+**L15 · should-fix · FIXED ·
 [p6-05/lesson.html:8](../content/s2-2022-mentorship/p6/p6-05/lesson.html#L8) and
 [:80](../content/s2-2022-mentorship/p6/p6-05/lesson.html#L80)** —
 **the H14 / K4 family gets its fourth instance, it is load-bearing, and it is
@@ -7097,7 +7099,7 @@ reads as an illustration rather than as the first half of a two-part claim.
 
 #### Instalment 4 — episodes 40–41 (`p6-07`, `p6-08`; 101 KB, and the mentorship's final episode)
 
-**L36 · should-fix ·
+**L36 · should-fix · FIXED (at the summary site) ·
 [p6-07/lesson.html:142](../content/s2-2022-mentorship/p6/p6-07/lesson.html#L142),
 [:161](../content/s2-2022-mentorship/p6/p6-07/lesson.html#L161),
 [p6-07/quiz.js:58](../content/s2-2022-mentorship/p6/p6-07/quiz.js#L58) and
@@ -7633,8 +7635,9 @@ emits **zero warnings**; and nothing in `content/` was edited.
 
 **Five items to batch N:**
 
-1. **`intermediate term` — the table is now complete. Corpus total: 7 hyphenated /
-   29 unhyphenated**, and the hyphenated form survives **only** in Section 1, Part 1
+1. **`intermediate term` — the table is now complete. Corpus total: 10 hyphenated /
+   33 unhyphenated** (corrected from 7/29 by **N3**, which recounted across all 160
+   files; the distribution claim below is unaffected), and the hyphenated form survives **only** in Section 1, Part 1
    and the section-level pages. Part 6 contributes 0/0. That is the final figure.
 2. **The `a` index is a per-section constant** (**L27**): Section 1's quizzes are
    `a:1` 136/145, Section 2's are `a:0` 305/306, both exams `a:0`. Harmless at
@@ -7711,12 +7714,12 @@ offset, `p5-03` = episode 29). It held every time.
 | p4 | 45 | 60% | 40% | 43% | **6** | **24%** |
 | p5 | 57 | 51% | 49% | **54%** | 2.5 | 12% |
 | p6 | 64 | 70% | 30% | 34% | 2 | 12% |
-| **S2 quizzes** | **306** | **64%** | **36%** | **42%** | **3** | **11%** |
+| **S2 quizzes** | **306** | **64%** | **36%** | **43%** | **3** | **10%** |
 | S2 exam | 40 | 63% | 38% | 45% | 2 | 0% |
 | *S1 quizzes* | *145* | *29%* | *71%* | *76%* | *4* | *26%* |
 | *S1 exam* | *45* | *69%* | *31%* | *42%* | *1* | *0%* |
 
-**Section 2's quizzes hand a knowledge-free guesser 42%; Section 1's hand them
+**Section 2's quizzes hand a knowledge-free guesser 43%; Section 1's hand them
 76%.** That is the roll-up's second headline. Section 2 is **34 points better** on
 the same metric, it is within one point of the Section 1 *exam* — the corpus's
 best-constructed set until Part 6 — and every one of its six parts beats every one
@@ -7743,8 +7746,9 @@ reader could believe*) rather than a target.
 both denominators. **C18**'s floor of four is never breached in Section 2 — the
 range is 5 to 12 — against **eleven of Section 1's 38 lessons** under-tested. Parts
 1, 2, 4 and 5 pass outright; Parts 3 and 6 each have one site. Recommended
-additions: **+4 for `p6-06`** (**L28**) and Part 3's, both from material already in
-the lesson. Section 1 needed roughly **+18**.
+additions: **+4 for `p6-06`** (**L28**) and **+3 for `p3-05`** (**I11**), both from
+material already in the lesson. (**N14**: this sentence named `p3-06`; I11 is filed
+against `p3-05`, and batch I judged `p3-06`'s seven questions adequate.) Section 1 needed roughly **+18**.
 
 **Four conclusions that replicated in all six batches**, and are therefore settled:
 
@@ -7852,7 +7856,7 @@ Eighteen findings: **2 blockers, 8 should-fix, 8 nits.**
 
 #### Content fidelity — the §3 "re-states the lessons" test
 
-**M1 · blocker ·
+**M1 · blocker · FIXED ·
 [summary.html:165](../content/s2-2022-mentorship/summary.html#L165) against
 [p3-06/lesson.html:57](../content/s2-2022-mentorship/p3/p3-06/lesson.html#L57)** —
 **the midnight-opening-price rule is stated backwards, and the sentence
@@ -7894,7 +7898,7 @@ clause, not a rewrite**, and the wording to paste into it already exists two lin
 away. Nothing in `exam.js` tests it, so no exam question needs re-marking — which
 is the one respect in which this is narrower than **F1**.
 
-**M2 · blocker ·
+**M2 · blocker · FIXED ·
 [summary.html:253](../content/s2-2022-mentorship/summary.html#L253)** — **"a gap
 and a breaker together is a big confluence — likely to tap in and take off" is not
 in any of the forty lessons.** Measured across all 40 lesson files: **"big
@@ -7921,7 +7925,7 @@ broader in another (**C2 was in a lesson; this is on the revision page a reader
 reads last, immediately before the exam**). *Fix:* delete the clause, or restate
 `p5-07`'s actual four-condition stack, which the same block already has room for.
 
-**M3 · should-fix ·
+**M3 · should-fix · FIXED ·
 [summary.html:71](../content/s2-2022-mentorship/summary.html#L71) against
 [p1-05/lesson.html:46](../content/s2-2022-mentorship/p1/p1-05/lesson.html#L46)** —
 **the three-drives line waives the one condition the summary states 26 lines
@@ -7945,7 +7949,7 @@ liquidity taken, no shift.**"* A reader revising from this page meets the rule a
 its exemption six blocks apart. *Fix:* replace with the lesson's own reason — *the
 buy stops above each previous drive are what get taken.*
 
-**M4 · should-fix ·
+**M4 · should-fix · FIXED ·
 [summary.html:54](../content/s2-2022-mentorship/summary.html#L54)** — **a
 break-even trigger and a term neither of which exists in the section, in place of
 the rule the lesson gives.** The summary: *"Only once price has genuinely
@@ -7966,7 +7970,7 @@ is `p1-06:64`'s; the trigger and the destination are both wrong. This is the sam
 family as **M1** — a mechanism restated rather than re-stated — and the fix is the
 lesson's own sentence.
 
-**M5 · should-fix ·
+**M5 · should-fix · FIXED ·
 [summary.html:231](../content/s2-2022-mentorship/summary.html#L231) and
 [:176](../content/s2-2022-mentorship/summary.html#L176)** — **two load-bearing
 clauses attributed to the wrong part.** Neither reference is *dead* — both point at
@@ -7991,7 +7995,7 @@ the cited lesson is topically right, so the error is invisible until a reader
 actually goes looking — the failure mode **F12** was watching for, arriving by a
 different route than predicted.
 
-**M6 · should-fix · the Part 6 L5 block
+**M6 · should-fix · FIXED · the Part 6 L5 block
 ([summary.html:279-286](../content/s2-2022-mentorship/summary.html#L279))** —
 **ICT's own differentiation on rebalancing is dropped, and this was the batch's
 designated site for it.** `p6-05:26` carries the passage batch L identified
@@ -8238,7 +8242,7 @@ confirmed, 40/0/0/0), the same authoring template as the S1 exam. **D14/D15** an
 
 #### The carried-forward items the brief named
 
-**M14 · should-fix — the three part-level hedges: one is restored, two are absent,
+**M14 · should-fix · PARTLY FIXED — the three part-level hedges: one is restored, two are absent,
 and the summary is a viable single fix site for both.** Measured across both pages:
 
 | Hedge | Sources | In the summary? |
@@ -8254,7 +8258,7 @@ the two, because it is what marks abandoning a live bias mid-session (`p6-05`, t
 `:279` block) as something ICT can do *because he wrote the concepts*. Its natural
 home is that block, one line from **M6**'s.
 
-**M15 · nit — pyramiding: the sizing rule is carried, the placement rule is not,
+**M15 · nit · FIXED — pyramiding: the sizing rule is carried, the placement rule is not,
 and a third ladder is unreconciled.** `pyramid` appears **4 times in the summary
 and 0 in the exam** (`:116`, `:117`, `:351`, `:367`). The five-site verdict
 (*biggest position first*) stays **closed** — **L40** confirmed Part 6's sources
@@ -8295,7 +8299,7 @@ statement — **Section 1's pages carry no equivalent note**, and `s1
 summary.html:80,267` and `s1 exam.js:35` state 62/70.5/79 with no mention that
 Section 2 states it differently.
 
-**M17 · should-fix — "protected lows" (L36): the summary is where the label gets
+**M17 · should-fix · FIXED — "protected lows" (L36): the summary is where the label gets
 fixed, and the fix is one clause.** `protected` appears **once in the summary
 (`:306`) and zero times in the exam**. **L36** established the phrase is the
 note-taker's coinage — **zero occurrences in all fourteen Part 6 transcripts**,
@@ -8313,7 +8317,8 @@ so **the summary and `p6-07` are the only two sites** — down from L36's four, 
 `p6-07`'s `<h3>` and quiz question are the other two.
 
 **M18 · nit — `intermediate term`: the section-level half of the corpus tally
-confirms.** Batch L's table is complete at **7 hyphenated / 29 unhyphenated**, and
+confirms.** Batch L's table is complete at **10 hyphenated / 33 unhyphenated**
+(**N3**'s recount; M18 published 7/29), and
 **4 of the 7 are on these two pages**: `summary.html:102,108` and
 `exam.js:84,85`, all hyphenated; `intermediate term` unhyphenated is **0/0** here.
 So batch L's finding holds exactly — the hyphenated form survives **only** in
@@ -8725,7 +8730,7 @@ always in **E1**'s scope.
 
 #### N3–N6 — terminology, recounted
 
-**N3 · nit — `intermediate-term` is 10 hyphenated / 33 unhyphenated. Batch L's
+**N3 · nit · FIXED — `intermediate-term` is 10 hyphenated / 33 unhyphenated. Batch L's
 7/29 is wrong, and `M18` consumed it unchecked.** The recount covers all 160
 files. The earlier figure excluded the 80 quiz/exam files, which hold **2**
 hyphenated and **12** unhyphenated occurrences, and undercounted the rest.
@@ -8748,7 +8753,7 @@ the section-level pages* — is exactly right: all 10 hyphenated occurrences sit
 and `s2 exam.js`, and **nowhere else**. Correct both figures in place; the
 finding stands.
 
-**N4 · nit — the `orderblock` / `order block` split is a section boundary, not an
+**N4 · nit · FIXED (the one leak) — the `orderblock` / `order block` split is a section boundary, not an
 inconsistency, and it leaks exactly once.** `orderblock` is **115 occurrences,
 all in Section 1, 0 in Section 2**. `order block` is **202, of which 201 are in
 Section 2**. The single leak is
@@ -8783,7 +8788,7 @@ meets two forms in one place; this is the corpus's most fragmented term and its
 least consequential one. *Recommendation:* normalise to `back testing` in a fix
 pass, or leave it — it is a nit either way.
 
-**N7 · nit — `FVG` is used ten times in Section 1 before it is ever glossed.**
+**N7 · nit · FIXED — `FVG` is used ten times in Section 1 before it is ever glossed.**
 Section 1 uses the abbreviation **27** times and expands it exactly once, in
 `m4-12`'s **title** (*"ICT Fair Value Gaps (FVG)"*) — the 34th of its 38 lessons.
 **Ten uses precede it**, in course order: `m1-06/lesson.html` (1),
@@ -8862,7 +8867,7 @@ purpose.
 
 #### N10–N12 — the cosmetic and numeric reconciliations
 
-**N10 · nit — the `.src` CSS-scope fix covers four of the six sites, not six, and
+**N10 · nit · FIXED — the `.src` CSS-scope fix covers four of the six sites, not six, and
 the other two are a different defect.** `class="src"` occurs in exactly **three
 files**: `s1 summary.html` (24), `s2 summary.html` (48), `p4-05/lesson.html` (2)
 — 74 spans. `engine/head.html:182` scopes the style as **`.lesson h4 .src`**, so:
@@ -8886,7 +8891,7 @@ So the brief's *"a single CSS-scope change may be cheaper than six content
 edits"* is **two-thirds right**: one line replaces four content edits, and two
 content edits remain. That is still the best trade in the repair plan.
 
-**N11 · nit —
+**N11 · nit · FIXED —
 [`s2 summary.html:342`](../content/s2-2022-mentorship/summary.html#L342) collapses
 a distinction it draws in the same sentence.** The row reads *"1 handle | Four
 ticks — **$50** on ES, **$20** on NQ, **$5** on the micros."* It separates ES from
@@ -8920,7 +8925,7 @@ batch closes the residue it left open.*
 
 #### N13–N15 — the audit's own arithmetic
 
-**N13 · nit — the corpus finding total is right by convention and the doc's own
+**N13 · nit · FIXED — the corpus finding total is right by convention and the doc's own
 severity markers count 240, not 241.** Re-derived by parsing every
 `**<Batch><n> · <severity>**` header in this document:
 
@@ -8952,7 +8957,7 @@ Section 2 roll-up gives S2 quizzes **42%** expected where **M13** and this
 re-derivation give **43%**, and gives spread-over-10 as **11%** where both give
 **10%**.
 
-**N14 · nit — the Section 2 roll-up names the wrong Part 3 lesson.** The roll-up
+**N14 · nit · FIXED — the Section 2 roll-up names the wrong Part 3 lesson.** The roll-up
 reads *"`p3-06` (19.1 KB per question) and `p6-06` (14.0) are the only lessons
 that fail both denominators… Recommended additions: **+4** for `p6-06` (**L28**)
 and **Part 3's**."* But **I11** is filed *against `p3-05`*, its recommendation is
@@ -8962,7 +8967,7 @@ lesson"*). `p3-06` has the worse ratio and **seven** questions that batch I foun
 adequate. So **Part 3's outstanding site is `p3-05`, +3** — correct the roll-up's
 sentence, not I11.
 
-**N15 · nit — F1's row arithmetic is off in both directions.** **F1** says the
+**N15 · nit · FIXED — F1's row arithmetic is off in both directions.** **F1** says the
 vacuum-block row sits *"four rows above"* the liquidity-void row and the correct
 FVG formulation *"two rows below"*. In the ten-array table at
 [`s1 summary.html:231-241`](../content/s1-ict-core/summary.html#L231) the rows
@@ -9008,7 +9013,7 @@ notes"* (`p1-02:44`, `p1-03:41,44`, `p2-03:68`) are instructions to the student,
 a different construction entirely. **The family stays at four sites — `m3-02:23`,
 `m3-04:17`, `m3-05:28` (C16) and `s1 exam.js:79` (F9) — and there is no fifth.**
 
-**N18 · nit — `p5-01` is the only `.fig-slot` omission that is inconsistent with
+**N18 · nit · FIXED — `p5-01` is the only `.fig-slot` omission that is inconsistent with
 its own section, and the Section 1 six should be left silent.** Re-measured:
 **11 lessons carry no `.fig-slot`.** Four annotate the omission (`p1-01`,
 `p2-01`, `p2-04`, `p3-01`) and seven are silent — `m1-04`, `m1-05`, `m1-06`,
@@ -9142,7 +9147,7 @@ the only one that propagated** to a section-level page.
 | Break-even trigger → `p1-06:64`'s actual rule | `s2 summary.html:54` | **M4** |
 | Drop or attribute *"protected lows"* | `s2 summary.html:306` | **M17** |
 | Add ICT's rebalancing differentiation | `s2 summary.html`, Part 6 L5 block | **M6** |
-| Add the authorship caveat | `s2 summary.html`, same block | **M14** |
+| ~~Add the authorship caveat~~ → add it to **`p6-05/lesson.html:8`**, not the summary | `s2 summary.html`, same block | **M14** |
 | Add the live-funds warning | `s2 summary.html` | **M14** |
 | Add `p4-03`'s pyramid **placement** rule | `s2 summary.html`, Part 4 block | **M15** |
 | *"$5 on micro ES, $2 on micro NQ"* | `s2 summary.html:342` | **N11** |
@@ -9152,6 +9157,18 @@ the only one that propagated** to a section-level page.
 | Add the no-charts comment | `p5-01/lesson.html` | **K17**, **N18** |
 | Add the missing severity marker | `docs/content-audit.md`, **C18**'s header | **N13** |
 | Correct four figures in this document | roll-ups: `intermediate-term` 7/29→10/33; S2 quizzes 42%→43%; *"p3-06"*→*"p3-05"*; **F1**'s row counts | **N3**, **N13**, **N14**, **N15** |
+
+> **Correction to this table, made during the fix pass (see *Fixes applied*).**
+> **M14**'s *"add the authorship caveat to `s2 summary.html`"* was **unsafe under
+> §3**, and this plan should not have carried it. The caveat — ICT's *"because I'm
+> the author of these concepts…"* — exists **only in ep38's transcript**; `author`
+> is **0 across all 40 Section 2 lessons** (**N** confirmed this), and **L15**
+> records that `p6-05:8` and `:80` reproduce the material either side of it and
+> stop short. §3 permits a summary to **re-state existing lessons only**, so adding
+> it there would have made the summary carry material no lesson does — the exact
+> defect **M2** is graded a blocker for. The safe order is **lesson first**:
+> `p6-05/lesson.html:8`, where §1 permits the transcript. Done that way in the fix
+> pass; **not** propagated to the summary.
 
 **Tier 3 — new question authoring: 30 questions, and every one is writable from
 material already in the lessons.**
@@ -9278,6 +9295,126 @@ would be introducing the exact defect the audit exists to find.
    scans that had excluded them.
 
 ---
+
+## Fixes applied
+
+The fix pass, **2026-08-08**, run against the repair plan above. **Tier 1 (all six
+blockers) and Tier 2 (the one-line edits) are complete.** Tiers 3 and 4 are
+untouched and remain open.
+
+Every replacement below is quoted from the source named in its last column.
+`python build.py` emits **zero warnings** and `python verify.py` reports
+**78 lessons, 339 images, 78 video links, 451 quiz questions, 2 summary pages,
+85 exam questions across 2 exams, 0 JS errors** — the pre-fix baseline, unchanged,
+which is the point: no counts moved, so nothing was added or dropped structurally.
+
+### Tier 1 — the six blockers, all closed
+
+| # | File · line (post-fix) | What changed | Source of the replacement |
+|---|---|---|---|
+| **C1** | `m3-08/lesson.html:18` | *"the mirror trap at a discount — sell stops below the 'head' are the target before the real move up"* → the **short-side mirror**: faded short from a premium when the HTF reads bearish, the neckline break is a **run on buy stops**, and the sell stops below the head are the **objective to cover into**. | `Market Maker Trap Head Shoulders Pattern.txt:190-206`, worked example 399-445 (both quoted in **C1**) |
+| **C2** | `m3-07/lesson.html:19` | The invented apex mechanism bullet → what ICT actually says: a **classic chart pattern, a triangle**, prints here, its **breakout was false** (*"they would have been wrong even trading with that"*), and it is a pattern **not yet covered**, to be treated later. | `Market Maker Trap Trendline Phantoms.txt:528-534`; `notes/ict-core/m3-07.md` (*"Classic chart pattern, triangle"*) |
+| **C2** | `m3-07/quiz.js:5` (q4) | Q4 rewritten rather than cut, so the lesson keeps four questions. New stem *"What happened to the triangle's breakout on this chart?"* → **"Its breakout was false"**. Options 21–25 chars; correct option is not the longest. | same transcript line |
+| **C2** | `s1 summary.html:222` | The six-word residue *"Triangles and wedges are the same mechanism."* deleted. The sentence before it is intact and sourced. | **F2** |
+| **E1** | `m4-11/lesson.html:9` | *"where absolutely no trading took place… neither buyside nor sellside was offered"* → *"a range in price delivery where **one side** of the market's liquidity is shown — wide or long one-sided ranges or candles, quick, with very little wick. A run down is **a void of buy-side liquidity**."* | `m4-11` transcript 7-11, 111-114, 125-126; the *quick / very little wick* half from `m1-06:17`, per **N1** |
+| **E1** | `m4-11/lesson.html:5` (the hero `desc`) | **Not in the plan** — the lesson's one-line summary carried the same reversed definition (*"Where no trading took place at all"*). Fixed with the bullet; see *Contradicting the audit*, item 1. | same |
+| **E1** | `m4-11/quiz.js:2` (q1) | Correct option *"Where no trading took place"* → **"A one-sided, wide range"**; the self-contradicting `e` replaced. Options 20–23 chars. | same |
+| **F1** | `s1 summary.html:240` | The liquidity-void cell restated: *"A range where **only one side of liquidity was shown**… a run down is a **void of buy-side liquidity**."* The rest of the cell (no specific time, covered back over, fake-out first) is untouched and sourced. The other nine `liquidity void` mentions left alone, per **F1**'s measurement. | same |
+| **F1** | `s1 exam.js:236` (q39) | **New option set**, as **F1** required: `["A wide range delivered to one side", "A range traded heavily by both sides", "A tight consolidation at equilibrium", "The wick left by a single big candle"]`, `a:0`. Modelled on `m1-06/quiz.js:4`; 34–36 chars, correct option the **shortest**. `e` rewritten. | `m4-11` transcript 7-11, 111-114, 125-126 |
+| **M1** | `s2 summary.html:165` | Reversed clause → *"the midnight open is the price **you preferably want to be buying below** — but if it sits **below** where price is trading at or after 8:30 it isn't likely to be a factor, so **use the 8:30 open**"*. The correct second half (*"still below the midnight open after 8:30 means a heavy discount"*) left verbatim. | `p3-06:57` (the rule ICT was asked to clarify), a lesson — §3 satisfied |
+| **M2** | `s2 summary.html:256` (was `:253`) | *"A gap and a breaker together is a big confluence — likely to tap in and take off."* → `p5-07`'s actual four-condition stack: break below the level → a fair value gap formed with that break → the next level breaks → and gets another gap; *"a confluence, not just one thing."* | `p5-07:20-27`, a lesson — §3 satisfied |
+
+**All six blockers are closed.** Nothing in Tier 1 needed a source the audit had
+not already located, and no replacement crossed a section boundary — **N1**'s
+constraint held: the liquidity-void repair is Section 1's own wording throughout,
+and `p6-05` was not read into it.
+
+### Tier 2 — the one-line edits
+
+| Site (post-fix line) | What changed | Finding |
+|---|---|---|
+| `engine/head.html:182` | `.lesson h4 .src` → **`.lesson .src`**. Four mis-rendering spans fixed in one line (`s1 summary.html:33`; `s2 summary.html:12, 14, 15`). `p4-05:37,47` deliberately untouched (**J24** is semantic, out of scope). | **N10** |
+| `s2 summary.html:234` | The *"you can and will absolutely lose money"* warning gets its own `.src` **(P3 L6)**, nested in the tag — the `:12` pattern, which the CSS fix above now renders correctly. The block's `<h4>` keeps **(L1, L2)**, which is right for the counter-trend rule itself. | **M5** |
+| `s2 summary.html:174` | `.src` **(L2)** → **(L2, P6 L7)**. | **M5** |
+| `s2 summary.html:71` | *"the pattern needs no high taken out before you look for entries"* → the lesson's own reason: *"every time a swing high turns down, bears sell it and place **buy stops above the previous high**, and those keep getting taken."* | **M3**, from `p1-05:46` |
+| `s2 summary.html:54` | *"swing-mitigated your entry… goes to break even"* → *"Use the **first partial to quench the urge to move your stop**: only once a **significant intermediate-term low** has been taken out can you roll the stop down to it — not before."* | **M4**, from `p1-06:64` |
+| `s2 summary.html:311` | *"those are protected lows, and that is where stops go"* → the sourced reasoning alone: *"A low that already took sell side, with its gap closed in, has **no reason left to go down** — that is why stops go under it."* The `kv` **label** *"Protected lows"* is kept: it is `p6-07`'s own `<h3>`, so it reads as a pointer to the lesson rather than as asserted terminology. | **M17**, **L36**, from `p6-07:159-161` |
+| `s2 summary.html:285` | **Added** ICT's rebalancing differentiation to the Part 6 L5 block — the position he rejects (*"the market comes back and fills all of a liquidity void in"*), *"that is not likely to occur most times"*, *"the imbalance does not have to completely rebalance"*, and what replaces it. **The disputed name is omitted, not re-spelled** (**N9**). | **M6**, from `p6-05:26`, a lesson |
+| `s2 summary.html:196` | **Added** a Part 4 block, *"Where each pyramid add goes"* `.src` **(L3)** — first fill at the largest part of the framework, second at the next fair value gap, third after a retrace into the bearish order block; *"it's not randomness, it's not willy-nilly, it's not flipping a coin."* | **M15**, from `p4-03:59-65` |
+| `s2 summary.html:294` | **Added** the live-funds warning to the *"daily target, and when to stop"* block: his son coached minute by minute, *"you are not ready to do this with live funds while you are still learning the concepts"*, and don't expect five points every day. | **M14**, from `p6-06:158-163`, a lesson |
+| `s2 summary.html:347` | *"$5 on the micros"* → **"$5 on micro ES, $2 on micro NQ"**. | **N11** |
+| `s2 summary.html:24` | **Not in the plan** — the Part 1 block carried the identical *"$5 on the micros"* after the identical ES/NQ split. Fixed with `:347`; see *Contradicting the audit*, item 2. | **N11**, extended |
+| `s1 summary.html:311` | *"40 questions across all four months"* → **45**. | **F7** |
+| `m4-07/quiz.js:3` | Stem *"reclaimed order block"* → *"reclaimed **orderblock**"*, matching its own two options and Section 1's house style. This was the corpus's only `order block` occurrence in Section 1; it is now **0**. | **N4** |
+| `m1-06/lesson.html:18` | *"A **fair value gap**"* → *"A **fair value gap (FVG)**"* — the first site in reading order, ten uses ahead of `m4-12`'s title. | **N7** |
+| `p5-01/lesson.html:51` | Added `<!-- no fig-slot: the notes carry no charts for this episode -->`. Section 1's six silent omissions left alone. | **K17**, **N18** |
+| `p6-05/lesson.html:10` | **Added** the authorship caveat as a `.callout.warn` — *"because I'm the author of these concepts I have a lot of tools at my disposal… a little bit better understanding of price delivery than the average student of mine"*, plus its restatement at the end of the episode. **Added to the lesson, not to the summary** — see the correction under the Tier 2 table above. | **L15**, **M14**, from `ep38:73-82` and `807-809` |
+| `docs/content-audit.md` | **C18**'s header gains `· should-fix`; the four published figures corrected in place (`intermediate-term` 7/29 → **10/33** in both the batch L text and **M18**; S2 quizzes expected **42% → 43%** and spread-over-10 **11% → 10%**; *"p3-06"* → **`p3-05`, +3** in the roll-up's Part 3 recommendation; **F1**'s row counts to **two above / one below**). All repaired findings marked `· FIXED` in place. | **N13**, **N3**, **N14**, **N15** |
+
+### What was deliberately not done
+
+- **M14's summary recommendation was not carried out**, and the Tier 2 table in the
+  closing section is amended to say why. §3 restricts a summary to re-stating
+  **existing lessons**; the authorship caveat existed **only in ep38's transcript**
+  (`author` is 0 across all 40 Section 2 lessons). Putting it on the summary would
+  have made the summary carry material no lesson does — **M2**'s exact shape. The
+  caveat went into `p6-05/lesson.html:10` instead, where §1 permits the transcript,
+  and was **not** propagated onward. A later pass may now add it to the summary
+  legitimately, because a lesson carries it.
+- **Every item on the *deliberately unresolved* list was left alone** — the two OTE
+  bands, the disputed name at `p6-05:26` (omitted from the new summary clause
+  rather than spelled), the two pyramid ladders, the five-candle-fractal qualifier,
+  the `back test` variants, the two section house styles, and the exam/quiz stem
+  re-use.
+- **Tier 3 (~28 new questions) and Tier 4 (option-length rewriting) are untouched.**
+  The single exception the plan allowed — `m3-07`'s q4 — was rewritten rather than
+  cut, so no question count moved anywhere in the corpus (451 quiz + 85 exam, as
+  before).
+- **E2** (`m4-11/lesson.html:10`, *"Voids where there was no trading at all are the
+  best draw on liquidity"*) is a should-fix outside both tiers and was left in
+  place. It now reads oddly against the repaired definition above it, because it
+  refers to a category the lesson no longer defines. **It should lead Tier 3's
+  Section 1 work.**
+
+### Nothing was blocked by a §1 gap
+
+No replacement in either tier required a source the audit had not already quoted,
+and none needed new authoring beyond `m3-07` q4 and `s1 exam.js` q39 — both of
+which the plan specified and both of which are traceable to their own lesson's
+transcript. There is nothing to flag as unfixable.
+
+### Contradicting the audit — three things
+
+Each batch found at least one; the fix pass finds three, and two of them are the
+same class of error batch N found in the plan itself: **a defect measured at one
+site when it exists at two.**
+
+1. **E1 is two sites in `m4-11/lesson.html`, not one.** The audit names `:9`, the
+   first bullet. The **hero `desc` at `:5`** carried the identical reversed
+   definition — *"Where no trading took place at all — big one-sided candles that
+   price returns to balance out"* — and it is the line a reader meets **before** the
+   bullet, in the nav card and at the top of the page. Repairing `:9` alone would
+   have left the lesson asserting the blocker in its own summary line. Both fixed.
+   The likely cause is the same one batch N diagnosed for its four figure
+   corrections: a scan scoped to the finding's own quoted line.
+
+2. **N11 is two sites in `s2 summary.html`, not one.** N11 promotes the *"$5 on the
+   micros"* row at `:342` to a finding specifically because *"the row's internal
+   ES/NQ split is what promotes it"* — but **`:24` has the identical split in the
+   identical sentence**: *"$50 on ES, $20 on NQ, $5 on the micros."* Fixing only
+   `:342` would have left one page stating two different micro figures eighteen
+   screens apart, which is worse than either error alone. Both fixed, from the same
+   four lessons N11 cites.
+
+3. **M5's `:231` fix is an *addition*, not a substitution — and the plan's phrasing
+   would have made it worse.** The plan reads *"`.src` **(L1, L2)** → **(P3 L6)**"*,
+   which reads as re-marking the reference. But that `.src` sits on the block's
+   `<h4>` and is **correct for the counter-trend rule the block is about**; only the
+   warning at `:231` comes from `p3-06`. Re-marking the heading would have
+   mis-attributed three sourced clauses to fix one. The warning got its own nested
+   `.src` instead — which is exactly why **N10**'s CSS fix had to land first, since
+   a `.src` inside a `.tag` did not render before it. **The two Tier 2 items are
+   coupled, and the plan lists them as independent.**
 
 ## Fixed in flight
 
