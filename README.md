@@ -81,6 +81,15 @@ pnpm fix       # auto-fix everything Biome considers safe
 
 One-time setup for verification: `pnpm install`, then `pnpm exec playwright install chromium`.
 
+### Run the docs site
+
+The documentation is a separate Starlight project in `docs/` (own workspace package, port `4322` — the platform stays on `4321`). See [📄 Documentation](#-documentation) below.
+
+```bash
+pnpm docs:dev       # docs dev server → http://localhost:4322
+pnpm docs:build     # build the docs site → docs/dist/
+```
+
 ---
 
 ## 🧰 Tech stack
@@ -138,7 +147,10 @@ scripts/
 verify.mjs                   ← headless end-to-end checks (Node + Playwright)
 public/                      ← copied verbatim to dist (favicon, images mirror)
 dist/                        ← BUILD OUTPUT (gitignored, served by GitHub Pages — never hand-edit)
-docs/                        ← Section 2 build plan + episode→lesson maps
+docs/                        ← a SECOND, fully separate project: the Starlight docs site (own package, :4322)
+  src/content/docs/          ←   the documentation pages (Markdown + Mermaid diagrams)
+  package.json               ←   docs workspace package (runs independently of the platform)
+  + the legacy project docs  ←   content-audit.md, s2-2022-mentorship-plan.md, s2-2022-mentorship-videos.md
 AGENTS.md / CLAUDE.md        ← working guides for AI-assisted development
 DESIGN.md                    ← visual source of truth (design tokens)
 CHANGELOG.md                 ← keep-a-changelog history
@@ -223,17 +235,30 @@ Fork testing: `deploy.yml` also reads an optional GitHub repo variable `SITE_URL
 - [x] AI-development friendly — one obvious edit point per change, an `add-content` skill, and CI-enforced headless verification on every PR.
 - [x] **Section 2 — ICT 2022 Mentorship** — all 40 lessons from the episode transcripts and notes, with summary + final exam (see [`docs/s2-2022-mentorship-plan.md`](docs/s2-2022-mentorship-plan.md)).
 - [x] Astro 7 migration — multi-page static site, real URLs per lesson, React islands, Tailwind 4 + DaisyUI 5, pnpm tooling.
+- [x] **Docs site** — a separate Starlight docs project in `docs/` (own workspace package) documenting every platform process with Mermaid diagrams.
 - [ ] A section switcher in the sidebar.
 
 ---
 
 ## 📄 Documentation
 
+The project's full documentation lives in its own **Starlight docs site** — a completely separate pnpm workspace package under `docs/` that runs independently of the platform (own dev server on port `4322`, own build, never touched by the platform's build or lint). It covers the architecture, every content-authoring workflow, the components, guides and development processes, with Mermaid diagrams.
+
+```bash
+pnpm docs:dev       # docs dev server with hot reload → http://localhost:4322
+pnpm docs:build     # production build of the docs site → docs/dist/
+pnpm docs:preview   # preview the built docs site locally
+```
+
+Key docs pages: [Overview](docs/src/content/docs/getting-started/overview.md) · [Project Structure](docs/src/content/docs/architecture/project-structure.md) · [Content Rules](docs/src/content/docs/content/rules.md) · [Add a Lesson](docs/src/content/docs/content/add-lesson.md) · [Keep Docs in Sync](docs/src/content/docs/guides/keep-docs-in-sync.md)
+
 | Doc | What it covers |
 |-----|----------------|
+| [`docs/src/content/docs/`](docs/src/content/docs/) | The Starlight docs site source (getting-started, architecture, content authoring, components, guides, development) |
 | [`AGENTS.md`](AGENTS.md) / [`CLAUDE.md`](CLAUDE.md) | Working rules and project architecture for AI-assisted development (content principle, conventions, task mapping, verification loop) |
 | [`DESIGN.md`](DESIGN.md) | Visual source of truth — design tokens, typography, components |
 | [`CHANGELOG.md`](CHANGELOG.md) | Keep-a-changelog history of every change |
+| [`docs/content-audit.md`](docs/content-audit.md) | Content audit notes (plain Markdown, kept at the `docs/` root alongside the docs site) |
 | [`docs/s2-2022-mentorship-plan.md`](docs/s2-2022-mentorship-plan.md) | Section 2 build plan, episode→lesson map, batching and progress |
 | [`docs/s2-2022-mentorship-videos.md`](docs/s2-2022-mentorship-videos.md) | Section 2 source videos |
 

@@ -13,6 +13,33 @@ agents update the `Unreleased` section before reporting work as done.
   contributor.
 - Contributor names in the site footer are now clickable links to their GitHub
   profiles, styled to match the surrounding text color.
+- Added a **docs site**: a brand-new, fully separate Starlight documentation
+  project in `docs/` that runs as its own pnpm workspace package, so it never
+  interferes with the platform build. It documents every platform process —
+  architecture, content authoring, components, guides/tutorials and
+  development workflows — with Mermaid diagrams, and is viewed in the browser
+  at `http://localhost:4322` (`pnpm docs:dev`). Root scripts
+  `docs:dev` / `docs:build` / `docs:preview` delegate to the docs package via
+  `pnpm --filter docs`.
+- Made the repo a pnpm workspace: `pnpm-workspace.yaml` now lists
+  `packages: [".", "docs"]` so the platform and the docs site share one
+  lockfile and one installed dependency tree.
+- Excluded `docs/` from linting: `biome.jsonc` adds `!docs` to the lint scope,
+  since the docs package has its own formatting needs and authored
+  documentation should never be reformatted by the platform's lint step.
+
+### Documentation
+- Documented the platform end to end in the new Starlight docs site:
+  getting-started (overview, local setup, development workflow), architecture
+  (project structure, data model, content pipeline, rendering, client state,
+  build system), content authoring (rules, adding lessons/months/sections,
+  quizzes, exams, charts, videos), components (quiz, exam, lightbox, sidebar
+  and more), guides & tutorials (enriching lessons, fixing quizzes, adding
+  charts, content audits, keeping docs in sync) and development (scripts,
+  lint & format, verification, CI/CD, deployment) — plus a reference page
+  that points to the legacy root-level docs files.
+- Updated the README's structure tree and documentation table to include the
+  docs site and how to run it.
 
 ### Changed
 - Replaced the custom-built Lightbox.tsx (318 lines React island + ~130 lines CSS)
