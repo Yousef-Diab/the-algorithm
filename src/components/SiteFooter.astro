@@ -2,7 +2,12 @@
 import { u } from "@/lib/course";
 
 const REPO_URL = "https://github.com/Yousef-Diab/the-algorithm";
-const year = new Date().getFullYear();
+const YEAR = new Date().getFullYear();
+
+const CONTRIBUTORS = [
+  { name: "Yousef Diab", url: "https://github.com/Yousef-Diab" },
+  { name: "Ritspun", url: "https://github.com/RitSpunterprise" },
+];
 ---
 <footer class="site-footer">
   <div class="inner">
@@ -21,7 +26,13 @@ const year = new Date().getFullYear();
 
       <div class="f-col f-made">
         <p class="f-made-by">
-          Made with <span class="heart" aria-hidden="true">♥</span> by <strong>Yousef Diab</strong> and <strong>Ritspun</strong>
+          Made with <span class="heart" aria-hidden="true">♥</span> by{" "}
+          {CONTRIBUTORS.map((c, i) => (
+            <Fragment>
+              {i > 0 && (i === CONTRIBUTORS.length - 1 ? " and " : ", ")}
+              <a class="f-contributor" href={c.url} target="_blank" rel="noopener noreferrer">{c.name}</a>
+            </Fragment>
+          ))}
         </p>
         <p class="f-collab">If you want to collaborate:</p>
         <a class="f-repo" href={REPO_URL} target="_blank" rel="noopener noreferrer">
@@ -47,7 +58,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="f-bottom">
-      <p>© {year} The Algorithm</p>
+      <p>© {YEAR} The Algorithm</p>
     </div>
   </div>
 </footer>
@@ -109,9 +120,15 @@ const year = new Date().getFullYear();
   .f-made-by {
     color: var(--muted);
   }
-  .f-made-by strong {
+  .f-made-by .f-contributor {
     color: var(--text);
     font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s, text-decoration 0.15s;
+  }
+  .f-made-by .f-contributor:hover {
+    color: var(--accent);
+    text-decoration: underline;
   }
   .f-made-by .heart {
     color: var(--red);

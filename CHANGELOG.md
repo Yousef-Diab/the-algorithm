@@ -8,6 +8,12 @@ agents update the `Unreleased` section before reporting work as done.
 
 ## Unreleased
 
+### Added
+- Added a Contributors section to the README with GitHub avatar links for each
+  contributor.
+- Contributor names in the site footer are now clickable links to their GitHub
+  profiles, styled to match the surrounding text color.
+
 ### Changed
 - Replaced the custom-built Lightbox.tsx (318 lines React island + ~130 lines CSS)
   with `yet-another-react-lightbox` v3.32.2 (Zoom + Captions + Download + Share

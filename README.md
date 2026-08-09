@@ -248,6 +248,31 @@ This project is a personal study aid that reorganises the above material into an
 
 ---
 
+## 👥 Contributors
+
+Thanks to these wonderful people:
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="50%">
+        <a href="https://github.com/Yousef-Diab">
+          <img src="https://github.com/Yousef-Diab.png" width="100px" alt="Yousef Diab" style="border-radius:50%"/><br />
+          <sub><b>Yousef Diab</b></sub>
+        </a>
+      </td>
+      <td align="center" valign="top" width="50%">
+        <a href="https://github.com/RitSpunterprise">
+          <img src="https://github.com/RitSpunterprise.png" width="100px" alt="Ritspun" style="border-radius:50%"/><br />
+          <sub><b>Ritspun</b></sub>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
 ## 📬 Contact
 
 Questions, corrections, or suggestions? Reach out on Discord: **`.uzex`**
