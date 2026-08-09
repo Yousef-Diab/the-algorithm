@@ -51,6 +51,27 @@ by `pnpm build` from `src/` + `content/` + `images/`.
 - Write human sentences ("Added …", "Fixed …"), not commit logs. Never fabricate
   version numbers or release history — document only what actually changed.
 
+### Keep the README updated
+
+- Before committing significant changes (new features, major fixes, structural
+  changes, new sections/months/parts, new documentation files), review
+  `README.md` and update it if the changes merit a mention.
+- Skip for trivial edits — a typo fix, a one-line CSS tweak, a quiz-option
+  rephrase — where the README would not change.
+- When in doubt, ask: would someone reading the README benefit from knowing
+  about this change? If yes, update it.
+
+### Keep the documentation updated
+
+- Before committing changes that affect documented systems or plans, review
+  `docs/` and update any relevant file.
+- This includes: the Section 2 build plan (`docs/s2-2022-mentorship-plan.md`),
+  the video list (`docs/s2-2022-mentorship-videos.md`), the content audit
+  (`docs/content-audit.md`), and any future docs added under `docs/`.
+- Only update docs when the changes actually touch what is documented. A
+  lesson-content edit that does not alter the lesson→episode mapping, for
+  instance, does not need a plan update.
+
 ### Protect main
 
 - This repository publishes directly from `main` via GitHub Pages. Do not commit

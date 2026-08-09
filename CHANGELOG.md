@@ -279,6 +279,10 @@ agents update the `Unreleased` section before reporting work as done.
   320px and even 280px (Galaxy Fold folded) with room to spare.
 
 ### Documentation
+- `AGENTS.md` and `CLAUDE.md` gained two golden rules: "Keep the README updated"
+  (review `README.md` before committing significant changes) and "Keep the
+  documentation updated" (review `docs/` — the Section 2 plan, video list and
+  content audit — when a change affects documented systems).
 - `README.md` deploy section now documents both hosts: GitHub Pages via
   `withastro/action@v6` with the defaults, and Coolify as a plain static build
   (`BASE_PATH=/` env var, `dist/` as the output — no Dockerfile needed) —
