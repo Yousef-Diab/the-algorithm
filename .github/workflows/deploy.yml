@@ -29,6 +29,12 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm build
+        env:
+          # Optional GitHub repo variable (Settings → Secrets and variables →
+          # Actions → Variables) to override the canonical URL — e.g. a fork
+          # testing its own site before the PR is merged. Unset on the
+          # upstream repo, so astro.config.mjs falls back to the default.
+          SITE_URL: ${{ vars.SITE_URL }}
       - uses: withastro/action@v6
 
   deploy:
