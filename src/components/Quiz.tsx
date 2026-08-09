@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Question } from "../lib/course";
+import type { Question } from "@/lib/course";
 
 interface Props {
   questions: Question[];

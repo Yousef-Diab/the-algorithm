@@ -1,9 +1,9 @@
 ---
-import CourseLayout from "../layouts/CourseLayout.astro";
-import ResetPanel from "../components/ResetPanel";
-import CourseProgress from "../components/CourseProgress";
-import { chartCount, getGraph } from "../lib/graph";
-import { u } from "../lib/course";
+import CourseLayout from "@/layouts/CourseLayout.astro";
+import ResetPanel from "@/components/ResetPanel";
+import CourseProgress from "@/components/CourseProgress";
+import { chartCount, getGraph } from "@/lib/graph";
+import { u } from "@/lib/course";
 
 const graph = await getGraph();
 

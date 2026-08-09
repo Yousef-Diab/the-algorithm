@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { clearDone, clearExams } from "../stores/progress";
+import { clearDone, clearExams } from "@/stores/progress";
 
 const ACTIONS: {
   label: string;

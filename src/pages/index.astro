@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/Header.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import { u } from "../lib/course";
-import { chartCount, getGraph } from "../lib/graph";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import { u } from "@/lib/course";
+import { chartCount, getGraph } from "@/lib/graph";
 
 const graph = await getGraph();
 

@@ -1,12 +1,12 @@
 ---
-import CourseLayout from "../../../../layouts/CourseLayout.astro";
-import Quiz from "../../../../components/Quiz";
-import Notes from "../../../../components/Notes";
-import LessonFooter from "../../../../components/LessonFooter";
-import Figure from "../../../../components/Figure.astro";
+import CourseLayout from "@/layouts/CourseLayout.astro";
+import Quiz from "@/components/Quiz";
+import Notes from "@/components/Notes";
+import LessonFooter from "@/components/LessonFooter";
+import Figure from "@/components/Figure.astro";
 import { getCollection } from "astro:content";
-import { getGraph } from "../../../../lib/graph";
-import { u } from "../../../../lib/course";
+import { getGraph } from "@/lib/graph";
+import { u } from "@/lib/course";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");

@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
-import { doneStore, markDone, toggleDone } from "../stores/progress";
+import { doneStore, markDone, toggleDone } from "@/stores/progress";
 
 interface Props {
   isLast: boolean;

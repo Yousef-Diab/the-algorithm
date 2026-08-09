@@ -1,9 +1,9 @@
 ---
-import CourseLayout from "../../../layouts/CourseLayout.astro";
-import Exam from "../../../components/Exam";
+import CourseLayout from "@/layouts/CourseLayout.astro";
+import Exam from "@/components/Exam";
 import { getCollection } from "astro:content";
-import { getGraph } from "../../../lib/graph";
-import { u } from "../../../lib/course";
+import { getGraph } from "@/lib/graph";
+import { u } from "@/lib/course";
 
 export async function getStaticPaths() {
   const sections = await getCollection("sections");

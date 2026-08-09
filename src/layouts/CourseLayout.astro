@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import Header from "../components/Header.astro";
-import Sidebar from "../components/Sidebar";
-import SiteFooter from "../components/SiteFooter.astro";
-import Lightbox from "../components/Lightbox";
-import { u } from "../lib/course";
-import { getGraph } from "../lib/graph";
+import Header from "@/components/Header.astro";
+import Sidebar from "@/components/Sidebar";
+import SiteFooter from "@/components/SiteFooter.astro";
+import Lightbox from "@/components/Lightbox";
+import { u } from "@/lib/course";
+import { getGraph } from "@/lib/graph";
 
 interface Props {
   /** Current lesson id for the sidebar .active state (lesson/review/exam pages). */

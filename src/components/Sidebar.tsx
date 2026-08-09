@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { u } from "../lib/course";
-import { doneStore, examStore } from "../stores/progress";
+import { u } from "@/lib/course";
+import { doneStore, examStore } from "@/stores/progress";
 
 export interface NavLesson {
   id: string;

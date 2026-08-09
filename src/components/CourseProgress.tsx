@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
-import { doneStore, examStore } from "../stores/progress";
+import { doneStore, examStore } from "@/stores/progress";
 
 interface Props {
   /** Month cards to patch: [data-prog="{id}"] + [data-mprog="{id}"] */

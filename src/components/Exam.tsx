@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useEffect, useRef, useState } from "react";
-import type { Question } from "../lib/course";
-import { examStore, saveExamResult } from "../stores/progress";
+import type { Question } from "@/lib/course";
+import { examStore, saveExamResult } from "@/stores/progress";
 
 interface Props {
   questions: Question[];
