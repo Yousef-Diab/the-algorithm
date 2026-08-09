@@ -1,9 +1,11 @@
 # pnpm 11 project settings (see https://pnpm.io/settings)
-# The `packages` field declares the root as the only workspace package; it is
-# required by older pnpm (e.g. 9.x used by Nixpacks) which enter workspace mode
-# whenever this file exists.
+# Monorepo layout: the root is the platform itself (an Astro static site) and
+# `docs` is a fully separate Astro Starlight project for its documentation.
+# The `packages` field is required by older pnpm (e.g. 9.x used by Nixpacks)
+# which enter workspace mode whenever this file exists.
 packages:
   - "."
+  - "docs"
 # esbuild must be allowed to run its build script. `allowBuilds` is pnpm 11's
 # syntax for this (pnpm 10/11 block build scripts unless approved here); older
 # pnpm 9.x runs build scripts by default, so no extra config is needed there.
