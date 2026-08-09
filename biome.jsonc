@@ -16,7 +16,8 @@
       "!notes",
       "!engine",
       "!index.html",
-      "!.github"
+      "!.github",
+      "!docs"
     ]
   },
   "linter": {
