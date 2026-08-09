@@ -479,6 +479,33 @@ ok(
   `${examExpect.length} exams: 4 opts, full-answer submit -> 100% pass, retake`
 );
 
+console.log("Summary vs exam counts…");
+// A section summary states its exam's question count in prose, and nothing
+// else couples the two — they have drifted before. Check the stated number
+// against the exam that actually renders.
+const SUMMARY_EXAM_COUNT_RE = /Final Exam.{0,80}?(\d+)\s+questions?/s;
+for (const f of summaryFiles) {
+  const sec = sectionIdByDir.get(parts(f).at(-2));
+  const m = readFileSync(f, "utf8").match(SUMMARY_EXAM_COUNT_RE);
+  if (!m) {
+    continue; // summary states no count — fine
+  }
+  const stated = Number(m[1]);
+  const exam = examExpect.find((e) => e.section === sec);
+  if (!exam) {
+    fail(
+      `${sec}: summary.html states ${stated} question(s) but no exam.js exists`
+    );
+    continue;
+  }
+  if (stated !== exam.questions.length) {
+    fail(
+      `${sec}: summary.html says ${stated}, exam.js has ${exam.questions.length}`
+    );
+  }
+}
+ok("summary-stated exam question counts match the rendered exams");
+
 console.log("Review pages…");
 for (const f of summaryFiles) {
   const sec = sectionIdByDir.get(parts(f).at(-2));
