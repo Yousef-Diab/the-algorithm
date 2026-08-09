@@ -233,8 +233,8 @@
 
   {
     q: "What is a liquidity void?",
-    o: ["A range where no trading took place", "A range traded heavily by both sides", "The equilibrium of a tight consolidation", "The wick left behind by a single candle"], a: 0,
-    e: "A liquidity void is where absolutely no trading took place — big candles delivered to one side. It gets covered back over later, once both sides have been offered. (Month 4, Lesson 11)"
+    o: ["A wide range delivered to one side", "A range traded heavily by both sides", "A tight consolidation at equilibrium", "The wick left by a single big candle"], a: 0,
+    e: "One side of the market's liquidity is shown in wide or long one-sided ranges or candles. A run down is a void of buy-side liquidity — the absence of buyers is what let price travel — and it gets covered back over later, once both sides have been offered. (Month 4, Lesson 11)"
   },
 
   {

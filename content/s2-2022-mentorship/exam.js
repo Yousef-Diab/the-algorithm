@@ -243,5 +243,30 @@
     q: "After a full one percent loss, what does the drawdown ladder say to risk next?",
     o: ["Half of one percent, then a quarter", "Two percent, to win the loss back", "The same one percent every time", "Nothing at all for a whole week"], a: 0,
     e: "A full 1% loss means the next trade risks 0.5%; lose that and the next risks 0.25%, which is the floor. You must make back 50% of what you lost before returning to full risk. (Part 6, Lesson 8)"
+  },
+
+  /* ---------------- Appended 2026-08-08 (Tier 3) ----------------
+     These three are APPENDED, not filed into their part blocks above, because
+     `ict-exam`'s stored `picks` are keyed by question INDEX (app.js:300,
+     `picks[qi] = o.text`) — only the value is option text. Inserting mid-array
+     silently re-points every later stored pick. Order here is presentation
+     order only; each question carries its own part citation in `e`. ---------- */
+
+  {
+    q: "The market you follow is sloppy — back and forth, nothing legible. What is the response?",
+    o: ["Close the charts and go do something else", "Halve your size and take the setup anyway", "Move down to the one-minute for clarity", "Switch to a correlated pair and trade that"], a: 0,
+    e: "\"There's absolutely zero, nothing in this chart, nothing to trade on, not one thing.\" When the market is messy the first thing to consider is closing the charts, turning the computer off and doing something you love — he had not taken a trade in cable for months. Going two weeks without a trade drives some people mad and makes others change their style: \"and they're both wrong.\" (Part 3, Lesson 6)"
+  },
+
+  {
+    q: "Which chart gives the strongest daily bias, and what do you ask of it?",
+    o: ["The weekly — where it will reach for", "The weekly — where it will finally close", "The hourly — where the killzone begins", "The daily — which candle closed up last"], a: 0,
+    e: "Rule 2 of the keys to daily bias: determine the likely weekly expansion from the weekly chart — not where the week will close, but where it is likely to reach for. That gives the strongest bias. Rule 1 is that a bias every single day is unrealistic. (Part 6, Lesson 7)"
+  },
+
+  {
+    q: "How does ICT define narrative?",
+    o: ["What price should do, why, and what proves it", "Where the trend has been over the last month", "The consensus of the analysts on the calendar", "The reason given after the move has happened"], a: 0,
+    e: "\"Narrative is the understanding of what price should do, why, and what things it will encounter to prove that the narrative you are assuming is in fact underway.\" It is not buying and selling pressure — it is algorithmic. By itself it is still not an entry: you want displacement, then the discount. (Part 6, Lesson 5)"
   }
 ]

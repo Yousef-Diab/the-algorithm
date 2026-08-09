@@ -10,6 +10,7 @@ Chromium and checks the whole course actually works:
   * every quiz exposes a working reset control,
   * the lightbox opens, browses the lesson's charts, zooms, and closes correctly,
   * each section's summary + final exam pages render, and the exam grades on submit,
+  * each summary's stated exam question count matches the exam that renders,
   * a video link renders for each lesson that has a non-empty video.txt,
   * zero console/page JS errors.
 
@@ -18,7 +19,7 @@ works both locally (`python verify.py`) and in CI.
 
 Requires: pip install playwright && python -m playwright install chromium
 """
-import subprocess, sys, pathlib
+import re, subprocess, sys, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
@@ -46,6 +47,21 @@ def main() -> int:
     )
     expected_summaries = len(list((ROOT / "content").glob("*/summary.html")))
     expected_exams = len(list((ROOT / "content").glob("*/exam.js")))
+
+    # A summary states its exam's question count in prose, and nothing else
+    # couples the two — it has gone stale twice. Pull the stated number so it
+    # can be checked against the exam that actually renders. A summary that
+    # states no count is fine; one that states a wrong count is not.
+    stated_exam_qs: dict[str, int] = {}
+    for sec in sorted((ROOT / "content").iterdir()):
+        summary, examf, secf = sec / "summary.html", sec / "exam.js", sec / "section.js"
+        if not (summary.is_file() and examf.is_file() and secf.is_file()):
+            continue
+        sid = re.search(r'id\s*:\s*"([^"]+)"', secf.read_text(encoding="utf-8"))
+        n = re.search(r"Final Exam.{0,80}?(\d+)\s+questions?",
+                      summary.read_text(encoding="utf-8"), re.S)
+        if sid and n:
+            stated_exam_qs[sid.group(1)] = int(n.group(1))
 
     url = (ROOT / "index.html").resolve().as_uri()
     problems: list[str] = []
@@ -212,7 +228,8 @@ def main() -> int:
                    const submit = ex.querySelector('.exam-actions .btn.primary');
                    if (submit) submit.click();
                    const score = ex.querySelector('.exam-score');
-                   out.push({qs: qs.length, bad, submit: !!submit,
+                   out.push({sid: ex.dataset.exam || '',
+                             qs: qs.length, bad, submit: !!submit,
                              score: score ? score.textContent.trim() : null,
                              retake: !!ex.querySelector('.exam-actions .btn:not([style*="none"])')});
                  });
@@ -232,6 +249,15 @@ def main() -> int:
                 problems.append(f"exam {i}: submit did not produce a score (got {e['score']!r})")
             if not e["retake"]:
                 problems.append(f"exam {i}: no retake control after submitting")
+            stated = stated_exam_qs.get(e["sid"])
+            if stated is not None and stated != e["qs"]:
+                problems.append(
+                    f"exam {e['sid'] or i}: summary.html says {stated} question(s), "
+                    f"exam.js renders {e['qs']}")
+        for sid, stated in stated_exam_qs.items():
+            if sid not in {e["sid"] for e in exam}:
+                problems.append(f"exam {sid}: summary.html states a question count "
+                                f"({stated}) but no exam rendered for that section")
 
         if errs:
             problems.append(f"{len(errs)} JS error(s): {errs[:5]}")
