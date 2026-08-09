@@ -138,10 +138,18 @@ agents update the `Unreleased` section before reporting work as done.
 - `pnpm-workspace.yaml` declared no `packages`, so pnpm 9.x (the version
   Nixpacks installs on Coolify) failed with "packages field missing or empty".
   The root is now declared as the only workspace package (`packages: ["."]`).
-- `package.json` now pins the package manager (`packageManager: pnpm@11.20.0`)
-  so Nixpacks uses the same pnpm version as local development, and declares
-  `engines.node >= 22.12.0` (Astro 7's requirement — Nixpacks was selecting
-  Node 22.11.0, which would have failed the build).
+- The `packageManager` pin (`pnpm@11.20.0`) made Nixpacks install `corepack`
+  and run pnpm through it, which crashes on Node 24 with
+  `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING` (corepack 0.24.1 cannot load pnpm
+  11's ESM wrapper). The pin is removed so Nixpacks uses its own pnpm 9.x, and
+  `package.json` now declares `engines.node >= 22.12.0` (Astro 7's requirement —
+  Nixpacks was selecting Node 22.11.0, which would have failed the build).
+- The esbuild build-script approval stays in `pnpm-workspace.yaml` as
+  `allowBuilds: esbuild: true` (pnpm 11's syntax — pnpm 10/11 block build
+  scripts unless approved). Older pnpm 9.x used by Nixpacks runs build scripts
+  by default, so it needs no extra config there. (An attempt to move the
+  approval to `pnpm.onlyBuiltDependencies` in `package.json` was reverted:
+  pnpm 11 ignores that field when `pnpm-workspace.yaml` exists.)
 - Theme switcher could transiently flip the page to the OS theme right after
   load: the toggle's mount effect applied the initial `system` state before
   the saved preference, so on reload the page could flash the wrong theme

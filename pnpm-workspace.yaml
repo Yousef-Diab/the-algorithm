@@ -4,5 +4,8 @@
 # whenever this file exists.
 packages:
   - "."
+# esbuild must be allowed to run its build script. `allowBuilds` is pnpm 11's
+# syntax for this (pnpm 10/11 block build scripts unless approved here); older
+# pnpm 9.x runs build scripts by default, so no extra config is needed there.
 allowBuilds:
   esbuild: true
