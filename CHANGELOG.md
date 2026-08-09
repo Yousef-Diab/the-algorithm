@@ -220,6 +220,8 @@ agents update the `Unreleased` section before reporting work as done.
   mirrored in as historical reference (still not used by the Astro build).
 
 ### Fixed
+- The topbar on mobile was `position: relative`, so it scrolled out of view;
+  it is now `sticky` and stays visible while the page scrolls.
 - `pnpm-workspace.yaml` declared no `packages`, so pnpm 9.x (the version
   Nixpacks installs on Coolify) failed with "packages field missing or empty".
   The root is now declared as the only workspace package (`packages: ["."]`).

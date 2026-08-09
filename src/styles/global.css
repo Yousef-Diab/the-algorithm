@@ -1372,7 +1372,7 @@ a:hover {
 /* ---------- mobile ---------- */
 @media (max-width: 900px) {
   #topbar {
-    position: relative;
+    position: sticky;
   }
   /* Center the brand on the topbar while the menu and theme buttons stay at
      the edges. */
