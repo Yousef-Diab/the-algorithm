@@ -139,6 +139,17 @@ agents update the `Unreleased` section before reporting work as done.
   against the built `dist/`).
 - CI pipeline (`.github/workflows/ci.yml`) replaced with a pnpm-based
   install → build → verify workflow.
+- Mirrored the full content audit from `origin/main` (22 commits of fixes made
+  on the old single-file structure) into the Astro `content/` tree — 6
+  blocking errors fixed (Tier 1), 16 one-line corrections (Tier 2), 28 new
+  quiz questions and 91 rebuilt option sets (Tiers 3–4), 31 fidelity /
+  hedging / option-length findings (Tier 5), a prose skim, and the M14/K11/N16
+  follow-up fixes. Applied cleanly with zero merge conflicts because the Astro
+  branch had not modified `content/`; the two final exams and their summaries
+  are now consistent again (Section 1: 45 questions; Section 2: 43).
+- `docs/content-audit.md` (the audit log behind those fixes) is now in the
+  repo, and the legacy `engine/`, `index.html` and `verify.py` files were
+  mirrored in as historical reference (still not used by the Astro build).
 
 ### Fixed
 - `pnpm-workspace.yaml` declared no `packages`, so pnpm 9.x (the version
@@ -185,6 +196,10 @@ agents update the `Unreleased` section before reporting work as done.
   button: the toggle's "System" label pushed it into the logo's right edge.
   The theme button now collapses to its icon on small screens (same pattern as
   the "Lessons" label), keeping the brand centered with room to spare.
+- Citation spans (`.src`) inside the summaries' tag chips and key/value rows
+  rendered unstyled because the Astro stylesheet had no `.src` rule — ported
+  the legacy `.lesson .src` rule (the `engine/head.html` fix that widened
+  `.lesson h4 .src` to `.lesson .src`) into `global.css`.
 
 ### Documentation
 - `README.md` deploy section now documents both hosts: GitHub Pages via
@@ -224,6 +239,10 @@ agents update the `Unreleased` section before reporting work as done.
   section order and numbering (§1–§12), with only the file-specific identity
   differing — each guide's H1 title and its §12 self-reference name their own
   file (`AGENTS.md` vs `CLAUDE.md`).
+- `AGENTS.md` and `CLAUDE.md` §6 gained the "Section 1 notes" bullet (Notion
+  page-ID map + fetch recipe) and the "Both sources count" bullet, and §8
+  gained the summary-vs-exam question-count verification bullet — ported from
+  the three semantic additions `main` made to `CLAUDE.md`.
 
 ### Verification
 - `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
@@ -253,6 +272,13 @@ agents update the `Unreleased` section before reporting work as done.
   (titles, charts, quiz grade/reset, video links, notes), lightbox
   open/browse/zoom/close, both final exams (submit, 80% pass, retake), theme
   switcher persistence, and zero page/console errors.
+- `verify.mjs` gained the summary-vs-exam count check (ported from
+  `verify.py`): a section summary's prose-stated exam question count must match
+  the exam that actually renders — a summary may state no count, but may not
+  state a wrong one. `pnpm build` (85 pages) and `pnpm verify` all pass after
+  the content mirror: 84 routes, 78 lessons, lightbox, both final exams (45/43
+  questions), summary counts, review pages, theme switcher, and zero
+  page/console errors.
 
 ## 1.0.0 — 2026-08-07
 

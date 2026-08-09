@@ -320,10 +320,20 @@ Scaffolding new lessons, months or whole sections is automated — load the
 - **Transcripts:** `transcripts/Month N/…txt` (Section 1) and
   `transcripts/2022 Mentorship/…Episode N.txt` (Section 2) — the primary source
   for lesson enrichment. Git-ignored; local only.
+- **Section 1 notes:** `notes/ict-core/mN-NN.md`, harvested from the Notion
+  notes site. Git-ignored. [`notes/ict-core/INDEX.md`](notes/ict-core/INDEX.md)
+  holds the page-ID map for all 38 lessons and the fetch recipe — **read it
+  before re-fetching**: Notion sites are SPAs so WebFetch returns only the
+  shell, you must use the Notion connector against
+  `cobalt-sight-9b7.notion.site/<page-id>` (the `app.notion.com/p/<id>` form
+  404s for these), and the image URLs are presigned with a 5-minute expiry.
 - **Section 2 notes:** `notes/2022-mentorship/ep-NN.md` plus `raw/*.png`,
   harvested from the Notion notes page. Git-ignored. The Notion image URLs
   expire after ~5 minutes, so the local copy is the permanent one — see the plan
   doc before re-fetching.
+- **Both sources count.** For either section, §1 permits the transcript *and*
+  ICT's notes. Check a claim against both before calling it unsourced — the
+  notes are terse and are often what a lesson was actually written from.
 - **Plans:** `docs/s2-2022-mentorship-plan.md` (Section 2 build plan,
   episode→lesson map, session batching and progress tracker — **read it before
   doing any Section 2 work**) and `docs/s2-2022-mentorship-videos.md`.
@@ -370,6 +380,9 @@ against expectations derived from `content/`, nothing hard-coded — that:
   outside click but not on a click on the image,
 - review + exam pages render, and the exam scores on submit (full answers →
   100% pass) with a working retake,
+- the question count each `summary.html` states in prose matches the exam that
+  actually renders (a summary may state no count; it may not state a wrong
+  one),
 - a video link renders for each lesson with a non-empty `video.txt`,
 - the theme switcher persists,
 - there are zero console/page JS errors.
