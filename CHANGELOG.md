@@ -8,6 +8,16 @@ agents update the `Unreleased` section before reporting work as done.
 
 ## Unreleased
 
+### Changed
+- All internal imports now use `@/` path aliases (`@/components/…`,
+  `@/layouts/…`, `@/lib/…`, `@/stores/…`) instead of deep relative paths
+  (`../../../../`). `tsconfig.json` was extended with explicit path mappings
+  (`@components/*`, `@layouts/*`, `@lib/*`, `@stores/*`, `@styles/*`) and
+  `baseUrl` following the standard Astro + TypeScript path-alias pattern so
+  module resolution works reliably across the entire `src/` tree. Every `.astro`
+  and `.tsx` file under `src/` now uses `@/`-prefixed imports — zero relative
+  imports remain.
+
 ### Added
 - New site footer shown on every page (landing and all course pages) with the
   course credits — "Made with ♥ by Yousef Diab and Ritspun" — plus a GitHub
