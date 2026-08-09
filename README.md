@@ -213,6 +213,8 @@ The site is **data-driven**: Astro content collections load `content/` at build 
 
 GitHub Pages and CI use the defaults — no configuration needed. For **Coolify**, no Dockerfile is required: deploy the repo with a **static build** (Coolify/Nixpacks detects Astro automatically) — set the build command to `pnpm install --frozen-lockfile && pnpm build`, the output directory to `dist`, and add the `BASE_PATH=/` environment variable (plus `SITE_URL` if you want canonical URLs pointing at your domain). `pnpm verify` reads `BASE_PATH` too, so verification matches whichever base the site was built with.
 
+Fork testing: `deploy.yml` also reads an optional GitHub repo variable `SITE_URL` (Settings → Secrets and variables → Actions → Variables). A fork can set it to its own Pages URL (e.g. `https://<owner>.github.io`) to build with the correct canonical URL before a PR is merged; unset, it falls back to the default above — no fork-specific domain is hard-coded in the repo.
+
 ---
 
 ## 🗺️ Roadmap

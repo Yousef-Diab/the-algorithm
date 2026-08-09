@@ -68,6 +68,12 @@ agents update the `Unreleased` section before reporting work as done.
 - `astro.config.mjs` now sets `output: "static"` explicitly, documenting that
   the site is a pure prerendered build (no adapter, no SSR) — matching Astro's
   default.
+- `deploy.yml` now passes an optional GitHub repo variable `SITE_URL` to the
+  build (Settings → Secrets and variables → Actions → Variables); unset on the
+  upstream repo it expands to an empty string, and `astro.config.mjs` treats an
+  empty `SITE_URL` as "use the GitHub Pages default" — so a fork can override
+  the canonical URL for testing without hardcoding the fork domain in the
+  repo.
 - `verify.mjs` now derives its base path from `BASE_PATH` (defaulting to
   `/the-algorithm`), so `pnpm verify` matches whichever base the site was built
   with.
