@@ -8,7 +8,7 @@
 import { defineCollection, z } from "astro:content";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { Loader, Store } from "astro/loaders";
+import type { Loader } from "astro/loaders";
 import type {
   LessonData,
   MonthData,
@@ -352,9 +352,10 @@ function makeLesson(
 
 function makeLoader(name: "sections" | "months" | "lessons"): Loader {
   return {
-    load(ctx: { store: Store }) {
+    // biome-ignore lint/suspicious/useAwait: required by Astro's Loader API (load() must return Promise<void>)
+    async load({ store }) {
       const result = walk();
-      ctx.store.clear();
+      store.clear();
       let entries: { data: SectionData | MonthData | LessonData }[];
       if (name === "sections") {
         entries = result.sections;
@@ -364,7 +365,10 @@ function makeLoader(name: "sections" | "months" | "lessons"): Loader {
         entries = result.lessons;
       }
       for (const e of entries) {
-        ctx.store.set({ data: e.data, id: e.data.id });
+        store.set({
+          data: e.data as unknown as Record<string, unknown>,
+          id: e.data.id,
+        });
       }
     },
     name,

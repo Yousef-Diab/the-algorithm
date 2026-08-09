@@ -33,7 +33,7 @@ const progressSections = graph.sections.map((s) => ({
   </section>
 
   {graph.sections.map((s) => (
-    <div class="month-cards" key={s.data.id}>
+    <div class="month-cards">
       {graph.sections.length > 1 && <div class="sec-head">{s.data.title}</div>}
       {s.months.map((m, mi) => {
         const first = m.lessons[0];

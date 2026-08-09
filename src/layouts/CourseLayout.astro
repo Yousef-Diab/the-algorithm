@@ -111,7 +111,7 @@ const nav = graph.sections.map((s) => ({
       }
       sidebar.scrollTop = restored;
       // If the active item is outside the visible viewport, scroll it in.
-      const active = sidebar.querySelector('.nav-lesson.active');
+      const active = sidebar.querySelector('.nav-lesson.active') as HTMLElement | null;
       if (active) {
         const top = active.offsetTop;
         const bottom = top + active.offsetHeight;
