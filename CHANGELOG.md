@@ -60,6 +60,28 @@ agents update the `Unreleased` section before reporting work as done.
   files) and overrides for `.astro` (organizeImports, unused-imports,
   non-null-assertion rules off).
 
+- Multi-job CI pipeline (`.github/workflows/ci.yml`) with parallel linting,
+  type checking and build verification, a quality gate that aggregates all job
+  results and fails if any dependency was cancelled, skipped or failed, and
+  concurrency groups that cancel redundant runs on rapid pushes.
+- Security workflow (`.github/workflows/security.yml`) that audits dependencies
+  on every push to `main`, every pull request targeting `main`, and every Monday
+  at 06:24 UTC — plus on-demand via `workflow_dispatch` — with its own security
+  gate that enforces a clean audit result.
+- Dependabot configuration (`.github/dependabot.yml`) for automated weekly
+  updates: npm dependencies grouped into a single PR every Monday at 07:00 UTC,
+  and GitHub Actions every Monday at 07:30 UTC, both capped at 5 open PRs.
+- Type checking step in CI (`pnpm typecheck` via `@astrojs/check`) that runs
+  `astro check` in parallel with the lint job, catching type errors before the
+  build starts.
+- `.node-version` file at the repo root pinning Node.js to version 24, so
+  `fnm`, `nvm`, `nodenv` and GitHub Actions `setup-node` auto-select the correct
+  version.
+- All three workflows now declare explicit `permissions` (least privilege:
+  `contents: read` for CI and security; `pages: write` + `id-token: write` for
+  deploy), `timeout-minutes` on every job to prevent hung runners, and a shared
+  `NODE_VERSION` env variable at the workflow level.
+
 ### Changed
 - `astro.config.mjs` is now env-driven: `site` and `base` default to the GitHub
   Pages target (`https://yousef-diab.github.io` + `/the-algorithm`) but can be
@@ -143,8 +165,15 @@ agents update the `Unreleased` section before reporting work as done.
 - Sidebar navigation became a shared layout component (`CourseLayout`).
 - Verification rewritten from `verify.py` to `verify.mjs` (Node + Playwright
   against the built `dist/`).
-- CI pipeline (`.github/workflows/ci.yml`) replaced with a pnpm-based
-  install → build → verify workflow.
+- CI pipeline (`.github/workflows/ci.yml`) restructured from a single
+  monolithic job into independent parallel jobs (lint, typecheck,
+  build‑verify) with a quality gate that aggregates results and fails the
+  run if any dependency failed, was cancelled, or skipped. The build job
+  uploads the `dist/` artifact for post‑mortem inspection when verification
+  fails.
+- Deploy workflow (`.github/workflows/deploy.yml`) now includes explicit
+  `timeout-minutes` on every job, descriptive job names (`Build` / `Deploy`)
+  and a shared `NODE_VERSION` env variable.
 - Mirrored the full content audit from `origin/main` (22 commits of fixes made
   on the old single-file structure) into the Astro `content/` tree — 6
   blocking errors fixed (Tier 1), 16 one-line corrections (Tier 2), 28 new
@@ -284,6 +313,13 @@ agents update the `Unreleased` section before reporting work as done.
   state a wrong one. `pnpm build` (85 pages) and `pnpm verify` all pass after
   the content mirror: 84 routes, 78 lessons, lightbox, both final exams (45/43
   questions), summary counts, review pages, theme switcher, and zero
+  page/console errors.
+
+### Verification
+- `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
+  CI/CD workflow overhaul: 84 routes, 78 lessons (titles, charts, quiz
+  grade/reset, video links, notes), lightbox open/browse/zoom/close, both
+  final exams (submit, 80% pass, retake), theme switcher persistence, and zero
   page/console errors.
 
 ## 1.0.0 — 2026-08-07
