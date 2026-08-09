@@ -691,132 +691,38 @@ a:hover {
   object-position: top left;
 }
 
-/* ---------- lightbox ---------- */
-#lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  cursor: zoom-out;
-  background: rgba(5, 7, 12, 0.94);
+/* ---------- lightbox (yet-another-react-lightbox theme overrides) ----------
+   The lightbox backdrop is always dark (rgba(5,7,12,0.94)) regardless of the
+   site theme, so all UI colors below are fixed light values — NOT theme
+   variables — to stay visible in both light and dark site themes. */
+.yarl__root {
+  --yarl__container_background_color: rgba(5, 7, 12, 0.94);
+  --yarl__color_button: hsla(0, 0%, 100%, 0.8);
+  --yarl__color_button_active: #fff;
+  --yarl__color_button_disabled: hsla(0, 0%, 100%, 0.4);
+  --yarl__slide_icon_loading_color: hsla(0, 0%, 100%, 0.8);
 }
-#lightbox.open {
-  display: flex;
-}
-body.lb-lock {
-  overflow: hidden;
-}
-.lb-stage {
-  display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  align-items: safe center;
-  justify-content: center;
-  justify-content: safe center;
-  width: 100%;
-  max-width: 94vw;
-  min-height: 0;
-  overflow: auto;
-  cursor: default;
-  border-radius: 8px;
-}
-.lb-stage.zoomed {
-  cursor: grab;
-}
-.lb-stage.zoomed:active {
-  cursor: grabbing;
-}
-.lb-stage::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-.lb-stage::-webkit-scrollbar-thumb {
-  background: var(--dim);
-  border-radius: 5px;
-}
-.lb-stage::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
-}
-#lightbox img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 8px;
-  display: block;
-  flex: none;
-  -webkit-user-drag: none;
-  user-select: none;
-}
-#lightbox .lb-cap {
-  flex: none;
-  max-width: 90vw;
-  min-height: 18px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 13px;
-  color: var(--muted);
-  text-align: center;
-  white-space: nowrap;
-}
-.lb-panel {
-  display: flex;
-  flex: none;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 9px;
-  cursor: default;
-  background: var(--panel);
-  border: 1px solid var(--border);
+.yarl__slide_captions_container {
+  margin: 16px;
+  background: rgba(5, 7, 12, 0.82);
   border-radius: 11px;
 }
-.lb-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 34px;
-  height: 32px;
-  padding: 0 9px;
-  font-family: var(--font);
-  font-size: 16px;
-  line-height: 1;
-  color: var(--text);
-  cursor: pointer;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  transition:
-    border-color 0.15s,
-    background 0.15s;
+.yarl__slide_title {
+  color: #7aa5ff;
 }
-.lb-btn.lb-wide {
-  font-size: 13px;
+.yarl__slide_description {
+  color: #d7dce6;
 }
-.lb-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-}
-.lb-btn:disabled {
-  cursor: default;
-  opacity: 0.3;
-}
-.lb-count,
-.lb-zoom {
-  min-width: 54px;
-  font-size: 12.5px;
-  color: var(--muted);
-  text-align: center;
-  user-select: none;
-}
-.lb-sep {
-  width: 1px;
-  height: 22px;
-  margin: 0 3px;
-  background: var(--border);
+
+/* Shrink toolbar buttons on narrow viewports so all 7 plugin buttons fit
+   without overflowing off-screen. Default: 48px button = 32px icon + 8px×2
+   padding → 7×48 + 16 = 352px (overflows at 320px). At 36px = 28px icon +
+   4px×2 padding → 7×36 + 16 = 268px (fits in 320px). */
+@media (max-width: 380px) {
+  .yarl__root {
+    --yarl__button_padding: 4px;
+    --yarl__icon_size: 28px;
+  }
 }
 
 /* ---------- quiz ---------- */
@@ -1515,22 +1421,6 @@ body.lb-lock {
   }
   .home-hero h1 {
     font-size: 30px;
-  }
-  .lb-panel {
-    gap: 4px;
-    padding: 6px;
-  }
-  .lb-btn {
-    min-width: 32px;
-    padding: 0 6px;
-  }
-  .lb-count,
-  .lb-zoom {
-    min-width: 40px;
-    font-size: 12px;
-  }
-  .lb-sep {
-    display: none;
   }
   .quiz-head {
     flex-direction: column;

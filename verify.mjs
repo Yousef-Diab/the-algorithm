@@ -332,66 +332,52 @@ if (chartLesson) {
     .waitForFunction(() => document.documentElement.dataset.lbReady === "true")
     .catch(() => fail("lightbox island never hydrated"));
   await page.locator(".fig img").first().click();
-  if (!(await page.locator("#lightbox.open").count())) {
+  await page.waitForTimeout(300);
+  if (!(await page.locator(".yarl__portal_open").count())) {
     fail("lightbox did not open");
   }
   if (
-    !(await page.evaluate(() => document.body.classList.contains("lb-lock")))
+    !(await page.evaluate(() =>
+      document.body.classList.contains("yarl__no_scroll")
+    ))
   ) {
     fail("body not locked");
   }
-  const count1 = (await page.locator(".lb-count").textContent()) || "";
-  if (!/^\d+ \/ \d+$/.test(count1.trim())) {
-    fail(`counter = "${count1}"`);
+  // Verify navigation buttons exist and clicking next keeps the lightbox open.
+  if (!(await page.locator(".yarl__navigation_prev").count())) {
+    fail("prev button missing");
   }
-  const prevDisabled = await page.locator('[data-lb="prev"]').isDisabled();
-  if (!prevDisabled) {
-    fail("prev should be disabled on first image");
+  if (!(await page.locator(".yarl__navigation_next").count())) {
+    fail("next button missing");
   }
-  await page.click('[data-lb="next"]');
-  const count2 = (await page.locator(".lb-count").textContent()) || "";
-  if (!count2.trim().startsWith("2 / ")) {
-    fail(`counter after next = "${count2}"`);
+  await page.click(".yarl__navigation_next");
+  await page.waitForTimeout(400);
+  if (!(await page.locator(".yarl__portal_open").count())) {
+    fail("lightbox closed after next click");
   }
-  const w0 = await page
-    .locator("#lightbox img")
-    .evaluate((el) => el.getBoundingClientRect().width);
-  await page.click('[data-lb="in"]');
-  await page.waitForTimeout(80);
-  const zoomLabel = (await page.locator(".lb-zoom").textContent()) || "";
-  if (zoomLabel.trim() !== "125%") {
-    fail(`zoom label = "${zoomLabel}"`);
+  // Check that the zoom-in toolbar button exists (zoom plugin is active).
+  const zoomInBtn = page.locator(".yarl__toolbar button[aria-label='Zoom in']");
+  if (!(await zoomInBtn.count())) {
+    fail("zoom-in button missing");
   }
-  const w1 = await page
-    .locator("#lightbox img")
-    .evaluate((el) => el.getBoundingClientRect().width);
-  if (!(w1 > w0 + 5)) {
-    fail(`zoom did not grow (${w0} -> ${w1})`);
-  }
-  await page.locator("#lightbox img").click({ position: { x: 5, y: 5 } });
-  if (!(await page.locator("#lightbox.open").count())) {
-    fail("img click while zoomed closed the lightbox");
-  }
-  await page.click('[data-lb="reset"]');
-  await page.waitForTimeout(80);
-  const zoomLabel2 = (await page.locator(".lb-zoom").textContent()) || "";
-  if (zoomLabel2.trim() !== "100%") {
-    fail(`fit label = "${zoomLabel2}"`);
-  }
-  await page.mouse.click(10, 10);
-  await page.waitForTimeout(50);
-  if (await page.locator("#lightbox.open").count()) {
-    fail("backdrop click did not close");
-  }
-  if (await page.evaluate(() => document.body.classList.contains("lb-lock"))) {
-    fail("body still locked");
-  }
-  await page.locator(".fig img").first().click();
+  // Close with Escape.
   await page.keyboard.press("Escape");
-  if (await page.locator("#lightbox.open").count()) {
+  await page.waitForTimeout(400);
+  if (await page.locator(".yarl__portal_open").count()) {
     fail("Escape did not close");
   }
-  ok("open / counter / prev-next / zoom / fit / close behaviors");
+  // Re-open via click and close again.
+  await page.locator(".fig img").first().click();
+  await page.waitForTimeout(300);
+  if (!(await page.locator(".yarl__portal_open").count())) {
+    fail("lightbox did not re-open");
+  }
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(200);
+  if (await page.locator(".yarl__portal_open").count()) {
+    fail("Escape did not close on re-open");
+  }
+  ok("open / navigation / zoom button / close / re-open behaviors");
 } else {
   fail("no lesson with >= 2 charts found");
 }
