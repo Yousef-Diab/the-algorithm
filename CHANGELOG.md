@@ -9,6 +9,23 @@ agents update the `Unreleased` section before reporting work as done.
 ## Unreleased
 
 ### Changed
+- Replaced the custom-built Lightbox.tsx (318 lines React island + ~130 lines CSS)
+  with `yet-another-react-lightbox` v3.32.2 (Zoom + Captions + Download + Share
+  + Slideshow + Fullscreen plugins). All existing behavior is preserved: click
+  interception on `.fig img`, lesson-scoped gallery browsing, zoom (max 5×), and
+  close-on-backdrop-click. The new library adds touch gestures (pinch-to-zoom,
+  swipe), smooth slide transitions, a loading indicator, preloading of adjacent
+  images, a download button (saves the chart PNG to disk), a share button (uses
+  the Web Share API where available), a slideshow button (auto-advances through
+  the lesson's charts every 3 s), and a fullscreen button (uses the Fullscreen
+  API for an immersive view) — all previously unavailable in the custom
+  implementation. The old `.lb-*` CSS and `#lightbox` styles were removed from
+  `global.css`; the lightbox UI colors are now fixed light values
+  (`hsla(0,0%,100%,.8)` for buttons, `#7aa5ff` for caption titles, `#d7dce6` for
+  descriptions) rather than theme variables, so the toolbar and captions stay
+  visible on the always-dark backdrop in both light and dark site themes.
+  Verification was updated to match the library's DOM selectors
+  (`.yarl__portal_open`, `.yarl__no_scroll`, `.yarl__navigation_prev/next`).
 - All internal imports now use `@/` path aliases (`@/components/…`,
   `@/layouts/…`, `@/lib/…`, `@/stores/…`) instead of deep relative paths
   (`../../../../`). `tsconfig.json` was extended with explicit path mappings
@@ -245,6 +262,13 @@ agents update the `Unreleased` section before reporting work as done.
   rendered unstyled because the Astro stylesheet had no `.src` rule — ported
   the legacy `.lesson .src` rule (the `engine/head.html` fix that widened
   `.lesson h4 .src` to `.lesson .src`) into `global.css`.
+- Lightbox toolbar overflowed on narrow phones (≤380px): the 7 plugin buttons
+  (Fullscreen, Slideshow, Share, Download, Zoom in, Zoom out, Close) at the
+  default 48px each (32px icon + 8px×2 padding) totalled 352px + 16px toolbar
+  padding, so the leftmost button was clipped off-screen at 320px viewport
+  width. A `@media (max-width: 380px)` rule now shrinks the buttons to 36px
+  (28px icon + 4px×2 padding → 268px total), so all 7 buttons fit within
+  320px and even 280px (Galaxy Fold folded) with room to spare.
 
 ### Documentation
 - `README.md` deploy section now documents both hosts: GitHub Pages via
