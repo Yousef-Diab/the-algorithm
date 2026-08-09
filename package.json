@@ -21,7 +21,8 @@
     "astro": "^7.2.0",
     "nanostores": "^1.4.2",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "yet-another-react-lightbox": "^3.32.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
