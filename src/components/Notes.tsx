@@ -34,22 +34,29 @@ export default function Notes({ lessonId }: Props) {
 
   const dirty = value !== savedValue;
 
-  const save = () => {
+  const persist = (next: string, message: string) => {
     try {
       const all = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {};
-      if (value) {
-        all[lessonId] = value;
+      if (next) {
+        all[lessonId] = next;
       } else {
         delete all[lessonId];
       }
       localStorage.setItem(NOTES_KEY, JSON.stringify(all));
-      setSavedValue(value);
-      setStatus("✓ Saved");
+      setSavedValue(next);
+      setStatus(message);
       window.clearTimeout(hideTimer.current);
       hideTimer.current = window.setTimeout(() => setStatus(""), 2200);
     } catch {
       /* ignore */
     }
+  };
+
+  const save = () => persist(value, "✓ Saved");
+
+  const clear = () => {
+    persist("", "✓ Cleared");
+    setValue("");
   };
 
   return (
@@ -73,6 +80,14 @@ export default function Notes({ lessonId }: Props) {
           type="button"
         >
           Save notes
+        </button>
+        <button
+          className="btn clear-btn"
+          disabled={value === ""}
+          onClick={clear}
+          type="button"
+        >
+          Clear
         </button>
         <div
           aria-live="polite"

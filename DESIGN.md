@@ -142,6 +142,7 @@ Type weight does the hierarchy work: bold body (`strong`) is pure white
 | `.exam` | Like quiz + picked (blue) state, missed (red) question text, sticky score bar, 80% pass |
 | `.btn` | Panel2 pill; `.primary` = accent fill; `.done-btn.marked` = green fill |
 | `.save-btn` | Accent-outlined action (accent border, soft accent-tinted fill, accent2 text); neutral + muted when disabled |
+| `.clear-btn` | Neutral secondary (panel2 fill, border, muted text); soft red on hover; same disabled look as `.save-btn` |
 | `.notes` | Panel with textarea; border turns accent on focus |
 | `.mcard` / `.rcard` | Home cards, 20px pad, colored left border (gold months / green reviews), hover lift |
 

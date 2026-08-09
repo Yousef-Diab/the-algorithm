@@ -1192,7 +1192,9 @@ body.lb-lock {
   border-color: var(--green);
 }
 /* Save-notes button: an accent-outlined action so it reads as useful against
-   the page background, without competing with the primary footer button. */
+   the page background, without competing with the primary footer button.
+   Clear-notes button: secondary action that wipes the textarea and persists
+   the cleared state right away; neutral until hover, then soft red. */
 .save-btn {
   padding: 8px 16px;
   font-size: 13.5px;
@@ -1211,6 +1213,29 @@ body.lb-lock {
   background: var(--panel2);
   border-color: var(--border);
   opacity: 0.55;
+}
+.clear-btn {
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--panel2);
+  border-color: var(--border);
+}
+.clear-btn:hover:not(:disabled) {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 10%, var(--panel2));
+  border-color: var(--red);
+}
+.clear-btn:disabled {
+  color: var(--dim);
+  cursor: not-allowed;
+  background: var(--panel2);
+  border-color: var(--border);
+  opacity: 0.55;
+}
+.clear-btn:disabled:hover {
+  border-color: var(--border);
 }
 
 /* ---------- home ---------- */

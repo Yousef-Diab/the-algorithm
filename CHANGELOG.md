@@ -91,6 +91,12 @@ agents update the `Unreleased` section before reporting work as done.
   from the page background and reads as useful at a glance; when there is
   nothing to save it falls back to a neutral, muted look that clearly signals
   it is not yet needed.
+- A "Clear" button next to "Save notes" wipes the notes textarea and saves the
+  cleared state in the same click, so the lesson notes come back empty without
+  having to clear and re-save manually; a brief "✓ Cleared" confirmation
+  appears and fades out on its own, and the button is disabled while the
+  textarea is already empty. It stays neutral until hovered, when it turns a
+  soft red to hint it removes content.
 - The lesson footer buttons (previous / mark complete / next) now stack into
   full-width rows on narrow screens (≤640px) instead of wrapping and
   colliding, so long lesson titles can never overlap on mobile; they also get
@@ -228,7 +234,7 @@ agents update the `Unreleased` section before reporting work as done.
   review pages, theme switcher, zero page/console errors in each.
 - `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
   notes save-button and responsive footer work: 84 routes, 78 lessons
-  (titles, charts, quiz grade/reset, video links, notes box + save button),
+  (titles, charts, quiz grade/reset, video links, notes box + save/clear buttons),
   lightbox open/browse/zoom/close, both final exams (submit, 80% pass,
   retake), theme switcher persistence, and zero page/console errors.
 - `pnpm check`, `pnpm build` (85 pages) and `pnpm verify` all pass after the
