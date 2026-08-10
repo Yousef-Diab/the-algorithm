@@ -550,15 +550,22 @@ Expected: `connected to neondb — PostgreSQL 18`, `neon_auth: 9 table(s)`, `dri
 
 If `public` reports tables, stop and report what they are — the plan assumes an empty `public` schema and Task 10 must not clobber something unexpected.
 
-- [ ] **Step 5: Drop the stale migration journal**
+- [ ] **Step 5: Confirm the migration journal is empty — do NOT drop it**
 
-The `drizzle.__drizzle_migrations` table is a leftover from the old branch's migrations, which no longer exist. Task 10 generates migration `0000` from scratch, and a stale journal will make `drizzle-kit migrate` skip it.
+**Superseded by a controller check (2026-08-10).** This step originally dropped `drizzle.__drizzle_migrations` on the theory that a stale journal from the old branch would make `drizzle-kit migrate` skip Task 10's migration `0000`. I queried it directly: **the table has zero rows.** An empty journal cannot cause that problem, so the drop buys nothing and is a needless destructive statement against the user's live database.
 
-Ask the user to confirm before running this (it is a destructive DB statement on their project):
+Verify it is still empty and leave it in place:
 
 ```bash
-node --env-file=.env.local -e "import('@neondatabase/serverless').then(async ({neon})=>{const sql=neon(process.env.DATABASE_URL);await sql\`drop table if exists drizzle.__drizzle_migrations\`;console.log('dropped stale journal')})"
+node --env-file=.env.local --experimental-strip-types -e "
+const {neon}=await import('@neondatabase/serverless');
+const sql=neon(process.env.DATABASE_URL);
+const rows=await sql\`select count(*)::int as n from drizzle.__drizzle_migrations\`;
+console.log('migration journal rows:', rows[0].n);
+"
 ```
+
+Expected: `migration journal rows: 0`. **If it is non-zero, stop and report** — something recorded migrations this plan does not know about, and Task 10 needs that resolved first. Do not drop the table on your own initiative either way.
 
 - [ ] **Step 6: Stage**
 
