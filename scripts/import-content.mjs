@@ -57,11 +57,14 @@ for (const m of plan.months) {
 
 for (const l of plan.lessons) {
   const { questions, ...row } = l;
-  // access is NOT in `set`: an import must never reopen a lesson the CMS closed.
-  const values = { ...row, status: "published", publishedAt: new Date(), updatedAt: new Date() };
+  // access and publishedAt are NOT in `set`: an import must never reopen a
+  // lesson the CMS closed, and must never restamp a lesson's original publish
+  // time on a re-run. updatedAt DOES belong in `set` — it genuinely describes
+  // the latest write.
+  const values = { ...row, status: "published", updatedAt: new Date() };
   await db
     .insert(lessons)
-    .values({ ...values, access: "members" })
+    .values({ ...values, access: "members", publishedAt: new Date() })
     .onConflictDoUpdate({ target: lessons.id, set: values });
 
   await db.delete(quizQuestions).where(eq(quizQuestions.lessonId, l.id));

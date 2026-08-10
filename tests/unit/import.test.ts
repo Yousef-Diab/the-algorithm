@@ -1,5 +1,8 @@
 // tests/unit/import.test.ts
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { readContentTree } from "@/lib/content/import";
 
 const plan = readContentTree("content");
@@ -57,5 +60,51 @@ describe("readContentTree", () => {
   it("produces bodies that pass the block validator", async () => {
     const { assertBlocks } = await import("@/lib/content/blocks");
     for (const l of plan.lessons) expect(() => assertBlocks(l.body)).not.toThrow();
+  });
+});
+
+describe("readContentTree month/folder guard (R10)", () => {
+  let fixtureRoot: string | undefined;
+
+  afterEach(() => {
+    if (fixtureRoot) rmSync(fixtureRoot, { recursive: true, force: true });
+    fixtureRoot = undefined;
+  });
+
+  /** A minimal, valid content tree except the lesson's data-month/folder relationship. */
+  function buildFixture(lessonDataMonth: string): string {
+    const root = mkdtempSync(join(tmpdir(), "import-month-guard-"));
+    const secPath = join(root, "s1");
+    mkdirSync(secPath, { recursive: true });
+    writeFileSync(
+      join(secPath, "section.js"),
+      `{id:"s1", short:"S1", title:"Section One", desc:"Test section", label:"Month"}`,
+    );
+    writeFileSync(join(secPath, "months.js"), `[{id:"m1", title:"Month One", desc:"Test month"}]`);
+
+    const lessonPath = join(secPath, "m1", "m1-01");
+    mkdirSync(lessonPath, { recursive: true });
+    writeFileSync(
+      join(lessonPath, "lesson.html"),
+      `<section class="lesson" id="m1-01" data-title="Test Lesson" data-month="${lessonDataMonth}">
+  <div class="lesson-hero">
+    <div class="crumb">Month 1 · Lesson 1</div>
+    <h2>Test Lesson</h2>
+    <div class="desc">Test description.</div>
+  </div>
+</section>`,
+    );
+    writeFileSync(join(lessonPath, "quiz.js"), `[{q:"q?",o:["a","b","c","d"],a:0,e:"because"}]`);
+    return root;
+  }
+
+  it("throws when a lesson's data-month disagrees with its folder", () => {
+    fixtureRoot = buildFixture("m2");
+    expect(() => readContentTree(fixtureRoot!)).toThrow(/month folder="m1".*data-month="m2"/);
+  });
+
+  it("does not throw when data-month agrees with its folder", () => {
+    fixtureRoot = buildFixture("m1");
+    expect(() => readContentTree(fixtureRoot!)).not.toThrow();
   });
 });

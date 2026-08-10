@@ -95,7 +95,9 @@ export function readContentTree(root: string): ImportPlan {
           monthId: monthDir,
         });
         if (m.id !== lessonDir)
-          throw new Error(`${lessonDir}: folder name and section id="${m.id}" disagree`);
+          throw new Error(`${lessonDir}: folder name and lesson id="${m.id}" disagree`);
+        if (m.monthId !== monthDir)
+          throw new Error(`${lessonDir}: month folder="${monthDir}" and lesson data-month="${m.monthId}" disagree`);
 
         const figSlug = blocks.find((b): b is Extract<Block, { t: "figures" }> => b.t === "figures")?.slug;
         const videoFile = join(lp, "video.txt");
