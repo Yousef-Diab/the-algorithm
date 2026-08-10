@@ -4,6 +4,7 @@ import { defineConfig } from "@playwright/test";
  *  (CI does; locally webServer will reuse a running `pnpm start`). */
 export default defineConfig({
   testDir: "./tests",
+  testIgnore: ["**/unit/**"],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
