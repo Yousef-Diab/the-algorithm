@@ -18,7 +18,7 @@ registerHooks({
 
 const { drizzle } = await import("drizzle-orm/neon-http");
 const { neon } = await import("@neondatabase/serverless");
-const { eq, sql } = await import("drizzle-orm");
+const { eq, sql, inArray } = await import("drizzle-orm");
 const { readContentTree } = await import("../lib/content/import.ts");
 const { assertBlocks } = await import("../lib/content/blocks.ts");
 const { sections, months, lessons, quizQuestions } = await import("../lib/db/schema.ts");
@@ -76,3 +76,110 @@ for (const l of plan.lessons) {
 const [{ n: nl }] = await db.select({ n: sql`count(*)::int` }).from(lessons);
 const [{ n: nq }] = await db.select({ n: sql`count(*)::int` }).from(quizQuestions);
 console.log(`written: ${nl} lessons, ${nq} questions`);
+
+// --- media pass (opt-in: --media) -------------------------------------------
+// Reads the manifest scripts/upload-media.mjs already produced (Task 15a) and
+// writes `media` rows from it. Never re-encodes, never re-uploads: every
+// value the table needs (storageKey, mime, width, height, bytes, lessonId,
+// ord, isOriginal) is already in the manifest.
+if (process.argv.includes("--media")) {
+  const { readFileSync, existsSync } = await import("node:fs");
+  const { media } = await import("../lib/db/schema.ts");
+
+  const MANIFEST_PATH = "./.superpowers/sdd/2026-08-10-content-in-postgres-gated/media-manifest.json";
+  if (!existsSync(MANIFEST_PATH)) {
+    console.error(
+      `media: manifest not found at ${MANIFEST_PATH} — run scripts/upload-media.mjs first`,
+    );
+    process.exit(1);
+  }
+
+  /** @type {{key:string,mime:string,lessonId:string,ord:number,width:number,height:number,bytes:number,isOriginal:boolean}[]} */
+  const rawManifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+  if (!Array.isArray(rawManifest) || rawManifest.length === 0) {
+    console.error(`media: manifest at ${MANIFEST_PATH} is empty — run scripts/upload-media.mjs first`);
+    process.exit(1);
+  }
+
+  // Dedupe by key: a crash mid-chart followed by a resume can record one key
+  // twice, and a duplicate would collide with the unique index on storage_key.
+  const byKey = new Map();
+  for (const e of rawManifest) byKey.set(e.key, e);
+  const entries = [...byKey.values()];
+
+  const originals = entries.filter((e) => e.isOriginal);
+  const derivatives = entries.filter((e) => !e.isOriginal);
+
+  console.log(
+    `media: manifest has ${entries.length} objects (${originals.length} originals, ${derivatives.length} derivatives)`,
+  );
+
+  // Idempotent: delete before insert, keyed on storage_key. Delete originals
+  // first — variant_of cascades, so removing an original also removes its
+  // derivatives, which is why order matters.
+  const CHUNK = 300;
+  function chunk(arr, size) {
+    const out = [];
+    for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+    return out;
+  }
+
+  for (const c of chunk(originals, CHUNK)) {
+    await db.delete(media).where(inArray(media.storageKey, c.map((e) => e.key)));
+  }
+  for (const c of chunk(derivatives, CHUNK)) {
+    await db.delete(media).where(inArray(media.storageKey, c.map((e) => e.key)));
+  }
+
+  const keyToId = new Map();
+  for (const c of chunk(originals, CHUNK)) {
+    const rows = await db
+      .insert(media)
+      .values(
+        c.map((e) => ({
+          lessonId: e.lessonId,
+          kind: "image",
+          ord: e.ord,
+          storageKey: e.key,
+          mime: e.mime,
+          width: e.width,
+          height: e.height,
+          bytes: e.bytes,
+          alt: "",
+        })),
+      )
+      .returning({ id: media.id, storageKey: media.storageKey });
+    for (const r of rows) keyToId.set(r.storageKey, r.id);
+  }
+
+  function stemOf(key) {
+    return key.replace(/\.(png|webp|avif)$/, "");
+  }
+
+  const derivativeRows = derivatives.map((e) => {
+    const originalKey = `${stemOf(e.key)}.png`;
+    const variantOf = keyToId.get(originalKey);
+    if (!variantOf) {
+      throw new Error(`media: no original found for derivative ${e.key} (expected ${originalKey})`);
+    }
+    return {
+      lessonId: e.lessonId,
+      kind: "image",
+      ord: e.ord,
+      storageKey: e.key,
+      mime: e.mime,
+      width: e.width,
+      height: e.height,
+      bytes: e.bytes,
+      variantOf,
+      alt: "",
+    };
+  });
+
+  for (const c of chunk(derivativeRows, CHUNK)) {
+    await db.insert(media).values(c);
+  }
+
+  const [{ n: nm }] = await db.select({ n: sql`count(*)::int` }).from(media);
+  console.log(`media: ${nm} rows written (${originals.length} originals, ${derivativeRows.length} derivatives)`);
+}
