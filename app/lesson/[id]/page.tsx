@@ -3,15 +3,23 @@ import type { Metadata } from "next";
 import { getCatalog, getLessonMeta, getLessonBody, getLessonMedia } from "@/lib/content/queries";
 import { inlineText } from "@/lib/content/blocks";
 import { navFrom } from "@/lib/nav";
+import { canRead } from "@/lib/access";
+import { accessContext } from "@/lib/db/access-queries";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
-import { InlineNodes } from "@/components/blocks/Inline";
 import { LessonFooter } from "@/components/lesson/LessonFooter";
+import { LessonHero } from "@/components/lesson/LessonHero";
+import { LockedBody } from "@/components/lesson/LockedBody";
 
-export const dynamicParams = true; // access is DB state, not build state
+export const dynamicParams = true; // a lesson flipped to free renders on demand, never 404s
 
 export async function generateStaticParams() {
-  const order = navFrom(await getCatalog()).order;
-  return order.map((id) => ({ id }));
+  const catalog = await getCatalog();
+  // Only free lessons are prerendered: a members lesson in a public ISR cache
+  // is exactly the leak this architecture exists to prevent.
+  return catalog
+    .flatMap((s) => [...s.months.flatMap((m) => m.lessons), s.review, s.exam])
+    .filter((l): l is NonNullable<typeof l> => Boolean(l) && l!.access === "free")
+    .map((l) => ({ id: l.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -24,15 +32,33 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function LessonPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const meta = await getLessonMeta(id);
-  if (!meta || meta.status !== "published") notFound();
+  if (!meta) notFound();
+
+  const isPublic = meta.access === "free" && meta.status === "published";
+
+  // A free lesson must not read cookies — that would opt the route out of
+  // static rendering and lose the public cache entirely.
+  const ctx = isPublic
+    ? { user: null, isAdmin: false, entitlements: [] }
+    : await accessContext();
+
+  if (!canRead(meta, ctx)) {
+    // Nothing below this line fetches the body. Do not hoist getLessonBody()
+    // above this branch: the prose would land in the RSC payload even though
+    // the JSX is suppressed. See spec §6 and invariant 1.
+    return (
+      <article className="lesson">
+        <LessonHero meta={meta} />
+        <LockedBody signedIn={Boolean(ctx.user)} />
+      </article>
+    );
+  }
 
   const { prev, next } = navFrom(await getCatalog()).prevNext(id);
 
-  // P3 wraps this call in `if (canRead(meta, user, entitlements))` — invariant 1.
-  const blocks = await getLessonBody(id);
+  const [blocks, groups] = await Promise.all([getLessonBody(id), getLessonMedia(id)]);
   if (!blocks) notFound();
 
-  const groups = await getLessonMedia(id);
   const figures = groups.map((g) => ({
     src: `/api/media/${g.original.id}`,
     webp: g.webp ? `/api/media/${g.webp.id}` : undefined,
@@ -44,11 +70,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
   return (
     <article className="lesson">
-      <div className="lesson-hero">
-        <div className="crumb">{meta.crumb}</div>
-        <h1>{meta.heading}</h1>
-        <div className="desc"><InlineNodes nodes={meta.desc} /></div>
-      </div>
+      <LessonHero meta={meta} />
 
       {meta.videoUrl ? (
         <a className="lesson-video" href={meta.videoUrl} target="_blank" rel="noopener noreferrer">

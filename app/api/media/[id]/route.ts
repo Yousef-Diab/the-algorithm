@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { mediaWithLesson } from "@/lib/content/queries";
 import { getObject, presign } from "@/lib/media";
+import { canRead } from "@/lib/access";
+import { accessContext } from "@/lib/db/access-queries";
 
 /** A UUID, so a malformed id 404s before touching the database. */
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -21,11 +23,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const row = await mediaWithLesson(id);
   // 404, never 403 — a 403 confirms the asset exists.
-  if (!row || row.status !== "published") return new NextResponse(null, { status: 404 });
+  if (!row) return new NextResponse(null, { status: 404 });
 
-  // P3: replace the line above with
-  //   const allowed = canRead(row, await getCurrentUser(), await myEntitlements());
-  //   if (!allowed) return new NextResponse(null, { status: 404 });
+  const isPublic = row.access === "free" && row.status === "published";
+  const ctx = isPublic ? { user: null, isAdmin: false, entitlements: [] } : await accessContext();
+  if (!canRead(row, ctx)) return new NextResponse(null, { status: 404 });
+
   const isFree = row.access === "free";
 
   if (isFree) {

@@ -166,7 +166,12 @@ export async function getQuiz(lessonId: string): Promise<QuizQuestionRow[]> {
     .orderBy(asc(quizQuestions.ord));
 }
 
-/** Cached with the body: charts are part of the lesson, gated identically. */
+/**
+ * INVARIANT 1: call this ONLY inside the canRead branch. Calling it above the
+ * gate puts gated chart references into the RSC payload even when the JSX is
+ * suppressed. Cached with the body: charts are part of the lesson, gated
+ * identically.
+ */
 export function getLessonMedia(lessonId: string): Promise<VariantGroup[]> {
   return cache(
     async (id: string) => {
