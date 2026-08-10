@@ -11,7 +11,7 @@
 // Usage:
 //   node --env-file=.env.local --experimental-strip-types scripts/upload-media.mjs [--dry-run] [--force] [--limit N]
 import { registerHooks } from "node:module";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -52,29 +52,72 @@ const MANIFEST_PATH = join(
 
 /** @typedef {{ key: string, mime: string, lessonId: string, ord: number, width: number, height: number, bytes: number, isOriginal: boolean }} ManifestEntry */
 
-/** @returns {ManifestEntry[]} */
-function loadManifest() {
-  if (force || !existsSync(MANIFEST_PATH)) return [];
+/**
+ * Reads the manifest file as-is (no `--force` awareness here — that's the
+ * caller's job). A missing file is NOT an error (returns `[]`); a *present
+ * but corrupt* file IS an error, because silently treating corruption as
+ * "nothing uploaded yet" would erase the resumability this script exists to
+ * provide (F2).
+ * @returns {ManifestEntry[]}
+ */
+function loadManifestRaw() {
+  if (!existsSync(MANIFEST_PATH)) return [];
+  const raw = readFileSync(MANIFEST_PATH, "utf8");
+  let parsed;
   try {
-    const parsed = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    // A corrupt manifest should not block a resume; treat it as empty.
-    return [];
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    throw new Error(
+      `media manifest at ${MANIFEST_PATH} is corrupt and cannot be parsed as JSON ` +
+        `(${err instanceof Error ? err.message : String(err)}). Refusing to silently treat it as ` +
+        `empty — that would discard the record of every already-uploaded object and force a full ` +
+        `re-encode/re-upload. Inspect/repair the file, or pass --force with no --limit to ` +
+        `intentionally discard it and start over.`,
+    );
   }
+  if (!Array.isArray(parsed)) {
+    throw new Error(`media manifest at ${MANIFEST_PATH} does not contain a JSON array; refusing to treat it as empty.`);
+  }
+  return parsed;
 }
 
+/** Atomic write: temp file + rename, so a kill mid-write never leaves a truncated manifest (F2). */
 function saveManifest(entries) {
   mkdirSync(dirname(MANIFEST_PATH), { recursive: true });
-  writeFileSync(MANIFEST_PATH, JSON.stringify(entries, null, 2));
+  const tmpPath = `${MANIFEST_PATH}.tmp`;
+  writeFileSync(tmpPath, JSON.stringify(entries, null, 2));
+  renameSync(tmpPath, MANIFEST_PATH);
 }
 
 // --- Plan ---------------------------------------------------------------------
 const lessons = readContentTree("content").lessons.map((l) => ({ id: l.id, slug: l.slug }));
 const allCharts = planMedia("images", lessons);
 const charts = typeof limit === "number" && Number.isFinite(limit) ? allCharts.slice(0, limit) : allCharts;
+const scoped = typeof limit === "number" && Number.isFinite(limit);
 
-const manifest = loadManifest();
+// F1: `--force` must only discard entries for charts actually in this run's
+// scope. An unscoped `--force` (no --limit) legitimately means "redo
+// everything" and may skip reading the file entirely. A scoped `--force
+// --limit N` must still load and preserve the ~1000 unrelated entries — only
+// entries whose stem belongs to one of `charts` gets dropped, so a later
+// `--media` pass never "forgets" objects that are untouched in R2/Postgres.
+let manifest;
+if (force && !scoped) {
+  manifest = [];
+} else {
+  try {
+    manifest = loadManifestRaw();
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : String(err));
+    process.exit(1);
+  }
+  if (force && scoped) {
+    const inScopeStems = new Set(charts.map((c) => c.key.replace(/\.png$/, "")));
+    const stemOf = (key) => key.replace(/\.(png|webp|avif)$/, "");
+    manifest = manifest.filter((e) => !inScopeStems.has(stemOf(e.key)));
+  }
+}
+
 const doneKeys = new Set(manifest.map((e) => e.key));
 
 /** A chart is done when all three of its variant keys are already recorded. */

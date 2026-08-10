@@ -133,6 +133,10 @@ if (process.argv.includes("--media")) {
 
   const keyToId = new Map();
   for (const c of chunk(originals, CHUNK)) {
+    // NOTE: media.id is regenerated (defaultRandom()) on every idempotent
+    // re-run of this pass, because it's delete-then-insert keyed on
+    // storage_key, not id. storage_key is the stable identity — never cache
+    // or link a media row by id across re-imports.
     const rows = await db
       .insert(media)
       .values(
