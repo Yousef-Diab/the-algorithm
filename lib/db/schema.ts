@@ -8,6 +8,8 @@ import {
   jsonb,
   index,
   uniqueIndex,
+  unique,
+  foreignKey,
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
@@ -39,7 +41,13 @@ export const months = pgTable(
     desc: text("desc").notNull().default(""),
     ord: integer("ord").notNull(),
   },
-  (t) => [index("months_section_ord_idx").on(t.sectionId, t.ord)],
+  (t) => [
+    index("months_section_ord_idx").on(t.sectionId, t.ord),
+    // Unique target for lessons' composite FK (R8) — id alone is already the
+    // primary key, so this adds no real constraint beyond what Postgres needs
+    // to reference (id, section_id) as a pair.
+    unique("months_id_section_id_uq").on(t.id, t.sectionId),
+  ],
 );
 
 export const lessons = pgTable(
@@ -51,7 +59,8 @@ export const lessons = pgTable(
     sectionId: text("section_id")
       .notNull()
       .references(() => sections.id, { onDelete: "cascade" }),
-    monthId: text("month_id").references(() => months.id, { onDelete: "cascade" }),
+    /** FK to months is the composite (month_id, section_id) constraint below. */
+    monthId: text("month_id"),
     /** m{month}-{NN}-{kebab-title}; also the chart filename stem. */
     slug: text("slug").notNull(),
     /** Nav/card/SEO title (the source's data-title). */
@@ -79,6 +88,14 @@ export const lessons = pgTable(
     index("lessons_month_ord_idx").on(t.monthId, t.ord),
     index("lessons_access_status_idx").on(t.access, t.status),
     uniqueIndex("lessons_slug_uq").on(t.slug),
+    // R8: a lesson's month must belong to the lesson's own section. MATCH
+    // SIMPLE (the default) skips enforcement when month_id IS NULL, which is
+    // exactly the review/exam rows — the nullable month_id design is preserved.
+    foreignKey({
+      columns: [t.monthId, t.sectionId],
+      foreignColumns: [months.id, months.sectionId],
+      name: "lessons_month_section_fk",
+    }).onDelete("cascade"),
   ],
 );
 

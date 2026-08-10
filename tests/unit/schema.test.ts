@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getTableColumns } from "drizzle-orm";
+import { getTableConfig } from "drizzle-orm/pg-core";
 import { lessons, sections, months, quizQuestions, media } from "@/lib/db/schema";
 
 describe("content schema", () => {
@@ -36,5 +37,27 @@ describe("content schema", () => {
   it("orders sections and months explicitly", () => {
     expect(getTableColumns(sections).ord.notNull).toBe(true);
     expect(getTableColumns(months).ord.notNull).toBe(true);
+  });
+
+  it("ties a lesson's month to its own section (R8) via a composite FK", () => {
+    // getTableColumns cannot express a table-level constraint, so this uses
+    // getTableConfig instead, which exposes the foreignKeys/uniqueConstraints
+    // drizzle-kit compiles from the table's third `(t) => [...]` argument.
+    const monthFk = getTableConfig(lessons).foreignKeys.find((fk) => fk.getName() === "lessons_month_section_fk");
+    expect(monthFk).toBeDefined();
+    const ref = monthFk!.reference();
+    expect(ref.columns.map((c) => c.name)).toEqual(["month_id", "section_id"]);
+    expect(ref.foreignColumns.map((c) => c.name)).toEqual(["id", "section_id"]);
+    expect(monthFk!.onDelete).toBe("cascade"); // deleting a month must still cascade to its lessons
+
+    // No lingering single-column month_id -> months.id FK: the composite FK replaces it.
+    expect(getTableConfig(lessons).foreignKeys.some((fk) => fk.getName() === "lessons_month_id_months_id_fk")).toBe(
+      false,
+    );
+
+    // The composite FK's unique target on months.
+    const monthsUnique = getTableConfig(months).uniqueConstraints.find((u) => u.name === "months_id_section_id_uq");
+    expect(monthsUnique).toBeDefined();
+    expect(monthsUnique!.columns.map((c) => c.name)).toEqual(["id", "section_id"]);
   });
 });
