@@ -59,10 +59,37 @@ const rows = await db
   .returning({ id: lessons.id, access: lessons.access });
 console.log("updated:", rows.map((r) => `${r.id}=${r.access}`).join(" "));
 
-// Invariant 2: purge the public cache in the same breath as the write.
-for (const id of ids) {
-  const res = await revalidate(`lesson:${id}`);
-  console.log(`revalidate lesson:${id} → ${res.status}`);
+// Invariant 2: purge the public cache in the same breath as the write. The
+// preflight above only narrows the window between it and this write — it
+// cannot close it, since the write is a separate round-trip in between — so
+// every one of these calls is checked too: attempt them ALL (the write has
+// already committed, so purging as many tags as possible beats stopping
+// early), then exit non-zero if any of them failed, naming the un-purged tag.
+let failed = false;
+async function purge(tag) {
+  try {
+    const res = await revalidate(tag);
+    if (!res.ok) {
+      console.error(`FAILED to purge ${tag} (status ${res.status}) — the public cache for this tag is stale. Retry with: node --env-file=.env.local --experimental-strip-types scripts/set-access.mjs ${access} ${ids.join(" ")}`);
+      failed = true;
+      return;
+    }
+    console.log(`revalidate ${tag} → ${res.status}`);
+  } catch (err) {
+    console.error(`FAILED to purge ${tag} — could not reach ${base}: ${err instanceof Error ? err.message : String(err)}. The public cache for this tag is stale. Retry with: node --env-file=.env.local --experimental-strip-types scripts/set-access.mjs ${access} ${ids.join(" ")}`);
+    failed = true;
+  }
 }
-const res = await revalidate("catalog");
-console.log(`revalidate catalog → ${res.status}`);
+for (const id of ids) {
+  await purge(`lesson:${id}`);
+}
+await purge("catalog");
+
+if (failed) {
+  console.error("one or more revalidation calls failed after the write committed — see FAILED lines above.");
+  // exitCode, not exit(1): the neon-http driver's fetch keep-alive socket is
+  // still open at this point, and forcing an immediate process.exit() while
+  // it's open crashes Node on Windows (libuv assertion). Setting exitCode
+  // lets the event loop drain first and still exits non-zero.
+  process.exitCode = 1;
+}
