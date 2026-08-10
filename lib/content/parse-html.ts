@@ -1,4 +1,5 @@
 import { parse, type HTMLElement, type Node } from "node-html-parser";
+import { inlineText } from "./blocks";
 import type { Block, CalloutChild, Inline, LessonKind, LessonMetaRow } from "./blocks";
 
 /** node-html-parser node type ids. */
@@ -20,6 +21,15 @@ function describe(el: HTMLElement): string {
 
 function bail(msg: string): never {
   throw new Error(`content parse error: ${msg}`);
+}
+
+/**
+ * `.flip-hint`, the hero `<h2>` and `.crumb` are plain-text-only by design —
+ * any element child (markup) is rejected rather than silently flattened away.
+ */
+function assertPlainText(el: HTMLElement, where: string): string {
+  if (el.childNodes.some(isElement)) bail(`${where}: ${describe(el)} must be plain text, not markup`);
+  return el.text.trim();
 }
 
 // ---------------------------------------------------------------- inline
@@ -111,7 +121,13 @@ function parseCallout(el: HTMLElement, where: string): Block {
   const flush = () => {
     if (!run.length) return;
     const inlines = parseInlines(run, `${where}/run`);
-    if (inlines.length) c.push({ t: "run", c: inlines });
+    // A run that is entirely whitespace (e.g. the indentation before/after an
+    // interleaved <ul>) carries no content and must not become a phantom run.
+    // Whitespace-only *text nodes* still matter elsewhere (parseInlines keeps
+    // them, since dropping them globally would fuse words like "b</strong>
+    // <em>c" together) — this check only prunes empty runs at the callout
+    // level, never the inline text itself.
+    if (inlines.length && inlineText(inlines).trim()) c.push({ t: "run", c: inlines });
     run = [];
   };
   for (const n of rest) {
@@ -175,11 +191,21 @@ function parseKv(el: HTMLElement, where: string): Block {
 
 function parseFlipRow(el: HTMLElement, where: string): Block {
   const cards: { front: Inline[]; back: Inline[] }[] = [];
-  for (const flip of el.childNodes.filter(isElement)) {
+  for (const child of el.childNodes) {
+    if (isText(child)) {
+      if (child.text.trim()) bail(`${where}: stray text inside .flip-row`);
+      continue;
+    }
+    if (!isElement(child)) continue;
+    const flip = child;
     if (!classesOf(flip).includes("flip")) bail(`${where}: unmapped element ${describe(flip)} in .flip-row`);
-    const inner = flip.childNodes.filter(isElement)[0];
-    const innerCls = inner ? classesOf(inner) : [];
-    if (!inner || !(innerCls.includes("flip-in") || innerCls.includes("flip-inner")))
+
+    const flipElemKids = flip.childNodes.filter(isElement);
+    if (flipElemKids.length !== 1)
+      bail(`${where}: .flip must have exactly one child element (found ${flipElemKids.length})`);
+    const inner = flipElemKids[0];
+    const innerCls = classesOf(inner);
+    if (!(innerCls.includes("flip-in") || innerCls.includes("flip-inner")))
       bail(`${where}: .flip has no .flip-in/.flip-inner wrapper`);
 
     const faces = inner.childNodes.filter(isElement);
@@ -210,14 +236,19 @@ function parseBlock(el: HTMLElement, where: string): Block | null {
       return parseList(el, where);
     case "div": {
       const cls = classesOf(el);
-      if (cls.length === 1 && DROPPED_CLASSES.has(cls[0])) return null;
+      const hasContent = () => el.childNodes.some((n) => isElement(n) || (isText(n) && n.text.trim()));
+      if (cls.length === 1 && DROPPED_CLASSES.has(cls[0])) {
+        if (hasContent()) bail(`${where}: ${describe(el)} must be empty`);
+        return null;
+      }
       if (cls.includes("callout")) return parseCallout(el, where);
       if (cls.length === 1 && cls[0] === "kv") return parseKv(el, where);
       if (cls.length === 1 && cls[0] === "flip-row") return parseFlipRow(el, where);
-      if (cls.length === 1 && cls[0] === "flip-hint") return { t: "flipHint", v: el.text.trim() };
+      if (cls.length === 1 && cls[0] === "flip-hint") return { t: "flipHint", v: assertPlainText(el, where) };
       if (cls.length === 1 && cls[0] === "fig-slot") {
         const slug = el.getAttribute("data-slug");
         if (!slug) bail(`${where}: .fig-slot has no data-slug`);
+        if (hasContent()) bail(`${where}: .fig-slot must be empty`);
         return { t: "figures", slug };
       }
       return bail(`${where}: unmapped element ${describe(el)}`);
@@ -261,7 +292,8 @@ export function parseLessonHtml(
       continue;
     }
     if (!isElement(child)) continue;
-    if (classesOf(child).includes("lesson-hero")) continue;
+    const childCls = classesOf(child);
+    if (childCls.length === 1 && childCls[0] === "lesson-hero") continue;
     const b = parseBlock(child, id);
     if (b) blocks.push(b);
   }
@@ -273,8 +305,8 @@ export function parseLessonHtml(
       sectionId: section.getAttribute("data-section") ?? ctx.sectionId,
       monthId: kind === "lesson" ? (section.getAttribute("data-month") ?? ctx.monthId) : null,
       title,
-      heading: h2.text.trim(),
-      crumb: crumbEl.text.trim(),
+      heading: assertPlainText(h2, `${id}/h2`),
+      crumb: assertPlainText(crumbEl, `${id}/crumb`),
       desc: parseInlines(descEl.childNodes, `${id}/desc`),
       slug: "",
     },

@@ -210,3 +210,181 @@ describe("blocks", () => {
     );
   });
 });
+
+describe("fix round 1 regressions", () => {
+  // ---- I1: phantom whitespace-only runs in callouts ----------------------
+
+  it("drops phantom whitespace-only runs around an interleaved list (real corpus shape)", () => {
+    const { blocks } = parseLessonHtml(
+      wrap(
+        '  <div class="callout rule"><span class="tag">Rules</span>\n    <ul>\n      <li>one</li>\n    </ul>\n  </div>',
+      ),
+      CTX,
+    );
+    expect(blocks[0]).toEqual({
+      t: "callout",
+      variant: "rule",
+      tag: [{ t: "text", v: "Rules" }],
+      c: [{ t: "list", ordered: false, items: [[{ t: "text", v: "one" }]] }],
+    });
+  });
+
+  it("preserves a whitespace-only text node as the separator between two marks", () => {
+    // Mutating `if (v)` to `if (v.trim())` in parseInlines would fuse "a" and
+    // "b" together in real course prose (see p5-02/p6-01/p6-05).
+    const { blocks } = parseLessonHtml(wrap("  <p><strong>a</strong> <em>b</em></p>"), CTX);
+    expect(blocks).toEqual([
+      {
+        t: "p",
+        c: [
+          { t: "strong", c: [{ t: "text", v: "a" }] },
+          { t: "text", v: " " },
+          { t: "em", c: [{ t: "text", v: "b" }] },
+        ],
+      },
+    ]);
+  });
+
+  // ---- I2: six unmapped-but-not-thrown paths ------------------------------
+
+  it("throws when a .flip has more than just its inner wrapper as a child", () => {
+    expect(() =>
+      parseLessonHtml(
+        wrap(
+          '  <div class="flip-row"><div class="flip"><div class="flip-inner"><div class="flip-front">F</div><div class="flip-back">B</div></div><div class="flip-label">LOST</div></div></div>',
+        ),
+        CTX,
+      ),
+    ).toThrow(/\.flip must have exactly one child element/);
+  });
+
+  it("throws on stray text directly inside .flip-row", () => {
+    expect(() =>
+      parseLessonHtml(
+        wrap(
+          '  <div class="flip-row">stray<div class="flip"><div class="flip-inner"><div class="flip-front">F</div><div class="flip-back">B</div></div></div></div>',
+        ),
+        CTX,
+      ),
+    ).toThrow(/stray text inside \.flip-row/);
+  });
+
+  it("throws when .fig-slot has content", () => {
+    expect(() =>
+      parseLessonHtml(wrap('  <div class="fig-slot" data-slug="s"><p>LOST</p></div>'), CTX),
+    ).toThrow(/\.fig-slot must be empty/);
+  });
+
+  it("throws when a dropped slot (.quiz/.lesson-footer/.review-footer) has content", () => {
+    expect(() => parseLessonHtml(wrap('  <div class="lesson-footer">LOST</div>'), CTX)).toThrow(
+      /must be empty/,
+    );
+  });
+
+  it("throws when .flip-hint contains markup instead of plain text", () => {
+    expect(() =>
+      parseLessonHtml(wrap('  <div class="flip-hint">Click <strong>here</strong></div>'), CTX),
+    ).toThrow(/must be plain text/);
+  });
+
+  it("throws when the hero <h2> contains markup instead of plain text", () => {
+    const html = wrap("  <p>x</p>").replace(
+      "<h2>Orderblocks</h2>",
+      "<h2>Order<strong>blocks</strong></h2>",
+    );
+    expect(() => parseLessonHtml(html, CTX)).toThrow(/must be plain text/);
+  });
+
+  it("throws when .crumb contains markup instead of plain text", () => {
+    const html = wrap("  <p>x</p>").replace(
+      '<div class="crumb">Month 4 · Lesson 3</div>',
+      '<div class="crumb">Month 4 · <strong>Lesson 3</strong></div>',
+    );
+    expect(() => parseLessonHtml(html, CTX)).toThrow(/must be plain text/);
+  });
+
+  it("throws when a top-level div's class list merely includes lesson-hero", () => {
+    const html = wrap("  <p>x</p>").replace(
+      '<div class="lesson-hero">',
+      '<div class="lesson-hero extra">',
+    );
+    expect(() => parseLessonHtml(html, CTX)).toThrow(/unmapped element/);
+  });
+
+  // ---- I3: mutation-battery gaps ------------------------------------------
+
+  it("merges adjacent text inlines produced by unwrapping a bare span", () => {
+    const { blocks } = parseLessonHtml(wrap("  <p>a<span>b</span>c</p>"), CTX);
+    expect(blocks).toEqual([{ t: "p", c: [{ t: "text", v: "abc" }] }]);
+  });
+
+  it("matches flip faces by class, not source order (back before front)", () => {
+    const { blocks } = parseLessonHtml(
+      wrap(
+        '  <div class="flip-row"><div class="flip"><div class="flip-inner"><div class="flip-back">B</div><div class="flip-front">F</div></div></div></div>',
+      ),
+      CTX,
+    );
+    expect(blocks).toEqual([
+      { t: "flipRow", cards: [{ front: [{ t: "text", v: "F" }], back: [{ t: "text", v: "B" }] }] },
+    ]);
+  });
+
+  it("throws when a .flip has other than exactly two faces", () => {
+    expect(() =>
+      parseLessonHtml(
+        wrap(
+          '  <div class="flip-row"><div class="flip"><div class="flip-inner"><div class="flip-front">F</div></div></div></div>',
+        ),
+        CTX,
+      ),
+    ).toThrow(/needs exactly a front and a back face/);
+  });
+
+  it("throws when .kv mixes a flat cell before a wrapped row", () => {
+    expect(() =>
+      parseLessonHtml(
+        wrap('  <div class="kv"><div>a</div><div><span>K</span><span>V</span></div></div>'),
+        CTX,
+      ),
+    ).toThrow(/mixes wrapped and flat rows/);
+  });
+
+  it("throws when a callout's first element child is not .tag", () => {
+    expect(() =>
+      parseLessonHtml(wrap('  <div class="callout"><span class="label">x</span>body</div>'), CTX),
+    ).toThrow(/no <span class="tag">/);
+  });
+
+  // ---- I3: real corpus shapes currently untested --------------------------
+
+  it("parses a <br> inside a flip face (real corpus shape, m1-06)", () => {
+    const { blocks } = parseLessonHtml(
+      wrap(
+        '  <div class="flip-row"><div class="flip"><div class="flip-in"><div class="flip-face flip-front">2. Market Maker<br>Fair Value</div><div class="flip-face flip-back">B</div></div></div></div>',
+      ),
+      CTX,
+    );
+    expect(blocks).toEqual([
+      {
+        t: "flipRow",
+        cards: [
+          {
+            front: [{ t: "text", v: "2. Market Maker" }, { t: "br" }, { t: "text", v: "Fair Value" }],
+            back: [{ t: "text", v: "B" }],
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("parses a .kv with a single wrapped row", () => {
+    const { blocks } = parseLessonHtml(
+      wrap('  <div class="kv"><div><b>Term</b><span>Def</span></div></div>'),
+      CTX,
+    );
+    expect(blocks).toEqual([
+      { t: "kv", rows: [{ k: [{ t: "text", v: "Term" }], v: [{ t: "text", v: "Def" }] }] },
+    ]);
+  });
+});
