@@ -135,7 +135,6 @@ MDX, Blob, `gray-matter` and `image-size` are deliberately absent (see Global Co
   },
   "dependencies": {
     "@neondatabase/auth": "0.4.2-beta",
-    "@neondatabase/auth-ui": "0.2.6-beta",
     "@neondatabase/serverless": "^1.1.0",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.11",
@@ -157,7 +156,9 @@ MDX, Blob, `gray-matter` and `image-size` are deliberately absent (see Global Co
 }
 ```
 
-Check the installed `@neondatabase/auth-ui` version against the old branch's lockfile before trusting the pin above: `git show nextjs-migration:package.json | Select-String auth-ui`. If the old branch pinned a different beta, use that one — it is the version that was verified working.
+**Do not add `@neondatabase/auth-ui` as a direct dependency.** Verified against the old branch: it is a *transitive* dep of `@neondatabase/auth@0.4.2-beta` (resolved there as `0.2.1-beta`), and `components/auth/AuthProvider.tsx` imports `NeonAuthUIProvider` from `@neondatabase/auth/react/ui` plus the stylesheet from `@neondatabase/auth/ui/css` — both subpaths of the `auth` package. Adding `auth-ui` directly pins a version that may not exist and can desync from what `auth` expects.
+
+Pin `@neondatabase/auth` to exactly `0.4.2-beta` (no caret): it is a beta, and it is the version the old branch verified end-to-end including the OTP flow.
 
 - [ ] **Step 3: Write `next.config.ts`**
 
