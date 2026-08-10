@@ -17,7 +17,8 @@
 Every task's requirements implicitly include this section.
 
 - **CLAUDE.md §1 overrides everything.** Course content comes *purely* from ICT's mentorship notes and `transcripts/`. This migration **transforms** existing content; it never authors, improves, rewords or invents any. If a transformation would change wording, stop and report it.
-- **Never `git commit` and never `git push`.** Every task ends with `git add` only. The user commits. A checklist telling you to commit does not override this.
+- **Never `git push`, never open a PR, never force-push.** Nothing leaves the machine without an explicit ask.
+- **Local commits on `nextjs-neon-cms` ARE expected** (user ruling, 2026-08-10). Each task ends by committing exactly that task's files: conventional-commit subject, and the trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`. Where a task's final step below says "Do not commit" or shows only `git add`, **this line supersedes it** — stage those paths, then commit them. The user rewrites or squashes the history at the end as they see fit.
 - **Never touch `transcripts/` or `notes/`.** Read-only, forever. Never delete a git-ignored file.
 - **`images/` stays in the repo.** It is the importer's input. Do not move or delete it.
 - **`main` is untouched.** `build.py`, `verify.py`, `index.html`, `engine/` stay exactly as they are on `main`. On this branch they remain present and unmodified until the user explicitly retires them.
