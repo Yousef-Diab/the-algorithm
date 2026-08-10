@@ -11,17 +11,30 @@ import { LessonHero } from "@/components/lesson/LessonHero";
 import { LockedBody } from "@/components/lesson/LockedBody";
 import { Quiz } from "@/components/quiz/Quiz";
 
-export const dynamicParams = true; // a lesson flipped to free renders on demand, never 404s
-
-export async function generateStaticParams() {
-  const catalog = await getCatalog();
-  // Only free lessons are prerendered: a members lesson in a public ISR cache
-  // is exactly the leak this architecture exists to prevent.
-  return catalog
-    .flatMap((s) => [...s.months.flatMap((m) => m.lessons), s.review, s.exam])
-    .filter((l): l is NonNullable<typeof l> => Boolean(l) && l!.access === "free")
-    .map((l) => ({ id: l.id }));
-}
+/**
+ * Why this route is fully dynamic rather than partially prerendered.
+ *
+ * The natural shape here is `generateStaticParams()` returning only the FREE
+ * lessons plus `dynamicParams = true`, so a members lesson renders on demand.
+ * On Next 16.2.11 that combination is broken: a request for a param NOT in the
+ * partial list is served by ATTEMPTING A STATIC GENERATION, and the `cookies()`
+ * read inside `accessContext()` throws `DynamicServerError` to bail that attempt
+ * to dynamic — but the bail is never converted into a per-request dynamic
+ * render, so it escapes as an uncaught 500. Reproduced with a minimal route
+ * containing zero project code (no DB, no auth SDK, no `unstable_cache`), on
+ * both Turbopack and webpack. See task-21-report.md "Fix round 3".
+ *
+ * `force-dynamic` renders every lesson per request, which is correct and safe:
+ * the gate below runs on every request and no lesson body ever enters a public
+ * ISR cache. The cost is losing the free lessons' prerendered shells.
+ *
+ * If this project ever adopts Cache Components (`cacheComponents: true`), the
+ * documented fix is to restore `generateStaticParams` + `dynamicParams` here and
+ * move the gated branch into a `<Suspense>` child so the shell prerenders and
+ * the per-request part streams in. That migration additionally requires moving
+ * `lib/content/queries.ts` off `unstable_cache`, which is currently frozen.
+ */
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
