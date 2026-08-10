@@ -206,6 +206,7 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
           <div
             ref={stageRef}
             className={zoom > 1 ? `${styles.stage} ${styles.zoomed}` : styles.stage}
+            data-testid="lightbox-stage"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={endDrag}
@@ -215,7 +216,7 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
             <img ref={imgRef} src={state.src} alt={state.caption ?? ""} onLoad={handleImageLoad} />
           </div>
           {state.caption ? <div className={styles.caption}>{state.caption}</div> : null}
-          <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.panel} data-testid="lightbox-panel" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               className={styles.btn}
