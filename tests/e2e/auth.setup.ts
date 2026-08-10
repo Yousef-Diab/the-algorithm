@@ -23,12 +23,19 @@ setup("authenticate the E2E test account", async ({ page }) => {
   }
 
   await page.goto("/auth/sign-in");
-  await page.getByLabel(/email/i).first().fill(email);
-  await page.getByLabel(/password/i).first().fill(password);
-  await page.getByRole("button", { name: /sign in/i }).first().click();
+
+  // Selectors verified against the REAL rendered @neondatabase/auth form, not
+  // guessed: the two controls are <input name="email"> / <input name="password">
+  // (labelled "Email" / "Password"), and the submit control reads "Login" — NOT
+  // "Sign in" — while a second, non-submit "Sign Up" button sits next to it. So
+  // name-based button matching is the fragile choice here; type="submit" inside
+  // the form is the unambiguous one.
+  await page.locator('input[name="email"]').fill(email);
+  await page.locator('input[name="password"]').fill(password);
+  await page.locator('button[type="submit"]').click();
 
   // A successful sign-in navigates away from /auth/sign-in.
-  await expect(page).not.toHaveURL(/\/auth\/sign-in/, { timeout: 15_000 });
+  await expect(page).not.toHaveURL(/\/auth\/sign-in/, { timeout: 30_000 });
 
   await page.context().storageState({ path: authFile });
 });

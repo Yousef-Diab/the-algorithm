@@ -10,15 +10,26 @@ function setAccess(access: string, id: string) {
   });
 }
 
-test("a members lesson leaks no prose to an anonymous request", async ({ request }) => {
-  const html = await (await request.get("/lesson/m4-03")).text();
+/**
+ * A real members lesson: section s2, access='members', and it HAS charts, so
+ * the /api/media assertion below is meaningful. (The original m4-03 target is
+ * in s1, which is now entirely access='free' — it would have passed vacuously.)
+ */
+const MEMBERS = "p1-02";
 
-  // A distinctive sentence from the lesson body — if this appears, the body was
+test("a members lesson leaks no prose to an anonymous request", async ({ request }) => {
+  const res = await request.get(`/lesson/${MEMBERS}`);
+  expect(res.status()).toBe(200);
+  const html = await res.text();
+
+  // Distinctive sentences from the lesson body — if either appears, the body was
   // fetched before the gate and landed in the RSC payload. Invariant 1.
-  expect(html).not.toContain("lowest down-close candle");
-  expect(html).not.toContain("mean threshold");
+  expect(html).not.toContain("which one of these would you actually want to learn how to find?");
+  expect(html).not.toContain("hunt three to five handles");
+  // Not one gated chart byte is even addressable from the locked page.
+  expect(html).not.toContain("/api/media/");
   // The hero IS public (it is already in the nav), so assert what SHOULD show.
-  expect(html).toContain("Orderblocks");
+  expect(html).toContain("The Judas Swing");
   expect(html).toMatch(/is for members/i);
 });
 

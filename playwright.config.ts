@@ -9,8 +9,13 @@ loadEnv({ path: ".env.local" });
 /** Runs the production build and smoke-tests it. `pnpm build` must run first
  *  (CI does; locally webServer will reuse a running `pnpm start`). */
 export default defineConfig({
-  testDir: "./tests",
-  testIgnore: ["**/unit/**"],
+  // Scoped to tests/e2e, NOT tests/ with a testIgnore for **/unit/**: a
+  // project-level `testIgnore` REPLACES the top-level one rather than merging
+  // with it, so the "chromium" project's own ignore silently un-ignored the
+  // Vitest suite and `pnpm test:e2e` died on "Vitest cannot be imported in a
+  // CommonJS module". `testDir` is inherited by every project below (none
+  // override it), so the unit tests are structurally out of reach.
+  testDir: "./tests/e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

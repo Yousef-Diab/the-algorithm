@@ -21,11 +21,19 @@ test.beforeAll(() => {
   );
 });
 
+/** The same members lesson the anonymous half (gating.spec.ts) proves is locked. */
+const MEMBERS = "p1-02";
+
 test("a members lesson is reachable to a signed-in account with an entitlement", async ({ page }) => {
-  const res = await page.goto("/lesson/m4-03");
+  const res = await page.goto(`/lesson/${MEMBERS}`);
   expect(res?.status()).toBe(200);
 
   const body = await page.textContent("body");
   expect(body).not.toMatch(/is for members/i);
-  expect(body).toContain("Orderblocks");
+  // The hero, which is public either way.
+  expect(body).toContain("The Judas Swing");
+  // The gated prose — the exact strings gating.spec.ts proves are absent
+  // anonymously. This is the other half of the claim.
+  expect(body).toContain("which one of these would you actually want to learn how to find?");
+  expect(body).toContain("hunt three to five handles");
 });

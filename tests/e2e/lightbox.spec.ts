@@ -21,7 +21,17 @@ test(
   "lightbox opens on click, survives a zoomed click on the image, and closes on a real outside click",
   async ({ page }) => {
     const errors: string[] = [];
-    page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+    page.on("console", (m) => {
+      if (m.type() !== "error") return;
+      // /api/quiz/<id> answering 401 to an anonymous visitor is the DESIGNED
+      // gate (see tests/e2e/quiz.spec.ts, which asserts exactly that status),
+      // and Quiz.tsx handles it by rendering <QuizGate/>. Chromium still logs
+      // every 4xx subresource as a console error, so this one line is expected
+      // noise on any public lesson page. Narrowed by URL, not by message text,
+      // so a 401 from anywhere else still fails this test.
+      if (/\/api\/quiz\//.test(m.location().url)) return;
+      errors.push(m.text());
+    });
     page.on("pageerror", (e) => errors.push(String(e)));
 
     await page.goto("/lesson/m4-03");
