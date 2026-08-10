@@ -1709,6 +1709,11 @@ This is **the acceptance test for the import**. It proves the parser loses nothi
 | a row-wrapped kv row (`.kv > div > cell, cell`) → two flat cell `div`s | **40** |
 | `.flip-in` → `.flip-inner` | **13** |
 | `flip-face` class stripped from a flip face | **26** |
+| **HTML comment removed** (added after Task 7's review) | **17** |
+
+**Why comments are stripped rather than round-tripped.** The parser drops HTML comments (a comment node is neither an element nor a text node, so the walk skips it), and the exporter therefore has nothing to re-emit. Counted exactly: **17 comments across 7 of the 80 files** — 5 provenance notes (`<!-- no fig-slot: the notes carry no charts for this episode -->` in `p1-01`, `p2-01`, `p2-04`, `p3-01`, `p5-01`) and 12 section separators (`<!-- ==== MONTH 1 ==== -->` ×5 in `s1-ict-core/summary.html`, `<!-- ==== PART 1 ==== -->` ×7 in `s2-2022-mentorship/summary.html`).
+
+None of it is course content, so CLAUDE.md §1 is not engaged: they are notes *about the source file*, and the one editorial fact they carry — that an episode's notes contain no charts — is already encoded structurally, since such a lesson simply has no `figures` block. The alternative (a `comment` block type) would add a parser branch, an exporter branch and a renderer branch that renders nothing, purely to carry authoring marginalia into a database that is replacing those files as the source of truth. Stripping is the right call, but it must be **counted and asserted** like every other rule here, so a future comment appearing in a lesson body fails the gate loudly instead of vanishing unnoticed.
 
 If any count differs from the table, **stop and report** — the corpus has changed since the survey and the parser may need a new branch.
 
@@ -1775,7 +1780,7 @@ describe("round-trip fidelity", () => {
     expect(FILES.filter((f) => f.monthId === null)).toHaveLength(2);
   });
 
-  const counts: DialectCounts = { bCell: 0, spanCell: 0, kvWrappedRow: 0, flipIn: 0, flipFace: 0 };
+  const counts: DialectCounts = { bCell: 0, spanCell: 0, kvWrappedRow: 0, flipIn: 0, flipFace: 0, comment: 0 };
 
   for (const f of FILES) {
     it(`${f.label} survives blocks → HTML unchanged`, () => {
@@ -1787,7 +1792,7 @@ describe("round-trip fidelity", () => {
   }
 
   it("applied exactly the surveyed number of dialect normalisations", () => {
-    expect(counts).toEqual({ bCell: 34, spanCell: 46, kvWrappedRow: 40, flipIn: 13, flipFace: 26 });
+    expect(counts).toEqual({ bCell: 34, spanCell: 46, kvWrappedRow: 40, flipIn: 13, flipFace: 26, comment: 17 });
   });
 });
 ```
@@ -1818,6 +1823,8 @@ export interface DialectCounts {
   kvWrappedRow: number;
   flipIn: number;
   flipFace: number;
+  /** HTML comments the parser drops. 17 across 7 files. */
+  comment: number;
 }
 
 const VOID = new Set(["br"]);
@@ -1908,10 +1915,22 @@ export function canonicalizeSource(html: string, counts: DialectCounts): string 
     face.setAttribute("class", classes(face).filter((c) => c !== "flip-face").join(" "));
   }
 
+  // --- comments: the parser drops them, so strip them here and COUNT them ---
+  // parse() is called WITH { comment: true } so they are visible to be counted;
+  // silently letting them stay invisible is what this rule exists to prevent.
+  for (const node of [...section.childNodes]) {
+    if (node.nodeType === COMMENT) {
+      counts.comment += 1;
+      node.remove();
+    }
+  }
+
   stripLayoutWhitespace(section);
   return serialize(section);
 }
 ```
+
+Note two consequences of the comment rule. `parse()` must be called with `{ comment: true }` in `canonicalizeSource` (node-html-parser omits comment nodes by default, and a rule that cannot see what it is counting is not a rule), and `stripLayoutWhitespace` must recurse into comment removal at every depth, not only the section's direct children — the 12 separator comments in the two `summary.html` files sit at the top level, but do not rely on that holding forever. Add `const COMMENT = 8;` alongside the `ELEMENT`/`TEXT` constants.
 
 `canonicalizeSource` returns an already-serialised string, so the test's `canonicalHtml(canonicalizeSource(...))` would double-parse. Make `canonicalHtml` idempotent by construction (parsing a canonical string and re-serialising it yields the same string) — verify that with the extra test in Step 4 rather than assuming it.
 
