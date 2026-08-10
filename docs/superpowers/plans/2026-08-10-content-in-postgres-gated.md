@@ -3536,13 +3536,19 @@ Leave `styles.notice` ("…work through the lessons in order… Your progress an
 
 `app/layout.tsx` gains `ProgressProvider` and `<Sidebar catalog={await getCatalog()} authEnabled={isAuthConfigured} />`. The layout becomes `async`.
 
-- [ ] **Step 12: Delete the CSS probe**
+- [ ] **Step 12: Delete the CSS probe and de-duplicate the content CSS**
 
 ```bash
 rm -rf app/dev-css-probe
 ```
 
 Move the smoke test's assertions onto a real lesson page in the next step, then delete `tests/e2e/smoke.spec.ts`'s probe test.
+
+**In the same commit, delete the `.callout` / `.callout.rule` / `.callout.warn` / `.kv` / `.flip-row` / `.flip*` blocks from `app/globals.css`** (Task 2 added them from `engine/head.html` so the probe page had something to style). Controller ruling R1: those component styles live in `components/blocks/*.module.css` from here on, per the plan's CSS-Modules constraint.
+
+This is not cosmetic tidying. CSS Modules emit hashed class names (`Callout-module__x7f2__callout`), which a global `.callout` selector can never match — so the two copies never collide, never disagree loudly, and silently diverge forever. The compound variants are where it bites: if the base class is hashed but `rule`/`warn` stay plain strings (or vice versa), `.callout.rule` stops matching and the gold and red left borders vanish with nothing failing. Dead CSS fails no test, so it survives indefinitely unless deleted here.
+
+Keep the `:root` design tokens and every non-content rule in `globals.css` untouched — only the six component blocks move.
 
 - [ ] **Step 13: Write the e2e test**
 
@@ -4137,9 +4143,22 @@ export interface FigureSources {
   alt: string;
 }
 
-export function FigureImage({ fig, gallery }: { fig: FigureSources; gallery: boolean }) {
+export function FigureImage({
+  fig,
+  gallery,
+  siblings,
+  index,
+}: {
+  fig: FigureSources;
+  gallery: boolean;
+  /** The whole lesson's set, so the lightbox can browse it (ruling R2). */
+  siblings: FigureSources[];
+  index: number;
+}) {
   const [broken, setBroken] = useState(false);
   const { open } = useLightbox();
+  const openSet = () =>
+    open(siblings.map((s) => ({ src: s.src, caption: s.alt })), index);
 
   // A missing image removes its own figure, as the old img.onerror did.
   if (broken) return null;
@@ -4166,11 +4185,11 @@ export function FigureImage({ fig, gallery }: { fig: FigureSources; gallery: boo
   return (
     <figure className={styles.fig}>
       {gallery ? (
-        <button type="button" className={styles.galleryBtn} onClick={() => open(fig.src, fig.alt)} aria-label="Open chart">
+        <button type="button" className={styles.galleryBtn} onClick={openSet} aria-label="Open chart">
           {picture}
         </button>
       ) : (
-        <button type="button" className={styles.plainBtn} onClick={() => open(fig.src, fig.alt)} aria-label="Open chart">
+        <button type="button" className={styles.plainBtn} onClick={openSet} aria-label="Open chart">
           {picture}
         </button>
       )}
@@ -4180,6 +4199,30 @@ export function FigureImage({ fig, gallery }: { fig: FigureSources; gallery: boo
 ```
 
 The old non-gallery figure put `onClick` on the `<img>`; wrapping it in a button instead makes the chart keyboard-reachable. Add a `.plainBtn` rule to `Figures.module.css` that resets the button (no background, no border, no padding, `display: block`, `width: 100%`) so the layout is unchanged.
+
+- [ ] **Step 3b: Teach the lightbox to open the whole lesson's set — PLAN DEFECT, added after Task 2's review**
+
+Controller ruling R2. CLAUDE.md §3 requires that clicking a chart opens **the whole lesson's set** (`img.closest('.lesson')`) so prev/next browses it without closing, and Task 24's e2e asserts exactly that. But Task 2 shipped a single-image `open(src, caption?)`, and no task owned the set. Without this step Task 24 fails with nobody to fix it.
+
+Widen the lightbox's contract in `components/lightbox/LightboxProvider.tsx`:
+
+```ts
+export interface LightboxItem { src: string; caption?: string }
+
+export interface LightboxApi {
+  /** Open `items[index]`, with prev/next browsing the rest of the set. */
+  open(items: LightboxItem[], index: number): void;
+}
+```
+
+Keep the existing zoom, pan, pointer-capture hit-test and `safe center` behaviour exactly as Task 2 left it — this changes only what is being displayed, never how. Add:
+
+- `prev()` / `next()` that move within `items`, wrapping at both ends, resetting zoom to fit on each move (the static site refits per image; do not carry a zoom level across images).
+- Prev/next controls, hidden when `items.length === 1`.
+- `ArrowLeft` / `ArrowRight` bound to them, alongside the existing Escape and zoom keys.
+- **Render the caption element unconditionally**, even when empty (deferred minor Q4 from Task 2). `min-height: 18px` on `.caption` exists precisely so the panel does not hop; with the element omitted, moving from a captioned to an uncaptioned image in a set makes the panel jump — the exact symptom trap 2 exists to prevent. This step is what turns Q4 from theoretical into live, so fix it here.
+
+`FigureImage` then calls `open(figures, myIndex)` rather than `open(src, caption)`, which is why `Figures` passes each child its index below.
 
 - [ ] **Step 4: Rewrite `components/blocks/Figures.tsx`**
 
@@ -4193,8 +4236,8 @@ export function Figures({ figures }: { figures: FigureSources[] }) {
   const gallery = figures.length > 2;
   return (
     <div className={gallery ? styles.gallery : undefined}>
-      {figures.map((f) => (
-        <FigureImage key={f.src} fig={f} gallery={gallery} />
+      {figures.map((f, i) => (
+        <FigureImage key={f.src} fig={f} gallery={gallery} siblings={figures} index={i} />
       ))}
     </div>
   );
