@@ -167,3 +167,38 @@ export type MonthRow = typeof months.$inferSelect;
 export type LessonRow = typeof lessons.$inferSelect;
 export type QuizQuestionRow = typeof quizQuestions.$inferSelect;
 export type MediaRow = typeof media.$inferSelect;
+
+/**
+ * ADMINS ONLY. There is deliberately no 'member' role: membership is the
+ * presence of an unexpired entitlement, and two ways to express it would let
+ * them disagree. Absence of a row here is the normal case.
+ */
+export const userRoles = pgTable("user_roles", {
+  userId: text("user_id").primaryKey(),
+  role: text("role").notNull().default("admin"),
+  grantedAt: timestamp("granted_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/**
+ * The entire seam paid subscriptions need (project #3): Stripe's webhook writes
+ * a row with source='subscription' and an expires_at, and canRead does not change.
+ */
+export const entitlements = pgTable(
+  "entitlements",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("user_id").notNull(),
+    /** 'admin_grant' | 'subscription' */
+    source: text("source").notNull(),
+    /** 'all' | 'section' */
+    scope: text("scope").notNull().default("all"),
+    sectionId: text("section_id").references(() => sections.id, { onDelete: "cascade" }),
+    grantedAt: timestamp("granted_at", { withTimezone: true }).defaultNow().notNull(),
+    /** null = never expires. */
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+  },
+  (t) => [index("entitlements_user_idx").on(t.userId)],
+);
+
+export type UserRoleRow = typeof userRoles.$inferSelect;
+export type EntitlementRow = typeof entitlements.$inferSelect;
