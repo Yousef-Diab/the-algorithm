@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 export default defineConfig({
   test: {
     environment: "node",
-    include: ["tests/unit/**/*.test.ts"],
+    include: ["tests/unit/**/*.test.{ts,tsx}"],
     // Falls back to a dummy, non-secret placeholder ONLY when DATABASE_URL is
     // unset, so files that import lib/db (which throws at module-load time
     // without it) can be imported under Vitest — e.g. to unit-test a pure

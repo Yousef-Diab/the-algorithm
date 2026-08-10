@@ -1,0 +1,43 @@
+.callout {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin: 18px 0;
+  font-size: 15px;
+}
+.note {
+  border-left-color: var(--accent);
+}
+.rule {
+  border-left-color: var(--gold);
+}
+.warn {
+  border-left-color: var(--red);
+}
+
+.tag {
+  display: block;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.rule .tag {
+  color: var(--gold);
+}
+.warn .tag {
+  color: var(--red);
+}
+
+/* the "(L4)" lesson pointer — engine/head.html's `.lesson .src` */
+.src {
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  color: var(--dim);
+  font-weight: 400;
+  text-transform: uppercase;
+}

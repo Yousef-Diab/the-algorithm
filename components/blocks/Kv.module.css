@@ -1,0 +1,25 @@
+.kv {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 18px 0;
+  font-size: 14.5px;
+}
+.key,
+.val {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.key {
+  background: var(--panel);
+  color: var(--gold);
+  font-weight: 600;
+}
+/* remove the border on the last row (last two cells) */
+.key:nth-last-child(2),
+.val:nth-last-child(1) {
+  border-bottom: none;
+}
