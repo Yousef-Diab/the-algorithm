@@ -341,6 +341,17 @@ describe("fix round 1 regressions", () => {
     ).toThrow(/needs exactly a front and a back face/);
   });
 
+  it("throws when a .flip has three faces instead of two", () => {
+    expect(() =>
+      parseLessonHtml(
+        wrap(
+          '  <div class="flip-row"><div class="flip"><div class="flip-inner"><div class="flip-front">F</div><div class="flip-back">B</div><div class="flip-face">extra</div></div></div></div>',
+        ),
+        CTX,
+      ),
+    ).toThrow(/needs exactly a front and a back face/);
+  });
+
   it("throws when .kv mixes a flat cell before a wrapped row", () => {
     expect(() =>
       parseLessonHtml(
