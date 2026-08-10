@@ -153,6 +153,6 @@ describe("assertBlocks throw branches", () => {
   });
 
   it("throws on a null entry nested inside a p's c array", () => {
-    expect(() => assertBlocks([{ t: "p", c: [null] }])).toThrow(/expected an object/);
+    expect(() => assertBlocks([{ t: "p", c: [null] }])).toThrow(/block\[0\]\[0\]: expected an object/);
   });
 });
