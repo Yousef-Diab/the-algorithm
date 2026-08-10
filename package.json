@@ -31,6 +31,7 @@
     "drizzle-kit": "^0.31.10",
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
+    "node-html-parser": "^9.0.1",
     "typescript": "^5",
     "vitest": "^3.2.4"
   }
