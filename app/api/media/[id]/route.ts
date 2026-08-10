@@ -29,9 +29,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const ctx = isPublic ? { user: null, isAdmin: false, entitlements: [] } : await accessContext();
   if (!canRead(row, ctx)) return new NextResponse(null, { status: 404 });
 
-  const isFree = row.access === "free";
-
-  if (isFree) {
+  if (isPublic) {
     // Public and immutable by id: the CDN caches it and R2 is hit once.
     const obj = await getObject(row.key);
     return new NextResponse(obj.body, {

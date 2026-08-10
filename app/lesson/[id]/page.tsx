@@ -42,6 +42,12 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
     ? { user: null, isAdmin: false, entitlements: [] }
     : await accessContext();
 
+  // A draft is not otherwise public — getCatalog() filters to published, so
+  // its title/crumb/desc never leaked into the nav — so an anonymous or
+  // non-admin request for it must 404 rather than render the locked branch
+  // with the draft's real metadata.
+  if (meta.status !== "published" && !ctx.isAdmin) notFound();
+
   if (!canRead(meta, ctx)) {
     // Nothing below this line fetches the body. Do not hoist getLessonBody()
     // above this branch: the prose would land in the RSC payload even though
