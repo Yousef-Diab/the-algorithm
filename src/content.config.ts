@@ -33,6 +33,8 @@ const DATA_TITLE_RE = /data-title="([^"]+)"/;
 const DESC_RE = /<div class="desc">\s*([\s\S]*?)\s*<\/div>/;
 const CRUMB_RE = /<div class="crumb">\s*([\s\S]*?)\s*<\/div>/;
 const DATA_SLUG_RE = /data-slug="([^"]+)"/;
+const WRAP_OPEN_RE = /^\s*<section\b[^>]*>/;
+const WRAP_CLOSE_RE = /<\/section>\s*$/;
 
 function jsEval(code: string): unknown {
   // Tolerate a trailing `;` — some source files were saved by a formatter
@@ -275,44 +277,35 @@ function makeLesson(
   const desc = DESC_RE.exec(raw)?.[1]?.trim() ?? "";
   const crumb = CRUMB_RE.exec(raw)?.[1]?.trim() ?? "";
 
-  // strip the hero (the page re-renders it), then pull out the figure slots
-  let body = cutDiv(raw, "lesson-hero").rest;
-  const slots: { slug: string }[] = [];
-  let cut = cutDiv(body, "fig-slot");
-  while (cut.div) {
+  // the source wraps the lesson in a <section class="lesson">; the page
+  // renders its own <article class="lesson">, so unwrap before splitting
+  const unwrapped = raw.replace(WRAP_OPEN_RE, "").replace(WRAP_CLOSE_RE, "");
+
+  // strip the hero (the page re-renders it), then split the body into
+  // interleaved html chunks and figure slots, preserving document order
+  const body = cutDiv(unwrapped, "lesson-hero").rest;
+  const segments: Segment[] = [];
+  let cursor = body;
+  for (;;) {
+    const cut = cutDiv(cursor, "fig-slot");
+    if (!cut.div) {
+      break;
+    }
+    const at = cursor.indexOf(cut.div);
+    if (at > 0) {
+      segments.push({ html: cursor.slice(0, at), t: "h" });
+    }
     const slug = DATA_SLUG_RE.exec(cut.div)?.[1];
     if (slug) {
-      slots.push({ slug });
+      segments.push({ count: counts.get(slug) ?? 0, slug, t: "f" });
     }
-    cut = cutDiv(cut.rest, "fig-slot");
+    cursor = cursor.slice(at + cut.div.length);
   }
-  body = cut.rest;
   // trailing interactive slots
-  body = cutDiv(body, "quiz").rest;
-  body = cutDiv(body, "lesson-footer").rest;
-
-  // interleave html chunks and figure slots
-  const segments: Segment[] = [];
-  const last = 0;
-  let htmlCursor = body;
-  for (const s of slots) {
-    const token = new RegExp(
-      `(<div\\b[^>]*data-slug="${s.slug}"[^>]*>\\s*</div>)`
-    );
-    const m = token.exec(htmlCursor);
-    // biome-ignore lint/suspicious/noUnnecessaryConditions: token.exec can return null on mismatch
-    if (!m) {
-      segments.push({ count: counts.get(s.slug) ?? 0, slug: s.slug, t: "f" });
-      continue;
-    }
-    if (m.index > last) {
-      segments.push({ html: htmlCursor.slice(0, m.index), t: "h" });
-    }
-    segments.push({ count: counts.get(s.slug) ?? 0, slug: s.slug, t: "f" });
-    htmlCursor = htmlCursor.slice(m.index + m[0].length);
-  }
-  if (htmlCursor.trim()) {
-    segments.push({ html: htmlCursor, t: "h" });
+  cursor = cutDiv(cursor, "quiz").rest;
+  cursor = cutDiv(cursor, "lesson-footer").rest;
+  if (cursor.trim()) {
+    segments.push({ html: cursor, t: "h" });
   }
 
   let quiz: Question[] = [];

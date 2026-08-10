@@ -247,6 +247,12 @@ agents update the `Unreleased` section before reporting work as done.
   mirrored in as historical reference (still not used by the Astro build).
 
 ### Fixed
+- Sidebar section labels were all rendered in a block at the top of the
+  navigation instead of each one above its own section: the "2022 Mentorship"
+  label appeared right after "ICT Core" instead of after the first section's
+  green review group. Each section label now sits at the start of its own
+  section (matching the original legacy menu), i.e. "ICT Core" → months →
+  "ICT Core · Review" → "2022 Mentorship" → parts → its review.
 - The topbar on mobile was `position: relative`, so it scrolled out of view;
   it is now `sticky` and stays visible while the page scrolls.
 - `pnpm-workspace.yaml` declared no `packages`, so pnpm 9.x (the version
@@ -300,10 +306,31 @@ agents update the `Unreleased` section before reporting work as done.
 - Lightbox toolbar overflowed on narrow phones (≤380px): the 7 plugin buttons
   (Fullscreen, Slideshow, Share, Download, Zoom in, Zoom out, Close) at the
   default 48px each (32px icon + 8px×2 padding) totalled 352px + 16px toolbar
-  padding, so the leftmost button was clipped off-screen at 320px viewport
+  padding, so the leftmost button was clipped off-screen at 320px    viewport
   width. A `@media (max-width: 380px)` rule now shrinks the buttons to 36px
   (28px icon + 4px×2 padding → 268px total), so all 7 buttons fit within
   320px and even 280px (Galaxy Fold folded) with room to spare.
+- The "Charts from the notes" block was rendered at the top of every lesson
+  instead of at its authored position: the content loader collected the figure
+  slots with a `cutDiv` loop and then tried to re-locate them in the already
+  stripped body, so the token regex never matched and every figure segment
+  fell back to the start of the lesson. The body is now split in a single
+  pass that preserves document order, so each lesson's figures appear exactly
+  where the source places its fig-slot (matching the legacy site).
+- Rendered lessons contained a nested `<section class="lesson">` copied from
+  the source wrapper: the loader stripped only the hero, so the source's
+  opening/closing `<section>` tags wrapped the whole body inside the page's
+  own `<article class="lesson">`. The wrapper is now unwrapped before
+  splitting, so body headings are direct children of the article.
+- `verify.mjs` reported broken charts on lessons whose figures sit below the
+  fold (e.g. p1-07, p3-06): images are lazy-loaded and `naturalWidth` was 0
+  before the figure scrolled into view. Each chart image is now scrolled into
+  view and awaited via `decode()` before being measured.
+- `pnpm typecheck` (root `astro check`) crashed while scanning the docs
+  workspace's built bundles (`docs/dist/_astro/*.js`, minified Mermaid code):
+  the root tsconfig only excluded the root `dist`/`node_modules`. The `docs`
+  package is a separate Starlight project with its own tsconfig, so it is now
+  excluded from the root typecheck.
 
 ### Documentation
 - `AGENTS.md` and `CLAUDE.md` gained two golden rules: "Keep the README updated"

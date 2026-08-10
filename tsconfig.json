@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "node_modules", "public/images", "content", "engine"],
+  "exclude": ["dist", "node_modules", "public/images", "content", "engine", "docs"], // "docs" is a separate Starlight workspace package with its own tsconfig; the root typecheck must not scan its dist bundles.
   "compilerOptions": {
     "ignoreDeprecations": "6.0", // Ignore deprecation warnings for TypeScript 6.0 for baseURL and paths, as Astro's tsconfig extends from a base config that may have these options set.
     "baseUrl": ".",

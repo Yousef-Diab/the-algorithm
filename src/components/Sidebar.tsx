@@ -317,18 +317,14 @@ export default function Sidebar({ nav, activeId, totalLessons }: Props) {
           </div>
         </div>
 
-        {nav.length > 1 &&
-          nav.map((s) => (
-            <div className="nav-section" key={`ns-${s.id}`}>
-              {s.short || s.title}
-            </div>
-          ))}
-
         {nav.map((s) => {
           const rvKey = reviewKey(s.id);
           const rvOpen = openGroups.has(rvKey);
           return (
             <div key={s.id}>
+              {nav.length > 1 && (
+                <div className="nav-section">{s.short || s.title}</div>
+              )}
               {s.months.map((m) => {
                 const doneCt = countDone(m, done);
                 const isOpen = openGroups.has(m.id);

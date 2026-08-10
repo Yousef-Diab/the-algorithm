@@ -243,13 +243,27 @@ for (const exp of lessonExpect) {
   if (h1.trim() !== exp.title) {
     fail(`${exp.id}: h1 "${h1.trim()}" != "${exp.title}"`);
   }
-  const figs = await page.locator(".fig img").count();
+  const figImgs = page.locator(".fig img");
+  const figs = await figImgs.count();
   if (figs !== exp.charts) {
     fail(`${exp.id}: figs ${figs} != ${exp.charts}`);
   }
-  const broken = await page
-    .locator(".fig img")
-    .evaluateAll((imgs) => imgs.filter((i) => i.naturalWidth === 0).length);
+  // figures sit at their authored position mid-lesson and images are lazy;
+  // scroll each into view and wait for it to decode before measuring
+  let broken = 0;
+  for (let i = 0; i < figs; i += 1) {
+    const img = figImgs.nth(i);
+    await img.scrollIntoViewIfNeeded();
+    const loaded = await img.evaluate((el) =>
+      el
+        .decode()
+        .then(() => true)
+        .catch(() => false)
+    );
+    if (!loaded) {
+      broken += 1;
+    }
+  }
   if (broken > 0) {
     fail(`${exp.id}: ${broken} broken charts`);
   }
