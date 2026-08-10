@@ -31,6 +31,13 @@ export async function GET(req: Request) {
   const tag = new URL(req.url).searchParams.get("tag");
   if (!tag) return new NextResponse(null, { status: 404 });
 
-  revalidateTag(tag);
+  // { expire: 0 }, not a named profile like "max": traced into Next's
+  // file-system cache handler, an object profile sets the tag's `expired`
+  // timestamp to `now + expire*1000`, so `expire: 0` resolves to `now` — an
+  // immediate purge. A named profile would look up a configured, non-zero
+  // duration instead and would NOT purge immediately. `updateTag(tag)` is not
+  // an option here: it throws outside a Server Action, and this is a Route
+  // Handler — see lib/content/mutations.ts for the fuller trace.
+  revalidateTag(tag, { expire: 0 });
   return NextResponse.json({ revalidated: true, tag });
 }
