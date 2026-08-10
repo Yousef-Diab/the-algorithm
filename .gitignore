@@ -1,2 +1,25 @@
 /transcripts/
 /notes/
+
+# Secrets — never commit. .env.example is the tracked template.
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Node / Next.js (from the nextjs-neon-cms migration onward)
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# Agent scratch (subagent-driven-development ledgers, briefs, review packages)
+/.superpowers/
+
+# Test artifacts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
