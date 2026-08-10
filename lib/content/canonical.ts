@@ -1,10 +1,20 @@
-import { parse, type HTMLElement, type Node } from "node-html-parser";
+import { parse, TextNode, type HTMLElement, type Node } from "node-html-parser";
 
 const ELEMENT = 1;
 const TEXT = 3;
 const COMMENT = 8;
 const isElement = (n: Node): n is HTMLElement => n.nodeType === ELEMENT;
 const isText = (n: Node): boolean => n.nodeType === TEXT;
+
+/**
+ * Inline flow content: a text node, or one of the inline elements that sit
+ * inside running prose. A whitespace-only text node (or a removed comment)
+ * touching one of these is a word separator, not layout indentation, and
+ * must not simply vanish.
+ */
+const INLINE_FLOW = new Set(["strong", "em", "b", "br", "span"]);
+const isInlineFlow = (n: Node | undefined): boolean =>
+  !!n && (isText(n) || (isElement(n) && INLINE_FLOW.has(n.rawTagName.toLowerCase())));
 
 export interface DialectCounts {
   bCell: number;
@@ -47,12 +57,33 @@ function serialize(node: Node): string {
   return `<${tag}${attrs}>${inner}</${tag}>`;
 }
 
-/** Drop whitespace-only text between elements, then trim the seams. */
+/**
+ * Drop whitespace-only text between elements — but only when it is pure
+ * layout indentation. A whitespace-only node is a word separator, and must
+ * be kept, only when it sits strictly inside running inline prose — i.e.
+ * *both* neighbours are inline flow (a text node, or one of `strong`/`em`/
+ * `b`/`br`/`span`). Everything else is safe to drop: the start/end of a
+ * parent's children (nothing on that side to separate), between two
+ * block-level siblings, and — the case a naive "either side" rule gets
+ * wrong — a `<span class="tag">…</span>` (itself inline) immediately
+ * followed by a block element such as `<ol>`, which is still just
+ * hand-indentation because the block starts a new line regardless.
+ * `serialize()` already collapses any surviving whitespace run down to a
+ * single space, so leaving a kept node untouched is enough to preserve
+ * exactly one space between the two words.
+ */
 function stripLayoutWhitespace(el: HTMLElement): void {
-  for (const child of [...el.childNodes]) {
-    if (isText(child) && !child.text.trim()) child.remove();
-    else if (isElement(child)) stripLayoutWhitespace(child);
-  }
+  const children = [...el.childNodes];
+  children.forEach((child, i) => {
+    if (isText(child) && !child.text.trim()) {
+      const prev = children[i - 1];
+      const next = children[i + 1];
+      const isWordSeparator = isInlineFlow(prev) && isInlineFlow(next);
+      if (!isWordSeparator) child.remove();
+    } else if (isElement(child)) {
+      stripLayoutWhitespace(child);
+    }
+  });
 }
 
 export function canonicalHtml(html: string): string {
@@ -107,16 +138,27 @@ export function canonicalizeSource(html: string, counts: DialectCounts): string 
   // --- comments: the parser drops them, so strip them here and COUNT them ---
   // parse() is called WITH { comment: true } so they are visible to be counted;
   // silently letting them stay invisible is what this rule exists to prevent.
-  // Recurses into every depth, not just the section's direct children.
+  // Recurses into every depth, not just the section's direct children. If a
+  // comment sits between two inline-flow neighbours, removing it outright
+  // would fuse two words together, so a single space is left in its place
+  // instead (stripLayoutWhitespace below then keeps that space, since it
+  // will find the same inline-flow neighbours on either side of it).
   const stripComments = (el: HTMLElement): void => {
-    for (const node of [...el.childNodes]) {
+    const children = [...el.childNodes];
+    children.forEach((node, i) => {
       if (node.nodeType === COMMENT) {
         counts.comment += 1;
-        node.remove();
+        const prev = children[i - 1];
+        const next = children[i + 1];
+        if (isInlineFlow(prev) && isInlineFlow(next)) {
+          el.childNodes = el.childNodes.map((n) => (n === node ? new TextNode(" ", el) : n));
+        } else {
+          node.remove();
+        }
       } else if (isElement(node)) {
         stripComments(node);
       }
-    }
+    });
   };
   stripComments(section);
 

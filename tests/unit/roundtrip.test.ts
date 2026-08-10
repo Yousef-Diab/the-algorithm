@@ -77,4 +77,33 @@ describe("round-trip fidelity", () => {
     const once = canonicalHtml(src);
     expect(canonicalHtml(once)).toBe(once);
   });
+
+  it("does not fuse two words separated only by whitespace between inline elements", () => {
+    const spaced = canonicalHtml("<section class=\"lesson\"><p><strong>a</strong> <em>b</em></p></section>");
+    const fused = canonicalHtml("<section class=\"lesson\"><p><strong>a</strong><em>b</em></p></section>");
+    expect(spaced).not.toBe(fused);
+    expect(spaced).toContain("a</strong> <em>");
+    expect(fused).toContain("a</strong><em>");
+  });
+
+  it("does not fuse two words when a comment sits between them", () => {
+    const counts: DialectCounts = { bCell: 0, spanCell: 0, kvWrappedRow: 0, flipIn: 0, flipFace: 0, comment: 0 };
+    const withComment = canonicalizeSource(
+      '<section class="lesson"><p>keep<!-- x -->me</p></section>',
+      counts,
+    );
+    expect(canonicalHtml(withComment)).not.toContain("keepme");
+    expect(canonicalHtml(withComment)).toContain("keep me");
+  });
+
+  it("still absorbs hand-indentation between block-level siblings", () => {
+    const tight = canonicalHtml('<section class="lesson"><div><p>a</p><p>b</p></div></section>');
+    const indented = canonicalHtml(`<section class="lesson">
+      <div>
+        <p>a</p>
+        <p>b</p>
+      </div>
+    </section>`);
+    expect(indented).toBe(tight);
+  });
 });
