@@ -9,6 +9,7 @@ import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 import { LessonFooter } from "@/components/lesson/LessonFooter";
 import { LessonHero } from "@/components/lesson/LessonHero";
 import { LockedBody } from "@/components/lesson/LockedBody";
+import { Quiz } from "@/components/quiz/Quiz";
 
 export const dynamicParams = true; // a lesson flipped to free renders on demand, never 404s
 
@@ -86,6 +87,8 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
       ) : null}
 
       <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
+
+      {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
 
       {meta.kind === "lesson" ? <LessonFooter id={id} prev={prev} next={next} /> : null}
     </article>
