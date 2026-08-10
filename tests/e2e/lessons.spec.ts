@@ -46,3 +46,41 @@ test("the review and exam pages render", async ({ page }) => {
   await page.goto("/lesson/s2-exam");
   await expect(page.locator(".lesson-hero h1")).toHaveText("Final Exam");
 });
+
+test("the ported component CSS is actually applied, not merely present", async ({ page }) => {
+  // m1-06 ("Fair Valuation") carries all three callout variants plus a
+  // flipRow and its own flipHint — the ideal fixture for pinning controller
+  // ruling R1 (components/blocks/*.module.css, not app/globals.css, own
+  // these styles from Task 13 on). Values verified against
+  // components/blocks/Callout.module.css + app/globals.css's :root before
+  // asserting: .callout's base border-left and .note both resolve
+  // var(--accent) #4f8cff = rgb(79, 140, 255); .rule resolves var(--gold)
+  // #e8b45a = rgb(232, 180, 90); .warn resolves var(--red) #e2606c =
+  // rgb(226, 96, 108).
+  await page.goto("/lesson/m1-06");
+
+  const callouts = page.locator('article.lesson [class*="callout"]');
+  await expect(callouts).toHaveCount(5); // 3 note + 1 rule + 1 warn on this lesson
+
+  await expect(page.locator('article.lesson [class*="__note"]').first()).toHaveCSS(
+    "border-left-color",
+    "rgb(79, 140, 255)", // --accent
+  );
+  await expect(page.locator('article.lesson [class*="__rule"]').first()).toHaveCSS(
+    "border-left-color",
+    "rgb(232, 180, 90)", // --gold
+  );
+  await expect(page.locator('article.lesson [class*="__warn"]').first()).toHaveCSS(
+    "border-left-color",
+    "rgb(226, 96, 108)", // --red
+  );
+
+  // Exactly one flip hint renders — the ported FlipRow no longer hardcodes
+  // "Tap a card to reveal"; if it did, this page (which also has a real
+  // flipHint block) would render two.
+  await expect(page.locator('article.lesson [class*="__hint"]')).toHaveCount(1);
+
+  // The stylesheet is actually loaded and applied, not merely present.
+  const bg = await page.locator("body").evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(bg).not.toBe("rgba(0, 0, 0, 0)");
+});
