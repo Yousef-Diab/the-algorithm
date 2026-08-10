@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getCatalog, getLessonMeta, getLessonBody } from "@/lib/content/queries";
+import { getCatalog, getLessonMeta, getLessonBody, getLessonMedia } from "@/lib/content/queries";
 import { inlineText } from "@/lib/content/blocks";
 import { navFrom } from "@/lib/nav";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
@@ -32,6 +32,16 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
   const blocks = await getLessonBody(id);
   if (!blocks) notFound();
 
+  const groups = await getLessonMedia(id);
+  const figures = groups.map((g) => ({
+    src: `/api/media/${g.original.id}`,
+    webp: g.webp ? `/api/media/${g.webp.id}` : undefined,
+    avif: g.avif ? `/api/media/${g.avif.id}` : undefined,
+    width: g.original.width,
+    height: g.original.height,
+    alt: g.original.alt,
+  }));
+
   return (
     <article className="lesson">
       <div className="lesson-hero">
@@ -47,7 +57,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
         </a>
       ) : null}
 
-      <BlockRenderer blocks={blocks} lessonId={id} />
+      <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
 
       {meta.kind === "lesson" ? <LessonFooter id={id} prev={prev} next={next} /> : null}
     </article>

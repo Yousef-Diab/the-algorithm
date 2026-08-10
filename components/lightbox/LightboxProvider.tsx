@@ -13,8 +13,14 @@ import {
 } from "react";
 import styles from "./Lightbox.module.css";
 
-interface LightboxApi {
-  open: (src: string, caption?: string) => void;
+export interface LightboxItem {
+  src: string;
+  caption?: string;
+}
+
+export interface LightboxApi {
+  /** Open `items[index]`, with prev/next browsing the rest of the set. */
+  open: (items: LightboxItem[], index: number) => void;
 }
 
 const LightboxContext = createContext<LightboxApi | null>(null);
@@ -26,8 +32,8 @@ export function useLightbox(): LightboxApi {
 }
 
 interface LightboxState {
-  src: string;
-  caption?: string;
+  items: LightboxItem[];
+  index: number;
 }
 
 /* Zoom is expressed relative to the fitted size (100% = fit, max 500%);
@@ -78,12 +84,26 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
     [clampZoom, applyZoom]
   );
 
-  const open = useCallback((src: string, caption?: string) => {
+  const open = useCallback((items: LightboxItem[], index: number) => {
     setZoom(1);
-    setState({ src, caption });
+    setState({ items, index });
   }, []);
 
   const close = useCallback(() => setState(null), []);
+
+  // Move within the set, wrapping at both ends; the static site refits per
+  // image, so zoom resets to fit rather than carrying across images.
+  const goTo = useCallback((delta: number) => {
+    setState((prev) => {
+      if (!prev) return prev;
+      const count = prev.items.length;
+      const index = (prev.index + delta + count) % count;
+      return { ...prev, index };
+    });
+    setZoom(1);
+  }, []);
+  const prev = useCallback(() => goTo(-1), [goTo]);
+  const next = useCallback(() => goTo(1), [goTo]);
 
   useEffect(() => {
     if (!state) return;
@@ -92,10 +112,12 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
       else if (e.key === "+" || e.key === "=") setClampedZoom(zoom * ZOOM_STEP);
       else if (e.key === "-" || e.key === "_") setClampedZoom(zoom / ZOOM_STEP);
       else if (e.key === "0") setClampedZoom(1);
+      else if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [state, close, zoom, setClampedZoom]);
+  }, [state, close, zoom, setClampedZoom, prev, next]);
 
   // Re-fit on resize, same as the `window.addEventListener('resize', …)` in engine/app.js.
   useEffect(() => {
@@ -189,10 +211,13 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const current = state ? state.items[state.index] : null;
+  const hasMultiple = (state?.items.length ?? 0) > 1;
+
   return (
     <LightboxContext.Provider value={{ open }}>
       {children}
-      {state ? (
+      {state && current ? (
         <div
           className={styles.lightbox}
           onClick={handleOverlayClick}
@@ -213,10 +238,19 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
             onPointerCancel={endDrag}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img ref={imgRef} src={state.src} alt={state.caption ?? ""} onLoad={handleImageLoad} />
+            <img ref={imgRef} src={current.src} alt={current.caption ?? ""} onLoad={handleImageLoad} />
           </div>
-          {state.caption ? <div className={styles.caption}>{state.caption}</div> : null}
+          {/* Rendered unconditionally (even empty): min-height:18px on
+              .caption exists so the panel doesn't hop when a set moves from
+              a captioned image to an uncaptioned one — omitting the element
+              for an empty caption would reintroduce exactly that jump. */}
+          <div className={styles.caption}>{current.caption ?? ""}</div>
           <div className={styles.panel} data-testid="lightbox-panel" onClick={(e) => e.stopPropagation()}>
+            {hasMultiple ? (
+              <button type="button" className={styles.btn} onClick={prev} aria-label="Previous chart" title="Previous (←)">
+                ‹
+              </button>
+            ) : null}
             <button
               type="button"
               className={styles.btn}
@@ -247,6 +281,11 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
             >
               Fit
             </button>
+            {hasMultiple ? (
+              <button type="button" className={styles.btn} onClick={next} aria-label="Next chart" title="Next (→)">
+                ›
+              </button>
+            ) : null}
             <button
               type="button"
               className={styles.btn}

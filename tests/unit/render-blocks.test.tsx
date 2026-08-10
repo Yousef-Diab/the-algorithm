@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
+import { LightboxProvider } from "@/components/lightbox/LightboxProvider";
 import type { Block } from "@/lib/content/blocks";
 
 const html = (blocks: Block[]) => renderToStaticMarkup(<BlockRenderer blocks={blocks} lessonId="m4-03" />);
@@ -48,5 +49,17 @@ describe("BlockRenderer", () => {
 
   it("renders nothing for a figures block with no media", () => {
     expect(html([{ t: "figures", slug: "m4-03-orderblocks" }])).toBe("");
+  });
+
+  it("passes the lesson's figures to the single figures block", () => {
+    // A lesson has at most one fig-slot (67 slots across 78 lessons), so one
+    // `figures` array on BlockRenderer is enough for every figures block.
+    const figures = [{ src: "/api/media/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", width: 10, height: 10, alt: "a" }];
+    const out = renderToStaticMarkup(
+      <LightboxProvider>
+        <BlockRenderer blocks={[{ t: "figures", slug: "m4-03-orderblocks" }]} lessonId="m4-03" figures={figures} />
+      </LightboxProvider>,
+    );
+    expect(out).toContain("/api/media/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
   });
 });

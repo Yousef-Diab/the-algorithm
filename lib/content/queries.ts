@@ -1,7 +1,8 @@
 import { unstable_cache as cache } from "next/cache";
 import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { lessons, months, sections, quizQuestions, type QuizQuestionRow } from "@/lib/db/schema";
+import { lessons, months, sections, quizQuestions, media, type QuizQuestionRow, type MediaRow } from "@/lib/db/schema";
+import { pickVariants, type VariantGroup } from "@/lib/media";
 import { assertBlocks, inlineText, type Block, type Inline, type LessonKind } from "./blocks";
 
 export interface CatalogLesson {
@@ -163,6 +164,41 @@ export async function getQuiz(lessonId: string): Promise<QuizQuestionRow[]> {
     .from(quizQuestions)
     .where(eq(quizQuestions.lessonId, lessonId))
     .orderBy(asc(quizQuestions.ord));
+}
+
+/** Cached with the body: charts are part of the lesson, gated identically. */
+export function getLessonMedia(lessonId: string): Promise<VariantGroup[]> {
+  return cache(
+    async (id: string) => {
+      const rows: MediaRow[] = await db
+        .select()
+        .from(media)
+        .where(eq(media.lessonId, id))
+        .orderBy(asc(media.ord));
+      return pickVariants(rows);
+    },
+    ["lesson-media", lessonId],
+    { tags: [`lesson:${lessonId}`] },
+  )(lessonId);
+}
+
+/** Media plus the owning lesson's gating columns, in one join — used by the media route. */
+export async function mediaWithLesson(mediaId: string) {
+  const [row] = await db
+    .select({
+      key: media.storageKey,
+      mime: media.mime,
+      lessonId: lessons.id,
+      sectionId: lessons.sectionId,
+      access: lessons.access,
+      status: lessons.status,
+      kind: lessons.kind,
+    })
+    .from(media)
+    .innerJoin(lessons, eq(lessons.id, media.lessonId))
+    .where(eq(media.id, mediaId))
+    .limit(1);
+  return row ?? null;
 }
 
 /** Reading order: months in order, then the section's review, then its exam. */

@@ -14,30 +14,27 @@ import { test, expect } from "@playwright/test";
 // click while surviving a genuine on-image click. Deleting the
 // getBoundingClientRect fallback from hitsImage makes this test fail.
 //
-// It is `fixme`, not deleted or rewritten: P1 has no `media` rows, so
-// Figures renders nothing and no page anywhere has a clickable chart image
-// for this test to open. Do NOT revive a probe page to make it pass early —
-// re-enable this exact test once P2 (Task 16) lands `media` rows and the
-// real chart renderer, pointing `chart` at a real lesson's rendered image
-// instead of the deleted probe's inline SVG.
-test.fixme(
+// Re-enabled by Task 16: media rows and the real chart renderer now exist,
+// so this points at a real lesson's rendered chart (`/lesson/m4-03`, which
+// has 20 figures) instead of the deleted probe's inline SVG.
+test(
   "lightbox opens on click, survives a zoomed click on the image, and closes on a real outside click",
   async ({ page }) => {
     const errors: string[] = [];
     page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
     page.on("pageerror", (e) => errors.push(String(e)));
 
-    await page.goto("/dev-css-probe");
+    await page.goto("/lesson/m4-03");
 
-    // The probe page stacks enough content above the chart (hero, sub-header,
-    // list, three callouts, the kv table) that it sits below the fold at the
-    // default viewport size — boundingBox() still returns coordinates for an
-    // off-screen element, and a raw page.mouse.click() at those coordinates
-    // would silently land outside the browser window and hit nothing.
-    const chart = page.getByTestId("probe-chart");
+    // The lesson stacks a hero, video link and prose above the gallery, so
+    // the first chart sits below the fold at the default viewport size —
+    // boundingBox() still returns coordinates for an off-screen element, and
+    // a raw page.mouse.click() at those coordinates would silently land
+    // outside the browser window and hit nothing.
+    const chart = page.locator("figure picture img").first();
     await chart.scrollIntoViewIfNeeded();
     const chartBox = await chart.boundingBox();
-    if (!chartBox) throw new Error("probe chart did not render a bounding box");
+    if (!chartBox) throw new Error("lesson chart did not render a bounding box");
     await page.mouse.click(chartBox.x + chartBox.width / 2, chartBox.y + chartBox.height / 2);
 
     const dialog = page.getByRole("dialog");
@@ -52,12 +49,12 @@ test.fixme(
     // Zoom past fit so the stage scrolls — this is what puts the image into
     // pointer-capture territory (LightboxProvider's handlePointerDown only
     // arms drag/capture once zoom > 1). A single 1.25x step is deliberate: at
-    // 3 steps (~1.95x) the 1200x700 probe image's unclipped bounding rect
-    // covers the *entire* viewport including every corner (overflow:auto
-    // clips what's drawn, not what getBoundingClientRect() reports), leaving
-    // no on-screen point that is genuinely "outside" the image for the next
-    // assertion to click. One step still overflows the stage (asserted below)
-    // while leaving a real margin.
+    // higher zoom steps a wide chart's unclipped bounding rect can cover the
+    // *entire* viewport including every corner (overflow:auto clips what's
+    // drawn, not what getBoundingClientRect() reports), leaving no on-screen
+    // point that is genuinely "outside" the image for the next assertion to
+    // click. One step still overflows the stage (asserted below) while
+    // leaving a real margin.
     const zoomIn = page.getByRole("button", { name: "Zoom in" });
     await zoomIn.click();
 

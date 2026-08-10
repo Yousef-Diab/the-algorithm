@@ -20,6 +20,16 @@
   margin-top: 7px;
 }
 
+/* Resets the non-gallery figure's button wrapper so the layout is unchanged
+   from the old plain <img>. */
+.plainBtn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
