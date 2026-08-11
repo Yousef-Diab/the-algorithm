@@ -10,6 +10,7 @@ import { LessonFooter } from "@/components/lesson/LessonFooter";
 import { LessonHero } from "@/components/lesson/LessonHero";
 import { LockedBody } from "@/components/lesson/LockedBody";
 import { Quiz } from "@/components/quiz/Quiz";
+import { NotesSection } from "@/components/notes/NotesSection";
 
 /**
  * Why this route is fully dynamic rather than partially prerendered.
@@ -102,6 +103,8 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
       <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
 
       {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
+
+      {meta.kind === "lesson" ? <NotesSection lessonId={id} /> : null}
 
       {meta.kind === "lesson" ? <LessonFooter id={id} prev={prev} next={next} /> : null}
     </article>
