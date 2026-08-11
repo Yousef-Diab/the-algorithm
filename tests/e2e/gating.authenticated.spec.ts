@@ -16,7 +16,7 @@ test.beforeAll(() => {
   if (!email) throw new Error("E2E_EMAIL is not set — see auth.setup.ts");
   execFileSync(
     "node",
-    ["--env-file=.env.local", "--experimental-strip-types", "scripts/grant-entitlement.mjs", email],
+    ["--env-file-if-exists=.env.local", "--experimental-strip-types", "scripts/grant-entitlement.mjs", email],
     { stdio: "inherit" },
   );
 });
