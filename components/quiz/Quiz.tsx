@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { QuizGate } from "./QuizGate";
-import { loadMyQuiz, recordQuizAction } from "@/app/actions/progress";
+import { loadMyQuiz, recordQuizAction, resetLessonQuiz } from "@/app/actions/progress";
 import { seededShuffle } from "./shuffle";
 import styles from "./quiz.module.css";
 
@@ -32,6 +32,7 @@ type FetchState =
 export function Quiz({ lessonId }: QuizProps) {
   const [state, setState] = useState<FetchState>({ status: "loading" });
   const [answered, setAnswered] = useState<Record<string, number>>({});
+  const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -93,16 +94,51 @@ export function Quiz({ lessonId }: QuizProps) {
     });
   }
 
+  // Await-before-clear: the server delete must succeed before the local
+  // `answered` state is wiped, so a rejected call leaves the quiz exactly as
+  // graded as it still is in the database — never a cleared UI backed by
+  // ungraded-looking-but-still-recorded rows. Disabled while in flight so a
+  // double-click can't fire two deletes.
+  async function handleReset() {
+    if (resetting) return;
+    setResetting(true);
+    try {
+      await resetLessonQuiz(lessonId);
+      setAnswered({});
+    } catch {
+      /* server call failed — leave graded state as-is, it still matches the DB */
+    } finally {
+      setResetting(false);
+    }
+  }
+
   if (state.status === "loading" || state.status === "error") return null;
   if (state.status === "locked") return <QuizGate />;
 
+  const hasAnswers = Object.keys(answered).length > 0;
+
   return (
     <section className={styles.quiz} aria-label="Lesson quiz">
-      <h3 className={styles.title}>Check yourself</h3>
-      <p className={styles.sub}>
-        {questions.length} question{questions.length === 1 ? "" : "s"} · options
-        are shuffled
-      </p>
+      <div className={styles.header}>
+        <div>
+          <h3 className={styles.title}>Check yourself</h3>
+          <p className={styles.sub}>
+            {questions.length} question{questions.length === 1 ? "" : "s"} · options
+            are shuffled
+          </p>
+        </div>
+        {hasAnswers && (
+          <button
+            type="button"
+            className={styles.reset}
+            data-quiz-reset
+            disabled={resetting}
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+        )}
+      </div>
 
       {questions.map((qq, qi) => {
         const order = orders[qi];

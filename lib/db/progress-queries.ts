@@ -78,6 +78,29 @@ export async function recordQuiz(
   return { correct };
 }
 
+/**
+ * Deletes the user's quiz_results rows for every question belonging to
+ * `lessonId`, and returns how many rows were removed. `quiz_results` has no
+ * lesson column (invariant 4 — it keys on the question uuid), so "this
+ * lesson's results" is expressed as a subquery over quiz_questions rather
+ * than a lesson column on the delete itself. Scoped to BOTH userId and the
+ * lesson's question set in the same WHERE, so there is no way to end up with
+ * a delete keyed on the lesson alone.
+ */
+export async function clearQuizAnswers(userId: string, lessonId: string): Promise<number> {
+  const lessonQuestionIds = db
+    .select({ id: quizQuestions.id })
+    .from(quizQuestions)
+    .where(eq(quizQuestions.lessonId, lessonId));
+
+  const deleted = await db
+    .delete(quizResults)
+    .where(and(eq(quizResults.userId, userId), inArray(quizResults.questionId, lessonQuestionIds)))
+    .returning({ questionId: quizResults.questionId });
+
+  return deleted.length;
+}
+
 /** The `questionsByLesson` map `planMerge` needs, bounded to the given lessons. */
 export async function questionIndexFor(
   lessonIds: string[],

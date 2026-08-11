@@ -9,6 +9,7 @@ import {
   setProgress,
   getQuizAnswers,
   recordQuiz,
+  clearQuizAnswers,
   questionIndexFor,
   allLessonIds,
   insertMerge,
@@ -74,6 +75,21 @@ export async function recordQuizAction(
   if (!belongs) throw new Error("not found");
 
   await recordQuiz(userId, questionId, selected);
+}
+
+/**
+ * Clears a signed-in user's graded quiz state for one lesson, so its
+ * questions return to ungraded/clickable. Gated through the SAME choke point
+ * as the rest of the quiz path (assertQuizReadable / canRead) — a refusal
+ * throws generically and discloses nothing about whether the lesson exists
+ * (404, never 403). Touches only quiz_results, scoped to this user and this
+ * lesson's questions; never progress, notes, exam_results, or another user's
+ * rows.
+ */
+export async function resetLessonQuiz(lessonId: string): Promise<void> {
+  const userId = await requireUserId();
+  await assertQuizReadable(lessonId);
+  await clearQuizAnswers(userId, lessonId);
 }
 
 /**
