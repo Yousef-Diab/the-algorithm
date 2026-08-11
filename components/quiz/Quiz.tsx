@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { QuizGate } from "./QuizGate";
+import { loadMyQuiz, recordQuizAction } from "@/app/actions/progress";
 import styles from "./quiz.module.css";
 
 export interface ApiQuestion {
@@ -82,6 +83,24 @@ export function Quiz({ lessonId }: QuizProps) {
     };
   }, [lessonId]);
 
+  useEffect(() => {
+    if (state.status !== "ready") return;
+    let cancelled = false;
+    loadMyQuiz(lessonId)
+      .then((server) => {
+        if (cancelled || !server) return; // null: signed out, or refused — leave answered empty
+        const restored: Record<string, number> = {};
+        for (const [questionId, r] of Object.entries(server)) restored[questionId] = r.selected;
+        setAnswered((prev) => ({ ...restored, ...prev }));
+      })
+      .catch(() => {
+        /* ignore — quiz still works ungraded-on-reload if this fails */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [lessonId, state.status]);
+
   const questions = useMemo(
     () => (state.status === "ready" ? state.questions : []),
     [state],
@@ -94,8 +113,16 @@ export function Quiz({ lessonId }: QuizProps) {
 
   function choose(question: ApiQuestion, optIndex: number) {
     if (answered[question.id] !== undefined) return;
-    // Persistence lands in P4 (Task 22); until then this only sets local state.
+    // Optimistic: set local state immediately, don't block the UI on the
+    // round trip. Deliberately not rolled back on rejection — the quiz is
+    // members-only (a signed-out click can't happen; QuizGate is shown
+    // instead), so a failure here is a transient write error, not a
+    // permission problem, and leaving the picked option visible is less
+    // confusing than silently reverting a user's answer.
     setAnswered((prev) => ({ ...prev, [question.id]: optIndex }));
+    recordQuizAction(lessonId, question.id, optIndex).catch(() => {
+      /* see comment above — optimistic state is kept on failure */
+    });
   }
 
   if (state.status === "loading" || state.status === "error") return null;

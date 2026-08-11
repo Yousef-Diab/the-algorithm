@@ -30,7 +30,8 @@ export default async function Home() {
         <b>How to use this course:</b> work through the lessons in order — the
         material builds from one lesson to the next. Flip the concept cards, study
         every chart (click to zoom), then take the lesson check. Your progress and
-        quiz answers are saved in your browser automatically.
+        quiz answers save to your account when you&apos;re signed in, and to your
+        browser otherwise.
       </div>
     </section>
   );
