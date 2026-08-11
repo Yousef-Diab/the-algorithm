@@ -52,8 +52,10 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
   const isPublic = meta.access === "free" && meta.status === "published";
 
-  // A free lesson must not read cookies — that would opt the route out of
-  // static rendering and lose the public cache entirely.
+  // Optimisation, not a correctness requirement: this route is force-dynamic
+  // (see the comment above), so nothing here is prerendered and reading
+  // cookies costs no static rendering. Skipping accessContext() for a public
+  // lesson just saves a needless DB round trip.
   const ctx = isPublic
     ? { user: null, isAdmin: false, entitlements: [] }
     : await accessContext();

@@ -39,3 +39,31 @@ export async function catalogRows(): Promise<CatalogRow[]> {
 
   return rows.map((r) => ({ id: r.id, kind: r.kind, access: r.access, videoUrl: r.video_url }));
 }
+
+/**
+ * A real media id belonging to a published, access='members' lesson — for
+ * asserting that a members lesson's charts 404 for an anonymous request.
+ * Throws loudly if none exists so this can never silently pass vacuously.
+ */
+export async function gatedMediaId(): Promise<string> {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not set — see .env.local");
+  const sql = neon(url);
+
+  const rows = (await sql`
+    select media.id
+    from media
+    join lessons on lessons.id = media.lesson_id
+    where lessons.access = 'members' and lessons.status = 'published'
+    limit 1
+  `) as { id: string }[];
+
+  if (rows.length === 0) {
+    throw new Error(
+      "gatedMediaId(): no media row found for a published, access='members' lesson — " +
+        "the gating test would pass vacuously without one.",
+    );
+  }
+
+  return rows[0].id;
+}

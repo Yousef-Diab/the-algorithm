@@ -80,8 +80,15 @@ async function purge(tag) {
     failed = true;
   }
 }
+// Invariant 2 requires lesson:{id}, lesson-meta:{id} AND catalog to be purged
+// by any write that changes lessons.access. lesson-meta:{id} is purged
+// explicitly here rather than relying on getLessonMeta's incidental dual
+// tagging (it currently also carries the lesson:{id} tag) — that coupling is
+// an implementation detail of lib/content/queries.ts, not a contract, and
+// narrowing it later must not silently break this script.
 for (const id of ids) {
   await purge(`lesson:${id}`);
+  await purge(`lesson-meta:${id}`);
 }
 await purge("catalog");
 

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { execFileSync } from "node:child_process";
+import { gatedMediaId } from "./helpers/catalog";
 
 /** The lesson used for the flip test — free at the start of this file. */
 const FLIP = "m1-02";
@@ -34,12 +35,13 @@ test("a members lesson leaks no prose to an anonymous request", async ({ request
 });
 
 test("a members lesson's charts 404 for an anonymous request", async ({ request }) => {
-  // Discover a real media id via a members lesson's own page? It is gated — so
-  // read one from the catalog's free lesson and one from the DB fixture instead.
-  const res = await request.get("/api/media/00000000-0000-0000-0000-000000000000");
-  expect(res.status()).toBe(404);
-  // The seeded gated id is written by tests/e2e/fixtures/gated-media-id.txt in
-  // Task 24's setup; until then assert the unknown-id case only.
+  const id = await gatedMediaId();
+  const gated = await request.get(`/api/media/${id}`);
+  expect(gated.status()).toBe(404);
+
+  // The gated case must be indistinguishable from a nonexistent one (404-never-403).
+  const unknown = await request.get("/api/media/00000000-0000-0000-0000-000000000000");
+  expect(unknown.status()).toBe(404);
 });
 
 test("a free lesson serves its prose and its charts publicly", async ({ request }) => {
