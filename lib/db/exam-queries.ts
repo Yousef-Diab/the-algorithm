@@ -2,14 +2,9 @@ import "server-only";
 import { eq, and, sql } from "drizzle-orm";
 import { db } from "./index";
 import { examResults } from "./schema";
+import type { ExamResultDto } from "./exam-types";
 
-export interface ExamResultDto {
-  best: number;
-  last: number;
-  taken: number;
-  submitted: boolean;
-  picks: Record<string, string>;
-}
+export type { ExamResultDto };
 
 function toDto(row: {
   best: number;

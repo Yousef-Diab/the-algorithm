@@ -4,14 +4,20 @@ import { requireUserId } from "@/lib/auth";
 import { getLessonMeta, getQuiz } from "@/lib/content/queries";
 import { accessContext } from "@/lib/db/access-queries";
 import { canRead } from "@/lib/access";
-import {
-  getExamResult,
-  recordExamAttempt,
-  resetExamAttempt,
-  type ExamResultDto,
-} from "@/lib/db/exam-queries";
+import { getExamResult, recordExamAttempt, resetExamAttempt } from "@/lib/db/exam-queries";
+import type { ExamResultDto } from "@/lib/db/exam-types";
 
-export type { ExamResultDto };
+// A "use server" module may only export async functions. Next's server-action
+// export transform walks every export of this file and tries to register
+// each as a server reference — including a type re-export. The type is
+// erased at compile time, so the emitted chunk ends up calling
+// registerServerReference() on an identifier with no runtime binding, which
+// throws `ReferenceError: ExamResultDto is not defined` at SSR module
+// evaluation. This compiles cleanly, typechecks cleanly, and `pnpm build`
+// exits 0 — the failure is a RUNTIME throw the first time anything imports
+// a real value from this file, invisible to lint/tsc/build. Consumers must
+// import the type from lib/db/exam-types.ts directly (never re-export a type
+// from this file, or any other "use server" file).
 
 /**
  * Mirrors /api/exam/[id]'s gate: exams are members-only regardless of the

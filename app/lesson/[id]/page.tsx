@@ -10,6 +10,7 @@ import { LessonFooter } from "@/components/lesson/LessonFooter";
 import { LessonHero } from "@/components/lesson/LessonHero";
 import { LockedBody } from "@/components/lesson/LockedBody";
 import { Quiz } from "@/components/quiz/Quiz";
+import { Exam } from "@/components/quiz/Exam";
 import { NotesSection } from "@/components/notes/NotesSection";
 
 /**
@@ -103,6 +104,8 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
       <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
 
       {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
+
+      {meta.kind === "exam" ? <Exam key={id} lessonId={id} /> : null}
 
       {meta.kind === "lesson" ? <NotesSection key={id} lessonId={id} /> : null}
 
