@@ -104,7 +104,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
       {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
 
-      {meta.kind === "lesson" ? <NotesSection lessonId={id} /> : null}
+      {meta.kind === "lesson" ? <NotesSection key={id} lessonId={id} /> : null}
 
       {meta.kind === "lesson" ? <LessonFooter id={id} prev={prev} next={next} /> : null}
     </article>
