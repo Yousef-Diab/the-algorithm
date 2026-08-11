@@ -6,10 +6,12 @@ import {
   timestamp,
   uuid,
   jsonb,
+  boolean,
   index,
   uniqueIndex,
   unique,
   foreignKey,
+  primaryKey,
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
@@ -202,3 +204,81 @@ export const entitlements = pgTable(
 
 export type UserRoleRow = typeof userRoles.$inferSelect;
 export type EntitlementRow = typeof entitlements.$inferSelect;
+
+// --------------------------------------------------------------- per-user
+
+export const progress = pgTable(
+  "progress",
+  {
+    userId: text("user_id").notNull(),
+    lessonId: text("lesson_id")
+      .notNull()
+      .references(() => lessons.id, { onDelete: "cascade" }),
+    completedAt: timestamp("completed_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.lessonId] })],
+);
+
+/**
+ * INVARIANT 4: keyed on question_id, never on a question index. Reordering or
+ * inserting a question in the CMS would otherwise silently re-point every
+ * user's stored history at the wrong question.
+ */
+export const quizResults = pgTable(
+  "quiz_results",
+  {
+    userId: text("user_id").notNull(),
+    questionId: uuid("question_id")
+      .notNull()
+      .references(() => quizQuestions.id, { onDelete: "cascade" }),
+    /** The picked option index, so the graded UI restores on reload. */
+    selected: integer("selected").notNull(),
+    correct: boolean("correct").notNull(),
+    answeredAt: timestamp("answered_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.questionId] })],
+);
+
+/**
+ * One row per (user, exam lesson). `picks` stores option TEXT, not indices,
+ * because options re-shuffle on every render.
+ */
+export const examResults = pgTable(
+  "exam_results",
+  {
+    userId: text("user_id").notNull(),
+    lessonId: text("lesson_id")
+      .notNull()
+      .references(() => lessons.id, { onDelete: "cascade" }),
+    best: integer("best").notNull().default(0),
+    last: integer("last").notNull().default(0),
+    taken: integer("taken").notNull().default(0),
+    submitted: boolean("submitted").notNull().default(false),
+    picks: jsonb("picks").notNull().default({}),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.lessonId] })],
+);
+
+export const notes = pgTable(
+  "notes",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("user_id").notNull(),
+    lessonId: text("lesson_id")
+      .notNull()
+      .references(() => lessons.id, { onDelete: "cascade" }),
+    /** One note document per (user, lesson). Text-only today: the stored shape
+     *  is `{ "type": "text", "text": "..." }`. jsonb keeps a future rich-text
+     *  upgrade non-breaking. */
+    content: jsonb("content"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [uniqueIndex("notes_user_lesson_uq").on(t.userId, t.lessonId)],
+);
+
+export type ProgressRow = typeof progress.$inferSelect;
+export type QuizResultRow = typeof quizResults.$inferSelect;
+export type ExamResultRow = typeof examResults.$inferSelect;
+export type NoteRow = typeof notes.$inferSelect;
