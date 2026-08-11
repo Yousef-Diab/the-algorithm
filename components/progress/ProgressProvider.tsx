@@ -104,33 +104,34 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const toggle = useCallback(
     (id: string) => {
-      setDone((prev) => {
-        const wasDone = prev.has(id);
-        const next = new Set(prev);
-        if (wasDone) next.delete(id);
-        else next.add(id);
-        try {
-          localStorage.setItem(DONE_KEY, JSON.stringify([...next]));
-        } catch {
-          /* ignore storage errors */
-        }
+      // wasDone/next are computed here, outside setDone's updater, so the
+      // toggleDone(...) side effect (a network round trip) never runs from
+      // inside a setState updater — React may invoke updaters twice under
+      // StrictMode, which would otherwise fire the action twice per click.
+      const wasDone = done.has(id);
+      const next = new Set(done);
+      if (wasDone) next.delete(id);
+      else next.add(id);
+      try {
+        localStorage.setItem(DONE_KEY, JSON.stringify([...next]));
+      } catch {
+        /* ignore storage errors */
+      }
+      setDone(next);
 
-        if (signedIn) {
-          toggleDone(id, !wasDone).catch(() => {
-            // Optimistic update rejected — roll it back.
-            setDone((cur) => {
-              const rolledBack = new Set(cur);
-              if (wasDone) rolledBack.add(id);
-              else rolledBack.delete(id);
-              return rolledBack;
-            });
+      if (signedIn) {
+        toggleDone(id, !wasDone).catch(() => {
+          // Optimistic update rejected — roll it back.
+          setDone((cur) => {
+            const rolledBack = new Set(cur);
+            if (wasDone) rolledBack.add(id);
+            else rolledBack.delete(id);
+            return rolledBack;
           });
-        }
-
-        return next;
-      });
+        });
+      }
     },
-    [signedIn],
+    [done, signedIn],
   );
 
   const value = useMemo<ProgressApi>(

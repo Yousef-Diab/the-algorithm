@@ -78,9 +78,21 @@ export async function recordQuizAction(
 
 /**
  * Migrates a signed-in user's prior localStorage state into the database,
- * once. This reads/writes only the calling user's OWN previously-local data
- * (never another user's, never a lesson body) so it is deliberately NOT
- * gated per-lesson — do not "fix" that by adding a canRead check here.
+ * once. `done` (lesson completion) is the user's own reading history and
+ * carries no gated content, so it merges ungated. Quiz answers are graded
+ * against the real answer key and become a permanent per-user record, so
+ * they ARE gated through canRead — the SAME choke point as everything else,
+ * not a second rule — per distinct lesson id referenced in the local `quiz`
+ * payload. A lesson that fails canRead, or no longer exists, is simply left
+ * out of `questionsByLesson`, so planMerge naturally reports its keys via
+ * `dropped` instead of silently discarding them; this does not throw, so a
+ * partial merge still succeeds for whatever the user IS entitled to.
+ *
+ * Legitimate case this affects: on the old static site every quiz was free,
+ * so a non-member can genuinely hold legacy `ict-quiz` answers for a lesson
+ * that is now members-only. Dropping those is the correct trade — we will
+ * not store graded results for content the user cannot access; they can
+ * retake the quiz once entitled.
  */
 export async function mergeLocalState(
   payloadJson: string,
@@ -117,16 +129,29 @@ export async function mergeLocalState(
   const server: ServerState = { done: serverDone, answered };
 
   const lessonIds = await allLessonIds();
-  const lessonIdsInPayload = Array.from(
+
+  const quizLessonIds = Array.from(
     new Set(
-      local.done.concat(
-        Object.keys(local.quiz)
-          .map((k) => /^(.*)-(\d+)$/.exec(k)?.[1])
-          .filter((x): x is string => Boolean(x)),
-      ),
+      Object.keys(local.quiz)
+        .map((k) => /^(.*)-(\d+)$/.exec(k)?.[1])
+        .filter((x): x is string => Boolean(x)),
     ),
   );
-  const questionsByLesson = await questionIndexFor(lessonIdsInPayload);
+
+  // One accessContext() call, reused for every lesson below — not N round
+  // trips. Lessons that fail canRead (or don't exist) are excluded from
+  // questionsByLesson; planMerge then can't resolve their quiz keys and
+  // reports them in `dropped`.
+  const ctx = await accessContext();
+  const readableQuizLessonIds: string[] = [];
+  for (const lessonId of quizLessonIds) {
+    const meta = await getLessonMeta(lessonId);
+    if (!meta) continue;
+    const asMembers = { sectionId: meta.sectionId, access: "members", status: meta.status };
+    if (canRead(asMembers, ctx)) readableQuizLessonIds.push(lessonId);
+  }
+
+  const questionsByLesson = await questionIndexFor(readableQuizLessonIds);
 
   const plan = planMerge(local, server, lessonIds, questionsByLesson);
   const merged = await insertMerge(user.id, plan);
