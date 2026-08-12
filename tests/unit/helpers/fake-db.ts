@@ -13,6 +13,7 @@
 export interface FakeDbCall {
   set?: Record<string, unknown>;
   values?: Record<string, unknown> | Record<string, unknown>[];
+  onConflictDoUpdate?: Record<string, unknown>;
 }
 
 export interface FakeDb {
@@ -30,6 +31,18 @@ export function fakeDb(returning: unknown[] = [{ id: "m1-01" }]): FakeDb {
     },
     values(v: Record<string, unknown> | Record<string, unknown>[]) {
       calls.push({ values: v });
+      return chain;
+    },
+    /** Task 5's upsertQuiz uses `.insert(...).values(...).onConflictDoUpdate(...)`
+     *  for the id-preserving upsert. Recorded like set/values so tests can
+     *  assert on it; chainable so it composes with `.returning()`/`.then()`. */
+    onConflictDoUpdate(v: Record<string, unknown>) {
+      calls.push({ onConflictDoUpdate: v });
+      return chain;
+    },
+    /** `db.select(...).from(...)` — select() returns this chain, so `.from`
+     *  must live here too, not just on `db`. */
+    from() {
       return chain;
     },
     where() {

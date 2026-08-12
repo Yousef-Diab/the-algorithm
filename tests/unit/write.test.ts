@@ -120,3 +120,32 @@ describe("setStatus / setAccess", () => {
     expect(revalidate).toHaveBeenCalledWith(["lesson:p1-02", "lesson-meta:p1-02", "catalog"]);
   });
 });
+
+describe("upsertQuiz", () => {
+  it("refuses while a draft body is pending", async () => {
+    const { db } = fakeDb([{ id: "m1-01", bodyDraft: [{ t: "p", c: [] }] }]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await expect(w.upsertQuiz("m1-01", [])).rejects.toThrow(/promote or discard the pending draft first/);
+  });
+
+  it("parks existing ords in negative space before assigning final ords", async () => {
+    const batched: unknown[] = [];
+    const { db } = fakeDb([{ id: "m1-01", bodyDraft: null }]);
+    (db as Record<string, unknown>).batch = (stmts: unknown[]) => { batched.push(...stmts); return Promise.resolve([]); };
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await w.upsertQuiz("m1-01", [
+      { id: "11111111-1111-1111-1111-111111111111", q: "a?", options: ["1","2","3","4"], answer: 0, explanation: "e" },
+    ]);
+    // One park statement + one upsert. Without the park, a reorder violates
+    // quiz_questions_lesson_ord_uq mid-sequence.
+    expect(batched.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("refuses to delete unless deleteMissing is explicitly true", async () => {
+    const { db } = fakeDb([{ id: "m1-01", bodyDraft: null }]);
+    (db as Record<string, unknown>).batch = () => Promise.resolve([]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    const res = await w.upsertQuiz("m1-01", []);
+    expect(res.deleted).toBe(0);
+  });
+});
