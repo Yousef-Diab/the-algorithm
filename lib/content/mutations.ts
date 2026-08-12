@@ -1,10 +1,8 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { lessons } from "@/lib/db/schema";
-import { assertBlocks } from "./blocks";
+import { createWriter } from "./write";
 import { accessContext } from "@/lib/db/access-queries";
 
 async function requireAdmin(): Promise<void> {
@@ -33,36 +31,36 @@ async function requireAdmin(): Promise<void> {
  * app/api/revalidate/route.ts, which cannot use `updateTag` at all (it throws
  * outside a Server Action) and must call `revalidateTag` regardless.
  */
-function revalidateLesson(id: string): void {
-  revalidateTag(`lesson:${id}`, { expire: 0 });
-  revalidateTag(`lesson-meta:${id}`, { expire: 0 });
-  revalidateTag("catalog", { expire: 0 });
-}
+const writer = createWriter({
+  db,
+  revalidate: (tags) => {
+    for (const t of tags) revalidateTag(t, { expire: 0 });
+  },
+});
 
 export async function setLessonAccess(id: string, access: "free" | "members" | "admin"): Promise<void> {
   await requireAdmin();
-  await db.update(lessons).set({ access, updatedAt: new Date() }).where(eq(lessons.id, id));
-  revalidateLesson(id);
+  await writer.setAccess(id, access);
 }
 
 export async function publishLesson(id: string, status: "draft" | "published"): Promise<void> {
   await requireAdmin();
-  await db
-    .update(lessons)
-    .set({ status, publishedAt: status === "published" ? new Date() : null, updatedAt: new Date() })
-    .where(eq(lessons.id, id));
-  revalidateLesson(id);
+  await writer.setStatus(id, status);
 }
 
 /**
  * INVARIANT 5: the body arrives as a JSON *string*. React Flight silently drops
  * a ProseMirror/Tiptap node's attrs (including an image src) across the
  * client→server boundary — text and marks survive, so it looks like it works.
- * This already cost a debugging session on the previous branch.
+ * The MCP tool deliberately takes a real array instead: MCP is JSON-RPC and has
+ * no such flaw. Do not "align" the two.
  */
-export async function saveLessonBody(id: string, bodyJson: string): Promise<void> {
+export async function saveLessonBody(id: string, bodyJson: string, sourceRef: string): Promise<void> {
   await requireAdmin();
-  const blocks = assertBlocks(JSON.parse(bodyJson));
-  await db.update(lessons).set({ body: blocks, updatedAt: new Date() }).where(eq(lessons.id, id));
-  revalidateLesson(id);
+  await writer.writeLessonBody(id, JSON.parse(bodyJson), sourceRef);
+}
+
+export async function promoteLessonDraft(id: string): Promise<boolean> {
+  await requireAdmin();
+  return writer.promoteDraft(id);
 }
