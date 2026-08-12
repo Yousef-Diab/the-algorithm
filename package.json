@@ -12,11 +12,13 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "content:import": "node --env-file=.env.local --experimental-strip-types scripts/import-content.mjs"
+    "content:import": "node --env-file=.env.local --experimental-strip-types scripts/import-content.mjs",
+    "mcp": "node --env-file=.env.local --experimental-strip-types mcp/server.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1106.0",
     "@aws-sdk/s3-request-presigner": "^3.1106.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@neondatabase/auth": "0.4.2-beta",
     "@neondatabase/serverless": "^1.1.0",
     "drizzle-orm": "^0.45.2",
