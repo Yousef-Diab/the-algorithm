@@ -28,7 +28,9 @@ export function createAdminQueries({ db }: { db: AnyDb }) {
       })
       .from(lessons)
       .where(sectionId ? eq(lessons.sectionId, sectionId) : undefined)
-      .orderBy(asc(lessons.ord));
+      // Note: ord is per-month, not per-section. Ordering by ord alone interleaves months.
+      // monthId is included first to group by month; id is a stable tiebreak.
+      .orderBy(asc(lessons.monthId), asc(lessons.ord), asc(lessons.id));
     return rows.map((r: Record<string, unknown>) => ({
       id: r.id as string, title: r.title as string, access: r.access as string, status: r.status as string,
       hasDraft: r.bodyDraft != null, writeOrigin: r.writeOrigin as string, sourceRef: (r.sourceRef as string) ?? null,
