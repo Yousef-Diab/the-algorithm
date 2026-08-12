@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, isNotNull, sql } from "drizzle-orm";
 import { lessons } from "../db/schema";
 import { assertBlocks } from "./blocks";
 import { assertMeta, assertSourceRef } from "./write-validate";
@@ -48,5 +48,51 @@ export function createWriter({ db, revalidate, repoRoot = process.cwd() }: Write
     await revalidate(tagsFor(id));
   }
 
-  return { writeLessonBody, writeLessonMeta };
+  /**
+   * ONE statement, so it is atomic without a transaction (neon-http has no
+   * interactive ones). `WHERE body_draft IS NOT NULL` + RETURNING is what makes
+   * "there was no draft" reportable instead of a silent no-op success.
+   * The cache purge is still a separate round trip — see the spec §4.4.
+   */
+  async function promoteDraft(id: string): Promise<boolean> {
+    const rows = await db
+      .update(lessons)
+      .set({
+        body: sql`${lessons.bodyDraft}`,
+        sourceRef: sql`${lessons.sourceRefDraft}`,
+        bodyDraft: null,
+        sourceRefDraft: null,
+        writeOrigin: "cms",
+        updatedAt: new Date(),
+      })
+      .where(and(eq(lessons.id, id), isNotNull(lessons.bodyDraft)))
+      .returning({ id: lessons.id });
+    if (rows.length === 0) return false;
+    await revalidate(tagsFor(id));
+    return true;
+  }
+
+  async function discardDraft(id: string): Promise<boolean> {
+    const rows = await db
+      .update(lessons)
+      .set({ bodyDraft: null, sourceRefDraft: null, updatedAt: new Date() })
+      .where(and(eq(lessons.id, id), isNotNull(lessons.bodyDraft)))
+      .returning({ id: lessons.id });
+    return rows.length > 0;
+  }
+
+  async function setStatus(id: string, status: "draft" | "published"): Promise<void> {
+    await db
+      .update(lessons)
+      .set({ status, publishedAt: status === "published" ? new Date() : null, updatedAt: new Date() })
+      .where(eq(lessons.id, id));
+    await revalidate(tagsFor(id));
+  }
+
+  async function setAccess(id: string, access: "free" | "members" | "admin"): Promise<void> {
+    await db.update(lessons).set({ access, updatedAt: new Date() }).where(eq(lessons.id, id));
+    await revalidate(tagsFor(id));
+  }
+
+  return { writeLessonBody, writeLessonMeta, promoteDraft, discardDraft, setStatus, setAccess };
 }

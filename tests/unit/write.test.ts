@@ -59,3 +59,43 @@ describe("writeLessonMeta", () => {
     expect(calls[0].set!.writeOrigin).toBeUndefined();
   });
 });
+
+describe("promoteDraft", () => {
+  it("moves body AND source_ref together, and clears both draft columns", async () => {
+    const { db, calls } = fakeDb([{ id: "m1-01" }]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    const ok = await w.promoteDraft("m1-01");
+    expect(ok).toBe(true);
+    const set = calls[0].set!;
+    // The ref must travel with the body it describes, or source_ref ends up
+    // describing prose nobody published.
+    expect(set.bodyDraft).toBeNull();
+    expect(set.sourceRefDraft).toBeNull();
+    expect(set.writeOrigin).toBe("cms");
+  });
+
+  it("reports false when there was no draft rather than silently succeeding", async () => {
+    const { db } = fakeDb([]);                    // RETURNING came back empty
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    expect(await w.promoteDraft("m1-01")).toBe(false);
+  });
+});
+
+describe("setStatus / setAccess", () => {
+  it("stamps publishedAt on publish and clears it on unpublish", async () => {
+    const { db, calls } = fakeDb();
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await w.setStatus("m1-01", "published");
+    expect(calls[0].set!.publishedAt).toBeInstanceOf(Date);
+    await w.setStatus("m1-01", "draft");
+    expect(calls[1].set!.publishedAt).toBeNull();
+  });
+
+  it("purges all three tags on an access flip (invariant 2)", async () => {
+    const { db } = fakeDb();
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    await w.setAccess("p1-02", "free");
+    expect(revalidate).toHaveBeenCalledWith(["lesson:p1-02", "lesson-meta:p1-02", "catalog"]);
+  });
+});
