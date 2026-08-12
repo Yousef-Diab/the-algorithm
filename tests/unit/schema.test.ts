@@ -60,4 +60,13 @@ describe("content schema", () => {
     expect(monthsUnique).toBeDefined();
     expect(monthsUnique!.columns.map((c) => c.name)).toEqual(["id", "section_id"]);
   });
+
+  it("carries the draft and provenance columns, defaulting write_origin closed to import", () => {
+    const c = getTableColumns(lessons);
+    expect(c.bodyDraft.notNull).toBe(false);        // NULL = no draft pending
+    expect(c.sourceRef.notNull).toBe(false);        // 82 existing rows predate it
+    expect(c.sourceRefDraft.notNull).toBe(false);
+    expect(c.writeOrigin.notNull).toBe(true);
+    expect(c.writeOrigin.default).toBe("import");   // existing rows classify correctly
+  });
 });

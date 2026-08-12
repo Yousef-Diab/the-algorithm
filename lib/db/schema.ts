@@ -82,6 +82,14 @@ export const lessons = pgTable(
     status: text("status").notNull().default("draft"),
     /** Block[] — see lib/content/blocks.ts. */
     body: jsonb("body").notNull().default([]),
+    /** Block[] — the UNREVIEWED body. Admin-only unconditionally (invariant 6). */
+    bodyDraft: jsonb("body_draft"),
+    /** Provenance of the LIVE body — a path under transcripts/ or notes/. */
+    sourceRef: text("source_ref"),
+    /** Provenance of the DRAFT body. Promoted/cleared with it, never apart. */
+    sourceRefDraft: text("source_ref_draft"),
+    /** 'import' | 'cms'. Set to 'cms' by body writes only (invariant 9). */
+    writeOrigin: text("write_origin").notNull().default("import"),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
     publishedAt: timestamp("published_at", { withTimezone: true }),
   },
