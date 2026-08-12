@@ -169,3 +169,55 @@ describe("upsertQuiz", () => {
     expect(res.deleted).toBe(0);
   });
 });
+
+describe("createLesson", () => {
+  const base = {
+    id: "m1-99", sectionId: "s1", monthId: "m1", ord: 99,
+    title: "Market Maker Traps", heading: "Market Maker Traps", crumb: "Month 1 · Lesson 99",
+    desc: [{ t: "text", v: "d" }], kind: "lesson",
+  };
+
+  // createLesson issues TWO selects when monthId is present: the (month_id,
+  // section_id) precheck, then the slug-collision check. The shared fake
+  // returns one fixture per db.select() call in sequence when `returning` is
+  // an array of arrays (see fake-db.ts) — first the month row (so the
+  // precheck passes), then [] (no slug collision).
+  const MONTH_OK = { id: "m1", sectionId: "s1" };
+
+  it("derives the slug from month and kebab title and starts as an unpublished draft", async () => {
+    const { db, calls } = fakeDb([[MONTH_OK], []]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await w.createLesson({ ...base, access: "free" });
+    const v = calls[0].set ?? (calls[0] as Record<string, unknown>).values;
+    expect((v as Record<string, unknown>).slug).toBe("m1-99-market-maker-traps");
+    expect((v as Record<string, unknown>).status).toBe("draft");
+  });
+
+  it("defaults access to members when omitted — invariant 3, fail closed", async () => {
+    const { db, calls } = fakeDb([[MONTH_OK], []]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await w.createLesson(base);
+    const v = calls[0].set ?? (calls[0] as Record<string, unknown>).values;
+    expect((v as Record<string, unknown>).access).toBe("members");
+  });
+
+  it("rejects an unrecognised access value rather than passing it through", async () => {
+    const { db } = fakeDb([]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await expect(w.createLesson({ ...base, access: "public" })).rejects.toThrow(/access must be/);
+  });
+
+  it("refuses a month that does not belong to the named section, before any insert", async () => {
+    const { db, calls } = fakeDb([[], []]); // month precheck select comes back empty
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await expect(w.createLesson(base)).rejects.toThrow(/does not belong to section/);
+    expect(calls).toHaveLength(0);
+  });
+
+  it("refuses a slug collision, naming the colliding lesson id, before any insert", async () => {
+    const { db, calls } = fakeDb([[MONTH_OK], [{ id: "m1-99-existing" }]]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await expect(w.createLesson(base)).rejects.toThrow(/slug "m1-99-market-maker-traps" is already used by lesson "m1-99-existing"/);
+    expect(calls).toHaveLength(0);
+  });
+});

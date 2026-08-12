@@ -1,5 +1,5 @@
 import { and, eq, inArray, isNotNull, sql } from "drizzle-orm";
-import { lessons, quizQuestions, quizResults } from "../db/schema";
+import { lessons, months, quizQuestions, quizResults } from "../db/schema";
 import { assertBlocks } from "./blocks";
 import { assertMeta, assertQuiz, assertSourceRef } from "./write-validate";
 
@@ -212,5 +212,72 @@ export function createWriter({ db, revalidate, repoRoot = process.cwd() }: Write
     };
   }
 
-  return { writeLessonBody, writeLessonMeta, promoteDraft, discardDraft, setStatus, setAccess, upsertQuiz };
+  function kebab(s: string): string {
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  /**
+   * A lesson is born draft, fail-closed on access, with a slug the caller
+   * cannot set (invariant: slug is DERIVED — it is the chart filename stem
+   * and carries lessons_slug_uq). (month_id, section_id) is a composite FK
+   * (schema.ts:96-100), so a month/section mismatch is prechecked here and
+   * reported by name rather than surfacing as a raw constraint violation.
+   */
+  async function createLesson(input: unknown): Promise<string> {
+    if (typeof input !== "object" || input === null) throw new Error("createLesson: expected an object");
+    const i = input as Record<string, unknown>;
+    for (const k of ["id", "sectionId", "ord", "title", "heading", "crumb", "kind"]) {
+      if (i[k] === undefined) throw new Error(`createLesson: ${k} is required`);
+    }
+    const access = i.access ?? "members"; // invariant 3: absent means closed
+    if (!["free", "members", "admin"].includes(access as string))
+      throw new Error(`createLesson: access must be free, members or admin (got "${String(i.access)}")`);
+    if (!["lesson", "review", "exam"].includes(i.kind as string))
+      throw new Error(`createLesson: kind must be lesson, review or exam`);
+
+    // (month_id, section_id) is a COMPOSITE FK (schema.ts:96-100). Precheck so
+    // a mismatch reports itself instead of surfacing a raw constraint violation.
+    if (i.monthId) {
+      const [m] = await db
+        .select({ id: months.id })
+        .from(months)
+        .where(and(eq(months.id, i.monthId as string), eq(months.sectionId, i.sectionId as string)))
+        .limit(1);
+      if (!m) throw new Error(`createLesson: month "${String(i.monthId)}" does not belong to section "${String(i.sectionId)}"`);
+    }
+
+    const slug = `${String(i.id)}-${kebab(String(i.title))}`;
+    const [clash] = await db.select({ id: lessons.id }).from(lessons).where(eq(lessons.slug, slug)).limit(1);
+    if (clash) throw new Error(`createLesson: slug "${slug}" is already used by lesson "${clash.id}"`);
+
+    await db.insert(lessons).values({
+      id: i.id as string,
+      sectionId: i.sectionId as string,
+      monthId: (i.monthId as string) ?? null,
+      slug,
+      title: i.title as string,
+      heading: i.heading as string,
+      crumb: i.crumb as string,
+      desc: i.desc ? assertMeta({ desc: i.desc }).desc : [],
+      ord: i.ord as number,
+      kind: i.kind as string,
+      access: access as string,
+      status: "draft", // never born visible
+      body: [],
+      writeOrigin: "cms",
+    });
+    await revalidate(tagsFor(i.id as string));
+    return i.id as string;
+  }
+
+  return {
+    writeLessonBody,
+    writeLessonMeta,
+    promoteDraft,
+    discardDraft,
+    setStatus,
+    setAccess,
+    upsertQuiz,
+    createLesson,
+  };
 }
