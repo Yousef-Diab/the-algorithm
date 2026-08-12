@@ -81,6 +81,27 @@ describe("promoteDraft", () => {
   });
 });
 
+describe("discardDraft", () => {
+  it("purges all three tags when a draft is actually discarded (invariant 2)", async () => {
+    const { db } = fakeDb([{ id: "m1-01" }]);
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.discardDraft("m1-01");
+    expect(ok).toBe(true);
+    expect(revalidate).toHaveBeenCalledTimes(1);
+    expect(revalidate).toHaveBeenCalledWith(["lesson:m1-01", "lesson-meta:m1-01", "catalog"]);
+  });
+
+  it("does NOT purge when there was no draft to discard (no-op path)", async () => {
+    const { db } = fakeDb([]);                    // RETURNING came back empty
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.discardDraft("m1-01");
+    expect(ok).toBe(false);
+    expect(revalidate).toHaveBeenCalledTimes(0);
+  });
+});
+
 describe("setStatus / setAccess", () => {
   it("stamps publishedAt on publish and clears it on unpublish", async () => {
     const { db, calls } = fakeDb();

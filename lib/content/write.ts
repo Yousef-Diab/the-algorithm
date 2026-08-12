@@ -78,7 +78,9 @@ export function createWriter({ db, revalidate, repoRoot = process.cwd() }: Write
       .set({ bodyDraft: null, sourceRefDraft: null, updatedAt: new Date() })
       .where(and(eq(lessons.id, id), isNotNull(lessons.bodyDraft)))
       .returning({ id: lessons.id });
-    return rows.length > 0;
+    if (rows.length === 0) return false;
+    await revalidate(tagsFor(id));
+    return true;
   }
 
   async function setStatus(id: string, status: "draft" | "published"): Promise<void> {
