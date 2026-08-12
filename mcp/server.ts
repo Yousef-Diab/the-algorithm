@@ -22,10 +22,44 @@ const { createHost } = await import("./host.ts");
 const host = createHost();
 const server = new Server({ name: "the-algorithm-content", version: "1.0.0" }, { capabilities: { tools: {} } });
 
-const TOOLS: unknown[] = []; // filled in by Tasks 10 and 11
+const TOOLS = [
+  {
+    name: "list_lessons",
+    description: "List lessons with their access, status, whether a draft is pending, and provenance.",
+    inputSchema: { type: "object", properties: { sectionId: { type: "string" } } },
+  },
+  {
+    name: "get_lesson",
+    description: "Full lesson row including the live body and any pending draft body.",
+    inputSchema: { type: "object", properties: { id: { type: "string" } }, required: ["id"] },
+  },
+];
+
+function ok(data: unknown) {
+  return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
+}
+function err(e: unknown) {
+  return { isError: true, content: [{ type: "text", text: e instanceof Error ? e.message : String(e) }] };
+}
 
 // STDIO ONLY. An HTTP transport would recreate the public authenticated write
 // surface this design deliberately refused.
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }));
+
+server.setRequestHandler(CallToolRequestSchema, async (req) => {
+  const { name, arguments: a = {} } = req.params as { name: string; arguments?: Record<string, unknown> };
+  try {
+    switch (name) {
+      case "list_lessons":
+        return ok(await host.admin.listLessonsAdmin(a.sectionId as string | undefined));
+      case "get_lesson":
+        return ok(await host.admin.getLessonForEdit(a.id as string));
+      default:
+        throw new Error(`unknown tool: ${name}`);
+    }
+  } catch (e) {
+    return err(e);
+  }
+});
 
 await server.connect(new StdioServerTransport());
