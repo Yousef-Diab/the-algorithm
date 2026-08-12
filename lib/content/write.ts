@@ -148,6 +148,20 @@ export function createWriter({ db, revalidate, repoRoot = process.cwd() }: Write
     const keep = new Set(qs.filter((q) => q.id).map((q) => q.id as string));
     const orphans = existing.filter((e) => !keep.has(e.id)).map((e) => e.id);
 
+    // A supplied id must belong to THIS lesson's existing questions. Without
+    // this, onConflictDoUpdate's target is bare quizQuestions.id, so an id
+    // copied/stale from another lesson would silently rewrite that other
+    // lesson's row in place — moving a question out from under it. Mirrors
+    // project #1's recordQuizAction, which verifies questionId belongs to
+    // lessonId for the same reason (a mismatched id walks past the
+    // lesson-level access gate). Reject the whole call rather than dropping
+    // or converting the bad question — either would hide a caller bug.
+    const existingIds = new Set(existing.map((e) => e.id));
+    for (const q of qs) {
+      if (q.id && !existingIds.has(q.id))
+        throw new Error(`upsertQuiz: question id "${q.id}" does not belong to lesson "${id}"`);
+    }
+
     // Report before deleting — a destructive call is never silent.
     let cascadeAnswers = 0;
     if (orphans.length) {

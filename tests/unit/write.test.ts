@@ -130,7 +130,12 @@ describe("upsertQuiz", () => {
 
   it("parks existing ords in negative space before assigning final ords", async () => {
     const batched: unknown[] = [];
-    const { db } = fakeDb([{ id: "m1-01", bodyDraft: null }]);
+    // The fake reuses this same array for both the draft-body select and the
+    // existing-question-ids select, so the supplied question's id must match
+    // it here — an id not already among the lesson's questions is correctly
+    // refused by the id-ownership check below (see "refuses a question id
+    // that belongs to a different lesson").
+    const { db } = fakeDb([{ id: "11111111-1111-1111-1111-111111111111", bodyDraft: null }]);
     (db as Record<string, unknown>).batch = (stmts: unknown[]) => { batched.push(...stmts); return Promise.resolve([]); };
     const w = createWriter({ db: db as never, revalidate: vi.fn() });
     await w.upsertQuiz("m1-01", [
@@ -139,6 +144,21 @@ describe("upsertQuiz", () => {
     // One park statement + one upsert. Without the park, a reorder violates
     // quiz_questions_lesson_ord_uq mid-sequence.
     expect(batched.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("refuses a question id that belongs to a different lesson, and never calls db.batch", async () => {
+    const { db } = fakeDb([{ id: "m1-01", bodyDraft: null }]); // existing question id is "m1-01", not the supplied one
+    let batchCalled = false;
+    (db as Record<string, unknown>).batch = (stmts: unknown[]) => { batchCalled = true; return Promise.resolve(stmts); };
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await expect(
+      w.upsertQuiz("m1-01", [
+        { id: "22222222-2222-2222-2222-222222222222", q: "a?", options: ["1","2","3","4"], answer: 0, explanation: "e" },
+      ]),
+    ).rejects.toThrow(/question id "22222222-2222-2222-2222-222222222222" does not belong to lesson "m1-01"/);
+    // Asserting the throw alone would still pass a version that throws AFTER
+    // writing — assert the write itself never happened.
+    expect(batchCalled).toBe(false);
   });
 
   it("refuses to delete unless deleteMissing is explicitly true", async () => {
