@@ -193,6 +193,15 @@ describe("createLesson", () => {
     expect((v as Record<string, unknown>).status).toBe("draft");
   });
 
+  it("purges all three tags on the success path (invariant 2′)", async () => {
+    const { db } = fakeDb([[MONTH_OK], []]);
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    await w.createLesson({ ...base, access: "free" });
+    expect(revalidate).toHaveBeenCalledTimes(1);
+    expect(revalidate).toHaveBeenCalledWith(["lesson:m1-99", "lesson-meta:m1-99", "catalog"]);
+  });
+
   it("defaults access to members when omitted — invariant 3, fail closed", async () => {
     const { db, calls } = fakeDb([[MONTH_OK], []]);
     const w = createWriter({ db: db as never, revalidate: vi.fn() });
@@ -205,6 +214,12 @@ describe("createLesson", () => {
     const { db } = fakeDb([]);
     const w = createWriter({ db: db as never, revalidate: vi.fn() });
     await expect(w.createLesson({ ...base, access: "public" })).rejects.toThrow(/access must be/);
+  });
+
+  it("rejects an unrecognised kind rather than passing it through", async () => {
+    const { db } = fakeDb([]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    await expect(w.createLesson({ ...base, kind: "bogus" })).rejects.toThrow(/kind must be lesson, review or exam/);
   });
 
   it("refuses a month that does not belong to the named section, before any insert", async () => {

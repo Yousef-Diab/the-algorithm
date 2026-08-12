@@ -35,7 +35,13 @@ export interface FakeDb {
  */
 export function fakeDb(returning: unknown[] | unknown[][] = [{ id: "m1-01" }]): FakeDb {
   const calls: FakeDbCall[] = [];
-  const isSequence = Array.isArray(returning) && returning.every((r) => Array.isArray(r));
+  // The `.every()` on an empty array is vacuously true, so without the
+  // length check `fakeDb([])` would be misclassified as sequence mode
+  // (empty queue) instead of flat mode (same [] answers every select) —
+  // harmless only because both modes happen to yield [] for the empty
+  // case. Do not drop this guard "for simplicity".
+  const isSequence =
+    Array.isArray(returning) && returning.length > 0 && returning.every((r) => Array.isArray(r));
   const selectQueue = isSequence ? [...(returning as unknown[][])] : null;
 
   function makeChain(rows: unknown) {
