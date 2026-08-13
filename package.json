@@ -13,6 +13,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "content:import": "node --env-file=.env.local --experimental-strip-types scripts/import-content.mjs",
+    "content:promote": "node --env-file=.env.local --experimental-strip-types scripts/promote-draft.mjs",
+    "content:status": "node --env-file=.env.local --experimental-strip-types scripts/set-status.mjs",
     "mcp": "node --env-file=.env.local --experimental-strip-types mcp/server.ts"
   },
   "dependencies": {
