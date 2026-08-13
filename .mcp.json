@@ -3,6 +3,10 @@
     "Neon": {
       "type": "http",
       "url": "https://mcp.neon.tech/mcp?projectId=weathered-bar-16690573"
+    },
+    "content": {
+      "command": "node",
+      "args": ["--env-file=.env.local", "--experimental-strip-types", "mcp/server.ts"]
     }
   }
 }
