@@ -62,7 +62,26 @@ TOOLS.push(
   {
     name: "create_lesson",
     description: "Create a text-only lesson. Starts as an unpublished draft; access defaults to members.",
-    inputSchema: { type: "object", properties: { id: { type: "string" }, sectionId: { type: "string" } }, required: ["id", "sectionId"] },
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        sectionId: { type: "string" },
+        monthId: { type: "string", description: "Omit for section-level rows (review/exam) that have no month." },
+        ord: { type: "number", description: "0-based, and scoped to the month, not the section — months tie at every ord value." },
+        title: { type: "string" },
+        heading: { type: "string" },
+        crumb: { type: "string" },
+        desc: { type: "array", description: "Inline[] — the same inline-node shape used elsewhere (text/br/strong/em/src), not a plain string." },
+        kind: { type: "string", enum: ["lesson", "review", "exam"] },
+        access: {
+          type: "string",
+          enum: ["free", "members", "admin"],
+          description: "Defaults to members when omitted — a fail-closed security default. Omitting this does not make the lesson public.",
+        },
+      },
+      required: ["id", "sectionId", "ord", "title", "heading", "crumb", "kind"],
+    },
   },
 );
 
