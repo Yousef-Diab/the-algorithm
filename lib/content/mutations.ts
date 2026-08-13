@@ -46,7 +46,11 @@ export async function setLessonAccess(id: string, access: "free" | "members" | "
 
 export async function publishLesson(id: string, status: "draft" | "published"): Promise<void> {
   await requireAdmin();
-  await writer.setStatus(id, status);
+  // Check the boolean, exactly as setLessonAccess and saveLessonBody do. This
+  // is the PUBLISH GATE: a typo'd id silently doing nothing while the UI
+  // reports success is the worst place in the project for a phantom write.
+  const ok = await writer.setStatus(id, status);
+  if (!ok) throw new Error(`no such lesson: ${id}`);
 }
 
 /**
