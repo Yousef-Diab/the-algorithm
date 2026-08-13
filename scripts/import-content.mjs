@@ -1,5 +1,5 @@
 // scripts/import-content.mjs
-// Usage: node --env-file=.env.local --experimental-strip-types scripts/import-content.mjs [--dry-run]
+// Usage: node --env-file=.env.local --experimental-strip-types scripts/import-content.mjs [--dry-run] [--only <id>] [--force]
 import { registerHooks } from "node:module";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -22,8 +22,12 @@ const { eq, sql, inArray } = await import("drizzle-orm");
 const { readContentTree } = await import("../lib/content/import.ts");
 const { assertBlocks } = await import("../lib/content/blocks.ts");
 const { sections, months, lessons, quizQuestions } = await import("../lib/db/schema.ts");
+const { importDecision } = await import("../lib/content/import-guard.ts");
 
 const dryRun = process.argv.includes("--dry-run");
+const force = process.argv.includes("--force");
+const onlyIx = process.argv.indexOf("--only");
+const only = onlyIx >= 0 ? process.argv[onlyIx + 1] : null;
 const plan = readContentTree("content");
 
 // Fail before writing anything if any body is malformed.
@@ -55,12 +59,27 @@ for (const m of plan.months) {
   await db.insert(months).values(m).onConflictDoUpdate({ target: months.id, set: m });
 }
 
+let skipped = 0;
 for (const l of plan.lessons) {
+  if (only && l.id !== only) continue;
+
+  const [existing] = await db
+    .select({ writeOrigin: lessons.writeOrigin, bodyDraft: lessons.bodyDraft })
+    .from(lessons)
+    .where(eq(lessons.id, l.id))
+    .limit(1);
+  const decision = importDecision(existing ?? null, force);
+  if (!decision.write) {
+    console.warn(`SKIP ${l.id}: ${decision.reason}`);
+    skipped++;
+    continue;
+  }
+
   const { questions, ...row } = l;
-  // access and publishedAt are NOT in `set`: an import must never reopen a
-  // lesson the CMS closed, and must never restamp a lesson's original publish
-  // time on a re-run. updatedAt DOES belong in `set` — it genuinely describes
-  // the latest write.
+  // access, publishedAt, bodyDraft, sourceRef, sourceRefDraft and writeOrigin
+  // are NOT in `set`: an import must never reopen a lesson the CMS closed,
+  // restamp its publish time, destroy a pending draft, or erase provenance.
+  // updatedAt DOES belong in `set` — it genuinely describes the latest write.
   const values = { ...row, status: "published", updatedAt: new Date() };
   await db
     .insert(lessons)
@@ -72,6 +91,7 @@ for (const l of plan.lessons) {
     await db.insert(quizQuestions).values(questions.map((q) => ({ ...q, lessonId: l.id })));
   }
 }
+if (skipped) console.log(`skipped ${skipped} lesson(s) that were not writable`);
 
 const [{ n: nl }] = await db.select({ n: sql`count(*)::int` }).from(lessons);
 const [{ n: nq }] = await db.select({ n: sql`count(*)::int` }).from(quizQuestions);
