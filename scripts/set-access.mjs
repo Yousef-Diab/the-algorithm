@@ -59,25 +59,38 @@ const rows = await db
   .returning({ id: lessons.id, access: lessons.access });
 console.log("updated:", rows.map((r) => `${r.id}=${r.access}`).join(" "));
 
+// An id that matched no row must be REPORTED, not swallowed. This UPDATE is
+// raw Drizzle rather than writer.setAccess, so it does not inherit that
+// method's RETURNING-driven boolean: without this check
+// `set-access.mjs members m1-01 m1-O2` (capital O for zero) printed success
+// and exited 0 while m1-02 stayed free — a lockdown that silently did not
+// happen, on the CLI whose whole job is deciding who may read what. Same
+// three-outcome reporting shape as scripts/set-status.mjs.
+const matched = new Set(rows.map((r) => r.id));
+const missing = ids.filter((id) => !matched.has(id));
+const missingIds = missing.length > 0;
+for (const id of missing) console.error(`NO SUCH LESSON: ${id} — nothing changed`);
+if (missingIds) console.error("one or more ids matched no lesson — see NO SUCH LESSON lines above.");
+
 // Invariant 2: purge the public cache in the same breath as the write. The
 // preflight above only narrows the window between it and this write — it
 // cannot close it, since the write is a separate round-trip in between — so
 // every one of these calls is checked too: attempt them ALL (the write has
 // already committed, so purging as many tags as possible beats stopping
 // early), then exit non-zero if any of them failed, naming the un-purged tag.
-let failed = false;
+let purgeFailed = false;
 async function purge(tag) {
   try {
     const res = await revalidate(tag);
     if (!res.ok) {
       console.error(`FAILED to purge ${tag} (status ${res.status}) — the public cache for this tag is stale. Retry with: node --env-file=.env.local --experimental-strip-types scripts/set-access.mjs ${access} ${ids.join(" ")}`);
-      failed = true;
+      purgeFailed = true;
       return;
     }
     console.log(`revalidate ${tag} → ${res.status}`);
   } catch (err) {
     console.error(`FAILED to purge ${tag} — could not reach ${base}: ${err instanceof Error ? err.message : String(err)}. The public cache for this tag is stale. Retry with: node --env-file=.env.local --experimental-strip-types scripts/set-access.mjs ${access} ${ids.join(" ")}`);
-    failed = true;
+    purgeFailed = true;
   }
 }
 // Invariant 2 requires lesson:{id}, lesson-meta:{id} AND catalog to be purged
@@ -86,14 +99,18 @@ async function purge(tag) {
 // tagging (it currently also carries the lesson:{id} tag) — that coupling is
 // an implementation detail of lib/content/queries.ts, not a contract, and
 // narrowing it later must not silently break this script.
-for (const id of ids) {
-  await purge(`lesson:${id}`);
-  await purge(`lesson-meta:${id}`);
+// Only the ids that actually matched a row: an id that changed nothing has no
+// stale cache entry to purge, and attempting it would report a spurious
+// FAILED line for a tag that was never written.
+for (const r of rows) {
+  await purge(`lesson:${r.id}`);
+  await purge(`lesson-meta:${r.id}`);
 }
 await purge("catalog");
 
-if (failed) {
-  console.error("one or more revalidation calls failed after the write committed — see FAILED lines above.");
+if (purgeFailed) console.error("one or more revalidation calls failed after the write committed — see FAILED lines above.");
+
+if (purgeFailed || missingIds) {
   // exitCode, not exit(1): the neon-http driver's fetch keep-alive socket is
   // still open at this point, and forcing an immediate process.exit() while
   // it's open crashes Node on Windows (libuv assertion). Setting exitCode
