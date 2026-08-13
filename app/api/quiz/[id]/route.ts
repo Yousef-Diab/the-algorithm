@@ -10,6 +10,13 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const ctx = await accessContext();
 
+  // P-A: a draft must be INDISTINGUISHABLE from a nonexistent lesson to anyone
+  // who is not an admin — otherwise probing this route confirms the draft exists.
+  // Admins must still get through, or a draft's quiz can never be reviewed.
+  if (meta.status !== "published" && !ctx.isAdmin) {
+    return NextResponse.json({ error: "not found" }, { status: 404 });
+  }
+
   // Quizzes are members-only regardless of the lesson's own access, so a free
   // lesson's page stays fully static while its quiz stays behind the gate.
   const asMembers = { sectionId: meta.sectionId, access: "members", status: meta.status };
