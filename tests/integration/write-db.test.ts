@@ -83,6 +83,12 @@ describe("getLessonDraftBody", () => {
 });
 
 describe("draft lifecycle", () => {
+  // A miss writes nothing (WHERE matches zero rows before anything is set),
+  // so there is nothing to restore afterward — no try/finally needed here.
+  it("returns false for a nonexistent id instead of reporting a phantom success", async () => {
+    expect(await writer.writeLessonBody(MISSING_ID, BLOCKS, REF)).toBe(false);
+  });
+
   it("stores a draft that getLessonDraftBody can read back", async () => {
     try {
       await writer.writeLessonBody(ID, BLOCKS, REF);

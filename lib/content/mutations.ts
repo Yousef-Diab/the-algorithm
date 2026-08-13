@@ -40,7 +40,8 @@ const writer = createWriter({
 
 export async function setLessonAccess(id: string, access: "free" | "members" | "admin"): Promise<void> {
   await requireAdmin();
-  await writer.setAccess(id, access);
+  const ok = await writer.setAccess(id, access);
+  if (!ok) throw new Error(`no such lesson: ${id}`);
 }
 
 export async function publishLesson(id: string, status: "draft" | "published"): Promise<void> {
@@ -57,7 +58,8 @@ export async function publishLesson(id: string, status: "draft" | "published"): 
  */
 export async function saveLessonBody(id: string, bodyJson: string, sourceRef: string): Promise<void> {
   await requireAdmin();
-  await writer.writeLessonBody(id, JSON.parse(bodyJson), sourceRef);
+  const ok = await writer.writeLessonBody(id, JSON.parse(bodyJson), sourceRef);
+  if (!ok) throw new Error(`no such lesson: ${id}`);
 }
 
 export async function promoteLessonDraft(id: string): Promise<boolean> {

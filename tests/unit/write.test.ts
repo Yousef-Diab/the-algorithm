@@ -23,9 +23,19 @@ describe("writeLessonBody", () => {
     const { db } = fakeDb();
     const revalidate = vi.fn();
     const w = createWriter({ db: db as never, revalidate });
-    await w.writeLessonBody("m1-01", BLOCKS, REF);
+    const ok = await w.writeLessonBody("m1-01", BLOCKS, REF);
+    expect(ok).toBe(true);
     expect(revalidate).toHaveBeenCalledTimes(1);
     expect(revalidate).toHaveBeenCalledWith(["lesson:m1-01", "lesson-meta:m1-01", "catalog"]);
+  });
+
+  it("reports false and does NOT purge when the id does not exist — the agent must not believe a phantom write happened", async () => {
+    const { db } = fakeDb([]); // RETURNING came back empty
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.writeLessonBody("THIS-LESSON-DOES-NOT-EXIST", BLOCKS, REF);
+    expect(ok).toBe(false);
+    expect(revalidate).toHaveBeenCalledTimes(0);
   });
 
   it("refuses a body write with no sourceRef", async () => {
@@ -52,11 +62,40 @@ describe("writeLessonMeta", () => {
   it("applies live and does NOT claim the row as cms", async () => {
     const { db, calls } = fakeDb();
     const w = createWriter({ db: db as never, revalidate: vi.fn() });
-    await w.writeLessonMeta("m1-01", { title: "New" });
+    const ok = await w.writeLessonMeta("m1-01", { title: "New" });
+    expect(ok).toBe(true);
     expect(calls[0].set!.title).toBe("New");
     // invariant 9: only BODY writes set 'cms'. A title tweak must not make the
     // importer refuse this lesson forever.
     expect(calls[0].set!.writeOrigin).toBeUndefined();
+  });
+
+  it("purges all three tags when the id matches", async () => {
+    const { db } = fakeDb();
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    await w.writeLessonMeta("m1-01", { title: "New" });
+    expect(revalidate).toHaveBeenCalledTimes(1);
+    expect(revalidate).toHaveBeenCalledWith(["lesson:m1-01", "lesson-meta:m1-01", "catalog"]);
+  });
+
+  it("reports false and does NOT purge when the id does not exist", async () => {
+    const { db } = fakeDb([]); // RETURNING came back empty
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.writeLessonMeta("THIS-LESSON-DOES-NOT-EXIST", { title: "New" });
+    expect(ok).toBe(false);
+    expect(revalidate).toHaveBeenCalledTimes(0);
+  });
+
+  it("reports true and does NOT touch the db or purge on an empty patch (no-op, not a failure)", async () => {
+    const { db, calls } = fakeDb([]);
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.writeLessonMeta("THIS-LESSON-DOES-NOT-EXIST", {});
+    expect(ok).toBe(true);
+    expect(calls).toHaveLength(0);
+    expect(revalidate).toHaveBeenCalledTimes(0);
   });
 });
 
@@ -135,8 +174,18 @@ describe("setStatus / setAccess", () => {
     const { db } = fakeDb();
     const revalidate = vi.fn();
     const w = createWriter({ db: db as never, revalidate });
-    await w.setAccess("p1-02", "free");
+    const ok = await w.setAccess("p1-02", "free");
+    expect(ok).toBe(true);
     expect(revalidate).toHaveBeenCalledWith(["lesson:p1-02", "lesson-meta:p1-02", "catalog"]);
+  });
+
+  it("reports false and does NOT purge when setAccess targets an id that does not exist", async () => {
+    const { db } = fakeDb([]); // RETURNING came back empty
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.setAccess("THIS-LESSON-DOES-NOT-EXIST", "free");
+    expect(ok).toBe(false);
+    expect(revalidate).toHaveBeenCalledTimes(0);
   });
 });
 

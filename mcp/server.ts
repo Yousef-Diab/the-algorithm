@@ -114,14 +114,18 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
         return ok(await host.admin.listLessonsAdmin(a.sectionId as string | undefined));
       case "get_lesson":
         return ok(await host.admin.getLessonForEdit(a.id as string));
-      case "write_lesson_body":
+      case "write_lesson_body": {
         await preflight();
-        await host.writer.writeLessonBody(a.id as string, a.blocks, a.sourceRef as string);
+        const wroteBody = await host.writer.writeLessonBody(a.id as string, a.blocks, a.sourceRef as string);
+        if (!wroteBody) return err(`no such lesson: ${a.id}`);
         return ok({ ok: true, wrote: "body_draft", note: "not visible to readers until a human promotes it" });
-      case "write_lesson_meta":
+      }
+      case "write_lesson_meta": {
         await preflight();
-        await host.writer.writeLessonMeta(a.id as string, a.patch);
+        const wroteMeta = await host.writer.writeLessonMeta(a.id as string, a.patch);
+        if (!wroteMeta) return err(`no such lesson: ${a.id}`);
         return ok({ ok: true, applied: "live" });
+      }
       case "upsert_quiz":
         await preflight();
         return ok(await host.writer.upsertQuiz(a.id as string, a.questions, a.deleteMissing === true));

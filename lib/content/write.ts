@@ -31,21 +31,43 @@ export function tagsFor(id: string): string[] {
 }
 
 export function createWriter({ db, revalidate, repoRoot = process.cwd() }: WriterDeps) {
-  async function writeLessonBody(id: string, blocks: unknown, sourceRef: string): Promise<void> {
+  /**
+   * RETURNING is here for the same reason as promoteDraft/discardDraft/
+   * setStatus below: the primary caller is an AI agent, and a typo'd or
+   * hallucinated lesson id must not report success on a write that matched
+   * zero rows. Mirrors their shape exactly — no-purge-on-miss included.
+   */
+  async function writeLessonBody(id: string, blocks: unknown, sourceRef: string): Promise<boolean> {
     const ref = assertSourceRef(sourceRef, repoRoot);
     const body = assertBlocks(blocks);
-    await db
+    const rows = await db
       .update(lessons)
       .set({ bodyDraft: body, sourceRefDraft: ref, writeOrigin: "cms", updatedAt: new Date() })
-      .where(eq(lessons.id, id));
+      .where(eq(lessons.id, id))
+      .returning({ id: lessons.id });
+    if (rows.length === 0) return false;
     await revalidate(tagsFor(id));
+    return true;
   }
 
-  async function writeLessonMeta(id: string, patch: unknown): Promise<void> {
+  /**
+   * Same RETURNING-driven boolean as writeLessonBody. An empty patch (no
+   * fields to set) is a genuine no-op — the caller asked to change nothing,
+   * which is not the same failure mode as "no such lesson" — so it returns
+   * `true` without touching the database or purging: nothing changed, but
+   * nothing failed either. A missing id still returns `false`.
+   */
+  async function writeLessonMeta(id: string, patch: unknown): Promise<boolean> {
     const meta = assertMeta(patch);
-    if (Object.keys(meta).length === 0) return;
-    await db.update(lessons).set({ ...meta, updatedAt: new Date() }).where(eq(lessons.id, id));
+    if (Object.keys(meta).length === 0) return true;
+    const rows = await db
+      .update(lessons)
+      .set({ ...meta, updatedAt: new Date() })
+      .where(eq(lessons.id, id))
+      .returning({ id: lessons.id });
+    if (rows.length === 0) return false;
     await revalidate(tagsFor(id));
+    return true;
   }
 
   /**
@@ -101,9 +123,16 @@ export function createWriter({ db, revalidate, repoRoot = process.cwd() }: Write
     return true;
   }
 
-  async function setAccess(id: string, access: "free" | "members" | "admin"): Promise<void> {
-    await db.update(lessons).set({ access, updatedAt: new Date() }).where(eq(lessons.id, id));
+  /** Same RETURNING-driven boolean as writeLessonBody/writeLessonMeta above. */
+  async function setAccess(id: string, access: "free" | "members" | "admin"): Promise<boolean> {
+    const rows = await db
+      .update(lessons)
+      .set({ access, updatedAt: new Date() })
+      .where(eq(lessons.id, id))
+      .returning({ id: lessons.id });
+    if (rows.length === 0) return false;
     await revalidate(tagsFor(id));
+    return true;
   }
 
   /**
