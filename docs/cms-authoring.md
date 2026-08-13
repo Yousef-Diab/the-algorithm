@@ -2,18 +2,28 @@
 
 Course content lives in Postgres and is edited through an MCP server
 (`mcp/server.ts`, registered as `content` in `.mcp.json`) that a local AI
-agent drives, plus two human-only CLIs that are the only way anything
-becomes public. The split exists on purpose: the agent reads transcripts and
+agent drives, plus three human-only CLIs that are the only way anything
+becomes public or changes who can read it. The split exists on purpose: the agent reads transcripts and
 notes — text it did not author — so a prompt injection or a plain model
 error must never be able to publish on its own.
 
 ## Prerequisite: the app must be running
 
-Every write — every MCP tool call and both CLIs below — starts with a
+Every write — every MCP tool call and all three CLIs below — starts with a
 `preflight()` check that requires `REVALIDATE_SECRET` to be set **and** the
 app's `/api/revalidate` endpoint to be reachable. If the Next app isn't
 running (`pnpm dev` or `pnpm start`), preflight refuses and nothing is
 written. Start the app first.
+
+## Launch the MCP server from the repo root
+
+`sourceRef` paths are resolved against the repo root, which `mcp/host.ts`
+derives from its own module location rather than the process's working
+directory — `.mcp.json` specifies no `cwd`, so the server would otherwise
+inherit the MCP client's. The fix makes citation checking correct wherever
+the client is launched from, but the server still reads `content/` and
+`.env.local` relatively in other places, so **launch your MCP client from the
+repo root**. Anything else is unsupported.
 
 ## The six tools
 
@@ -74,9 +84,12 @@ human reviewer opens first.
    ```
 
    Each id is handled independently. Per id it prints `done`, or
-   `NO DRAFT PENDING — nothing changed` if there was nothing to promote/discard.
-   The command exits non-zero if any id didn't change, but still processes
-   every id in the list rather than stopping at the first failure.
+   `NOTHING CHANGED — either no draft is pending or there is no such lesson`.
+   Those two cases genuinely cannot be told apart here: the UPDATE matches on
+   `(id = ? AND body_draft IS NOT NULL)`, so one boolean covers both, and the
+   message refuses to assert the benign one. Check the id if you did expect a
+   draft. The command exits non-zero if any id didn't change, but still
+   processes every id in the list rather than stopping at the first failure.
 
 4. **Publish (or unpublish) the lesson's status:**
 
@@ -90,10 +103,48 @@ human reviewer opens first.
    `content:promote`, it continues over the remaining ids regardless and
    exits non-zero if any id failed.
 
+5. **Change who can read a lesson** (the third human CLI — it has no `pnpm`
+   alias, so call it directly):
+
+   ```bash
+   node --env-file=.env.local --experimental-strip-types      scripts/set-access.mjs <free|members|admin> <lessonId...>
+   ```
+
+   `free` is readable by anyone, `members` requires a signed-in member, and
+   `admin` is admin-only. Like the other two it reports per id: an id that
+   matched no row prints `NO SUCH LESSON: <id> — nothing changed` and the
+   command exits non-zero, so a typo cannot look like a completed lockdown.
+   It purges `lesson:{id}`, `lesson-meta:{id}` and `catalog` after the write,
+   because an access change that leaves a readable copy in the public ISR
+   cache has not actually happened yet.
+
 Promoting a draft body and setting status are separate steps on purpose —
 promoting makes the body the live body; status controls whether the lesson
 is publicly reachable at all. A newly created lesson (`create_lesson`)
 starts as an unpublished draft, so it needs both steps before anyone sees it.
+
+## Re-importing from `content/` destroys saved quiz answers
+
+`pnpm content:import` refuses to touch a lesson the CMS has claimed
+(`write_origin='cms'`) or one with a pending draft, and it no longer
+re-publishes a lesson a human pulled down — `status`, like `access` and
+`published_at`, is set only when the row is first inserted.
+
+But for each lesson it *does* write, the importer **deletes every
+`quiz_questions` row for that lesson and re-inserts them**, so every
+`question_id` is regenerated. `quiz_results` keys on `question_id`, so any
+saved user answers for those questions are orphaned — the data-loss path the
+`upsert_quiz` tool exists to avoid. This is harmless today (`quiz_results` is
+empty), and it is the reason `upsert_quiz`, not the importer, is the way to
+edit a quiz once the app has users. Treat `content:import` as a bulk seeding
+tool, not an editing one.
+
+## Migration 0004
+
+Migration 0004 (the CMS write path's schema addition) is purely additive —
+four `ADD COLUMN` statements, no data rewrite and no constraint change to
+existing rows. There is no down migration; reversing it is four matching
+`DROP COLUMN`s.
 
 ## Registering the MCP server
 
