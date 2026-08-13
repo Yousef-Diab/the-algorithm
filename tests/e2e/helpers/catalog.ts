@@ -67,3 +67,55 @@ export async function gatedMediaId(): Promise<string> {
 
   return rows[0].id;
 }
+
+/** Plants a draft body out-of-band. The e2e account is a MEMBER, not an admin,
+ *  so the draft cannot be created through the UI — and must not be. */
+export async function plantDraft(lessonId: string, marker: string): Promise<() => Promise<void>> {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not set — see .env.local");
+  const sql = neon(url);
+  const blocks = JSON.stringify([{ t: "p", c: [{ t: "text", v: marker }] }]);
+  await sql`update lessons set body_draft = ${blocks}::jsonb, source_ref_draft = 'notes/ict-core/INDEX.md' where id = ${lessonId}`;
+  return async () => {
+    await sql`update lessons set body_draft = null, source_ref_draft = null where id = ${lessonId}`;
+  };
+}
+
+/**
+ * Unmistakable id/slug so this can never collide with real content.
+ * `lessons.slug` carries a unique index, so both must be distinct too.
+ */
+const DRAFT_PROBE_ID = "e2e-draft-probe";
+const DRAFT_PROBE_SLUG = "e2e-draft-probe-do-not-use";
+
+/**
+ * Creates a dedicated, throwaway lesson row with status='draft' — Task 15's
+ * guard keys on `status`, not on the presence of `body_draft`, so a spec
+ * probing that guard needs a row that is actually unpublished, not merely one
+ * carrying draft prose. A real lesson's status is NEVER flipped for this:
+ * playwright.config.ts runs fullyParallel, and all-lessons.authenticated.spec.ts
+ * sweeps the published catalog concurrently — unpublishing a real row mid-run
+ * would race it. This row is `status='draft'` from creation, so
+ * `catalogRows()`'s `where status = 'published'` filter never sees it.
+ */
+export async function plantDraftLessonRow(): Promise<{ id: string; cleanup: () => Promise<void> }> {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not set — see .env.local");
+  const sql = neon(url);
+
+  await sql`
+    insert into lessons (id, section_id, month_id, slug, title, heading, crumb, ord, kind, access, status)
+    values (
+      ${DRAFT_PROBE_ID}, 's1', null, ${DRAFT_PROBE_SLUG},
+      'E2E Draft Probe (throwaway)', 'E2E Draft Probe', 'E2E · Draft Probe',
+      999999, 'lesson', 'free', 'draft'
+    )
+  `;
+
+  return {
+    id: DRAFT_PROBE_ID,
+    cleanup: async () => {
+      await sql`delete from lessons where id = ${DRAFT_PROBE_ID}`;
+    },
+  };
+}
