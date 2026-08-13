@@ -112,6 +112,25 @@ describe("setStatus / setAccess", () => {
     expect(calls[1].set!.publishedAt).toBeNull();
   });
 
+  it("returns true and purges all three tags when the id matches (publish gate)", async () => {
+    const { db } = fakeDb([{ id: "m1-01" }]); // RETURNING came back with a row
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.setStatus("m1-01", "published");
+    expect(ok).toBe(true);
+    expect(revalidate).toHaveBeenCalledTimes(1);
+    expect(revalidate).toHaveBeenCalledWith(["lesson:m1-01", "lesson-meta:m1-01", "catalog"]);
+  });
+
+  it("reports false and does NOT purge on a typo'd id — the publish gate must not silently no-op", async () => {
+    const { db } = fakeDb([]);                    // RETURNING came back empty
+    const revalidate = vi.fn();
+    const w = createWriter({ db: db as never, revalidate });
+    const ok = await w.setStatus("m1-9", "published");
+    expect(ok).toBe(false);
+    expect(revalidate).toHaveBeenCalledTimes(0);
+  });
+
   it("purges all three tags on an access flip (invariant 2)", async () => {
     const { db } = fakeDb();
     const revalidate = vi.fn();

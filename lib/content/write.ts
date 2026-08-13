@@ -83,12 +83,22 @@ export function createWriter({ db, revalidate, repoRoot = process.cwd() }: Write
     return true;
   }
 
-  async function setStatus(id: string, status: "draft" | "published"): Promise<void> {
-    await db
+  /**
+   * RETURNING is here so a typo'd id cannot report success at the publish
+   * gate: this script IS the deliberate human review step the whole project
+   * is built around, so a silent no-op on an unknown id is the wrong failure
+   * mode. Mirrors promoteDraft/discardDraft above — same shape, same
+   * no-purge-on-miss behaviour.
+   */
+  async function setStatus(id: string, status: "draft" | "published"): Promise<boolean> {
+    const rows = await db
       .update(lessons)
       .set({ status, publishedAt: status === "published" ? new Date() : null, updatedAt: new Date() })
-      .where(eq(lessons.id, id));
+      .where(eq(lessons.id, id))
+      .returning({ id: lessons.id });
+    if (rows.length === 0) return false;
     await revalidate(tagsFor(id));
+    return true;
   }
 
   async function setAccess(id: string, access: "free" | "members" | "admin"): Promise<void> {

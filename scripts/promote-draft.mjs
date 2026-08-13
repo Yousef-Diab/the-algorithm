@@ -37,11 +37,22 @@ try {
 
 const { writer } = createHost();
 
+// Each id is independent: accumulate failures and keep going, exactly as
+// scripts/set-access.mjs and scripts/set-status.mjs do — some writes may
+// already have committed by the time one throws, so completing as many as
+// possible beats stopping early. The try/catch covers an UNEXPECTED throw
+// (transient DB error, network blip); the boolean already covers the
+// EXPECTED "no draft pending" case.
 let failed = false;
 for (const id of ids) {
-  const ok = verb === "promote" ? await writer.promoteDraft(id) : await writer.discardDraft(id);
-  console.log(`${verb} ${id}: ${ok ? "done" : "NO DRAFT PENDING — nothing changed"}`);
-  if (!ok) failed = true;
+  try {
+    const ok = verb === "promote" ? await writer.promoteDraft(id) : await writer.discardDraft(id);
+    console.log(`${verb} ${id}: ${ok ? "done" : "NO DRAFT PENDING — nothing changed"}`);
+    if (!ok) failed = true;
+  } catch (err) {
+    console.error(`FAILED ${verb} ${id}: ${err instanceof Error ? err.message : String(err)}`);
+    failed = true;
+  }
 }
 
 if (failed) {

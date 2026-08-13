@@ -43,11 +43,22 @@ const { writer } = createHost();
 // scripts/set-access.mjs does — some writes may already have committed by
 // the time one throws, so completing as many as possible beats stopping
 // early and leaves the human with a full picture of what actually changed.
+//
+// Three distinct outcomes per id, since this script IS the publish gate:
+//  - success: writer.setStatus returned true.
+//  - "no such lesson": writer.setStatus returned false (RETURNING matched
+//    zero rows) — e.g. a typo'd id. Must be reported, not silently skipped.
+//  - thrown error: an unexpected failure (DB blip, etc).
 let failed = false;
 for (const id of ids) {
   try {
-    await writer.setStatus(id, status);
-    console.log(`${id} → ${status}`);
+    const ok = await writer.setStatus(id, status);
+    if (ok) {
+      console.log(`${id} → ${status}`);
+    } else {
+      console.error(`NO SUCH LESSON: ${id} — nothing changed`);
+      failed = true;
+    }
   } catch (err) {
     console.error(`FAILED ${id} → ${status}: ${err instanceof Error ? err.message : String(err)}`);
     failed = true;
