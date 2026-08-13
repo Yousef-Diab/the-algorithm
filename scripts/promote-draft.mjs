@@ -47,8 +47,21 @@ let failed = false;
 for (const id of ids) {
   try {
     const ok = verb === "promote" ? await writer.promoteDraft(id) : await writer.discardDraft(id);
-    console.log(`${verb} ${id}: ${ok ? "done" : "NO DRAFT PENDING — nothing changed"}`);
-    if (!ok) failed = true;
+    if (ok) {
+      console.log(`${verb} ${id}: done`);
+    } else {
+      // promoteDraft/discardDraft match on (id = ? AND body_draft IS NOT
+      // NULL), so a single boolean cannot tell "the lesson exists but has no
+      // draft" from "there is no such lesson" — a typo'd id reported as
+      // NO DRAFT PENDING, which reads as a benign outcome. set-status.mjs
+      // distinguishes the two because writer.setStatus matches on the id
+      // alone. Rather than widen the writer's return type (and with it every
+      // call site and unit test) for a message, the message names BOTH
+      // possibilities, so the human is never told the id was fine when it
+      // may not have been.
+      console.error(`${verb} ${id}: NOTHING CHANGED — either no draft is pending or there is no such lesson (check the id).`);
+      failed = true;
+    }
   } catch (err) {
     console.error(`FAILED ${verb} ${id}: ${err instanceof Error ? err.message : String(err)}`);
     failed = true;
