@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint --ignore-pattern \"engine/**\" --ignore-pattern \"content/**\"",
     "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
