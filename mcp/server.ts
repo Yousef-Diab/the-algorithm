@@ -17,12 +17,22 @@ registerHooks({
 const { Server } = await import("@modelcontextprotocol/sdk/server/index.js");
 const { StdioServerTransport } = await import("@modelcontextprotocol/sdk/server/stdio.js");
 const { ListToolsRequestSchema, CallToolRequestSchema } = await import("@modelcontextprotocol/sdk/types.js");
-const { createHost, preflight } = await import("./host.ts");
+const { createHost, preflight } = await import("./host");
 
 const host = createHost();
 const server = new Server({ name: "the-algorithm-content", version: "1.0.0" }, { capabilities: { tools: {} } });
 
-const TOOLS = [
+interface McpTool {
+  name: string;
+  description: string;
+  inputSchema: {
+    type: string;
+    properties: Record<string, unknown>;
+    required?: string[];
+  };
+}
+
+const TOOLS: McpTool[] = [
   {
     name: "list_lessons",
     description: "List lessons with their access, status, whether a draft is pending, and provenance.",

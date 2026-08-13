@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-import { createWriter } from "../lib/content/write.ts";
-import { createAdminQueries } from "../lib/content/admin-queries.ts";
+import { createWriter } from "../lib/content/write";
+import { createAdminQueries } from "../lib/content/admin-queries";
 
 const base = process.env.REVALIDATE_BASE_URL ?? "http://localhost:3000";
 const secret = process.env.REVALIDATE_SECRET;
