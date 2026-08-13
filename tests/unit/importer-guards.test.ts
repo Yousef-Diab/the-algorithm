@@ -27,4 +27,13 @@ describe("importDecision", () => {
   it("treats a brand-new row (no existing record) as writable", () => {
     expect(importDecision(null, false)).toEqual({ write: true });
   });
+
+  it("refuses a cms-authored row with a pending draft even with --force (draft is checked first)", () => {
+    // The case that distinguishes "draft checked first" from "cms checked
+    // first": if writeOrigin were checked first, --force alone would pass
+    // this through and the reason would talk about the CMS, not the draft.
+    const d = importDecision({ writeOrigin: "cms", bodyDraft: [{ t: "p", c: [] }] }, true);
+    expect(d.write).toBe(false);
+    expect(d.reason).toMatch(/pending draft/);
+  });
 });
