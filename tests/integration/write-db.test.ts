@@ -13,7 +13,7 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { createWriter } from "@/lib/content/write";
 import { createAdminQueries } from "@/lib/content/admin-queries";
 import { lessons, quizQuestions, quizResults } from "@/lib/db/schema";
@@ -149,20 +149,40 @@ describe("upsertQuiz", () => {
   // Coverage item: cascadeAnswers (Task 5) is computed by a real SELECT
   // BEFORE the batch runs, regardless of deleteMissing — so this is safe to
   // exercise without ever deleting the orphan's quiz_results history.
+  //
+  // FIX ROUND 1 / Finding A: quiz_results is empty in production, so a bare
+  // "expect(cascadeAnswers).toBe(realCount)" was trivially 0 == 0 — a
+  // hardcoded `cascadeAnswers = 0` or a dropped WHERE clause would still
+  // pass. Seed real rows against the ORPHAN (2, from two synthetic users)
+  // AND against a KEPT question (1, from a third synthetic user) so the
+  // assertion is nonzero AND scoped: if the count leaked the kept
+  // question's row in, or counted the whole table, cascadeAnswers would be
+  // 3+ instead of exactly 2, and the test would fail. userId has no FK
+  // (schema.ts:238) so a synthetic id is safe to insert and delete.
   it("re-settles an omitted question at the tail and reports the real cascadeAnswers count (deleteMissing=false)", async () => {
     const before = originalQuestions;
     const orphan = before[before.length - 1];
     const kept = before.slice(0, -1).map(toWriterInput);
-
-    const [{ n: expectedCascade }] = await db
-      .select({ n: sql<number>`count(*)::int` })
-      .from(quizResults)
-      .where(eq(quizResults.questionId, orphan.id));
+    const keptQuestionId = kept[0].id as string;
+    const seedUserIds = ["integration-test-user-a", "integration-test-user-b", "integration-test-user-c"];
 
     try {
+      await db.insert(quizResults).values([
+        { userId: seedUserIds[0], questionId: orphan.id, selected: 0, correct: true },
+        { userId: seedUserIds[1], questionId: orphan.id, selected: 1, correct: false },
+        { userId: seedUserIds[2], questionId: keptQuestionId, selected: 0, correct: true }, // decoy: different question
+      ]);
+
+      const [{ n: expectedCascade }] = await db
+        .select({ n: sql<number>`count(*)::int` })
+        .from(quizResults)
+        .where(eq(quizResults.questionId, orphan.id));
+      expect(expectedCascade).toBe(2); // sanity: our seed landed as expected, scoped to the orphan
+
       const result = await writer.upsertQuiz(ID, kept, false);
       expect(result.deleted).toBe(0); // deleteMissing=false: nothing is destroyed
-      expect(result.cascadeAnswers).toBe(expectedCascade); // proven against a real independent count
+      expect(result.cascadeAnswers).toBe(2); // nonzero AND scoped — would fail if hardcoded to 0 or unscoped (would read 3)
+      expect(result.cascadeAnswers).toBe(expectedCascade); // and matches the real independent count exactly
 
       const after = await db
         .select()
@@ -174,7 +194,80 @@ describe("upsertQuiz", () => {
       const resettled = after.find((r) => r.id === orphan.id)!;
       expect(resettled.ord).toBe(kept.length); // tail = qs.length + 0
     } finally {
+      await db.delete(quizResults).where(inArray(quizResults.userId, seedUserIds)); // remove synthetic answer history
       await writer.upsertQuiz(ID, before.map(toWriterInput)); // restore the original set + order
+    }
+  });
+
+  // FIX ROUND 1 / Finding B: deleteMissing=true's DELETE ... WHERE id IN
+  // (orphans) had never run against real Postgres — only the in-memory
+  // fake. If the orphans computation were wrong, it would delete the WRONG
+  // questions (real user answer history). This proves the deletion targets
+  // exactly a THROWAWAY question added for the purpose, and that all five
+  // ORIGINAL m1-01 questions survive untouched by id.
+  it("deleteMissing=true deletes only the real orphan and leaves the original five untouched", async () => {
+    const before = originalQuestions;
+    const throwawayQ = {
+      q: "INTEGRATION-THROWAWAY-QUESTION",
+      options: ["a", "b", "c", "d"],
+      answer: 0,
+      explanation: "integration test fixture — safe to delete",
+    };
+    const seedUserId = "integration-test-user-throwaway";
+    let throwawayId: string | undefined;
+
+    try {
+      // Step 1+2: add the throwaway alongside the original 5 (insert, not delete).
+      await writer.upsertQuiz(ID, [...before.map(toWriterInput), throwawayQ], false);
+      const withExtra = await db
+        .select()
+        .from(quizQuestions)
+        .where(eq(quizQuestions.lessonId, ID))
+        .orderBy(quizQuestions.ord);
+      expect(withExtra.length).toBe(before.length + 1); // confirms it landed (6 rows)
+      const throwawayRow = withExtra.find((r) => r.q === throwawayQ.q);
+      expect(throwawayRow).toBeDefined();
+      throwawayId = throwawayRow!.id;
+
+      // Seed one answer against the throwaway (never against an original
+      // question) so cascadeAnswers is provably reported for this real
+      // deletion too, without touching anything real.
+      await db.insert(quizResults).values([{ userId: seedUserId, questionId: throwawayId, selected: 0, correct: true }]);
+
+      // Step 3: settle back to the original 5 with deleteMissing=true.
+      const result = await writer.upsertQuiz(ID, before.map(toWriterInput), true);
+
+      expect(result.deleted).toBe(1);
+      expect(result.cascadeAnswers).toBe(1); // the one seeded answer against the throwaway
+
+      const after = await db
+        .select()
+        .from(quizQuestions)
+        .where(eq(quizQuestions.lessonId, ID))
+        .orderBy(quizQuestions.ord);
+
+      expect(after.some((r) => r.id === throwawayId)).toBe(false); // throwaway is gone
+      // The assertion that really matters: a broken orphans computation
+      // that deleted the WRONG rows must fail this — all five original ids
+      // survive, unchanged, at their original ords.
+      expect(after.length).toBe(before.length);
+      expect(after.map((r) => r.id)).toEqual(before.map((r) => r.id));
+      expect(after.map((r) => r.ord)).toEqual(before.map((r) => r.ord));
+
+      // Cascade proof: deleting the throwaway question cascaded its seeded
+      // quiz_results row away (FK onDelete: cascade, schema.ts:241).
+      const [{ n: remaining }] = await db
+        .select({ n: sql<number>`count(*)::int` })
+        .from(quizResults)
+        .where(eq(quizResults.userId, seedUserId));
+      expect(remaining).toBe(0);
+    } finally {
+      // Best-effort cleanup even on a mid-assertion throw: drop any
+      // leftover synthetic answer row, then unconditionally re-settle back
+      // to exactly the original 5 in their original order (also removes
+      // the throwaway question if step 3 above never ran).
+      await db.delete(quizResults).where(eq(quizResults.userId, seedUserId));
+      await writer.upsertQuiz(ID, before.map(toWriterInput), true);
     }
   });
 });
