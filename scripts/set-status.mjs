@@ -39,7 +39,27 @@ try {
 
 const { writer } = createHost();
 
+// Each id is independent: accumulate failures and keep going, exactly as
+// scripts/set-access.mjs does — some writes may already have committed by
+// the time one throws, so completing as many as possible beats stopping
+// early and leaves the human with a full picture of what actually changed.
+let failed = false;
 for (const id of ids) {
-  await writer.setStatus(id, status);
-  console.log(`${id} → ${status}`);
+  try {
+    await writer.setStatus(id, status);
+    console.log(`${id} → ${status}`);
+  } catch (err) {
+    console.error(`FAILED ${id} → ${status}: ${err instanceof Error ? err.message : String(err)}`);
+    failed = true;
+  }
+}
+
+if (failed) {
+  console.error("one or more lessons failed to update — see FAILED lines above.");
+  // exitCode, not exit(): by this point createHost() has opened the
+  // neon-http driver's fetch keep-alive socket, and forcing an immediate
+  // process.exit() while it's open crashes Node on Windows (libuv
+  // assertion). Setting exitCode lets the event loop drain first and still
+  // exits non-zero.
+  process.exitCode = 1;
 }
