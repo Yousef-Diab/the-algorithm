@@ -278,6 +278,19 @@ describe("createLesson", () => {
     expect((v as Record<string, unknown>).access).toBe("members");
   });
 
+  it("skips the composite-FK precheck when monthId is omitted — a section-level review/exam row", async () => {
+    // Only ONE select is issued on this path (the slug-collision check), so
+    // the single fixture below IS that check, not the month precheck. If the
+    // precheck ran it would consume [] and throw "does not belong to section".
+    const { db, calls } = fakeDb([[]]);
+    const w = createWriter({ db: db as never, revalidate: vi.fn() });
+    const { monthId: _omitted, ...noMonth } = base;
+    await w.createLesson({ ...noMonth, id: "s1-review", kind: "review", title: "Section 1 Review" });
+    const v = calls[0].set ?? (calls[0] as Record<string, unknown>).values;
+    expect((v as Record<string, unknown>).monthId).toBeNull();
+    expect((v as Record<string, unknown>).slug).toBe("s1-review-section-1-review");
+  });
+
   it("rejects an unrecognised access value rather than passing it through", async () => {
     const { db } = fakeDb([]);
     const w = createWriter({ db: db as never, revalidate: vi.fn() });

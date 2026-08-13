@@ -46,11 +46,19 @@ function assertInlines(v: unknown, where: string): Inline[] {
 
 export function assertQuiz(v: unknown): QuizInput[] {
   if (!Array.isArray(v)) fail("questions must be an array");
+  // Two questions carrying the SAME id both upsert onto one row: the second
+  // silently overwrites the first, `updated` over-reports, and the stored quiz
+  // is shorter than the caller asked for. Refuse rather than lose a question.
+  const seen = new Set<string>();
   return v.map((raw, i) => {
     const at = `question[${i}]`;
     if (typeof raw !== "object" || raw === null) fail(`${at}: expected an object`);
     const q = raw as Record<string, unknown>;
     if (q.id !== undefined && typeof q.id !== "string") fail(`${at}: id must be a uuid string when supplied`);
+    if (typeof q.id === "string") {
+      if (seen.has(q.id)) fail(`${at}: duplicate question id "${q.id}" — each id may appear at most once per call`);
+      seen.add(q.id);
+    }
     if (typeof q.q !== "string" || q.q.length === 0) fail(`${at}: q must be a non-empty string`);
     if (!Array.isArray(q.options) || q.options.length !== 4 || q.options.some((o) => typeof o !== "string"))
       fail(`${at}: options must be an array of exactly 4 strings`);
@@ -76,6 +84,14 @@ export function assertMeta(v: unknown): MetaPatch {
   // The slug is the chart filename stem the media manifest keys on, and it
   // carries a unique index. Renaming it in the DB alone decouples the two.
   if ("slug" in m) fail("slug is not writable");
+  // An unrecognised key is REJECTED, not dropped. Silently ignoring it made a
+  // single typo (`titel`) produce an empty patch, which writeLessonMeta treats
+  // as a legitimate no-op and reports as `{ok:true, applied:"live"}` — a
+  // phantom success on a write that changed nothing.
+  for (const k of Object.keys(m)) {
+    if (!(META_KEYS as readonly string[]).includes(k))
+      fail(`unknown meta key "${k}" — writable keys are ${META_KEYS.join(", ")}`);
+  }
   const out: MetaPatch = {};
   for (const k of META_KEYS) {
     if (!(k in m)) continue;

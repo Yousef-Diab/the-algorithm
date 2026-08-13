@@ -58,7 +58,32 @@ TOOLS.push(
   {
     name: "write_lesson_meta",
     description: "Update title/heading/crumb/desc/videoUrl. Applies LIVE (this metadata is already public via the catalog). slug is not writable.",
-    inputSchema: { type: "object", properties: { id: { type: "string" }, patch: { type: "object" } }, required: ["id", "patch"] },
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        // The patch's keys are enumerated rather than left as a bare `object`:
+        // assertMeta now REJECTS an unrecognised key, so an agent guessing key
+        // names from prose gets an error instead of a write. Honest contract,
+        // same style as create_lesson below.
+        patch: {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+            heading: { type: "string" },
+            crumb: { type: "string" },
+            desc: {
+              type: "array",
+              description: "Inline[] — the same inline-node shape used elsewhere (text/br/strong/em/src), not a plain string.",
+            },
+            videoUrl: { type: ["string", "null"], description: "null clears the lesson's source-video link." },
+          },
+          additionalProperties: false,
+          description: "Only these keys are writable; any other key is rejected. slug is derived and never writable.",
+        },
+      },
+      required: ["id", "patch"],
+    },
   },
   {
     name: "upsert_quiz",
