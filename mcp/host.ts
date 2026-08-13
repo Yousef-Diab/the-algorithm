@@ -1,7 +1,20 @@
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
 import { createWriter } from "../lib/content/write";
 import { createAdminQueries } from "../lib/content/admin-queries";
+
+/**
+ * The repo root, derived from THIS FILE's location rather than process.cwd().
+ * assertSourceRef resolves every sourceRef against it, and .mcp.json specifies
+ * no `cwd`, so the MCP server inherits the client's working directory:
+ * launched from anywhere else, every citation would be rejected — or worse,
+ * resolve against a different tree that happens to contain a notes/ directory.
+ * write.ts keeps its process.cwd() default (correct for Next and Vitest, which
+ * do run from the repo root); the plain-Node entrypoint passes the real one.
+ */
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 const base = process.env.REVALIDATE_BASE_URL ?? "http://localhost:3000";
 const secret = process.env.REVALIDATE_SECRET;
@@ -39,5 +52,5 @@ export function createHost() {
     }
     if (failed.length) throw new Error(`FAILED to purge ${failed.join(", ")} after the write committed — the public cache is stale.`);
   };
-  return { db, revalidate, writer: createWriter({ db, revalidate }), admin: createAdminQueries({ db }) };
+  return { db, revalidate, writer: createWriter({ db, revalidate, repoRoot }), admin: createAdminQueries({ db }) };
 }
