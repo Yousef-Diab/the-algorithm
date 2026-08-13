@@ -45,6 +45,16 @@ console.log(
 );
 console.log("blocks:", Object.entries(tally).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k}=${v}`).join(" "));
 
+// `--only <id>` that matches nothing used to filter every lesson out, print
+// the unchanged "written: 82 lessons, 564 questions" totals and exit 0 — a
+// phantom success on an import that imported nothing. Checked BEFORE the DB
+// connection is opened, so process.exit is safe here (see the exitCode note in
+// set-status.mjs for why it would not be afterwards).
+if (only && !plan.lessons.some((l) => l.id === only)) {
+  console.error(`--only ${only}: no lesson with that id is in content/ — nothing would be written.`);
+  process.exit(1);
+}
+
 if (dryRun) {
   console.log("--dry-run: nothing written");
   process.exit(0);
@@ -76,14 +86,24 @@ for (const l of plan.lessons) {
   }
 
   const { questions, ...row } = l;
-  // access, publishedAt, bodyDraft, sourceRef, sourceRefDraft and writeOrigin
-  // are NOT in `set`: an import must never reopen a lesson the CMS closed,
-  // restamp its publish time, destroy a pending draft, or erase provenance.
+  // status, access, publishedAt, bodyDraft, sourceRef, sourceRefDraft and
+  // writeOrigin are NOT in `set`: an import must never re-publish a lesson a
+  // human pulled down, reopen a lesson the CMS closed, restamp its publish
+  // time, destroy a pending draft, or erase provenance.
+  //
+  // status joined that list because the import guard protects the BODY and the
+  // DRAFT but not the visibility decision: `pnpm content:status draft m2-07`
+  // leaves a write_origin='import' row with no pending draft, so
+  // importDecision returns {write:true} and the next `pnpm content:import`
+  // silently flipped it back to published. Like access and publishedAt, it is
+  // still set on the INSERT path, so a brand-new lesson is still born
+  // published.
+  //
   // updatedAt DOES belong in `set` — it genuinely describes the latest write.
-  const values = { ...row, status: "published", updatedAt: new Date() };
+  const values = { ...row, updatedAt: new Date() };
   await db
     .insert(lessons)
-    .values({ ...values, access: "members", publishedAt: new Date() })
+    .values({ ...values, status: "published", access: "members", publishedAt: new Date() })
     .onConflictDoUpdate({ target: lessons.id, set: values });
 
   await db.delete(quizQuestions).where(eq(quizQuestions.lessonId, l.id));
