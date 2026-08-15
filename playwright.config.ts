@@ -37,8 +37,23 @@ export default defineConfig({
       testMatch: /auth\.setup\.ts$/,
     },
     {
+      // Signs in the ADMIN test account once and saves storage state for the
+      // "admin" project below. A separate setup project (not "setup" above)
+      // because the admin account needs its own credentials and its own
+      // storage state file — mixing the two would let a member-only test
+      // accidentally run with admin privileges or vice versa. Deliberately
+      // NOT a dependency of the default project, so anonymous/member tests
+      // still run when E2E_ADMIN_EMAIL / E2E_ADMIN_PASSWORD are absent.
+      name: "admin-setup",
+      testMatch: /admin\.setup\.ts$/,
+    },
+    {
+      // *.admin.spec.ts files are NOT covered by the .authenticated.spec.ts
+      // ignore above — without this second entry, "chromium" would also pick
+      // them up and run them anonymously (no storageState), where the
+      // admin-only assertions would fail for the wrong reason.
       name: "chromium",
-      testIgnore: [/\.authenticated\.spec\.ts$/],
+      testIgnore: [/\.authenticated\.spec\.ts$/, /\.admin\.spec\.ts$/],
     },
     {
       // The signed-in half of the gating tests. Depends on "setup" so it
@@ -47,6 +62,15 @@ export default defineConfig({
       testMatch: [/\.authenticated\.spec\.ts$/],
       dependencies: ["setup"],
       use: { storageState: "tests/e2e/.auth/user.json" },
+    },
+    {
+      // Task 15's admin escape-hatch review path (draft.admin.spec.ts).
+      // Depends on "admin-setup" so it only runs (and only needs admin
+      // credentials) when those tests are selected.
+      name: "admin",
+      testMatch: [/\.admin\.spec\.ts$/],
+      dependencies: ["admin-setup"],
+      use: { storageState: "tests/e2e/.auth/admin.json" },
     },
   ],
 });
