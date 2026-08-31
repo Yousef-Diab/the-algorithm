@@ -3,7 +3,6 @@
 import { revalidateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { createWriter } from "./write";
-import { accessContext } from "@/lib/db/access-queries";
 import { assertAdmin } from "@/lib/admin/guard";
 
 // Delegates to the single definition in lib/admin/guard.ts so pages, action
@@ -72,4 +71,18 @@ export async function saveLessonBody(id: string, bodyJson: string, sourceRef: st
 export async function promoteLessonDraft(id: string): Promise<boolean> {
   await requireAdmin();
   return writer.promoteDraft(id);
+}
+
+/**
+ * The other half of the human gate. `false` means there was no draft pending —
+ * a real outcome the caller must surface, never a silent success. The writer's
+ * discardDraft (write.ts:97) already clears body_draft AND source_ref_draft
+ * together and purges all three cache tags; nothing is reimplemented here.
+ *
+ * IRRECOVERABLE: the draft prose is gone afterwards. The console puts this
+ * behind a typed confirmation for that reason.
+ */
+export async function discardLessonDraft(id: string): Promise<boolean> {
+  await requireAdmin();
+  return writer.discardDraft(id);
 }
