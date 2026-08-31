@@ -210,8 +210,36 @@ export const entitlements = pgTable(
   (t) => [index("entitlements_user_idx").on(t.userId)],
 );
 
+/**
+ * A record of what the admin console did. Deliberately NOT a control:
+ * invariant 13 — nothing reads this to make an authorization decision, and a
+ * failure to write a row never fails the action it describes.
+ *
+ * No FK to lessons: a cascade would delete a lesson's history along with the
+ * lesson, destroying exactly the record you would want afterwards.
+ */
+export const adminActions = pgTable(
+  "admin_actions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    at: timestamp("at", { withTimezone: true }).defaultNow().notNull(),
+    /** neon_auth."user".id, or null when the actor was not signed in. NEVER the email. */
+    actorUserId: text("actor_user_id"),
+    /** 'promote' | 'discard' | 'set_status' | 'set_access' */
+    action: text("action").notNull(),
+    /** Plain text, no foreign key — see above. */
+    lessonId: text("lesson_id"),
+    /** 'ok' | 'noop' | 'denied' | 'error' */
+    outcome: text("outcome").notNull(),
+    /** Field values and the draft fingerprint. NEVER body content (invariant 6). */
+    detail: jsonb("detail"),
+  },
+  (t) => [index("admin_actions_at_idx").on(t.at)],
+);
+
 export type UserRoleRow = typeof userRoles.$inferSelect;
 export type EntitlementRow = typeof entitlements.$inferSelect;
+export type AdminActionRow = typeof adminActions.$inferSelect;
 
 // --------------------------------------------------------------- per-user
 
