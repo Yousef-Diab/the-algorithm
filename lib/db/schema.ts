@@ -229,7 +229,7 @@ export const adminActions = pgTable(
     action: text("action").notNull(),
     /** Plain text, no foreign key — see above. */
     lessonId: text("lesson_id"),
-    /** 'ok' | 'noop' | 'denied' | 'error' */
+    /** 'ok' | 'noop' | 'denied' | 'error' | 'rejected' */
     outcome: text("outcome").notNull(),
     /** Field values and the draft fingerprint. NEVER body content (invariant 6). */
     detail: jsonb("detail"),
