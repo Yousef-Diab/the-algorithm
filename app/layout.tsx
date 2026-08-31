@@ -24,9 +24,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <ProgressProvider>
         <div className={styles.app}>
           <Sidebar catalog={catalog} authEnabled={isAuthConfigured} />
-          <main className={styles.main}>
-            <div className={styles.inner}>{children}</div>
-          </main>
+          <main className={styles.main}>{children}</main>
         </div>
       </ProgressProvider>
     </LightboxProvider>

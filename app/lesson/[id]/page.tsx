@@ -13,6 +13,7 @@ import { LockedBody } from "@/components/lesson/LockedBody";
 import { Quiz } from "@/components/quiz/Quiz";
 import { Exam } from "@/components/quiz/Exam";
 import { NotesSection } from "@/components/notes/NotesSection";
+import shell from "@/app/shell.module.css";
 
 /**
  * Why this route is fully dynamic rather than partially prerendered.
@@ -72,10 +73,12 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
     // above this branch: the prose would land in the RSC payload even though
     // the JSX is suppressed. See spec §6 and invariant 1.
     return (
-      <article className="lesson">
-        <LessonHero meta={meta} />
-        <LockedBody signedIn={Boolean(ctx.user)} />
-      </article>
+      <div className={shell.inner}>
+        <article className="lesson">
+          <LessonHero meta={meta} />
+          <LockedBody signedIn={Boolean(ctx.user)} />
+        </article>
+      </div>
     );
   }
 
@@ -87,25 +90,27 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
   const figures = figuresFromMedia(groups);
 
   return (
-    <article className="lesson">
-      <LessonHero meta={meta} />
+    <div className={shell.inner}>
+      <article className="lesson">
+        <LessonHero meta={meta} />
 
-      {meta.videoUrl ? (
-        <a className="lesson-video" href={meta.videoUrl} target="_blank" rel="noopener noreferrer">
-          <span className="lv-ico">▶</span>
-          <span>Watch the source video <span className="lv-sub">— opens on YouTube</span></span>
-        </a>
-      ) : null}
+        {meta.videoUrl ? (
+          <a className="lesson-video" href={meta.videoUrl} target="_blank" rel="noopener noreferrer">
+            <span className="lv-ico">▶</span>
+            <span>Watch the source video <span className="lv-sub">— opens on YouTube</span></span>
+          </a>
+        ) : null}
 
-      <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
+        <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
 
-      {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
+        {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
 
-      {meta.kind === "exam" ? <Exam key={id} lessonId={id} /> : null}
+        {meta.kind === "exam" ? <Exam key={id} lessonId={id} /> : null}
 
-      {meta.kind === "lesson" ? <NotesSection key={id} lessonId={id} /> : null}
+        {meta.kind === "lesson" ? <NotesSection key={id} lessonId={id} /> : null}
 
-      {meta.kind === "lesson" ? <LessonFooter id={id} prev={prev} next={next} /> : null}
-    </article>
+        {meta.kind === "lesson" ? <LessonFooter id={id} prev={prev} next={next} /> : null}
+      </article>
+    </div>
   );
 }

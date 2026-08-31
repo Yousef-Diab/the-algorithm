@@ -1,5 +1,6 @@
 import { AuthView } from "@neondatabase/auth/react/ui";
 import styles from "./auth.module.css";
+import shell from "@/app/shell.module.css";
 
 export function generateStaticParams() {
   return [
@@ -20,8 +21,10 @@ export default async function AuthPage({
 }) {
   const { path } = await params;
   return (
-    <main className={styles.authWrap}>
-      <AuthView path={path} />
-    </main>
+    <div className={shell.inner}>
+      <main className={styles.authWrap}>
+        <AuthView path={path} />
+      </main>
+    </div>
   );
 }
