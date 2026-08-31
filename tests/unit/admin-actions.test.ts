@@ -82,6 +82,19 @@ describe("authorization", () => {
     await promoteAction(null, form({ id: "m1-01", fingerprint: "x" }));
     expect(recordAdminAction).toHaveBeenCalledWith(expect.objectContaining({ outcome: "denied" }));
   });
+
+  it("passes no detail and a null lessonId on the deny path, even though the attacker supplied both", async () => {
+    // Server Actions are network-reachable POST endpoints — an unauthenticated
+    // caller can supply arbitrary id/fingerprint form fields. The audit write
+    // for a denial must not echo any of it back into the jsonb column.
+    assertAdmin.mockRejectedValue(new Error("admin only"));
+    await promoteAction(null, form({ id: "attacker-supplied-id", fingerprint: "x".repeat(5000) }));
+    expect(recordAdminAction).toHaveBeenCalledTimes(1);
+    const call = recordAdminAction.mock.calls[0][0];
+    expect(call.lessonId).toBeNull();
+    expect(call.detail).toBeUndefined();
+    expect(call.outcome).toBe("denied");
+  });
 });
 
 describe("promoteAction", () => {
@@ -113,6 +126,15 @@ describe("promoteAction", () => {
 describe("discardAction", () => {
   it("requires the typed confirmation to match the lesson id", async () => {
     const res = await discardAction(null, form({ id: "m1-01", confirm: "m1-02" }));
+    expect(res.ok).toBe(false);
+    expect(discardLessonDraft).not.toHaveBeenCalled();
+  });
+
+  it("rejects a missing id rather than letting an absent id equal an absent confirmation", async () => {
+    // With id absent, id === "" and confirm === "" used to make `confirm !== id`
+    // false — the typed-confirmation gate would silently pass on an
+    // irrecoverable delete. This must fail explicitly instead.
+    const res = await discardAction(null, form({}));
     expect(res.ok).toBe(false);
     expect(discardLessonDraft).not.toHaveBeenCalled();
   });
@@ -161,9 +183,60 @@ describe("setStatusAction / setAccessAction", () => {
 
 describe("the audit log is never a control", () => {
   it("still succeeds when recording the action throws", async () => {
-    recordAdminAction.mockRejectedValue(new Error("audit table is on fire"));
+    recordAdminAction.mockRejectedValueOnce(new Error("audit table is on fire"));
     publishLesson.mockResolvedValue(undefined);
     const res = await setStatusAction(null, form({ id: "m1-01", status: "published" }));
     expect(res.ok).toBe(true);
+  });
+});
+
+describe("the audit detail never carries body content", () => {
+  it("records only the field value for a status change, never draft/lesson prose", async () => {
+    publishLesson.mockResolvedValue(undefined);
+    await setStatusAction(null, form({ id: "m1-01", status: "published" }));
+    expect(recordAdminAction).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { status: "published" } }),
+    );
+  });
+
+  it("records only the fingerprint for a promote, never the draft body itself", async () => {
+    getLessonDraftBody.mockResolvedValue(DRAFT);
+    promoteLessonDraft.mockResolvedValue(true);
+    const fp = fingerprint(DRAFT);
+    await promoteAction(null, form({ id: "m1-01", fingerprint: fp }));
+    const call = recordAdminAction.mock.calls.find((c) => c[0].action === "promote")?.[0];
+    expect(call.detail).toEqual({ fingerprint: fp });
+    expect(JSON.stringify(call.detail)).not.toContain("hello");
+  });
+
+  it("truncates an oversized detail string before it reaches the audit write", async () => {
+    publishLesson.mockRejectedValue(new Error("boom"));
+    const hugeStatus = "x".repeat(5000);
+    await setStatusAction(null, form({ id: "m1-01", status: hugeStatus }));
+    const call = recordAdminAction.mock.calls[0][0];
+    expect((call.detail!.status as string).length).toBeLessThanOrEqual(200);
+  });
+});
+
+describe("a mutation that throws is recorded as an error, not a silent success", () => {
+  it("sets outcome: 'error' and returns an ambiguous, non-leaking message", async () => {
+    publishLesson.mockRejectedValue(new Error("connection terminated unexpectedly: password=hunter2"));
+    const res = await setStatusAction(null, form({ id: "m1-01", status: "published" }));
+    expect(res.ok).toBe(false);
+    expect(res.message).not.toContain("hunter2");
+    expect(recordAdminAction).toHaveBeenCalledWith(expect.objectContaining({ outcome: "error" }));
+  });
+});
+
+describe("rejected vs noop outcomes stay distinct", () => {
+  it("a validation refusal (bad status) records 'rejected', not 'noop'", async () => {
+    await setStatusAction(null, form({ id: "m1-01", status: "live" }));
+    expect(recordAdminAction).toHaveBeenCalledWith(expect.objectContaining({ outcome: "rejected" }));
+  });
+
+  it("a genuine no-op (no draft pending) records 'noop', not 'rejected'", async () => {
+    getLessonDraftBody.mockResolvedValue(null);
+    await promoteAction(null, form({ id: "m1-01", fingerprint: "x" }));
+    expect(recordAdminAction).toHaveBeenCalledWith(expect.objectContaining({ outcome: "noop" }));
   });
 });
