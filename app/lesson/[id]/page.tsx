@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCatalog, getLessonMeta, getLessonBody, getLessonMedia } from "@/lib/content/queries";
 import { inlineText } from "@/lib/content/blocks";
+import { figuresFromMedia } from "@/lib/content/figures";
 import { navFrom } from "@/lib/nav";
 import { canRead } from "@/lib/access";
 import { accessContext } from "@/lib/db/access-queries";
@@ -83,14 +84,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
   const [blocks, groups] = await Promise.all([getLessonBody(id), getLessonMedia(id)]);
   if (!blocks) notFound();
 
-  const figures = groups.map((g) => ({
-    src: `/api/media/${g.original.id}`,
-    webp: g.webp ? `/api/media/${g.webp.id}` : undefined,
-    avif: g.avif ? `/api/media/${g.avif.id}` : undefined,
-    width: g.original.width,
-    height: g.original.height,
-    alt: g.original.alt,
-  }));
+  const figures = figuresFromMedia(groups);
 
   return (
     <article className="lesson">
