@@ -4,10 +4,13 @@ import { revalidateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { createWriter } from "./write";
 import { accessContext } from "@/lib/db/access-queries";
+import { assertAdmin } from "@/lib/admin/guard";
 
+// Delegates to the single definition in lib/admin/guard.ts so pages, action
+// wrappers and these mutations cannot drift apart. Still NOT exported: this
+// module is "use server", and an exported helper is a public endpoint.
 async function requireAdmin(): Promise<void> {
-  const ctx = await accessContext();
-  if (!ctx.isAdmin) throw new Error("admin only");
+  await assertAdmin();
 }
 
 /**
