@@ -1,0 +1,36 @@
+.console {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 32px 80px;
+}
+.sub {
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.empty {
+  color: var(--dim);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 28px;
+  font-size: 14px;
+}
+.table th,
+.table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+.badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--gold) 22%, transparent);
+  color: var(--gold);
+  font-size: 12px;
+}

@@ -1,4 +1,4 @@
-import { asc } from "drizzle-orm";
+import { asc, isNotNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { lessons } from "@/lib/db/schema";
 import type { ConsoleLessonRow } from "./group-lessons";
@@ -18,8 +18,11 @@ import type { ConsoleLessonRow } from "./group-lessons";
  * scripts/** must not — lib/db/index.ts:1 is `import "server-only"`, a package
  * that is not installed and only Next and Vitest alias.
  *
- * Ordering matches admin-queries: monthId, then ord, then id. ord is per-month,
- * so ordering by ord alone would interleave months.
+ * Ordering leads with sectionId, unlike admin-queries' monthId-first clause:
+ * this query is cross-section (the console groups all sections in one page),
+ * so sectionId must lead or rows from different sections would interleave.
+ * Then monthId, then ord (per-month, so ordering by ord alone would
+ * interleave months), then id.
  */
 export async function listLessonsForConsole(): Promise<ConsoleLessonRow[]> {
   const rows = await db
@@ -28,7 +31,7 @@ export async function listLessonsForConsole(): Promise<ConsoleLessonRow[]> {
       title: lessons.title,
       access: lessons.access,
       status: lessons.status,
-      bodyDraft: lessons.bodyDraft,
+      hasDraft: isNotNull(lessons.bodyDraft).mapWith(Boolean),
       writeOrigin: lessons.writeOrigin,
       sourceRef: lessons.sourceRef,
       sectionId: lessons.sectionId,
@@ -43,7 +46,7 @@ export async function listLessonsForConsole(): Promise<ConsoleLessonRow[]> {
     title: r.title,
     access: r.access,
     status: r.status,
-    hasDraft: r.bodyDraft != null,
+    hasDraft: r.hasDraft,
     writeOrigin: r.writeOrigin,
     sourceRef: r.sourceRef ?? null,
     sectionId: r.sectionId,
