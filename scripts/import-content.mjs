@@ -19,10 +19,11 @@ registerHooks({
 const { drizzle } = await import("drizzle-orm/neon-http");
 const { neon } = await import("@neondatabase/serverless");
 const { eq, sql, inArray } = await import("drizzle-orm");
-const { readContentTree } = await import("../lib/content/import.ts");
+const { readContentTree, matchQuestionIds } = await import("../lib/content/import.ts");
 const { assertBlocks } = await import("../lib/content/blocks.ts");
 const { sections, months, lessons, quizQuestions } = await import("../lib/db/schema.ts");
 const { importDecision } = await import("../lib/content/import-guard.ts");
+const { createWriter } = await import("../lib/content/write.ts");
 
 const dryRun = process.argv.includes("--dry-run");
 const force = process.argv.includes("--force");
@@ -61,6 +62,14 @@ if (dryRun) {
 }
 
 const db = drizzle(neon(process.env.DATABASE_URL));
+
+// The quiz write reuses lib/content/write.ts's upsertQuiz rather than
+// reimplementing it: it already solves the id-preserving upsert (see below)
+// AND the atomic negative-ord park that a reorder needs, because
+// `quiz_questions_lesson_ord_uq` is unique on (lesson_id, ord) and assigning
+// final ords directly collides mid-sequence. `revalidate` is a no-op: this is
+// a CLI, with no Next request context and no cache to purge.
+const writer = createWriter({ db, revalidate: async () => {} });
 
 for (const s of plan.sections) {
   await db.insert(sections).values(s).onConflictDoUpdate({ target: sections.id, set: s });
@@ -106,9 +115,31 @@ for (const l of plan.lessons) {
     .values({ ...values, status: "published", access: "members", publishedAt: new Date() })
     .onConflictDoUpdate({ target: lessons.id, set: values });
 
-  await db.delete(quizQuestions).where(eq(quizQuestions.lessonId, l.id));
-  if (questions.length) {
-    await db.insert(quizQuestions).values(questions.map((q) => ({ ...q, lessonId: l.id })));
+  // ID-PRESERVING QUIZ WRITE. This used to be
+  // `delete where lessonId` + `insert`, which handed every question a fresh
+  // uuid on every import. `quiz_results` references `quiz_questions.id` with
+  // `onDelete: cascade` and has NO lesson column, so that wholesale swap
+  // silently destroyed every saved user answer for the lesson — a data-loss
+  // bug that was invisible only because the table was still empty.
+  //
+  // Identity is matched on the question TEXT (matchQuestionIds documents why
+  // the ordinal is the wrong key), then handed to upsertQuiz, which UPDATEs
+  // the matched rows in place and INSERTs only genuinely new ones.
+  //
+  // deleteMissing = true: content/ is the source of truth for an import, so a
+  // question deleted from quiz.js must leave the database too. Its answers
+  // cascade, which is correct — the question no longer exists — and is the
+  // only path here that touches quiz_results at all.
+  const existingQs = await db
+    .select({ id: quizQuestions.id, q: quizQuestions.q })
+    .from(quizQuestions)
+    .where(eq(quizQuestions.lessonId, l.id))
+    .orderBy(quizQuestions.ord);
+  const stats = await writer.upsertQuiz(l.id, matchQuestionIds(existingQs, questions), true);
+  if (stats.cascadeAnswers) {
+    console.warn(
+      `${l.id}: ${stats.deleted} question(s) removed from content/, discarding ${stats.cascadeAnswers} saved answer(s)`,
+    );
   }
 }
 if (skipped) console.log(`skipped ${skipped} lesson(s) that were not writable`);

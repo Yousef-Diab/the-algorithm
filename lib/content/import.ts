@@ -34,6 +34,72 @@ export interface ImportPlan {
   lessons: PlannedLesson[];
 }
 
+/** A question ready for `upsertQuiz`: the planned payload plus a matched id. */
+export interface IdentifiedQuestion {
+  id?: string;
+  q: string;
+  options: string[];
+  answer: number;
+  explanation: string;
+}
+
+/**
+ * Pairs the id-less questions parsed from `content/**​/quiz.js` against the
+ * question ids already in the database, so a re-import can UPDATE rows in
+ * place instead of delete-and-reinsert.
+ *
+ * WHY THIS EXISTS: `quiz_results` references `quiz_questions.id` with
+ * `onDelete: cascade` and has no lesson column, so regenerating an id destroys
+ * every saved answer for that question. The importer used to do exactly that
+ * on every lesson it wrote.
+ *
+ * THE IDENTITY KEY IS THE QUESTION TEXT, deliberately. `quiz.js` carries no
+ * ids, so identity must be inferred, and the only two candidates are the
+ * question's text and its ordinal:
+ *
+ *  - **Ordinal** survives a rewording, but inserting or removing a question
+ *    shifts every ordinal after it, so each id would be re-pointed at
+ *    different prose and every stored answer silently re-attributed to the
+ *    wrong question. That is precisely the failure `schema.ts`'s invariant 4
+ *    ("never on a question index") exists to prevent — disqualifying.
+ *  - **Text** survives reorders, insertions and removals exactly. Its only
+ *    loss case is a genuinely reworded question, whose id is dropped and whose
+ *    answers cascade away — and a reworded question IS a different question,
+ *    so those answers were about prose that no longer exists.
+ *
+ * So the worst case here is bounded, honest loss on the one question actually
+ * edited, versus silent corruption across the whole lesson. Matching is greedy
+ * and in order: each existing row is consumed at most once, so duplicated
+ * question text cannot hand the same id to two questions (`assertQuiz` rejects
+ * that anyway) and pairs off in the order both sides list them.
+ */
+export function matchQuestionIds(
+  existing: { id: string; q: string }[],
+  incoming: PlannedQuestion[],
+): IdentifiedQuestion[] {
+  const byText = new Map<string, string[]>();
+  for (const row of existing) {
+    const bucket = byText.get(row.q);
+    if (bucket) bucket.push(row.id);
+    else byText.set(row.q, [row.id]);
+  }
+  // The payload is built field by field rather than spread-minus-ord: it must
+  // carry EXACTLY what assertQuiz accepts, so a field later added to
+  // PlannedQuestion cannot leak into the quiz write and be rejected there.
+  // `ord` in particular is deliberately dropped — upsertQuiz derives ord from
+  // array position, which is the same value and the only one it trusts.
+  return incoming.map((question) => {
+    const payload = {
+      q: question.q,
+      options: question.options,
+      answer: question.answer,
+      explanation: question.explanation,
+    };
+    const id = byText.get(question.q)?.shift();
+    return id ? { id, ...payload } : payload;
+  });
+}
+
 const REVIEW_ORD = 1000;
 const EXAM_ORD = 1001;
 

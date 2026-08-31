@@ -123,21 +123,48 @@ promoting makes the body the live body; status controls whether the lesson
 is publicly reachable at all. A newly created lesson (`create_lesson`)
 starts as an unpublished draft, so it needs both steps before anyone sees it.
 
-## Re-importing from `content/` destroys saved quiz answers
+## Re-importing from `content/` preserves saved quiz answers
 
 `pnpm content:import` refuses to touch a lesson the CMS has claimed
 (`write_origin='cms'`) or one with a pending draft, and it no longer
 re-publishes a lesson a human pulled down — `status`, like `access` and
 `published_at`, is set only when the row is first inserted.
 
-But for each lesson it *does* write, the importer **deletes every
-`quiz_questions` row for that lesson and re-inserts them**, so every
-`question_id` is regenerated. `quiz_results` keys on `question_id`, so any
-saved user answers for those questions are orphaned — the data-loss path the
-`upsert_quiz` tool exists to avoid. This is harmless today (`quiz_results` is
-empty), and it is the reason `upsert_quiz`, not the importer, is the way to
-edit a quiz once the app has users. Treat `content:import` as a bulk seeding
-tool, not an editing one.
+For each lesson it *does* write, the quiz is an **id-preserving upsert**, not
+a delete-and-reinsert. The importer reads that lesson's existing
+`quiz_questions` rows, matches them against the questions parsed from
+`quiz.js`, and hands the pairing to the same `upsertQuiz` the `upsert_quiz`
+tool uses — so matched rows are UPDATEd in place, keeping their
+`question_id`, and only genuinely new questions are inserted. **Re-importing
+unchanged content leaves every `question_id` untouched**, so every
+`quiz_results` row survives. (This was not always true: the importer used to
+delete every row for the lesson and re-insert it, regenerating every id and
+cascading away every saved answer. It was harmless only because
+`quiz_results` was still empty.)
+
+Identity is matched on the **question text**, because `quiz.js` carries no
+ids and identity has to be inferred from something. Text survives reorders,
+insertions and removals exactly. The ordinal would not: inserting or removing
+a question shifts every ordinal after it, which would re-point each id at
+different prose and silently re-attribute stored answers to the wrong
+question — the failure `schema.ts`'s invariant 4 exists to prevent.
+
+Two consequences worth knowing:
+
+- **Rewording a question drops its answers.** A reworded question does not
+  match any existing text, so it is inserted fresh and the old row is removed,
+  cascading its `quiz_results`. That is the intended trade: those answers were
+  given to prose that no longer exists. Fixing a typo therefore costs that one
+  question's answer history.
+- **Deleting a question from `quiz.js` deletes it from the database.**
+  `content/` is the source of truth for an import, so the row goes and its
+  answers cascade. The importer prints a warning naming the lesson and the
+  number of answers discarded — it is never silent.
+
+Both are bounded, reported, and scoped to the question actually edited.
+`upsert_quiz` remains the right tool for editing a live quiz question by
+question, since it can change text while keeping the id; `content:import`
+remains the bulk path from `content/`.
 
 ## Migration 0004
 

@@ -22,6 +22,14 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["tests/integration/**/*.test.{ts,tsx}"],
+    // ONE FILE AT A TIME. Every file here writes to the same real database,
+    // and more than one targets the same fixture lesson (m1-01): write-db
+    // rewords and adds questions to its quiz, import-db re-imports it and
+    // asserts its question ids are untouched. Run in parallel — Vitest's
+    // default across files — each file's beforeAll snapshot is invalidated
+    // by the other file's writes mid-run, and the failure looks like a bug
+    // in the code under test rather than a test collision.
+    fileParallelism: false,
   },
   resolve: {
     alias: {
