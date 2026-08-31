@@ -17,7 +17,10 @@ import styles from "@/app/admin/admin.module.css";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = { robots: { index: false, follow: false } };
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  return { title: `Admin — ${id} — The Algorithm`, robots: { index: false, follow: false } };
+}
 
 /**
  * assertBlocks throws on malformed JSON. Catching it is load-bearing: an
@@ -46,6 +49,12 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
   const hasDraft = row.bodyDraft != null;
   const draft = hasDraft ? parse(row.bodyDraft) : null;
   const rows = live.blocks && draft?.blocks ? diffBlocks(live.blocks, draft.blocks) : null;
+  // Gated on `rows`, NOT on `draft?.blocks`: `rows` is non-null only when BOTH
+  // the live body and the draft parsed and the side-by-side actually rendered.
+  // Gating on the draft alone let a malformed LIVE body promote a draft the
+  // page had shown nothing of — that was C1. Do not "simplify" this back to
+  // `draft?.blocks`.
+  const canPromote = Boolean(rows);
 
   return (
     <div className={styles.console}>
@@ -63,7 +72,8 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
         {hasDraft ? (<><dt>source_ref_draft</dt><dd>{row.sourceRefDraft ?? "—"}</dd></>) : null}
       </dl>
 
-      <section className={styles.actions}>
+      <section className={styles.actions} aria-labelledby="lesson-actions-heading">
+        <h2 id="lesson-actions-heading">Actions</h2>
         <ActionButton action={setStatusAction} label="Publish" hidden={{ id: row.id, status: "published" }} />
         <ActionButton action={setStatusAction} label="Unpublish" hidden={{ id: row.id, status: "draft" }} />
         <ActionButton action={setAccessAction} label="Access: free" hidden={{ id: row.id, access: "free" }} />
@@ -77,8 +87,9 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
         </p>
       ) : (
         <>
-          <section className={styles.actions}>
-            {draft?.blocks ? (
+          <section className={styles.actions} aria-labelledby="draft-actions-heading">
+            <h2 id="draft-actions-heading">Draft actions</h2>
+            {canPromote && draft?.blocks ? (
               <ActionButton
                 action={promoteAction}
                 label="Promote draft"
@@ -86,7 +97,8 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
               />
             ) : (
               <p className={styles.err} data-testid="promote-blocked">
-                Promote is disabled: the draft does not parse, so this page could not render it.
+                Promote is disabled: the draft did not parse, or the live body did not, so no
+                side-by-side comparison could be rendered.
               </p>
             )}
             <DiscardForm id={row.id} />
@@ -95,21 +107,29 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
           <div className={styles.columns} data-testid="diff">
             <div>
               <h2>Live</h2>
-              {live.error ? <p className={styles.err}>{live.error}</p> : null}
+              {live.error ? (
+                <p className={styles.err}>{live.error}</p>
+              ) : !rows && live.blocks ? (
+                <BlockRenderer blocks={live.blocks} lessonId={row.id} figures={figures} />
+              ) : null}
             </div>
             <div>
               <h2>Draft</h2>
-              {draft?.error ? <p className={styles.err}>{draft.error}</p> : null}
+              {draft?.error ? (
+                <p className={styles.err}>{draft.error}</p>
+              ) : !rows && draft?.blocks ? (
+                <BlockRenderer blocks={draft.blocks} lessonId={row.id} figures={figures} />
+              ) : null}
             </div>
 
             {rows?.map((r, i) => (
               <div key={i} className={styles.pair} data-tag={r.tag}>
                 <div className={`${styles.cell} ${styles[r.tag]}`}>
-                  <span className={styles.tag}>{r.tag}</span>
+                  <span className={styles.tag}>live · {r.tag}</span>
                   {r.live ? <BlockRenderer blocks={[r.live]} lessonId={row.id} figures={figures} /> : null}
                 </div>
                 <div className={`${styles.cell} ${styles[r.tag]}`}>
-                  <span className={styles.tag}>{r.tag}</span>
+                  <span className={styles.tag}>draft · {r.tag}</span>
                   {r.draft ? <BlockRenderer blocks={[r.draft]} lessonId={row.id} figures={figures} /> : null}
                 </div>
               </div>

@@ -30,11 +30,13 @@ export function ActionButton({
       <button type="submit" disabled={pending} className={styles.button}>
         {pending ? "working…" : label}
       </button>
-      {state ? (
-        <span className={state.ok ? styles.ok : styles.err} role="status" data-testid="action-result">
-          {state.message}
-        </span>
-      ) : null}
+      {/* Rendered unconditionally, even when empty: a live region must exist
+          before its content changes for assistive tech to reliably announce
+          the update — mounting it only once `state` is set means the very
+          first result can go unannounced. */}
+      <span className={state?.ok ? styles.ok : styles.err} role="status" data-testid="action-result">
+        {state?.message ?? ""}
+      </span>
     </form>
   );
 }

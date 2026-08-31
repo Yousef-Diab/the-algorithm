@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import type { ActionResult } from "@/lib/admin/action-result";
 import { discardAction } from "@/app/admin/actions";
 import styles from "./admin-forms.module.css";
 
@@ -30,11 +29,11 @@ export function DiscardForm({ id }: { id: string }) {
       <button type="submit" disabled={pending || typed !== id} className={styles.danger}>
         {pending ? "discarding…" : "Discard draft"}
       </button>
-      {state ? (
-        <span className={state.ok ? styles.ok : styles.err} role="status" data-testid="discard-result">
-          {state.message}
-        </span>
-      ) : null}
+      {/* Rendered unconditionally, even when empty — see ActionButton.tsx for
+          why a live region must exist before its content changes. */}
+      <span className={state?.ok ? styles.ok : styles.err} role="status" data-testid="discard-result">
+        {state?.message ?? ""}
+      </span>
     </form>
   );
 }
