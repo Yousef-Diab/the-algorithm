@@ -14,6 +14,7 @@ export function ActionButton({
   label,
   hidden = {},
   disabled = false,
+  describedBy,
   testId = "action-result",
 }: {
   action: (prev: ActionResult | null, form: FormData) => Promise<ActionResult>;
@@ -25,6 +26,10 @@ export function ActionButton({
    *  nowhere to land, so `pending` never clears and the status region never
    *  paints. Keep the component mounted; gate it here. */
   disabled?: boolean;
+  /** Id of an element stating WHY the button is disabled. A disabled control is
+   *  out of the tab order and announces no reason by itself, so the caller
+   *  points at its own explanation instead of leaving one unlinked nearby. */
+  describedBy?: string;
   /** Distinct id for the result region. Every ActionButton renders a permanent
    *  role="status" span, so a shared testid matches all of them and breaks any
    *  strict-mode locator. Give a button its own when a test must address it. */
@@ -39,7 +44,12 @@ export function ActionButton({
       {Object.entries(hidden).map(([k, v]) => (
         <input key={k} type="hidden" name={k} value={v} />
       ))}
-      <button type="submit" disabled={pending || disabled} className={styles.button}>
+      <button
+        type="submit"
+        disabled={pending || disabled}
+        aria-describedby={describedBy}
+        className={styles.button}
+      >
         {pending ? "working…" : label}
       </button>
       {/* Rendered unconditionally, even when empty: a live region must exist

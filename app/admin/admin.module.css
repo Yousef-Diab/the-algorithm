@@ -97,3 +97,13 @@
   flex-basis: 100%;
   margin: 0;
 }
+
+/* The "no draft pending" note inside the always-mounted Draft actions section
+   (see app/admin/lesson/[id]/page.tsx). .actions is a flex row, so without
+   flex-basis the note would sit inline between the controls it describes
+   instead of on its own line above them. Colour reuses an existing token. */
+.note {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--dim);
+}

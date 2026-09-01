@@ -17,6 +17,10 @@ import styles from "@/app/admin/admin.module.css";
 
 export const dynamic = "force-dynamic";
 
+/** Ids for the aria-describedby wiring on the always-mounted draft controls. */
+const NO_DRAFT_NOTE_ID = "draft-actions-unavailable";
+const PROMOTE_BLOCKED_ID = "promote-blocked-reason";
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   return { title: `Admin — ${id} — The Algorithm`, robots: { index: false, follow: false } };
@@ -95,26 +99,51 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
           of the conditional, changing nothing else, made the hang vanish.) */}
       <section className={styles.actions} aria-labelledby="draft-actions-heading">
         <h2 id="draft-actions-heading">Draft actions</h2>
+        {/* Says WHY the controls below are dead. A `disabled` control is out of
+            the tab order and announces no reason on its own, and the page's
+            `no-draft` paragraph is a sibling AFTER this section with no
+            programmatic link to it — so this note lives inside the section and
+            is wired to both controls via aria-describedby. */}
+        {!hasDraft ? (
+          <p id={NO_DRAFT_NOTE_ID} className={styles.note}>
+            No draft pending — these actions are unavailable.
+          </p>
+        ) : null}
         <ActionButton
           action={promoteAction}
           label="Promote draft"
-          // fingerprint() is over `draft.blocks` (assertBlocks output), never
-          // the raw row.bodyDraft — the server hashes the normalised form.
-          hidden={{ id: row.id, fingerprint: draft?.blocks ? fingerprint(draft.blocks) : "" }}
+          // Two conjuncts, both load-bearing:
+          //   `canPromote`  — do NOT drop this. `rows` (hence canPromote) is
+          //     null when the LIVE body failed to parse even though the DRAFT
+          //     parsed fine, and in that case `draft.blocks` alone would ship a
+          //     VALID sha256 to the client. `disabled` is then the only thing
+          //     standing between a devtools attribute-delete and promoting a
+          //     body this console could not compare — and the server does not
+          //     re-check it (promoteAction never inspects row.body). Withholding
+          //     the fingerprint puts the C1 gate back on something unforgeable.
+          //     No-op whenever the button is enabled.
+          //   `draft?.blocks` — fingerprint() is over assertBlocks output, never
+          //     the raw row.bodyDraft; the server hashes the normalised form.
+          hidden={{ id: row.id, fingerprint: canPromote && draft?.blocks ? fingerprint(draft.blocks) : "" }}
           // Same gate as before, just expressed as `disabled`: `canPromote` is
           // Boolean(rows), so promote stays impossible unless BOTH bodies
           // parsed and the side-by-side actually rendered. It is also false
           // when there is no draft at all.
           disabled={!canPromote}
+          describedBy={!hasDraft ? NO_DRAFT_NOTE_ID : !canPromote ? PROMOTE_BLOCKED_ID : undefined}
           testId="promote-result"
         />
         {hasDraft && !canPromote ? (
-          <p className={styles.err} data-testid="promote-blocked">
+          <p id={PROMOTE_BLOCKED_ID} className={styles.err} data-testid="promote-blocked">
             Promote is disabled: the draft did not parse, or the live body did not, so no
             side-by-side comparison could be rendered.
           </p>
         ) : null}
-        <DiscardForm id={row.id} disabled={!hasDraft} />
+        <DiscardForm
+          id={row.id}
+          disabled={!hasDraft}
+          describedBy={!hasDraft ? NO_DRAFT_NOTE_ID : undefined}
+        />
       </section>
 
       {!hasDraft ? (
@@ -122,39 +151,37 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
           No draft is pending for this lesson.
         </p>
       ) : (
-        <>
-          <div className={styles.columns} data-testid="diff">
-            <div>
-              <h2>Live</h2>
-              {live.error ? (
-                <p className={styles.err}>{live.error}</p>
-              ) : !rows && live.blocks ? (
-                <BlockRenderer blocks={live.blocks} lessonId={row.id} figures={figures} />
-              ) : null}
-            </div>
-            <div>
-              <h2>Draft</h2>
-              {draft?.error ? (
-                <p className={styles.err}>{draft.error}</p>
-              ) : !rows && draft?.blocks ? (
-                <BlockRenderer blocks={draft.blocks} lessonId={row.id} figures={figures} />
-              ) : null}
-            </div>
-
-            {rows?.map((r, i) => (
-              <div key={i} className={styles.pair} data-tag={r.tag}>
-                <div className={`${styles.cell} ${styles[r.tag]}`}>
-                  <span className={styles.tag}>live · {r.tag}</span>
-                  {r.live ? <BlockRenderer blocks={[r.live]} lessonId={row.id} figures={figures} /> : null}
-                </div>
-                <div className={`${styles.cell} ${styles[r.tag]}`}>
-                  <span className={styles.tag}>draft · {r.tag}</span>
-                  {r.draft ? <BlockRenderer blocks={[r.draft]} lessonId={row.id} figures={figures} /> : null}
-                </div>
-              </div>
-            ))}
+        <div className={styles.columns} data-testid="diff">
+          <div>
+            <h2>Live</h2>
+            {live.error ? (
+              <p className={styles.err}>{live.error}</p>
+            ) : !rows && live.blocks ? (
+              <BlockRenderer blocks={live.blocks} lessonId={row.id} figures={figures} />
+            ) : null}
           </div>
-        </>
+          <div>
+            <h2>Draft</h2>
+            {draft?.error ? (
+              <p className={styles.err}>{draft.error}</p>
+            ) : !rows && draft?.blocks ? (
+              <BlockRenderer blocks={draft.blocks} lessonId={row.id} figures={figures} />
+            ) : null}
+          </div>
+
+          {rows?.map((r, i) => (
+            <div key={i} className={styles.pair} data-tag={r.tag}>
+              <div className={`${styles.cell} ${styles[r.tag]}`}>
+                <span className={styles.tag}>live · {r.tag}</span>
+                {r.live ? <BlockRenderer blocks={[r.live]} lessonId={row.id} figures={figures} /> : null}
+              </div>
+              <div className={`${styles.cell} ${styles[r.tag]}`}>
+                <span className={styles.tag}>draft · {r.tag}</span>
+                {r.draft ? <BlockRenderer blocks={[r.draft]} lessonId={row.id} figures={figures} /> : null}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       {!hasDraft && live.blocks ? (
