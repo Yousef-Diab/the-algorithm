@@ -164,3 +164,52 @@ export async function plantDraftExamRow(): Promise<{ id: string; cleanup: () => 
     },
   };
 }
+
+const PENDING_PROBE_ID = "e2e-pending-draft-probe";
+const PENDING_PROBE_SLUG = "e2e-pending-draft-probe-do-not-use";
+
+/**
+ * A throwaway lesson that genuinely HAS a pending draft — body, body_draft and
+ * source_ref_draft all set — so it appears under the console's Pending review
+ * group. plantDraftLessonRow does NOT set body_draft, so it cannot serve here.
+ *
+ * Its own id/slug, distinct from the other two probes: lessons.slug is unique
+ * and playwright.config.ts runs fullyParallel.
+ *
+ * status is 'draft' from creation to deletion and MUST stay that way —
+ * catalogRows() hard-codes EXPECTED_ROW_COUNT and throws on mismatch, so a
+ * momentarily-published probe would race unrelated specs.
+ *
+ * cleanup() also deletes the row's admin_actions: the console spec promotes and
+ * discards, and the project gate requires that table back at its starting count.
+ */
+export async function plantPendingDraftRow(): Promise<{ id: string; cleanup: () => Promise<void> }> {
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not set — see .env.local");
+  const sql = neon(url);
+
+  const live = JSON.stringify([{ t: "p", c: [{ t: "text", v: "LIVE probe paragraph" }] }]);
+  const pending = JSON.stringify([
+    { t: "p", c: [{ t: "text", v: "LIVE probe paragraph" }] },
+    { t: "p", c: [{ t: "text", v: "DRAFT probe paragraph" }] },
+  ]);
+
+  await sql`
+    insert into lessons (id, section_id, month_id, slug, title, heading, crumb, ord, kind, access, status,
+                         body, body_draft, source_ref, source_ref_draft, write_origin)
+    values (
+      ${PENDING_PROBE_ID}, 's1', null, ${PENDING_PROBE_SLUG},
+      'E2E Pending Draft Probe (throwaway)', 'E2E Pending Draft Probe', 'E2E · Pending Draft Probe',
+      999998, 'lesson', 'free', 'draft',
+      ${live}::jsonb, ${pending}::jsonb, 'notes/ict-core/INDEX.md', 'notes/ict-core/INDEX.md', 'cms'
+    )
+  `;
+
+  return {
+    id: PENDING_PROBE_ID,
+    cleanup: async () => {
+      await sql`delete from admin_actions where lesson_id = ${PENDING_PROBE_ID}`;
+      await sql`delete from lessons where id = ${PENDING_PROBE_ID}`;
+    },
+  };
+}
