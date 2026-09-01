@@ -81,30 +81,48 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
         <ActionButton action={setAccessAction} label="Access: admin" hidden={{ id: row.id, access: "admin" }} />
       </section>
 
+      {/* Rendered UNCONDITIONALLY, and "nothing to act on" is expressed by
+          DISABLING the buttons rather than removing them. Both of these forms
+          own an in-flight `useActionState`, and a successful promote/discard
+          flips `hasDraft` to false: when they lived inside a `hasDraft`
+          conditional, the Server Action's own re-render unmounted the
+          component that was waiting for that action's result. The result then
+          had nowhere to land — the button stuck on "working…" forever and the
+          role="status" region never painted, even though the mutation had
+          already committed. At a publish gate that silence is the worst
+          possible outcome, so these two components must stay mounted across
+          the state change they cause. (Verified: moving the promote button out
+          of the conditional, changing nothing else, made the hang vanish.) */}
+      <section className={styles.actions} aria-labelledby="draft-actions-heading">
+        <h2 id="draft-actions-heading">Draft actions</h2>
+        <ActionButton
+          action={promoteAction}
+          label="Promote draft"
+          // fingerprint() is over `draft.blocks` (assertBlocks output), never
+          // the raw row.bodyDraft — the server hashes the normalised form.
+          hidden={{ id: row.id, fingerprint: draft?.blocks ? fingerprint(draft.blocks) : "" }}
+          // Same gate as before, just expressed as `disabled`: `canPromote` is
+          // Boolean(rows), so promote stays impossible unless BOTH bodies
+          // parsed and the side-by-side actually rendered. It is also false
+          // when there is no draft at all.
+          disabled={!canPromote}
+          testId="promote-result"
+        />
+        {hasDraft && !canPromote ? (
+          <p className={styles.err} data-testid="promote-blocked">
+            Promote is disabled: the draft did not parse, or the live body did not, so no
+            side-by-side comparison could be rendered.
+          </p>
+        ) : null}
+        <DiscardForm id={row.id} disabled={!hasDraft} />
+      </section>
+
       {!hasDraft ? (
         <p className={styles.empty} data-testid="no-draft">
           No draft is pending for this lesson.
         </p>
       ) : (
         <>
-          <section className={styles.actions} aria-labelledby="draft-actions-heading">
-            <h2 id="draft-actions-heading">Draft actions</h2>
-            {canPromote && draft?.blocks ? (
-              <ActionButton
-                action={promoteAction}
-                label="Promote draft"
-                hidden={{ id: row.id, fingerprint: fingerprint(draft.blocks) }}
-                testId="promote-result"
-              />
-            ) : (
-              <p className={styles.err} data-testid="promote-blocked">
-                Promote is disabled: the draft did not parse, or the live body did not, so no
-                side-by-side comparison could be rendered.
-              </p>
-            )}
-            <DiscardForm id={row.id} />
-          </section>
-
           <div className={styles.columns} data-testid="diff">
             <div>
               <h2>Live</h2>

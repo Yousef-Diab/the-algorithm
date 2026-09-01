@@ -13,11 +13,18 @@ export function ActionButton({
   action,
   label,
   hidden = {},
+  disabled = false,
   testId = "action-result",
 }: {
   action: (prev: ActionResult | null, form: FormData) => Promise<ActionResult>;
   label: string;
   hidden?: Record<string, string>;
+  /** "There is nothing to act on." A caller expresses that by DISABLING the
+   *  button, never by unmounting this component: a Server Action whose own
+   *  re-render removes the owner of its `useActionState` leaves the result
+   *  nowhere to land, so `pending` never clears and the status region never
+   *  paints. Keep the component mounted; gate it here. */
+  disabled?: boolean;
   /** Distinct id for the result region. Every ActionButton renders a permanent
    *  role="status" span, so a shared testid matches all of them and breaks any
    *  strict-mode locator. Give a button its own when a test must address it. */
@@ -32,7 +39,7 @@ export function ActionButton({
       {Object.entries(hidden).map(([k, v]) => (
         <input key={k} type="hidden" name={k} value={v} />
       ))}
-      <button type="submit" disabled={pending} className={styles.button}>
+      <button type="submit" disabled={pending || disabled} className={styles.button}>
         {pending ? "working…" : label}
       </button>
       {/* Rendered unconditionally, even when empty: a live region must exist

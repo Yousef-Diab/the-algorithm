@@ -9,7 +9,15 @@ import styles from "./admin-forms.module.css";
  * source_ref_draft and the prose is gone. Hence typing the id, not a click.
  * The server re-checks the confirmation too; this is convenience, not the gate.
  */
-export function DiscardForm({ id }: { id: string }) {
+/**
+ * `disabled` means "no draft is pending". The caller must express that by
+ * disabling this form rather than unmounting it: a successful discard flips
+ * the page's `hasDraft` to false, and if that re-render removed this
+ * component, the discard's own result would have nowhere to land — the button
+ * would stick on "discarding…" and the status region would stay empty even
+ * though the draft was already gone.
+ */
+export function DiscardForm({ id, disabled = false }: { id: string; disabled?: boolean }) {
   const [state, formAction, pending] = useActionState(discardAction, null);
   const [typed, setTyped] = useState("");
   return (
@@ -25,8 +33,12 @@ export function DiscardForm({ id }: { id: string }) {
         onChange={(e) => setTyped(e.target.value)}
         className={styles.input}
         autoComplete="off"
+        disabled={disabled}
       />
-      <button type="submit" disabled={pending || typed !== id} className={styles.danger}>
+      {/* The typed-id confirmation is still required, and the server re-checks
+          it independently (app/admin/actions.ts rejects a mismatch and an
+          empty id) — this disabled state is convenience, not the gate. */}
+      <button type="submit" disabled={disabled || pending || typed !== id} className={styles.danger}>
         {pending ? "discarding…" : "Discard draft"}
       </button>
       {/* Rendered unconditionally, even when empty — see ActionButton.tsx for
