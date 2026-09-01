@@ -1,12 +1,25 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * ANONYMOUS spec, so its target lesson must actually be access='free'.
+ *
+ * Retargeted from m4-03 (2026-09-01): section s1 is no longer uniformly free —
+ * only m1-01..m1-08 are, the rest are deliberately access='members'. m4-03 is
+ * now gated, so an anonymous request gets the locked body and NO figures, and
+ * this spec failed for a correct reason.
+ *
+ * m1-07 is free, published, carries 5 charts (>2, so the gallery renders), and
+ * is not a fixture for any other suite — unlike m1-01 (the integration tests'
+ * fixture) or m1-02 (gating.spec's access-flip target).
+ */
+
 test("a lesson's charts load through the media route", async ({ page }) => {
   const failed: string[] = [];
   page.on("response", (r) => {
     if (r.url().includes("/api/media/") && r.status() >= 400) failed.push(`${r.status()} ${r.url()}`);
   });
 
-  await page.goto("/lesson/m4-03");
+  await page.goto("/lesson/m1-07");
   const imgs = page.locator("figure picture img");
   await expect(imgs.first()).toBeVisible();
 
@@ -40,7 +53,7 @@ test("the media route 404s an unknown or malformed id", async ({ request }) => {
 });
 
 test("intrinsic dimensions are emitted so there is no layout shift", async ({ page }) => {
-  await page.goto("/lesson/m4-03");
+  await page.goto("/lesson/m1-07");
   const attrs = await page.locator("figure picture img").first().evaluate((el) => ({
     w: el.getAttribute("width"),
     h: el.getAttribute("height"),

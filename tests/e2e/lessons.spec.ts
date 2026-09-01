@@ -11,10 +11,16 @@ test("a lesson renders its prose from the database with no console errors", asyn
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(String(e)));
 
-  await page.goto("/lesson/m4-03");
-  await expect(page.locator(".lesson-hero h1")).toHaveText("Orderblocks");
-  await expect(page.locator(".lesson-hero .crumb")).toHaveText("Month 4 · Lesson 3");
-  await expect(page.locator("article.lesson h3").first()).toHaveText("Definition & Validation");
+  // ANONYMOUS request, so the target must actually be access='free'.
+  // Retargeted from m4-03 (2026-09-01): s1 is no longer uniformly free — only
+  // m1-01..m1-08 are, the rest is deliberately access='members', so m4-03 now
+  // renders the locked body ("This lesson is for members") and this test failed
+  // for a correct reason. m1-07 is free and matches this test's shape: exactly
+  // one callout, a video link, and an h3.
+  await page.goto("/lesson/m1-07");
+  await expect(page.locator(".lesson-hero h1")).toHaveText("Liquidity Runs");
+  await expect(page.locator(".lesson-hero .crumb")).toHaveText("Month 1 · Lesson 7");
+  await expect(page.locator("article.lesson h3").first()).toHaveText("The Story of the Stops");
   // CSS Modules hash Callout's class (e.g. "Callout-module__x__callout"), so an
   // exact ".callout" token selector never matches a real page — substring-match
   // the class attribute instead, same reasoning as the render-blocks unit test's

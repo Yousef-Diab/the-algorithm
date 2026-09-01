@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { requireAdminPage } from "@/lib/admin/guard";
 import { createAdminQueries } from "@/lib/content/admin-queries";
@@ -10,6 +9,7 @@ import { assertBlocks, type Block } from "@/lib/content/blocks";
 import { diffBlocks } from "@/lib/admin/block-diff";
 import { fingerprint } from "@/lib/admin/fingerprint";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
+import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ActionButton } from "@/components/admin/ActionButton";
 import { DiscardForm } from "@/components/admin/DiscardForm";
 import { promoteAction, setStatusAction, setAccessAction } from "@/app/admin/actions";
@@ -62,9 +62,7 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
 
   return (
     <div className={styles.console}>
-      <p>
-        <Link href="/admin">← all lessons</Link>
-      </p>
+      <AdminHeader current={row.id} />
       <h1>
         {row.id} — {row.title}
       </h1>

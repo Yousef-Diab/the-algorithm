@@ -45,3 +45,73 @@
 .err {
   color: var(--red);
 }
+
+/* ---- admin list row controls (components/admin/RowActions.tsx) ---- */
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rowButton {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel2);
+  color: var(--text);
+  padding: 2px 10px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  min-width: 76px;
+}
+.rowButton:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+.rowButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.rowSelect {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 2px 6px;
+  font: inherit;
+  font-size: 13px;
+}
+.rowSelect:disabled {
+  opacity: 0.5;
+}
+/* ---- admin chrome (components/admin/AdminHeader.tsx) ---- */
+
+.adminHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+.adminBrand {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+.adminBrand:hover {
+  color: var(--accent);
+}
+.adminCrumb {
+  color: var(--muted);
+  font-size: 14px;
+}
+.adminExit {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: none;
+}
+.adminExit:hover {
+  color: var(--accent);
+}

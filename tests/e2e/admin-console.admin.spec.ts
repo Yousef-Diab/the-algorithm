@@ -77,4 +77,77 @@ test("discard requires the typed id and then clears the draft, leaving the live 
     await cleanup();
   }
 });
+
+test("the list renders each row's status toggle and access select with its real current values", async ({ page }) => {
+  const { id, cleanup } = await plantPendingDraftRow();
+  try {
+    await page.goto("/admin");
+
+    // A lesson with a pending draft is rendered TWICE — once in the "Pending
+    // review" shortcut group and once in its section group — so every per-row
+    // locator must be scoped to one table or it matches both.
+    const pending = page.getByTestId("pending-table");
+
+    // The probe is status='draft', access='free'.
+    await expect(pending.getByTestId(`status-${id}`)).toHaveText("draft");
+    await expect(pending.getByTestId(`access-${id}`)).toHaveText("free");
+    await expect(pending.getByTestId(`row-${id}`).locator("select")).toHaveValue("free");
+
+    // A draft row must offer to PUBLISH and must NOT offer to unpublish.
+    // Asserting both directions pins the toggle: nextStatus() and
+    // statusToggleLabel() cannot disagree, and a row cannot show both.
+    // exact:true is REQUIRED here. Playwright matches the accessible name by
+    // SUBSTRING by default, so { name: "Publish" } also matches "Unpublish" —
+    // the negative assertions below would be unsatisfiable without it.
+    const probeRow = pending.getByTestId(`row-${id}`);
+    await expect(probeRow.getByRole("button", { name: "Publish", exact: true })).toBeVisible();
+    await expect(probeRow.getByRole("button", { name: "Unpublish", exact: true })).toHaveCount(0);
+
+    // ...and a published row must offer the opposite. m1-01 is a real published
+    // lesson; this is a READ-ONLY assertion and never clicks, because publishing
+    // or unpublishing a real lesson from a test would change what the live site
+    // serves.
+    const realRow = page.getByTestId("row-m1-01");
+    await expect(realRow.getByRole("button", { name: "Unpublish", exact: true })).toBeVisible();
+    await expect(realRow.getByRole("button", { name: "Publish", exact: true })).toHaveCount(0);
+  } finally {
+    await cleanup();
+  }
+});
+
+/**
+ * ACCESS, not status, is what this exercises end to end — deliberately.
+ * catalogRows() hard-codes EXPECTED_ROW_COUNT over published lessons and throws
+ * on mismatch, and playwright.config.ts runs fullyParallel, so a probe row that
+ * became status='published' even momentarily would race unrelated specs. The
+ * status toggle's direction is pinned by the label assertions above and by
+ * tests/unit/admin-status.test.ts; the status WRITE is covered by
+ * tests/unit/admin-actions.test.ts.
+ */
+test("changing access from the list writes it and the reloaded list shows the new value", async ({ page }) => {
+  const { id, cleanup } = await plantPendingDraftRow();
+  try {
+    await page.goto("/admin");
+    // Scoped for the same reason as above: the probe appears in two tables.
+    const row = () => page.getByTestId("pending-table").getByTestId(`row-${id}`);
+    await expect(row().getByTestId(`access-${id}`)).toHaveText("free");
+
+    // Selecting alone must NOT write — access changes require an explicit
+    // Apply, so that a browser-synthesised `change` event (form restoration on
+    // reload, autofill, an extension) cannot silently re-gate content.
+    await row().locator("select").selectOption("members");
+    await expect(row().getByTestId(`access-${id}`)).toHaveText("free");
+
+    await row().getByRole("button", { name: "Apply" }).click();
+    await expect(row().getByTestId(`row-result-${id}`)).toContainText("members");
+
+    // Reload: /admin is force-dynamic, so this re-reads the database rather
+    // than any cache — the new value appearing here means the write landed.
+    await page.goto("/admin");
+    await expect(row().getByTestId(`access-${id}`)).toHaveText("members");
+    await expect(row().locator("select")).toHaveValue("members");
+  } finally {
+    await cleanup();
+  }
+});
 });

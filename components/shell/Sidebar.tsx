@@ -19,6 +19,18 @@ export function Sidebar({
   const { isDone, count, ready } = useProgress();
   const [open, setOpen] = useState(false);
 
+  // The admin console gets its own chrome (components/admin/AdminHeader.tsx),
+  // so the public course sidebar — 82 lesson links and a progress bar — is
+  // hidden there. Done here rather than with route groups and a second root
+  // layout: this component is already a client component reading the pathname,
+  // and the alternative moves three route directories to reach the same result.
+  // `.app` is a flex row, so with no sidebar the main column simply takes the
+  // full width.
+  //
+  // NOT a security boundary — purely cosmetic. Admin authorization is
+  // requireAdminPage() inside each admin page.
+  if (pathname?.startsWith("/admin")) return null;
+
   const activeId = pathname?.startsWith("/lesson/")
     ? decodeURIComponent(pathname.slice("/lesson/".length))
     : null;

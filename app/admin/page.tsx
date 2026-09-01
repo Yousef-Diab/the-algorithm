@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { requireAdminPage } from "@/lib/admin/guard";
 import { listLessonsForConsole } from "@/lib/admin/console-queries";
 import { groupLessons, type ConsoleLessonRow } from "@/lib/admin/group-lessons";
+import { AdminHeader } from "@/components/admin/AdminHeader";
+import { RowActions } from "@/components/admin/RowActions";
 import styles from "./admin.module.css";
 
 /**
@@ -25,10 +27,22 @@ export default async function AdminPage() {
   await requireAdminPage();
 
   const rows = await listLessonsForConsole();
+
+  // A row's group depends on hasDraft, which NEITHER of the row's inline
+  // controls changes — so acting on a row never moves it, the RowActions
+  // component stays mounted at the same position, and its useActionState
+  // resolves normally.
+  //
+  // DO NOT add sorting or filtering by status or access here without keeping
+  // that property. A row that relocates or unmounts as a result of its own
+  // Server Action is exactly the defect that made promote and discard hang
+  // forever on the detail page: the acting component is destroyed mid-response
+  // and the result has nowhere to land.
   const { pending, sections } = groupLessons(rows);
 
   return (
     <div className={styles.console}>
+      <AdminHeader />
       <h1>Admin</h1>
       <p className={styles.sub}>
         {rows.length} lessons · {pending.length} pending review
@@ -77,6 +91,7 @@ function LessonTable({ rows, testid }: { rows: ConsoleLessonRow[]; testid?: stri
           <th>access</th>
           <th>draft</th>
           <th>origin</th>
+          <th>actions</th>
         </tr>
       </thead>
       <tbody>
@@ -86,10 +101,13 @@ function LessonTable({ rows, testid }: { rows: ConsoleLessonRow[]; testid?: stri
               <Link href={`/admin/lesson/${l.id}`}>{l.id}</Link>
             </td>
             <td>{l.title}</td>
-            <td>{l.status}</td>
-            <td>{l.access}</td>
+            <td data-testid={`status-${l.id}`}>{l.status}</td>
+            <td data-testid={`access-${l.id}`}>{l.access}</td>
             <td>{l.hasDraft ? <span className={styles.badge}>pending</span> : ""}</td>
             <td>{l.writeOrigin}</td>
+            <td>
+              <RowActions id={l.id} status={l.status} access={l.access} />
+            </td>
           </tr>
         ))}
       </tbody>

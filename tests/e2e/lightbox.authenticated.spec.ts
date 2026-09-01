@@ -1,5 +1,21 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * Runs as the signed-in MEMBER (see the .authenticated.spec.ts name), not
+ * anonymously.
+ *
+ * Moved 2026-09-01: this spec's outside-click assertion is CALIBRATED to a
+ * specific image — it clicks (2, 2) because the still-zoomed m4-03 chart's left
+ * edge was measured at ~x:7 in this viewport. s1 stopped being uniformly free
+ * (only m1-01..m1-08 are), so m4-03 is now gated and an anonymous run sees no
+ * charts at all. Pointing this test at a different free lesson would silently
+ * invalidate that calibration, so the lesson stays m4-03 and the VIEWER changes
+ * instead. Every assertion, including the geometry, is preserved exactly.
+ *
+ * Gating itself is not this file's subject — gating.spec.ts and quiz.spec.ts
+ * remain anonymous and own that.
+ */
+
 // Restored verbatim from tests/e2e/smoke.spec.ts as it existed at commit
 // 558547a, before Task 13 deleted app/dev-css-probe (its only host page).
 //

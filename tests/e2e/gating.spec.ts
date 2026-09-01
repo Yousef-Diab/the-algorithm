@@ -13,8 +13,12 @@ function setAccess(access: string, id: string) {
 
 /**
  * A real members lesson: section s2, access='members', and it HAS charts, so
- * the /api/media assertion below is meaningful. (The original m4-03 target is
- * in s1, which is now entirely access='free' — it would have passed vacuously.)
+ * the /api/media assertion below is meaningful.
+ *
+ * (History, corrected 2026-09-01: this comment used to say s1 was "entirely
+ * access='free'". That is no longer true — only m1-01..m1-08 are free; the rest
+ * of s1 is deliberately access='members'. p1-02 remains a valid target either
+ * way, being in s2.)
  */
 const MEMBERS = "p1-02";
 
