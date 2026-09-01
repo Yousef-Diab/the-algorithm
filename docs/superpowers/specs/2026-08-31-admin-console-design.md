@@ -21,10 +21,16 @@ enforcement of CLAUDE.md §1* — approves prose that nobody has seen rendered. 
 This project makes the review real: the pending draft rendered **side by side with the live body,
 with the changed blocks marked**, and the four actions on the same page.
 
-Three of the four — set status, set access, and promote — are cheap and reversible. **Discard is
-not**: it drops `body_draft` and `source_ref_draft`, and the draft prose is then gone. That is why
-it is the one action behind a typed confirmation (§4.4), and it is the reason §7 lists it as a risk
-in its own right.
+Set status and set access are cheap and reversible. **Promote and discard are not.** Promote
+overwrites `body` with `body_draft` in one statement (`lib/content/write.ts:79-93`) and retains no
+copy of the previous live body — no `body_prev` column, no body content in the audit table
+(deliberately, invariant 6), no soft delete. It is recoverable today only by accident: production has
+zero rows with `write_origin='cms'`, so every live body currently in `lessons` is still re-derivable
+from the repo's `content/` importer. The first console promote of a given lesson removes that safety
+net for that lesson; a second promote then permanently destroys prose that exists nowhere else.
+Discard drops `body_draft` and `source_ref_draft` outright, and the draft prose is then gone. That is
+why discard is the one action behind a typed confirmation (§4.4), and it is the reason §7 lists both
+as risks in their own right.
 
 ### What this project is not
 
@@ -222,8 +228,11 @@ here attempts move detection. Pure input, pure output, no rendering knowledge, s
 behaviour is unit-testable.
 
 **Actions on this page:** Promote · Discard · Set status (draft/published) · Set access
-(free/members/admin). Discard requires typing the lesson id to confirm; the other three are one
-click, because all three are reversible. Promote and Discard render only when a draft is pending.
+(free/members/admin). Discard requires typing the lesson id to confirm, because it is irrecoverable.
+Set status and set access are one click because they are cheap and reversible. Promote is also one
+click, but — see §1 — it is **not** reversible: it overwrites `body` with no copy retained, and is
+recoverable today only by accident (every live body is still re-derivable from `content/` until that
+lesson's first console promote). Promote and Discard render only when a draft is pending.
 
 ### 4.5 The action wrappers — `app/admin/actions.ts`
 
@@ -292,7 +301,7 @@ export const adminActions = pgTable("admin_actions", {
   action: text("action").notNull(),
   /** Plain text, NO foreign key — see below. */
   lessonId: text("lesson_id"),
-  /** 'ok' | 'noop' | 'denied' | 'error' */
+  /** 'ok' | 'noop' | 'rejected' | 'denied' | 'error' */
   outcome: text("outcome").notNull(),
   /** Field values and the draft fingerprint. NEVER body content. */
   detail: jsonb("detail"),
@@ -482,6 +491,7 @@ Three added by this project:
 | Publishing a probe row breaks unrelated specs | `EXPECTED_ROW_COUNT` — no probe is ever `status='published'`. |
 | The layout change regresses the public site | Identical DOM, and the existing all-lessons + home e2e sweep is the net. |
 | **Discard is irrecoverable** — a mis-click loses an agent's draft | Typed lesson-id confirmation, and it renders only when a draft is actually pending. Not mitigated further: the draft can be re-generated from the transcript, and a soft-delete column would be schema scope this project does not need. |
+| **Promote is also irrecoverable** — it overwrites `body` with no copy retained anywhere | Not mitigated at all today beyond the fingerprint-checked review page: it is recoverable only by accident, because production has zero `write_origin='cms'` rows and every live body is still re-derivable from `content/`. That stops being true per-lesson after its first console promote. A `body_prev` column would close this but is schema scope this project does not need. |
 | The audit write becomes a second copy of draft prose | `detail` carries field values and a fingerprint only; asserted by an integration test. |
 | Migration 0005 is misgenerated | `pnpm db:generate` only, SQL read before applying, `drizzle-kit check` clean. |
 

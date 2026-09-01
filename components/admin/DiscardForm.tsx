@@ -18,6 +18,24 @@ import styles from "./admin-forms.module.css";
  *
  * `describedBy` points at the caller's explanation of that disabled state, so
  * a control no keyboard user can reach still says why.
+ *
+ * `typed` must not survive past the draft it was confirmed for. Once this
+ * form goes disabled — the draft it was confirming against is gone, whether
+ * because THIS discard just succeeded or for any other reason — the typed
+ * confirmation is cleared. That closes the gap: a later render that flips
+ * `disabled` back to false (an agent wrote a NEW draft) then starts from an
+ * empty `typed`, so the id the admin typed for the previous draft can never
+ * silently satisfy the confirmation for one they have not seen.
+ *
+ * This clears by adjusting state during render (comparing `disabled` to a
+ * mirrored previous value, React's documented alternative to a `setState`
+ * inside `useEffect`), not a remount-on-`key`: the whole form — and the
+ * `useActionState` result it owns — must stay mounted across the very
+ * re-render this discard's own success causes, or the "discarding…" → result
+ * transition never lands, exactly the bug the block comment above describes.
+ * Keying the form on per-draft identity would remount it on that same
+ * transition, since `disabled` flips true in the same render the success
+ * message arrives in — so clearing `typed` has to happen without unmounting.
  */
 export function DiscardForm({
   id,
@@ -30,6 +48,17 @@ export function DiscardForm({
 }) {
   const [state, formAction, pending] = useActionState(discardAction, null);
   const [typed, setTyped] = useState("");
+
+  // Adjusting state during render, not in an effect: when `disabled` flips
+  // (in either direction) this clears `typed` in the same render pass, before
+  // anything commits — so a stale confirmation can never be visible, even for
+  // one frame, once a new draft makes the form enabled again.
+  const [prevDisabled, setPrevDisabled] = useState(disabled);
+  if (disabled !== prevDisabled) {
+    setPrevDisabled(disabled);
+    setTyped("");
+  }
+
   return (
     <form action={formAction} className={styles.form}>
       <input type="hidden" name="id" value={id} />

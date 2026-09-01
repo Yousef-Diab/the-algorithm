@@ -95,7 +95,15 @@ async function guarded(
     // either one lets an unauthenticated POST push attacker-controlled bytes
     // (and an arbitrary "lessonId") into the audit table. Record only that a
     // denial happened, never what the caller sent.
-    await safeRecord({ actorUserId: actor, action, lessonId: null, outcome: "denied" });
+    //
+    // A fully unauthenticated POST records nothing: it is the only path that
+    // would let an anonymous request cost a DB write, and with no session the
+    // row says only that someone probed. A signed-in non-admin IS recorded —
+    // that is the forensically interesting case, and it is rate-limited by
+    // needing an account.
+    if (actor !== null) {
+      await safeRecord({ actorUserId: actor, action, lessonId: null, outcome: "denied" });
+    }
     return { ok: false, message: "not authorized" };
   }
   try {

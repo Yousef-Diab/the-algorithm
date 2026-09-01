@@ -11,6 +11,7 @@ const {
   setLessonAccess,
   getLessonDraftBody,
   recordAdminAction,
+  accessContext,
 } = vi.hoisted(() => ({
   assertAdmin: vi.fn(),
   promoteLessonDraft: vi.fn(),
@@ -19,6 +20,7 @@ const {
   setLessonAccess: vi.fn(),
   getLessonDraftBody: vi.fn(),
   recordAdminAction: vi.fn(),
+  accessContext: vi.fn(),
 }));
 
 vi.mock("@/lib/admin/guard", () => ({ assertAdmin, requireAdminPage: vi.fn() }));
@@ -41,9 +43,7 @@ vi.mock("@/lib/db", () => ({ db: {} }));
 // actorId() inside the wrappers calls accessContext(). Without this mock the
 // REAL module loads, pulling in @/lib/db and the auth SDK — the test would then
 // be exercising infrastructure instead of the wrappers.
-vi.mock("@/lib/db/access-queries", () => ({
-  accessContext: vi.fn(async () => ({ user: { id: "actor-1" }, isAdmin: true, entitlements: [] })),
-}));
+vi.mock("@/lib/db/access-queries", () => ({ accessContext }));
 
 import { promoteAction, discardAction, setStatusAction, setAccessAction } from "@/app/admin/actions";
 import { fingerprint } from "@/lib/admin/fingerprint";
@@ -59,6 +59,10 @@ function form(entries: Record<string, string>): FormData {
 beforeEach(() => {
   vi.clearAllMocks();
   assertAdmin.mockResolvedValue(undefined);
+  // Default actor is a signed-in (but not necessarily admin) user; individual
+  // tests override this with mockResolvedValueOnce to exercise the fully
+  // unauthenticated (no session at all) case.
+  accessContext.mockResolvedValue({ user: { id: "actor-1" }, isAdmin: true, entitlements: [] });
 });
 
 describe("authorization", () => {
@@ -77,10 +81,25 @@ describe("authorization", () => {
     expect(setLessonAccess).not.toHaveBeenCalled();
   });
 
-  it("records a denied attempt", async () => {
+  it("records a denied attempt from a signed-in non-admin", async () => {
+    // accessContext resolves to the default signed-in actor from beforeEach —
+    // this is the forensically interesting case (an account exists, so the
+    // attempt is rate-limited by needing one), and it must still be recorded.
     assertAdmin.mockRejectedValue(new Error("admin only"));
     await promoteAction(null, form({ id: "m1-01", fingerprint: "x" }));
     expect(recordAdminAction).toHaveBeenCalledWith(expect.objectContaining({ outcome: "denied" }));
+  });
+
+  it("records nothing for a fully unauthenticated POST (no session at all)", async () => {
+    // A request with no session costs a cookie read and no DB round trip.
+    // Recording it would make every anonymous probe cost a write, and the row
+    // would say only "someone probed" since there is no actor to attribute it
+    // to.
+    accessContext.mockResolvedValueOnce({ user: null, isAdmin: false, entitlements: [] });
+    assertAdmin.mockRejectedValue(new Error("admin only"));
+    const res = await promoteAction(null, form({ id: "m1-01", fingerprint: "x" }));
+    expect(res.ok).toBe(false);
+    expect(recordAdminAction).not.toHaveBeenCalled();
   });
 
   it("passes no detail and a null lessonId on the deny path, even though the attacker supplied both", async () => {
@@ -210,7 +229,7 @@ describe("the audit detail never carries body content", () => {
   });
 
   it("truncates an oversized detail string before it reaches the audit write", async () => {
-    publishLesson.mockRejectedValue(new Error("boom"));
+    publishLesson.mockRejectedValueOnce(new Error("boom"));
     const hugeStatus = "x".repeat(5000);
     await setStatusAction(null, form({ id: "m1-01", status: hugeStatus }));
     const call = recordAdminAction.mock.calls[0][0];
@@ -220,7 +239,7 @@ describe("the audit detail never carries body content", () => {
 
 describe("a mutation that throws is recorded as an error, not a silent success", () => {
   it("sets outcome: 'error' and returns an ambiguous, non-leaking message", async () => {
-    publishLesson.mockRejectedValue(new Error("connection terminated unexpectedly: password=hunter2"));
+    publishLesson.mockRejectedValueOnce(new Error("connection terminated unexpectedly: password=hunter2"));
     const res = await setStatusAction(null, form({ id: "m1-01", status: "published" }));
     expect(res.ok).toBe(false);
     expect(res.message).not.toContain("hunter2");

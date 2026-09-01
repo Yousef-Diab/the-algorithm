@@ -5,11 +5,8 @@ export interface AdminActionRecord {
   actorUserId: string | null;
   action: "promote" | "discard" | "set_status" | "set_access";
   lessonId: string | null;
-  // NOTE: lib/db/schema.ts's column comment still lists only 'ok' | 'noop' |
-  // 'denied' | 'error' — one fewer value than this type now writes. 'rejected'
-  // distinguishes a validation refusal (bad status, wrong confirm, stale
-  // fingerprint, missing id) from a genuine no-op like "no draft pending".
-  // lib/db/schema.ts is out of bounds for this task; flagged for a follow-up.
+  // 'rejected' distinguishes a validation refusal (bad status, wrong confirm,
+  // stale fingerprint, missing id) from a genuine no-op like "no draft pending".
   outcome: "ok" | "noop" | "rejected" | "denied" | "error";
   /** Field values and the draft fingerprint ONLY. Never body content. */
   detail?: Record<string, unknown>;

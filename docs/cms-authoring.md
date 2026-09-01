@@ -207,6 +207,16 @@ that CLI shows you nothing — it promotes prose you have not seen rendered.
 **Discard is irrecoverable.** It drops `body_draft` and `source_ref_draft`; the
 draft is gone. That is why it asks you to type the lesson id.
 
+**Promote is also irrecoverable, and easy to mistake for reversible.** It
+overwrites the live `body` with `body_draft` and keeps no copy of what was
+there before — no undo, no history row. Today you can still recover a mistake
+because production has zero lessons with `write_origin='cms'`, so every live
+body can still be rebuilt from the repo's `content/` importer. But that
+safety net is per-lesson and one-time: the first console promote of a given
+lesson removes it for that lesson, and a second promote after that
+permanently destroys prose that exists nowhere else. Read the side-by-side
+review carefully before you click Promote.
+
 **Promote refuses a stale review.** If the draft changed between the page
 rendering and your click — the MCP agent wrote a new one — promote reports the
 mismatch instead of publishing prose you never read. Reload and re-read it.
