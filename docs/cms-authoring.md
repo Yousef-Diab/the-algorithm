@@ -190,3 +190,52 @@ The `content` server is registered in `.mcp.json` alongside the existing
 your local, git-ignored `.env.local`. The server only speaks stdio; there is
 no HTTP transport, since that would recreate the public authenticated write
 surface this design deliberately refused.
+
+## The admin console (`/admin`)
+
+Sign in with an account whose email is in `ADMIN_EMAILS`. Everyone else — signed
+out or signed in — gets a 404 on every admin route.
+
+- `/admin` lists all lessons, drafts first.
+- `/admin/lesson/{id}` shows the pending draft rendered beside the live body
+  with each added / removed / changed block marked, and carries the four
+  actions: promote, discard, set status, set access.
+
+`pnpm content:promote` still works and is unchanged. The console exists because
+that CLI shows you nothing — it promotes prose you have not seen rendered.
+
+**Discard is irrecoverable.** It drops `body_draft` and `source_ref_draft`; the
+draft is gone. That is why it asks you to type the lesson id.
+
+**Promote refuses a stale review.** If the draft changed between the page
+rendering and your click — the MCP agent wrote a new one — promote reports the
+mismatch instead of publishing prose you never read. Reload and re-read it.
+
+### Required deploy step — rate limiting
+
+The app performs no rate limiting of its own, deliberately: on Vercel each
+serverless instance has its own memory, so an in-memory limiter throttles almost
+nothing under real abuse while looking like protection. Configure it at the edge
+instead, once, in the Vercel dashboard:
+
+    Project → Firewall → Add rule
+      IF   path matches /admin*
+      AND  rate exceeds 20 requests / 10s per IP
+      THEN deny
+
+Admin routes also send `X-Robots-Tag: noindex, nofollow`. There is deliberately
+no `robots.txt` entry — a `Disallow: /admin` line advertises the path.
+
+### What the console does NOT do
+
+Quiz editing is out. `upsertQuiz` with `deleteMissing` cascades real user
+answers through `quiz_results ON DELETE CASCADE`, and it is not going behind a
+button until a confirmation flow names the exact number of answers at risk.
+`createLesson` and media management are out too.
+
+### The audit table
+
+`admin_actions` records who did what, including denied attempts. It is a
+**record, not a control**: nothing reads it to make an authorization decision,
+and a failure to write a row never fails the action. It never stores body
+content.
