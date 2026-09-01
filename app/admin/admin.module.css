@@ -89,3 +89,11 @@
 @media (max-width: 1100px) {
   .columns { grid-template-columns: 1fr; }
 }
+
+/* .actions is a flex row (see above); its aria-labelledby heading is a flex
+   item by default and would otherwise sit inline beside the buttons instead
+   of forming a title above them. */
+.actions h2 {
+  flex-basis: 100%;
+  margin: 0;
+}

@@ -13,10 +13,15 @@ export function ActionButton({
   action,
   label,
   hidden = {},
+  testId = "action-result",
 }: {
   action: (prev: ActionResult | null, form: FormData) => Promise<ActionResult>;
   label: string;
   hidden?: Record<string, string>;
+  /** Distinct id for the result region. Every ActionButton renders a permanent
+   *  role="status" span, so a shared testid matches all of them and breaks any
+   *  strict-mode locator. Give a button its own when a test must address it. */
+  testId?: string;
 }) {
   // No confirmation prop: the only action needing one is discard, and
   // DiscardForm owns that with a typed id. An unused option here would be
@@ -34,7 +39,7 @@ export function ActionButton({
           before its content changes for assistive tech to reliably announce
           the update — mounting it only once `state` is set means the very
           first result can go unannounced. */}
-      <span className={state?.ok ? styles.ok : styles.err} role="status" data-testid="action-result">
+      <span className={state?.ok ? styles.ok : styles.err} role="status" data-testid={testId}>
         {state?.message ?? ""}
       </span>
     </form>

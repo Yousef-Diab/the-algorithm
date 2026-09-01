@@ -94,6 +94,7 @@ export default async function AdminLessonPage({ params }: { params: Promise<{ id
                 action={promoteAction}
                 label="Promote draft"
                 hidden={{ id: row.id, fingerprint: fingerprint(draft.blocks) }}
+                testId="promote-result"
               />
             ) : (
               <p className={styles.err} data-testid="promote-blocked">
