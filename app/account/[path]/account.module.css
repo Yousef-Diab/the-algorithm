@@ -1,0 +1,6 @@
+/* The account view lays itself out (nav beside cards); this only gives it the
+   page's own breathing room, matching a lesson's top spacing. */
+.accountWrap {
+  display: flex;
+  padding: 6vh 0 60px;
+}

@@ -54,6 +54,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // …then require the user to verify their email via an emailed OTP code.
       emailOTP
       emailVerification
+      // The auth UI shows a change-email card by default, but this Neon Auth
+      // project has the endpoint switched off — submitting it can only answer
+      // "Change email is disabled", so the card is not offered.
+      changeEmail={false}
       localization={localization}
       navigate={navigate}
       replace={replace}
