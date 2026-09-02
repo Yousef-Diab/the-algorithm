@@ -43,5 +43,13 @@
     "sharp": "^0.35.3",
     "typescript": "^5",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "core-js",
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
