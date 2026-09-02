@@ -54,6 +54,14 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+/* Each control lives in its own <form>, so the .rowActions gap only separates
+   the forms — it never reaches the select and its Apply button, which are
+   siblings INSIDE one form. Lay the forms out too, or those two touch. */
+.rowActions form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .rowButton {
   border: 1px solid var(--border);
   border-radius: 6px;
