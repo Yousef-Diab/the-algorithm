@@ -12,6 +12,8 @@ Chromium and checks the whole course actually works:
   * each section's summary + final exam pages render, and the exam grades on submit,
   * each summary's stated exam question count matches the exam that renders,
   * a video link renders for each lesson that has a non-empty video.txt,
+  * the migration banner renders (full on home, compact with the right deep
+    link on a lesson) and stays dismissed for the rest of the visit,
   * zero console/page JS errors.
 
 Exit 0 on success, non-zero (with a list of problems) on any failure — so it
@@ -62,6 +64,12 @@ def main() -> int:
                       summary.read_text(encoding="utf-8"), re.S)
         if sid and n:
             stated_exam_qs[sid.group(1)] = int(n.group(1))
+
+    # The banner's target lives in engine/app.js; read it back rather than
+    # restating it, so a URL change can never make this check a lie.
+    m = re.search(r"NEW_SITE\s*=\s*['\"]([^'\"]+)",
+                  (ROOT / "engine" / "app.js").read_text(encoding="utf-8"))
+    new_site = m.group(1) if m else None
 
     url = (ROOT / "index.html").resolve().as_uri()
     problems: list[str] = []
@@ -258,6 +266,68 @@ def main() -> int:
             if sid not in {e["sid"] for e in exam}:
                 problems.append(f"exam {sid}: summary.html states a question count "
                                 f"({stated}) but no exam rendered for that section")
+
+        # Migration banner. Runs LAST: it drives show() to change pages, which
+        # undoes the "every lesson visible" hack the checks above rely on.
+        # Measured across waits, not in one evaluate: show() scrolls via
+        # `window.scrollTo`, and `html{scroll-behavior:smooth}` makes that async,
+        # so a rect read in the same tick sees the pre-scroll position.
+        if new_site is None:
+            problems.append("migration banner: no NEW_SITE found in engine/app.js")
+        elif page.query_selector("#migrate-slot") is None:
+            problems.append("migration banner: no #migrate-slot in the page")
+        else:
+            def mg_state():
+                return page.evaluate(
+                    """() => { const slot = document.getElementById('migrate-slot'),
+                                 box = slot.querySelector('.migrate'),
+                                 a = slot.querySelector('a.btn, a.mg-go'),
+                                 r = box && box.getBoundingClientRect();
+                           return {n: slot.children.length,
+                                   compact: !!(box && box.classList.contains('compact')),
+                                   href: a && a.getAttribute('href'),
+                                   top: r ? r.top : null}; }""")
+
+            first_lesson = ids[0] if ids else None
+            page.evaluate("() => { try { sessionStorage.removeItem('algo-migrated-hidden'); }"
+                          " catch (e) {} show('home'); }")
+            page.wait_for_timeout(700)
+            home = mg_state()
+            if home["n"] != 1 or home["compact"]:
+                problems.append("migration banner: no full variant on home "
+                                f"({home['n']} node(s), compact={home['compact']})")
+            if home["href"] != new_site + "/":
+                problems.append(f"migration banner: home link is {home['href']!r}, "
+                                f"want {new_site + '/'!r}")
+            # In the DOM is not enough — the hash-jump has scrolled it off-screen before.
+            if home["top"] is None or home["top"] < 0:
+                problems.append(f"migration banner: off the top of the viewport "
+                                f"(rect.top={home['top']})")
+
+            if first_lesson is None:
+                problems.append("migration banner: no lesson to check the deep link on")
+            else:
+                page.evaluate(f"() => show({first_lesson!r})")
+                page.wait_for_timeout(700)
+                les = mg_state()
+                want = f"{new_site}/lesson/{first_lesson}"
+                if not les["compact"]:
+                    problems.append("migration banner: no compact variant on a lesson")
+                if les["href"] != want:
+                    problems.append(f"migration banner: lesson link is {les['href']!r}, "
+                                    f"want {want!r}")
+                if les["top"] is None or les["top"] < 0:
+                    problems.append(f"migration banner: compact variant off the top of the "
+                                    f"viewport (rect.top={les['top']})")
+
+                page.click("#migrate-slot [data-mg=x]", timeout=5000)
+                page.wait_for_timeout(150)
+                if mg_state()["n"] != 0:
+                    problems.append("migration banner: dismiss did not remove it")
+                page.evaluate("() => show('home')")
+                page.wait_for_timeout(300)
+                if mg_state()["n"] != 0:
+                    problems.append("migration banner: came back after being dismissed")
 
         if errs:
             problems.append(f"{len(errs)} JS error(s): {errs[:5]}")

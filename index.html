@@ -48,6 +48,12 @@
   .nav-lesson .n{color:var(--dim);font-size:11px;min-width:16px}
 
   /* ---------- lesson header ---------- */
+  /* show() owns scrolling; the browser's own fragment-jump must not fight it.
+     Without this, writing the hash scrolls the target section flush to the top
+     and pushes the migration banner (which sits above the sections) out of view.
+     An absurd scroll-margin clamps every such jump to the top of the document —
+     `scroll-behavior:smooth` makes the JS scrollTo async, so it loses that race. */
+  .lesson{scroll-margin-top:9999px}
   .lesson{display:none;animation:fadeIn .35s ease}
   .lesson.visible{display:block}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -241,6 +247,33 @@
   .notice{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:8px 0 40px;font-size:14px;color:var(--muted)}
   .notice b{color:var(--gold)}
 
+  /* ---------- migration banner ---------- */
+  #migrate-slot:empty{display:none}
+  .migrate{position:relative;background:var(--panel);border:1px solid var(--border);
+    border-radius:var(--radius);overflow:hidden;padding:22px 24px;margin:26px 0 0}
+  /* the gradient hairline is what lifts this above .notice / .callout */
+  .migrate::before{content:"";position:absolute;inset:0 0 auto;height:3px;
+    background:linear-gradient(90deg,var(--gold),var(--accent))}
+  .migrate .mg-eyebrow{font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;
+    color:var(--gold);font-weight:700}
+  .migrate h3{font-size:19px;margin:7px 0 0;color:var(--text);font-weight:650}
+  .migrate p{font-size:14px;color:var(--muted);margin:9px 0 0;max-width:640px}
+  .migrate p strong{color:var(--text);font-weight:600}
+  .mg-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .mg-actions .btn{font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
+
+  /* compact strip: sits where a lesson hero's top padding was, reads as chrome */
+  .migrate.compact{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg2);
+    padding:10px 14px;margin:22px 0 -22px;font-size:13px;color:var(--muted)}
+  .migrate.compact::before{height:2px}
+  .migrate.compact .mg-dot{width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--gold)}
+  .migrate.compact .mg-text{flex:1;min-width:170px}
+  .migrate.compact .mg-go{color:var(--accent2);text-decoration:none;font-weight:600;white-space:nowrap}
+  .migrate.compact .mg-go:hover{text-decoration:underline}
+  .mg-x{background:transparent;border:0;color:var(--dim);font-size:15px;line-height:1;cursor:pointer;
+    padding:4px 7px;border-radius:6px;font-family:var(--font);transition:color .15s,background .15s}
+  .mg-x:hover{color:var(--text);background:var(--panel2)}
+
   /* mobile */
   #menu-toggle{display:none;position:fixed;top:14px;left:14px;z-index:60;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:15px}
   @media(max-width:900px){
@@ -255,6 +288,11 @@
     .lb-count,.lb-zoom{min-width:40px;font-size:12px}
     .lb-sep{display:none}
     .quiz-head{flex-direction:column;gap:8px}
+    .migrate{padding:18px}
+    .migrate h3{font-size:17px}
+    .mg-actions .btn{flex:1;justify-content:center}
+    .migrate.compact{margin:16px 0 -14px}
+    .migrate.compact .mg-x{margin-left:auto}
     .exam-best{padding-top:0}
     .exam-actions .btn{flex:1}
   }
@@ -280,6 +318,9 @@
 
   <main id="main">
     <div class="inner">
+
+      <!-- migration banner (filled by app.js; sits above whichever page is visible) -->
+      <div id="migrate-slot"></div>
 
 <!-- ================= HOME ================= -->
 <section class="lesson" id="home" data-title="Welcome">
@@ -8130,12 +8171,65 @@ function renderReset(){
   });
 }
 
+/* ---------- migration banner ---------- */
+/* Site chrome, not course content: the old GitHub Pages copy is frozen, so
+   every page invites the reader over to the Vercel-hosted version. Dismissal
+   lives in sessionStorage — a separate store from the ict-* localStorage keys,
+   so it cannot collide with them, and it lapses when the tab closes ("back on
+   every new visit"). Nothing here reads or writes ict-notes. */
+const NEW_SITE = 'https://algo.the-system.site';
+const MIGRATE_KEY = 'algo-migrated-hidden';
+
+/* Lesson ids are identical on the new site, so #m4-03 -> /lesson/m4-03.
+   Home and the review/exam pages go to the root: /lesson/<id> and / are the
+   only routes confirmed to exist there, so don't invent one for the others. */
+function migrateUrl(id){
+  const el = id && document.getElementById(id);
+  if(!el || el.id === 'home' || el.dataset.kind) return NEW_SITE + '/';
+  return NEW_SITE + '/lesson/' + el.id;
+}
+function migrateHidden(){
+  try{ return sessionStorage.getItem(MIGRATE_KEY) === '1'; }catch(e){ return false; }
+}
+function renderMigrate(id){
+  const slot = document.getElementById('migrate-slot');
+  if(!slot) return;
+  slot.innerHTML = '';
+  if(migrateHidden()) return;
+  const url = migrateUrl(id), box = document.createElement('div');
+  if(!id || id === 'home'){
+    box.className = 'migrate';
+    box.innerHTML = `<div class="mg-eyebrow">The course has moved</div>
+      <h3>This version is no longer being updated.</h3>
+      <p>New lessons and fixes now go to <strong>algo.the-system.site</strong>. This copy stays
+        online for now, but it won't receive updates and may stop working. Your progress and
+        notes are saved in this browser for this site only &mdash;
+        <strong>they don't move with you</strong>.</p>
+      <div class="mg-actions">
+        <a class="btn primary" href="${url}">Go to the new site &rarr;</a>
+        <button class="mini-btn" data-mg="x">Not now</button>
+      </div>`;
+  }else{
+    box.className = 'migrate compact';
+    box.innerHTML = `<span class="mg-dot"></span>
+      <span class="mg-text">This version is no longer updated &mdash; the course has moved.</span>
+      <a class="mg-go" href="${url}">Continue on the new site &rarr;</a>
+      <button class="mg-x" data-mg="x" title="Dismiss" aria-label="Dismiss">&#10005;</button>`;
+  }
+  box.querySelector('[data-mg="x"]').addEventListener('click', ()=>{
+    try{ sessionStorage.setItem(MIGRATE_KEY, '1'); }catch(e){}
+    slot.innerHTML = '';
+  });
+  slot.appendChild(box);
+}
+
 /* ---------- routing ---------- */
 function show(id){
   document.querySelectorAll('.lesson').forEach(el=>el.classList.remove('visible'));
   const el = document.getElementById(id) || document.getElementById('home');
   el.classList.add('visible');
   document.querySelectorAll('.nav-lesson').forEach(a=>a.classList.toggle('active', a.dataset.target===el.id));
+  renderMigrate(el.id);
   window.scrollTo({top:0});
   sidebar.classList.remove('open');
   location.hash = el.id;

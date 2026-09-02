@@ -601,12 +601,65 @@ function renderReset(){
   });
 }
 
+/* ---------- migration banner ---------- */
+/* Site chrome, not course content: the old GitHub Pages copy is frozen, so
+   every page invites the reader over to the Vercel-hosted version. Dismissal
+   lives in sessionStorage — a separate store from the ict-* localStorage keys,
+   so it cannot collide with them, and it lapses when the tab closes ("back on
+   every new visit"). Nothing here reads or writes ict-notes. */
+const NEW_SITE = 'https://algo.the-system.site';
+const MIGRATE_KEY = 'algo-migrated-hidden';
+
+/* Lesson ids are identical on the new site, so #m4-03 -> /lesson/m4-03.
+   Home and the review/exam pages go to the root: /lesson/<id> and / are the
+   only routes confirmed to exist there, so don't invent one for the others. */
+function migrateUrl(id){
+  const el = id && document.getElementById(id);
+  if(!el || el.id === 'home' || el.dataset.kind) return NEW_SITE + '/';
+  return NEW_SITE + '/lesson/' + el.id;
+}
+function migrateHidden(){
+  try{ return sessionStorage.getItem(MIGRATE_KEY) === '1'; }catch(e){ return false; }
+}
+function renderMigrate(id){
+  const slot = document.getElementById('migrate-slot');
+  if(!slot) return;
+  slot.innerHTML = '';
+  if(migrateHidden()) return;
+  const url = migrateUrl(id), box = document.createElement('div');
+  if(!id || id === 'home'){
+    box.className = 'migrate';
+    box.innerHTML = `<div class="mg-eyebrow">The course has moved</div>
+      <h3>This version is no longer being updated.</h3>
+      <p>New lessons and fixes now go to <strong>algo.the-system.site</strong>. This copy stays
+        online for now, but it won't receive updates and may stop working. Your progress and
+        notes are saved in this browser for this site only &mdash;
+        <strong>they don't move with you</strong>.</p>
+      <div class="mg-actions">
+        <a class="btn primary" href="${url}">Go to the new site &rarr;</a>
+        <button class="mini-btn" data-mg="x">Not now</button>
+      </div>`;
+  }else{
+    box.className = 'migrate compact';
+    box.innerHTML = `<span class="mg-dot"></span>
+      <span class="mg-text">This version is no longer updated &mdash; the course has moved.</span>
+      <a class="mg-go" href="${url}">Continue on the new site &rarr;</a>
+      <button class="mg-x" data-mg="x" title="Dismiss" aria-label="Dismiss">&#10005;</button>`;
+  }
+  box.querySelector('[data-mg="x"]').addEventListener('click', ()=>{
+    try{ sessionStorage.setItem(MIGRATE_KEY, '1'); }catch(e){}
+    slot.innerHTML = '';
+  });
+  slot.appendChild(box);
+}
+
 /* ---------- routing ---------- */
 function show(id){
   document.querySelectorAll('.lesson').forEach(el=>el.classList.remove('visible'));
   const el = document.getElementById(id) || document.getElementById('home');
   el.classList.add('visible');
   document.querySelectorAll('.nav-lesson').forEach(a=>a.classList.toggle('active', a.dataset.target===el.id));
+  renderMigrate(el.id);
   window.scrollTo({top:0});
   sidebar.classList.remove('open');
   location.hash = el.id;

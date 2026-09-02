@@ -48,6 +48,12 @@
   .nav-lesson .n{color:var(--dim);font-size:11px;min-width:16px}
 
   /* ---------- lesson header ---------- */
+  /* show() owns scrolling; the browser's own fragment-jump must not fight it.
+     Without this, writing the hash scrolls the target section flush to the top
+     and pushes the migration banner (which sits above the sections) out of view.
+     An absurd scroll-margin clamps every such jump to the top of the document —
+     `scroll-behavior:smooth` makes the JS scrollTo async, so it loses that race. */
+  .lesson{scroll-margin-top:9999px}
   .lesson{display:none;animation:fadeIn .35s ease}
   .lesson.visible{display:block}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -241,6 +247,33 @@
   .notice{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:8px 0 40px;font-size:14px;color:var(--muted)}
   .notice b{color:var(--gold)}
 
+  /* ---------- migration banner ---------- */
+  #migrate-slot:empty{display:none}
+  .migrate{position:relative;background:var(--panel);border:1px solid var(--border);
+    border-radius:var(--radius);overflow:hidden;padding:22px 24px;margin:26px 0 0}
+  /* the gradient hairline is what lifts this above .notice / .callout */
+  .migrate::before{content:"";position:absolute;inset:0 0 auto;height:3px;
+    background:linear-gradient(90deg,var(--gold),var(--accent))}
+  .migrate .mg-eyebrow{font-size:10.5px;text-transform:uppercase;letter-spacing:1.6px;
+    color:var(--gold);font-weight:700}
+  .migrate h3{font-size:19px;margin:7px 0 0;color:var(--text);font-weight:650}
+  .migrate p{font-size:14px;color:var(--muted);margin:9px 0 0;max-width:640px}
+  .migrate p strong{color:var(--text);font-weight:600}
+  .mg-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .mg-actions .btn{font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
+
+  /* compact strip: sits where a lesson hero's top padding was, reads as chrome */
+  .migrate.compact{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg2);
+    padding:10px 14px;margin:22px 0 -22px;font-size:13px;color:var(--muted)}
+  .migrate.compact::before{height:2px}
+  .migrate.compact .mg-dot{width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--gold)}
+  .migrate.compact .mg-text{flex:1;min-width:170px}
+  .migrate.compact .mg-go{color:var(--accent2);text-decoration:none;font-weight:600;white-space:nowrap}
+  .migrate.compact .mg-go:hover{text-decoration:underline}
+  .mg-x{background:transparent;border:0;color:var(--dim);font-size:15px;line-height:1;cursor:pointer;
+    padding:4px 7px;border-radius:6px;font-family:var(--font);transition:color .15s,background .15s}
+  .mg-x:hover{color:var(--text);background:var(--panel2)}
+
   /* mobile */
   #menu-toggle{display:none;position:fixed;top:14px;left:14px;z-index:60;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:15px}
   @media(max-width:900px){
@@ -255,6 +288,11 @@
     .lb-count,.lb-zoom{min-width:40px;font-size:12px}
     .lb-sep{display:none}
     .quiz-head{flex-direction:column;gap:8px}
+    .migrate{padding:18px}
+    .migrate h3{font-size:17px}
+    .mg-actions .btn{flex:1;justify-content:center}
+    .migrate.compact{margin:16px 0 -14px}
+    .migrate.compact .mg-x{margin-left:auto}
     .exam-best{padding-top:0}
     .exam-actions .btn{flex:1}
   }
