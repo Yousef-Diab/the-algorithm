@@ -1,0 +1,123 @@
+/* Deliberately echoes the auth UI library's card so the verification step does
+   not read as a different application mid-flow. */
+.card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 22px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.lede {
+  margin: 7px 0 22px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.label {
+  margin-bottom: 6px;
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--text);
+}
+
+.input {
+  margin-bottom: 16px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.22);
+}
+
+/* The code is six characters read one at a time — spacing it out makes a
+   mistyped digit obvious before submitting. */
+.code {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-align: center;
+}
+
+.error,
+.info {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.error {
+  color: var(--red);
+}
+.info {
+  color: var(--green);
+}
+
+.submit {
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+.submit:hover:not(:disabled) {
+  background: var(--accent2);
+}
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.link {
+  padding: 0;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--accent2);
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.link:hover:not(:disabled) {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.link:disabled {
+  color: var(--dim);
+  cursor: not-allowed;
+}
