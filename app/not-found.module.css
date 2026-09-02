@@ -1,0 +1,162 @@
+.wrap {
+  min-height: min(78vh, 720px);
+  display: flex;
+  align-items: center;
+  padding: 48px 0 80px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: linear-gradient(160deg, var(--panel2), var(--panel) 55%);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 6px);
+  padding: 52px 46px 46px;
+  animation: rise 0.4s ease both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* the oversized glyph sits behind the copy, bled off the right edge */
+.glyph {
+  position: absolute;
+  right: -14px;
+  bottom: -46px;
+  font-size: clamp(120px, 26vw, 260px);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--border);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* faint grid, so the panel reads like a chart surface rather than a plain box */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.28;
+  mask-image: radial-gradient(120% 90% at 12% 0%, #000 10%, transparent 72%);
+  pointer-events: none;
+}
+
+.body {
+  position: relative;
+  max-width: 560px;
+}
+
+.crumb {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.body h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.14;
+  font-weight: 700;
+}
+.body h1 em {
+  font-style: normal;
+  color: var(--accent2);
+}
+
+.body p {
+  color: var(--muted);
+  margin-top: 14px;
+  font-size: 15.5px;
+  max-width: 460px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  background: var(--panel2);
+}
+.btn:active {
+  transform: none;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #08101f;
+}
+.primary:hover {
+  background: var(--accent2);
+  border-color: var(--accent2);
+  box-shadow: 0 8px 22px -12px var(--accent);
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    min-height: 0;
+    padding: 24px 0 64px;
+  }
+  .card {
+    padding: 36px 22px 32px;
+  }
+  /* the bled glyph turns to noise behind full-width buttons at this size */
+  .glyph {
+    display: none;
+  }
+  .actions .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+  .btn:hover {
+    transform: none;
+  }
+}
