@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {
   AccountSettingsCards,
   ChangePasswordCard,
+  ProvidersCard,
   SessionsCard,
   useAuthenticate,
 } from "@neondatabase/auth/react/ui";
@@ -80,6 +81,19 @@ export function AccountTabs({ path }: { path: string }) {
         ) : (
           <>
             <ChangePasswordCard />
+            {/* Link/unlink Google. Composing the cards by hand (see above) means
+                this one has to be asked for explicitly — the library only bundles
+                it into `SecuritySettingsCards`, which this page cannot use.
+                Rendered unconditionally rather than behind the freshness check
+                above: that check exists for `/list-sessions` specifically, and
+                whether `/list-accounts` shares the guard has NOT been probed
+                against the backend. If an aged session turns out to 403 here,
+                gate it on `isFresh` the same way.
+
+                Unlinking the only sign-in method is refused by the auth server,
+                not by this card, so that mistake costs an error toast rather
+                than access to the account. */}
+            <ProvidersCard />
             {isFresh === true && <SessionsCard />}
             {isFresh === false && (
               <div className={styles.notice}>

@@ -20,6 +20,10 @@ const localization = {
   SIGN_UP_EMAIL: "Check your email for a 6-digit verification code.",
   EMAIL_NOT_VERIFIED:
     "Email not verified yet. Check your inbox for a 6-digit code, then enter it on the verification page.",
+  // One key drives the social button on BOTH the sign-in and sign-up pages, so
+  // the library's "Sign in with" reads wrong on half of them. "Continue with"
+  // is true either way (and is Google's own recommended wording).
+  SIGN_IN_WITH: "Continue with",
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -58,6 +62,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // project has the endpoint switched off — submitting it can only answer
       // "Change email is disabled", so the card is not offered.
       changeEmail={false}
+      // Google sign-in. The UI library renders the button, the divider and the
+      // whole redirect itself; nothing else in the app handles OAuth. Note the
+      // signUp.email wrap in lib/auth/client.ts deliberately does NOT cover this
+      // path — Google returns an already-verified address, so there is no OTP
+      // code to divert the user to. See docs/auth-setup.md for the credentials.
+      social={{ providers: ["google"] }}
       localization={localization}
       navigate={navigate}
       replace={replace}
