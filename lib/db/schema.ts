@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -192,13 +192,18 @@ export const userRoles = pgTable("user_roles", {
 /**
  * The entire seam paid subscriptions need (project #3): Stripe's webhook writes
  * a row with source='subscription' and an expires_at, and canRead does not change.
+ *
+ * Until then, membership is free: signing up earns a source='signup' row (see
+ * ensureMembership). The partial unique index below is what keeps that
+ * idempotent — one signup grant per user, however many concurrent first
+ * requests race to create it.
  */
 export const entitlements = pgTable(
   "entitlements",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     userId: text("user_id").notNull(),
-    /** 'admin_grant' | 'subscription' */
+    /** 'signup' | 'admin_grant' | 'subscription' */
     source: text("source").notNull(),
     /** 'all' | 'section' */
     scope: text("scope").notNull().default("all"),
@@ -207,7 +212,12 @@ export const entitlements = pgTable(
     /** null = never expires. */
     expiresAt: timestamp("expires_at", { withTimezone: true }),
   },
-  (t) => [index("entitlements_user_idx").on(t.userId)],
+  (t) => [
+    index("entitlements_user_idx").on(t.userId),
+    uniqueIndex("entitlements_signup_user_idx")
+      .on(t.userId)
+      .where(sql`${t.source} = 'signup'`),
+  ],
 );
 
 /**

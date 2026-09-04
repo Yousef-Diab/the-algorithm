@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { canRead, hasEntitlement, type AccessCtx, type Gated } from "@/lib/access";
+import {
+  canRead,
+  hasEntitlement,
+  needsMembershipGrant,
+  type AccessCtx,
+  type Gated,
+} from "@/lib/access";
 
 const anon: AccessCtx = { user: null, isAdmin: false, entitlements: [] };
 const signedIn: AccessCtx = { user: { id: "u1" }, isAdmin: false, entitlements: [] };
@@ -109,5 +115,31 @@ describe("hasEntitlement", () => {
   it("is false for isAdmin=true alone when the user has no matching entitlements (isAdmin does not feed hasEntitlement)", () => {
     // Pins: hasEntitlement never consults ctx.isAdmin — that's canRead's job via the `||`.
     expect(hasEntitlement({ user: { id: "u9" }, isAdmin: true, entitlements: [] }, "s1")).toBe(false);
+  });
+});
+
+describe("needsMembershipGrant", () => {
+  it("is true for a signed-in account with no entitlements — the reported bug", () => {
+    // Signing up left the account with zero rows, so every members lesson read
+    // "your account doesn't have access to this section yet" forever.
+    expect(needsMembershipGrant(signedIn)).toBe(true);
+  });
+
+  it("is false once the account holds a scope=all entitlement", () => {
+    expect(needsMembershipGrant(memberAll)).toBe(false);
+  });
+
+  it("is true for a section-only entitlement, so a partial grant still earns the full one", () => {
+    expect(needsMembershipGrant(memberS1)).toBe(true);
+  });
+
+  it("is false for an anonymous visitor — there is no account to grant to", () => {
+    expect(needsMembershipGrant(anon)).toBe(false);
+  });
+
+  it("is true for an admin with no entitlements, because isAdmin is not an entitlement", () => {
+    // Admins read everything via canRead's isAdmin branch; the grant still
+    // happens so their access does not depend on the allowlist staying put.
+    expect(needsMembershipGrant(admin)).toBe(true);
   });
 });

@@ -29,6 +29,19 @@ export function hasEntitlement(ctx: AccessCtx, sectionId: string): boolean {
   );
 }
 
+/**
+ * Whether this user still needs the free signup grant.
+ *
+ * Membership is free today, so a signed-up account is a member — but that is
+ * expressed as a real entitlement row rather than as "signed in means member"
+ * inside canRead, so the day a subscription decides access, only the granting
+ * changes and the gate does not. Pure so it can be tested without a database.
+ */
+export function needsMembershipGrant(ctx: AccessCtx): boolean {
+  if (!ctx.user) return false;
+  return !ctx.entitlements.some((e) => e.scope === "all");
+}
+
 export function canRead(lesson: Gated, ctx: AccessCtx): boolean {
   // Unpublished (or any unrecognised status) is admin-only.
   if (lesson.status !== "published") return ctx.isAdmin;

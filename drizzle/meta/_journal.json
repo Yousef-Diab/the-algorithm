@@ -43,6 +43,13 @@
       "when": 1788199147723,
       "tag": "0005_simple_rattler",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788530823118,
+      "tag": "0006_huge_hedge_knight",
+      "breakpoints": true
     }
   ]
 }

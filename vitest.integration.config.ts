@@ -33,6 +33,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      // MORE SPECIFIC FIRST — Vite matches string aliases by prefix, so the
+      // bare "@" below would swallow this one if they were the other way up.
+      // lib/auth.ts loads @neondatabase/auth/next/server, which imports
+      // next/headers and only resolves inside a Next build; the entitlement
+      // tests take a user id as an argument and never need a session.
+      "@/lib/auth": resolve(__dirname, "tests/unit/stubs/auth.ts"),
       "@": resolve(__dirname, "."),
       // lib/db/index.ts:1 is `import "server-only"`, a package that is NOT
       // installed; Next aliases it at build time, so Vitest must too.
