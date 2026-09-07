@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { CatalogSection } from "@/lib/content/queries";
 import { useProgress } from "@/components/progress/ProgressProvider";
 import { AuthControls } from "@/components/auth/AuthControls";
+import { BrandMark } from "./BrandMark";
 import styles from "./Sidebar.module.css";
 
 export function Sidebar({
@@ -52,8 +53,9 @@ export function Sidebar({
           <div className={styles.brandTop}>
             <div className={styles.brandText}>
               <h1 className={styles.brandTitle}>
-                <Link href="/" onClick={() => setOpen(false)}>
-                  The <span>Algorithm</span>
+                <Link className={styles.brandLink} href="/" onClick={() => setOpen(false)}>
+                  <BrandMark className={styles.brandMark} />
+                  <span>The <span>Algorithm</span></span>
                 </Link>
               </h1>
               <div className={styles.sub}>Interactive course · built from ICT&apos;s Mentorships</div>

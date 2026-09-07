@@ -31,7 +31,26 @@
   font-size: 17px;
   letter-spacing: 0.4px;
 }
+.brandLink {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: inherit;
+  text-decoration: none;
+}
+.brandMark {
+  width: 44px;
+  height: auto;
+  flex: none;
+  filter: drop-shadow(0 5px 12px #0007);
+}
 .brandTitle span {
+  color: var(--gold);
+}
+.brandTitle > .brandLink > span {
+  color: inherit;
+}
+.brandTitle > .brandLink > span > span {
   color: var(--gold);
 }
 .sub {
