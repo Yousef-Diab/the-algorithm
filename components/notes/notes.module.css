@@ -1,0 +1,49 @@
+.notes {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin: 34px 0 10px;
+}
+.title {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 18px;
+}
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-family: var(--font);
+  line-height: 1.5;
+}
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.status {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  min-height: 1em;
+}
+.gate {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin: 0;
+}
+.gate a {
+  color: var(--gold);
+}

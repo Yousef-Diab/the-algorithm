@@ -1,0 +1,60 @@
+.hint {
+  font-size: 11px;
+  color: var(--dim);
+  text-align: center;
+  margin: 4px 0 6px;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 6px 0 18px;
+}
+
+.flip {
+  perspective: 900px;
+  height: 150px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+.inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+.flipped .inner {
+  transform: rotateY(180deg);
+}
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 14px;
+  font-size: 14px;
+}
+.front {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  font-weight: 650;
+  color: var(--accent2);
+}
+.back {
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  transform: rotateY(180deg);
+  color: var(--text);
+  font-size: 13px;
+}

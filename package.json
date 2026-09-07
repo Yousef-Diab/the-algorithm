@@ -1,0 +1,59 @@
+{
+  "name": "the-algorithm",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --ignore-pattern \"engine/**\" --ignore-pattern \"content/**\"",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "playwright test",
+    "test:rewards-ui": "playwright test --config tests/browser/rewards.config.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "content:import": "node --env-file=.env.local --experimental-strip-types scripts/import-content.mjs",
+    "content:promote": "node --env-file=.env.local --experimental-strip-types scripts/promote-draft.mjs",
+    "content:status": "node --env-file=.env.local --experimental-strip-types scripts/set-status.mjs",
+    "mcp": "node --env-file=.env.local --experimental-strip-types mcp/server.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1106.0",
+    "@aws-sdk/s3-request-presigner": "^3.1106.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@neondatabase/auth": "0.4.2-beta",
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/analytics": "^2.0.1",
+    "drizzle-orm": "^0.45.2",
+    "next": "16.2.11",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.11",
+    "node-html-parser": "^9.0.1",
+    "sharp": "^0.35.3",
+    "typescript": "^5",
+    "vite": "^7.3.6",
+    "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "core-js",
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
+}

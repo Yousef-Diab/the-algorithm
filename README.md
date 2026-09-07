@@ -28,7 +28,7 @@ The published site is a single HTML file that runs offline in any modern browser
 | `transcripts/` | Source ICT video transcripts — `Month 1` … `Month 4` for Section 1, `2022 Mentorship` for Section 2. **Git-ignored** (local source material only). |
 | `notes/` | Section 2's harvested mentorship notes and their staging charts. **Git-ignored** (local source material only). |
 | `.claude/` | Claude Code local settings. |
-| `CLAUDE.md` | Working guide for AI-assisted development — read this before editing. |
+| `AGENTS.md` | Working guide for AI-assisted development — read this before editing. |
 
 ### Section 1 — ICT Core
 
@@ -81,7 +81,7 @@ What you get:
 
 > **All course content comes purely from the provided source material** — ICT's mentorship notes and the video transcripts for whichever section is being built. General/outside trading knowledge is deliberately **not** used. Every lesson explanation and quiz answer is traceable to that source material.
 
-This constraint is intentional and should be preserved in all future edits. See `CLAUDE.md` for how it shapes the workflow.
+This constraint is intentional and should be preserved in all future edits. See `AGENTS.md` for how it shapes the workflow.
 
 ---
 
@@ -96,7 +96,7 @@ This project is a personal study aid that reorganises the above material into an
 
 ## Roadmap / future to-do
 
-- [x] **Refactor for expandability.** Content and rendering are now split: lessons live in `content/<section>/<month>/<id>/` and `build.py` assembles the offline `index.html`. New lessons/sections drop in as folders (see `CLAUDE.md` → §2 / §4).
+- [x] **Refactor for expandability.** Content and rendering are now split: lessons live in `content/<section>/<month>/<id>/` and `build.py` assembles the offline `index.html`. New lessons/sections drop in as folders (see `AGENTS.md` → §2 / §4).
 - [x] **AI-development friendly.** One obvious edit point per change (§4), `build.py` validates as it assembles, an `add-content` skill scaffolds lessons/months/sections, and `verify.py` + CI enforce a headless check (and that `index.html` is never committed stale) on every PR.
 - [x] **Section 2 — ICT 2022 Mentorship.** All 40 lessons built from the episode transcripts and notes, with a section summary and final exam. See [`docs/s2-2022-mentorship-plan.md`](docs/s2-2022-mentorship-plan.md) for how it was scoped and built.
 - [ ] **A section switcher in the sidebar**, now that there is more than one section.

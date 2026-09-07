@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1786375936361,
+      "tag": "0000_robust_sunset_bain",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786384402415,
+      "tag": "0001_early_morbius",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786390778210,
+      "tag": "0002_chunky_baron_zemo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786471097819,
+      "tag": "0003_serious_the_renegades",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786574032901,
+      "tag": "0004_lethal_toad_men",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1788199147723,
+      "tag": "0005_simple_rattler",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788530823118,
+      "tag": "0006_huge_hedge_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1788717362400,
+      "tag": "0007_focus_rewards",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1788811156335,
+      "tag": "0008_first_try_rewards",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1788813248529,
+      "tag": "0009_reconcile_reward_backfill",
+      "breakpoints": true
+    }
+  ]
+}

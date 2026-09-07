@@ -1,0 +1,75 @@
+.loader {
+  position: fixed;
+  inset: 0 0 0 var(--sidebar-w);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.mark {
+  display: block;
+  width: 112px;
+  overflow: visible;
+  filter: drop-shadow(0 8px 20px #0007);
+}
+
+.mark [data-brand-grid] {
+  opacity: .65;
+}
+
+.mark [data-brand-trail] {
+  stroke-dasharray: 10 8;
+  animation: flow 1.2s linear infinite;
+}
+
+.mark [data-brand-candle] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: candle 1.5s ease-in-out infinite;
+}
+
+.mark [data-brand-candle]:nth-of-type(2) { animation-delay: -.5s; }
+.mark [data-brand-candle]:nth-of-type(3) { animation-delay: -1s; }
+
+.mark [data-brand-diamond] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: diamond 1.5s ease-in-out infinite;
+}
+
+.mark [data-brand-signal] {
+  transform-origin: 166px 20px;
+  animation: signal 1.2s ease-in-out infinite;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes flow { to { stroke-dashoffset: -18; } }
+@keyframes candle { 0%, 100% { opacity: .55; transform: scaleY(.82); } 50% { opacity: 1; transform: scaleY(1); } }
+@keyframes diamond { 0%, 100% { transform: scale(.86) rotate(0); } 50% { transform: scale(1.08) rotate(90deg); } }
+@keyframes signal { 0%, 100% { opacity: .4; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.35); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mark [data-brand-trail],
+  .mark [data-brand-candle],
+  .mark [data-brand-diamond],
+  .mark [data-brand-signal] { animation: none; }
+}
+
+@media (max-width: 600px) {
+  .mark { width: 96px; }
+}
+
+@media (max-width: 900px) {
+  .loader { left: 0; }
+}

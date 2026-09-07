@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "entitlements_signup_user_idx" ON "entitlements" USING btree ("user_id") WHERE "entitlements"."source" = 'signup';
