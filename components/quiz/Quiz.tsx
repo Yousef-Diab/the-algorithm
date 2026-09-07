@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Checkpoint } from "@/components/rewards/Checkpoint";
 import { QuizGate } from "./QuizGate";
 import { loadMyQuiz, recordQuizAction, resetLessonQuiz } from "@/app/actions/progress";
 import { seededShuffle } from "./shuffle";
@@ -33,6 +34,12 @@ export function Quiz({ lessonId }: QuizProps) {
   const [state, setState] = useState<FetchState>({ status: "loading" });
   const [answered, setAnswered] = useState<Record<string, number>>({});
   const [resetting, setResetting] = useState(false);
+  const [pending, setPending] = useState<Record<string, boolean>>({});
+  const [failed, setFailed] = useState<Record<string, number>>({});
+  const [resetError, setResetError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const [completedThisVisit, setCompletedThisVisit] = useState(false);
+  const generation = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -55,9 +62,10 @@ export function Quiz({ lessonId }: QuizProps) {
   useEffect(() => {
     if (state.status !== "ready") return;
     let cancelled = false;
+    const version = generation.current;
     loadMyQuiz(lessonId)
       .then((server) => {
-        if (cancelled || !server) return; // null: signed out, or refused — leave answered empty
+        if (cancelled || version !== generation.current || !server) return;
         const restored: Record<string, number> = {};
         for (const [questionId, r] of Object.entries(server)) restored[questionId] = r.selected;
         setAnswered((prev) => ({ ...restored, ...prev }));
@@ -80,18 +88,26 @@ export function Quiz({ lessonId }: QuizProps) {
     [questions],
   );
 
+  async function saveAnswer(questionId: string, optIndex: number) {
+    setPending(prev => ({...prev,[questionId]:true}));
+    try {
+      await recordQuizAction(lessonId, questionId, optIndex);
+      setFailed(prev => {const next={...prev};delete next[questionId];return next;});
+    } catch {
+      setFailed(prev => ({...prev,[questionId]:optIndex}));
+    } finally {
+      setPending(prev => {const next={...prev};delete next[questionId];return next;});
+    }
+  }
   function choose(question: ApiQuestion, optIndex: number) {
     if (answered[question.id] !== undefined) return;
-    // Optimistic: set local state immediately, don't block the UI on the
-    // round trip. Deliberately not rolled back on rejection — the quiz is
-    // members-only (a signed-out click can't happen; QuizGate is shown
-    // instead), so a failure here is a transient write error, not a
-    // permission problem, and leaving the picked option visible is less
-    // confusing than silently reverting a user's answer.
-    setAnswered((prev) => ({ ...prev, [question.id]: optIndex }));
-    recordQuizAction(lessonId, question.id, optIndex).catch(() => {
-      /* see comment above — optimistic state is kept on failure */
-    });
+    // Feedback stays immediate, but a checkpoint waits for persisted answers.
+    const next = { ...answered, [question.id]: optIndex };
+    setAnswered(next);
+    if (questions.length > 0 && questions.every((q) => next[q.id] !== undefined)) {
+      setCompletedThisVisit(true);
+    }
+    void saveAnswer(question.id,optIndex);
   }
 
   // Await-before-clear: the server delete must succeed before the local
@@ -100,13 +116,18 @@ export function Quiz({ lessonId }: QuizProps) {
   // ungraded-looking-but-still-recorded rows. Disabled while in flight so a
   // double-click can't fire two deletes.
   async function handleReset() {
-    if (resetting) return;
+    if (resetting || Object.keys(pending).length>0) return;
     setResetting(true);
+    setResetError(false);
+    generation.current++;
     try {
       await resetLessonQuiz(lessonId);
       setAnswered({});
+      setFailed({});
+      setCompletedThisVisit(false);
+      setAttempt(n=>n+1);
     } catch {
-      /* server call failed — leave graded state as-is, it still matches the DB */
+      setResetError(true);
     } finally {
       setResetting(false);
     }
@@ -118,7 +139,7 @@ export function Quiz({ lessonId }: QuizProps) {
   const hasAnswers = Object.keys(answered).length > 0;
 
   return (
-    <section className={styles.quiz} aria-label="Lesson quiz">
+    <section id={`checkpoint-${lessonId}`} tabIndex={-1} className={styles.quiz} aria-label="Lesson quiz">
       <div className={styles.header}>
         <div>
           <h3 className={styles.title}>Check yourself</h3>
@@ -132,13 +153,20 @@ export function Quiz({ lessonId }: QuizProps) {
             type="button"
             className={styles.reset}
             data-quiz-reset
-            disabled={resetting}
+            disabled={resetting || Object.keys(pending).length>0}
             onClick={handleReset}
           >
             Reset
           </button>
         )}
       </div>
+      {resetError && <p role="alert">Could not reset the quiz. Try again.</p>}
+      {Object.keys(failed).length>0 && <div role="alert">
+        <p>Your answer was not saved. Retry before finishing the checkpoint.</p>
+        <button className={styles.reset} disabled={Object.keys(pending).length>0} onClick={()=>{
+          for(const [id,selected] of Object.entries(failed)) void saveAnswer(id,selected);
+        }}>Retry saving</button>
+      </div>}
 
       {questions.map((qq, qi) => {
         const order = orders[qi];
@@ -163,7 +191,7 @@ export function Quiz({ lessonId }: QuizProps) {
                   type="button"
                   className={cls}
                   data-quiz-option
-                  disabled={isAnswered}
+                  disabled={isAnswered || resetting}
                   onClick={() => choose(qq, optIndex)}
                 >
                   {qq.o[optIndex]}
@@ -176,6 +204,10 @@ export function Quiz({ lessonId }: QuizProps) {
           </div>
         );
       })}
+      <Checkpoint key={`${lessonId}:${attempt}`} lessonId={lessonId}
+        complete={questions.length>0 && questions.every(q=>answered[q.id]!==undefined) && Object.keys(failed).length===0}
+        saving={resetting || Object.keys(pending).length>0}
+        autoClaim={completedThisVisit}/>
     </section>
   );
 }

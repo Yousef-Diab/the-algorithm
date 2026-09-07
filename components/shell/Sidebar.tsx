@@ -71,6 +71,10 @@ export function Sidebar({
         </div>
 
         <div className={styles.navList}>
+          <Link href="/leaderboard" onClick={()=>setOpen(false)}
+            className={`${styles.navLesson} ${pathname==='/leaderboard'?styles.active:''}`}>
+            <span className={styles.dot}>✦</span><span>Member leaderboard</span>
+          </Link>
           {catalog.map((s) => (
             <div key={s.id}>
               {/* only label sections once there is more than one of them */}

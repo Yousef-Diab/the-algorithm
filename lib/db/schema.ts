@@ -328,3 +328,33 @@ export type ProgressRow = typeof progress.$inferSelect;
 export type QuizResultRow = typeof quizResults.$inferSelect;
 export type ExamResultRow = typeof examResults.$inferSelect;
 export type NoteRow = typeof notes.$inferSelect;
+
+// Reward history is independent of resettable progress and quiz answers.
+export const checkpointRewards = pgTable("checkpoint_rewards", {
+  userId: text("user_id").notNull(),
+  lessonId: text("lesson_id").notNull().references(() => lessons.id, { onDelete: "cascade" }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  bonusAt: timestamp("bonus_at", { withTimezone: true }),
+  firstAttemptScore: integer("first_attempt_score"),
+  firstAttemptAt: timestamp("first_attempt_at", { withTimezone: true }),
+  lastRewardAt: timestamp("last_reward_at", { withTimezone: true }),
+}, t => [primaryKey({ columns: [t.userId, t.lessonId] })]);
+
+export const xpEvents = pgTable("xp_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: text("user_id").notNull(),
+  lessonId: text("lesson_id").notNull().references(() => lessons.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull(),
+  amount: integer("amount").notNull(),
+  earnedAt: timestamp("earned_at", { withTimezone: true }).defaultNow().notNull(),
+  legacy: boolean("legacy").default(false).notNull(),
+}, t => [index("xp_user_time_idx").on(t.userId, t.earnedAt),
+  uniqueIndex("xp_once_idx").on(t.userId, t.lessonId, t.kind).where(sql`kind IN ('completion', 'accuracy')`),
+  uniqueIndex("xp_first_try_once_idx").on(t.userId, t.lessonId, t.kind).where(sql`kind IN ('first_try', 'perfect_first_try')`)]);
+
+export const learnerProfiles = pgTable("learner_profiles", {
+  userId: text("user_id").primaryKey(),
+  displayName: text("display_name").notNull(),
+  avatar: text("avatar").default("◆").notNull(),
+  visible: boolean("visible").default(true).notNull(),
+});

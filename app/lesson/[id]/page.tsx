@@ -13,6 +13,7 @@ import { LockedBody } from "@/components/lesson/LockedBody";
 import { Quiz } from "@/components/quiz/Quiz";
 import { Exam } from "@/components/quiz/Exam";
 import { NotesSection } from "@/components/notes/NotesSection";
+import { FocusTimer } from "@/components/rewards/FocusTimer";
 import shell from "@/app/shell.module.css";
 
 /**
@@ -94,6 +95,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
       <article className="lesson">
         <LessonHero meta={meta} />
 
+        {meta.kind === "lesson" ? <FocusTimer key={id} lessonId={id} /> : null}
         {meta.videoUrl ? (
           <a className="lesson-video" href={meta.videoUrl} target="_blank" rel="noopener noreferrer">
             <span className="lv-ico">▶</span>
@@ -103,7 +105,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
         <BlockRenderer blocks={blocks} lessonId={id} figures={figures} />
 
-        {meta.kind === "lesson" ? <Quiz lessonId={id} /> : null}
+        {meta.kind === "lesson" ? <Quiz key={id} lessonId={id} /> : null}
 
         {meta.kind === "exam" ? <Exam key={id} lessonId={id} /> : null}
 

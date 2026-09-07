@@ -2,6 +2,7 @@ import { getCatalog } from "@/lib/content/queries";
 import { SectionCards } from "@/components/home/SectionCards";
 import styles from "@/components/home/home.module.css";
 import shell from "@/app/shell.module.css";
+import { RewardSummary } from "@/components/rewards/RewardSummary";
 
 export default async function Home() {
   const catalog = await getCatalog();
@@ -26,6 +27,7 @@ export default async function Home() {
           </p>
         </div>
 
+        <RewardSummary />
         <SectionCards sections={catalog} />
 
         <div className={styles.notice}>

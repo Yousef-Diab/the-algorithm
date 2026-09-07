@@ -11,6 +11,7 @@
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "playwright test",
+    "test:rewards-ui": "playwright test --config tests/browser/rewards.config.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -32,6 +33,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@playwright/test": "^1.61.1",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -43,6 +45,7 @@
     "node-html-parser": "^9.0.1",
     "sharp": "^0.35.3",
     "typescript": "^5",
+    "vite": "^7.3.6",
     "vitest": "^3.2.4"
   },
   "pnpm": {

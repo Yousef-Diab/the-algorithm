@@ -102,6 +102,17 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    const refresh = () => {
+      loadMyProgress().then(ids => {
+        if (active && ids) setDone(new Set(ids));
+      }).catch(() => { /* next navigation/reload restores server progress */ });
+    };
+    window.addEventListener('checkpoint-completed', refresh);
+    return () => { active = false; window.removeEventListener('checkpoint-completed', refresh); };
+  }, []);
+
   const toggle = useCallback(
     (id: string) => {
       // wasDone/next are computed here, outside setDone's updater, so the
