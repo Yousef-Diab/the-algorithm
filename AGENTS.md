@@ -22,6 +22,7 @@ Product copy, UI labels, infrastructure, and engineering documentation are not c
 
 - `app/` — Next.js 16 App Router routes, server actions, route handlers, layouts, and page-level styles.
 - `components/` — client and server UI grouped by concern: auth, lessons, quizzes, progress, rewards, shell, notes, and lightbox.
+- `components/shell/SiteLoader.tsx` — the shared visual loader for route boundaries. Reuse it instead of creating route-specific loading cards or spinners.
 - `lib/db/schema.ts` — Drizzle schema for application-owned tables in Postgres.
 - `lib/db/` — authenticated per-user queries for access, progress, quizzes, exams, and notes.
 - `lib/content/` — block validation/rendering, public reads, imports, draft writes, canonicalization, and admin queries.
