@@ -59,7 +59,7 @@ under `transcripts/` or `notes/`. It's validated at write time — a
 nonexistent or out-of-tree path is rejected. This keeps every drafted body
 traceable back to the source material it was drafted from.
 
-This exists because of the project's core content rule (CLAUDE.md §1):
+This exists because of the project's core content rule (AGENTS.md §1):
 course content must come *purely* from ICT's mentorship notes and video
 transcripts, never from outside/general trading knowledge. `sourceRef`
 doesn't prove the content is faithful to the source — only a human review
@@ -73,7 +73,7 @@ human reviewer opens first.
    MCP tools. Body writes land in `body_draft`; nothing is public yet.
 2. **Human reads the draft.** Before promoting anything, call `get_lesson`
    yourself and actually read the draft body against its `sourceRef`. The
-   promote step below is the review — CLAUDE.md §1 still governs, and
+   promote step below is the review — AGENTS.md §1 still governs, and
    nothing enforces it except a human reading the text before it goes live.
    Do not rubber-stamp it.
 3. **Promote or discard:**

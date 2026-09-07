@@ -13,7 +13,7 @@ import { loadMyProgress, mergeLocalState, toggleDone } from "@/app/actions/progr
 
 /**
  * P1: progress was localStorage-only, exactly as it was for the static site
- * (see CLAUDE.md's `ict-done` key). P4 Task 22 adds per-user persistence for
+ * (see AGENTS.md's `ict-done` key). P4 Task 22 adds per-user persistence for
  * signed-in users: `loadMyProgress()` returning null IS the signed-out
  * signal, so this component stays free of any auth SDK import.
  */
@@ -84,7 +84,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           }
           await mergeLocalState(JSON.stringify({ done: [...localDone], quiz }));
           localStorage.setItem(MERGED_KEY, "1");
-          // NEVER clear ict-notes here — CLAUDE.md §3: no reset ever clears notes.
+          // NEVER clear ict-notes here — AGENTS.md §3: no reset ever clears notes.
           localStorage.removeItem(DONE_KEY);
           localStorage.removeItem(QUIZ_KEY);
           const merged = await loadMyProgress();

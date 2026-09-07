@@ -22,7 +22,7 @@ import { test, expect } from "@playwright/test";
 // components/lightbox/LightboxProvider.tsx is 263 lines of hand-rebuilt
 // pointer/zoom/pan logic (the nextjs-migration port was a 67-line stub), and
 // this is the only test that exercises it. It pins three documented traps
-// (CLAUDE.md §3): the pointer-capture retarget that makes a real click on a
+// (AGENTS.md §3): the pointer-capture retarget that makes a real click on a
 // zoomed image report e.target as the stage rather than the image
 // (hitsImage's getBoundingClientRect fallback), the .lb-stage
 // flex:1;min-height:0 clamp that keeps the control panel from moving when
@@ -103,7 +103,7 @@ test(
     // boundingBox() — never locator.click() or a synthetic el.click() — a
     // synthetic click reports clientX/Y as 0 and would pass this assertion
     // even against broken code, via hitsImage's zero-coordinate fallback
-    // (CLAUDE.md §3: "test close-on-outside-click with real mouse input,
+    // (AGENTS.md §3: "test close-on-outside-click with real mouse input,
     // never el.click()").
     const imgBox = await lbImage.boundingBox();
     if (!imgBox) throw new Error("lightbox image did not render a bounding box");

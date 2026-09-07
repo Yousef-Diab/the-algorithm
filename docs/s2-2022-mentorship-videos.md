@@ -1,7 +1,7 @@
 # Section 2 — episode → source video map
 
 Generated from the mentorship playlist. **This is the only permitted source for a
-Section 2 `video.txt`** — never write a URL that is not in this table (CLAUDE.md §1).
+Section 2 `video.txt`** — never write a URL that is not in this table (AGENTS.md §1).
 
 Playlist: <https://www.youtube.com/playlist?list=PLVgHx4Z63paYiFGQ56PjTF1PGePL3r69s>
 

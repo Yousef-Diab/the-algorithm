@@ -8,7 +8,7 @@ produce finished lessons without re-deriving anything.
 40-question final exam. This file is kept as the record of how Section 2 was scoped and built;
 follow §6 if a lesson ever needs revisiting.
 
-Read `CLAUDE.md` first — §1 (content purity) and §3 (conventions) still govern everything here.
+Read `AGENTS.md` first — §1 (content purity) and §3 (conventions) still govern everything here.
 
 ---
 
@@ -19,7 +19,7 @@ Add the **ICT 2022 Mentorship** (41 episodes) as `content/s2-2022-mentorship/`, 
 single offline `index.html`.
 
 **One episode = one lesson.** No thematic re-cutting, no merging. This keeps every lesson
-traceable to exactly one transcript and one notes block (CLAUDE.md §1), and it makes the
+traceable to exactly one transcript and one notes block (AGENTS.md §1), and it makes the
 work cleanly divisible across sessions.
 
 ---
@@ -53,7 +53,7 @@ Source page (for provenance only):
 - **Video URLs are resolved.** [`s2-2022-mentorship-videos.md`](s2-2022-mentorship-videos.md)
   maps every episode to its lesson id and its real video URL, generated from the mentorship
   playlist. It is **the only permitted source** for a Section 2 `video.txt` — never write a
-  URL that is not in that table (CLAUDE.md §1).
+  URL that is not in that table (AGENTS.md §1).
 
 ---
 
@@ -117,7 +117,7 @@ is committed; `notes/` is not.
 
 ## 4. Engine changes — **done in Phase A**
 
-CLAUDE.md §7 predicted Section 2 would need no engine changes. That was *almost* true — the
+The earlier static architecture guide predicted Section 2 would need no engine changes. That was *almost* true — the
 data model was ready, but three rendering details assumed a single section. All three are
 now fixed; this section is kept as the record of what changed and why.
 
@@ -161,9 +161,9 @@ Each content session does exactly this, for one batch from §7:
    a. Read `transcripts/2022 Mentorship/2022 ICT Mentorship Episode N*.txt`.
    b. Derive the lesson **title** from what the episode actually teaches.
    c. Write `content/s2-2022-mentorship/{part}/{id}/lesson.html` — the section markup per
-      CLAUDE.md §3, reusing `.callout`, `.callout.rule`, `.callout.warn`, `.kv`,
+      AGENTS.md §3, reusing `.callout`, `.callout.rule`, `.callout.warn`, `.kv`,
       `.flip-row`, `<h3>`. Content comes **only** from that episode's transcript + notes.
-   d. Write `quiz.js` — 4–6 questions, the shape and authoring rules in CLAUDE.md §3
+   d. Write `quiz.js` — 4–6 questions, the shape and authoring rules in AGENTS.md §3
       (balanced option lengths; the correct option and `e` must be source-traceable).
    e. Write `video.txt` — copy that episode's URL from
       [`s2-2022-mentorship-videos.md`](s2-2022-mentorship-videos.md), one line, nothing else.

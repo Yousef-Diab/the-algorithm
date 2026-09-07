@@ -11,4 +11,4 @@ Approved in conversation: preserve short lessons; one checkpoint at the end usin
 - New reward tables and function use additive migrations. Tests run against disposable embedded Postgres, never the configured live database. The configured database migrations were applied separately at the user's request; deployment remains separate.
 - Failed persistence is visible with retry; no success message before server confirmation. Existing course material and notes are untouched.
 
-Implementation targets current Next.js/Neon app; README/CLAUDE legacy static instructions predate that app. No static lesson changes are required.
+Implementation targets the current Next.js/Neon app; the README's legacy static instructions predate that app. No static lesson changes are required.

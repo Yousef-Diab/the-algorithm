@@ -1,7 +1,7 @@
 /**
  * Tolerant readers for the bare-literal content meta files. Mirrors build.py's
  * parse_objs / js_literal: a JS formatter mangles these files by design
- * (CLAUDE.md §3), so we pull the fields out rather than trusting the syntax.
+ * (AGENTS.md §3), so we pull the fields out rather than trusting the syntax.
  * Never eval, never JSON.parse.
  */
 

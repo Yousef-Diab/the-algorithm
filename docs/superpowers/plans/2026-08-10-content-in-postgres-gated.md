@@ -16,7 +16,7 @@
 
 Every task's requirements implicitly include this section.
 
-- **CLAUDE.md §1 overrides everything.** Course content comes *purely* from ICT's mentorship notes and `transcripts/`. This migration **transforms** existing content; it never authors, improves, rewords or invents any. If a transformation would change wording, stop and report it.
+- **AGENTS.md §1 overrides everything.** Course content comes *purely* from ICT's mentorship notes and `transcripts/`. This migration **transforms** existing content; it never authors, improves, rewords or invents any. If a transformation would change wording, stop and report it.
 - **Never `git push`, never open a PR, never force-push.** Nothing leaves the machine without an explicit ask.
 - **Local commits on `nextjs-neon-cms` ARE expected** (user ruling, 2026-08-10). Each task ends by committing exactly that task's files: conventional-commit subject, and the trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`. Where a task's final step below says "Do not commit" or shows only `git add`, **this line supersedes it** — stage those paths, then commit them. The user rewrites or squashes the history at the end as they see fit.
 - **Never touch `transcripts/` or `notes/`.** Read-only, forever. Never delete a git-ignored file.
@@ -276,7 +276,7 @@ git checkout nextjs-migration -- app/globals.css app/shell.module.css components
 
 - [ ] **Step 2: Read `components/lightbox/LightboxProvider.tsx` and confirm the three documented traps survived the port**
 
-CLAUDE.md §3 names them: the stage holds a **pointer capture** so Chromium retargets the follow-up `click` (there must be a hit-test against the image rect, not a trust of `e.target`); `.lb-stage` must be `flex:1; min-height:0` so the caption panel is pinned; the stage must centre with `align-items: safe center`. If any is missing from the ported file, restore it from the `main` branch's `engine/head.html` + `engine/app.js` and say which.
+AGENTS.md §3 names them: the stage holds a **pointer capture** so Chromium retargets the follow-up `click` (there must be a hit-test against the image rect, not a trust of `e.target`); `.lb-stage` must be `flex:1; min-height:0` so the caption panel is pinned; the stage must centre with `align-items: safe center`. If any is missing from the ported file, restore it from the `main` branch's `engine/head.html` + `engine/app.js` and say which.
 
 - [ ] **Step 3: Write a temporary CSS probe page**
 
@@ -1713,7 +1713,7 @@ This is **the acceptance test for the import**. It proves the parser loses nothi
 
 **Why comments are stripped rather than round-tripped.** The parser drops HTML comments (a comment node is neither an element nor a text node, so the walk skips it), and the exporter therefore has nothing to re-emit. Counted exactly: **17 comments across 7 of the 80 files** — 5 provenance notes (`<!-- no fig-slot: the notes carry no charts for this episode -->` in `p1-01`, `p2-01`, `p2-04`, `p3-01`, `p5-01`) and 12 section separators (`<!-- ==== MONTH 1 ==== -->` ×5 in `s1-ict-core/summary.html`, `<!-- ==== PART 1 ==== -->` ×7 in `s2-2022-mentorship/summary.html`).
 
-None of it is course content, so CLAUDE.md §1 is not engaged: they are notes *about the source file*, and the one editorial fact they carry — that an episode's notes contain no charts — is already encoded structurally, since such a lesson simply has no `figures` block. The alternative (a `comment` block type) would add a parser branch, an exporter branch and a renderer branch that renders nothing, purely to carry authoring marginalia into a database that is replacing those files as the source of truth. Stripping is the right call, but it must be **counted and asserted** like every other rule here, so a future comment appearing in a lesson body fails the gate loudly instead of vanishing unnoticed.
+None of it is course content, so AGENTS.md §1 is not engaged: they are notes *about the source file*, and the one editorial fact they carry — that an episode's notes contain no charts — is already encoded structurally, since such a lesson simply has no `figures` block. The alternative (a `comment` block type) would add a parser branch, an exporter branch and a renderer branch that renders nothing, purely to carry authoring marginalia into a database that is replacing those files as the source of truth. Stripping is the right call, but it must be **counted and asserted** like every other rule here, so a future comment appearing in a lesson body fails the gate loudly instead of vanishing unnoticed.
 
 If any count differs from the table, **stop and report** — the corpus has changed since the survey and the parser may need a new branch.
 
@@ -2009,7 +2009,7 @@ git add lib/content/canonical.ts scripts/export-content.mjs tests/unit/roundtrip
 
 ### Task 9: Tolerant readers for the meta and quiz literals
 
-`section.js` and `months.js` hold bare `{…}` object literals; `quiz.js` and `exam.js` hold bare array literals. A JS formatter reads the former as *block statements* and inserts a `;` before the `}`, and appends a `;` after the latter (CLAUDE.md §3). `build.py` defends against both with `parse_objs` and `js_literal`; the importer needs the same tolerance. **Never `eval`, never `JSON.parse`.**
+`section.js` and `months.js` hold bare `{…}` object literals; `quiz.js` and `exam.js` hold bare array literals. A JS formatter reads the former as *block statements* and inserts a `;` before the `}`, and appends a `;` after the latter (AGENTS.md §3). `build.py` defends against both with `parse_objs` and `js_literal`; the importer needs the same tolerance. **Never `eval`, never `JSON.parse`.**
 
 **Files:**
 - Create: `lib/content/parse-meta.ts`
@@ -2078,7 +2078,7 @@ describe("parseQuiz", () => {
   });
 
   it("reads every real quiz.js and exam.js without throwing", () => {
-    // Surveyed counts. Note CLAUDE.md §7 still says the s2 exam has 40
+    // Surveyed counts. The original Section 2 plan says its exam has 40
     // questions; the file actually holds 43, so trust the file.
     expect(parseQuiz(readFileSync("content/s1-ict-core/exam.js", "utf8"))).toHaveLength(45);
     expect(parseQuiz(readFileSync("content/s2-2022-mentorship/exam.js", "utf8"))).toHaveLength(43);
@@ -2100,7 +2100,7 @@ Expected: FAIL — cannot resolve `@/lib/content/parse-meta`.
 /**
  * Tolerant readers for the bare-literal content meta files. Mirrors build.py's
  * parse_objs / js_literal: a JS formatter mangles these files by design
- * (CLAUDE.md §3), so we pull the fields out rather than trusting the syntax.
+ * (AGENTS.md §3), so we pull the fields out rather than trusting the syntax.
  * Never eval, never JSON.parse.
  */
 
@@ -2741,7 +2741,7 @@ export function readContentTree(root: string): ImportPlan {
 
 **The exam crumb uses `title`, and it deliberately differs from the summary's.** `build.py:exam_page()` builds `f'{title} · Section Review'` from `section.js`'s `title`, which is the long form — so the generated exam crumbs are `ICT Core (Months 1–4) · Section Review` and `ICT 2022 Mentorship · Section Review`, while the hand-authored *summary* crumbs use the short form (`ICT Core · Section Review`, `2022 Mentorship · Section Review`). That asymmetry is existing behaviour; reproduce it rather than tidying it.
 
-Also note `content/s1-ict-core/section.js` currently has a formatter-inserted `;` **inside** its braces (`desc: "…"; }`) — exactly the mangling CLAUDE.md §3 warns about. `parseObjs` reads it correctly; do not "fix" the file.
+Also note `content/s1-ict-core/section.js` currently has a formatter-inserted `;` **inside** its braces (`desc: "…"; }`) — exactly the mangling AGENTS.md §3 warns about. `parseObjs` reads it correctly; do not "fix" the file.
 
 - [ ] **Step 4: Run the test**
 
@@ -4228,7 +4228,7 @@ The old non-gallery figure put `onClick` on the `<img>`; wrapping it in a button
 
 - [ ] **Step 3b: Teach the lightbox to open the whole lesson's set — PLAN DEFECT, added after Task 2's review**
 
-Controller ruling R2. CLAUDE.md §3 requires that clicking a chart opens **the whole lesson's set** (`img.closest('.lesson')`) so prev/next browses it without closing, and Task 24's e2e asserts exactly that. But Task 2 shipped a single-image `open(src, caption?)`, and no task owned the set. Without this step Task 24 fails with nobody to fix it.
+Controller ruling R2. AGENTS.md §3 requires that clicking a chart opens **the whole lesson's set** (`img.closest('.lesson')`) so prev/next browses it without closing, and Task 24's e2e asserts exactly that. But Task 2 shipped a single-image `open(src, caption?)`, and no task owned the set. Without this step Task 24 fails with nobody to fix it.
 
 Widen the lightbox's contract in `components/lightbox/LightboxProvider.tsx`:
 
@@ -5379,7 +5379,7 @@ export function planMerge(
 
 **The payload is a string** — invariant 5. It is only progress data here, not block JSON, but the same boundary bug applies to any nested object, and keeping one rule is cheaper than remembering the exception.
 
-`ProgressProvider` calls `mergeLocalState` **once** after a successful sign-in (guard with a `localStorage` flag `ict-merged` so a refresh does not re-run it) and then clears `ict-done`/`ict-quiz`. **It must never clear `ict-notes`** — CLAUDE.md §3: no reset ever clears notes.
+`ProgressProvider` calls `mergeLocalState` **once** after a successful sign-in (guard with a `localStorage` flag `ict-merged` so a refresh does not re-run it) and then clears `ict-done`/`ict-quiz`. **It must never clear `ict-notes`** — AGENTS.md §3: no reset ever clears notes.
 
 Now that persistence is per-user, the home page's `styles.notice` block ends with a sentence that is no longer accurate. Replace **only** its final sentence:
 

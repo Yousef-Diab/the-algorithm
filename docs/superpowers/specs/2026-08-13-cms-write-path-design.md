@@ -55,7 +55,7 @@ This project adds a second:
 > **Unreviewed prose is not cleared for anyone.** A draft body is admin-only regardless of the
 > lesson's `access` value.
 
-And CLAUDE.md §1 remains the rule that overrides everything:
+And AGENTS.md §1 remains the rule that overrides everything:
 
 > Course content must come *purely* from the provided source material — ICT's mentorship notes
 > and the video transcripts.
@@ -344,7 +344,7 @@ confirm it applied (grep the line) and that the build still exits 0.
 
 ---
 
-## 6. CLAUDE.md §1 — what actually enforces it
+## 6. AGENTS.md §1 — what actually enforces it
 
 Stated plainly, because overclaiming here would be worse than underclaiming:
 
@@ -394,7 +394,7 @@ Five new:
     surface; every path from written to readable passes through a human.
 
 `canRead` remains the single choke point; **404, never 403**, for anything gated — with the admin
-exception of §4.8. No reset ever clears `ict-notes` (CLAUDE.md §3).
+exception of §4.8. No reset ever clears `ict-notes` (AGENTS.md §3).
 
 ---
 

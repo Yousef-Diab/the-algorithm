@@ -214,7 +214,7 @@ describe("assertSourceRef", () => {
 });
 ```
 
-> **Note on the `notes/` fixture:** `notes/` is git-ignored but present locally, and `notes/ict-core/INDEX.md` is referenced by CLAUDE.md §6. If it is absent on your machine, substitute any file that exists under `notes/` or `transcripts/` — do **not** weaken the test to skip.
+> **Note on the `notes/` fixture:** `notes/` is git-ignored but present locally, and `notes/ict-core/INDEX.md` is referenced by AGENTS.md §6. If it is absent on your machine, substitute any file that exists under `notes/` or `transcripts/` — do **not** weaken the test to skip.
 
 - [ ] **Step 2: Run and confirm failure**
 
@@ -1461,7 +1461,7 @@ git commit -m "feat: add the human promote and publish CLIs"
 }
 ```
 
-- [ ] **Step 3: Write `docs/cms-authoring.md`** covering: the six tools; that the agent **cannot** publish; the two-step human flow (`pnpm content:promote promote <id>` then `pnpm content:status published <id>`); that `sourceRef` must be a real path under `transcripts/` or `notes/`; and that CLAUDE.md §1 still governs — the promote gate is the review, so read the draft before promoting.
+- [ ] **Step 3: Write `docs/cms-authoring.md`** covering: the six tools; that the agent **cannot** publish; the two-step human flow (`pnpm content:promote promote <id>` then `pnpm content:status published <id>`); that `sourceRef` must be a real path under `transcripts/` or `notes/`; and that AGENTS.md §1 still governs — the promote gate is the review, so read the draft before promoting.
 
 - [ ] **Step 4: Commit** (include `.mcp.json` — it holds no secrets; env comes from `.env.local`)
 

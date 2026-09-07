@@ -106,8 +106,8 @@ describe("parseQuiz", () => {
     expect(files).toBe(80);
     expect(questions).toBe(564);
 
-    // Pin the two exams individually. Note CLAUDE.md §7 still says the s2
-    // exam has 40 questions; the file actually holds 43, so trust the file.
+    // Pin the two exams individually. The original Section 2 plan targeted
+    // 40 questions; the final source holds 43, so trust the current file.
     expect(parseQuiz(readFileSync("content/s1-ict-core/exam.js", "utf8"))).toHaveLength(45);
     expect(parseQuiz(readFileSync("content/s2-2022-mentorship/exam.js", "utf8"))).toHaveLength(43);
   });

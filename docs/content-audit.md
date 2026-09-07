@@ -1,7 +1,7 @@
 # Content audit — The Algorithm
 
 A full review of every piece of course content against the governing rule in
-[`CLAUDE.md`](../CLAUDE.md) §1: **course content must come purely from the source
+[`AGENTS.md`](../AGENTS.md) §1: **course content must come purely from the source
 material** (the transcripts in `transcripts/` and, for Section 2, the notes in
 `notes/2022-mentorship/`).
 
@@ -93,7 +93,7 @@ They frame the per-batch work; individual findings live under each batch.
 
 **S1 · Quiz-count asymmetry.** Section 1 carries 2–6 questions per lesson;
 Section 2 carries 5–12. Fourteen Section 1 lessons sit below the four that
-`CLAUDE.md` §3's four-option/quiz shape implies as a floor:
+`AGENTS.md` §3's four-option/quiz shape implies as a floor:
 
 | Questions | Lessons |
 |---|---|
@@ -435,7 +435,7 @@ question the lesson otherwise leaves open.
 
 **B4 · nit · m2-06** — the *"you can't copy someone else"* line is ICT quoting
 and crediting **Chris Laurie** by name (line 1684). The lesson carries the idea
-without the attribution. `CLAUDE.md` §6 asks that attribution to original
+without the attribution. `AGENTS.md` §6 asks that attribution to original
 creators survive changes.
 
 **B5 · nit · m2-06** — the transcript explicitly permits skipping top-down
@@ -847,7 +847,7 @@ public**… please please don't make a common knowledge"*
 Month 3. **Owner's answer (2026-08-07): moot.** The request was made to a
 private mentorship cohort; ICT has since published the mentorship on his own
 YouTube channel, so the material is public by his own act — and each lesson here
-links back to his video (`CLAUDE.md` §3). Recorded so later batches don't
+links back to his video (`AGENTS.md` §3). Recorded so later batches don't
 re-raise it if the line recurs.
 
 ### Batch D — Section 1, Month 4a (m4-01 … m4-07)
@@ -1114,7 +1114,7 @@ Section 1 month.** Its options are not lopsided; they are tidy. m4-03 q1 runs
 characters, over and over. Nothing looks wrong to a reader eyeballing a single
 question; the signal only exists across the set.
 
-The consequence matters for any fix: **`CLAUDE.md` §3's rule — "keep all four
+The consequence matters for any fix: **`AGENTS.md` §3's rule — "keep all four
 options comparable in length (aim within ~5 characters)" — is necessary but not
 sufficient, and Month 4 is the proof.** Most of these questions already satisfy
 it, or come close, and are still a 90% giveaway. Balancing the spread would leave
@@ -1463,7 +1463,7 @@ George Lane:
 The lesson teaches Type 2 hidden divergence with no attribution. Same shape as
 **B4** (ICT crediting Chris Laurie, dropped) but stronger: ICT frames this one as
 a correction of a false credit and asks the reader to carry it forward, and
-`CLAUDE.md` §6 asks that attribution to original creators survive changes.
+`AGENTS.md` §6 asks that attribution to original creators survive changes.
 
 **E11 · should-fix · m4-13** — **the lesson faults retail for having no target
 and then gives none itself.** Its step 1 says retail sells the divergence *"with
@@ -2184,7 +2184,7 @@ m1-04:183 + m1-05:212, m1-03:129 + m3-04 — and four of them are the phrasing o
 the lesson rather than a paraphrase.
 
 **`content/s1-ict-core/section.js` still carries the stray semicolon `desc: "…";
-}` that `CLAUDE.md` §3 warns about.** Confirmed present and confirmed harmless:
+}` that `AGENTS.md` §3 warns about.** Confirmed present and confirmed harmless:
 `build.py`'s `parse_objs` re-emits `SECTIONS` from the parsed `key:"value"` pairs
 rather than pasting the literal, and both `build.py` and `verify.py` pass. Not
 touched, not a *Fixed in flight* item — recorded per the batch instruction.
@@ -2289,7 +2289,7 @@ on a 2016 lesson).
 Sources read: all 7 `notes/2022-mentorship/ep-0N.md` **and** all 7
 `transcripts/2022 Mentorship/…Episode N.txt` (294 KB), plus
 [`docs/s2-2022-mentorship-plan.md`](s2-2022-mentorship-plan.md) first per
-`CLAUDE.md` §7. Part 1 is **one lesson per episode** (plan §3), so each lesson
+`AGENTS.md` §7. Part 1 is **one lesson per episode** (plan §3), so each lesson
 has exactly one transcript and one notes block to answer to — a tighter test than
 Section 1's.
 
@@ -2491,7 +2491,7 @@ ep2:735-739). So the section keeps one provenance claim and drops the other, fro
 adjacent episodes, in the lesson whose subject *is* the order block. This is the
 same family as **B4** (ICT crediting Chris Laurie, dropped) and **E10** (Nick Van
 Nice, dropped), except the creator being credited here is ICT himself, and
-`CLAUDE.md` §6 asks that attribution to the original creators survive any
+`AGENTS.md` §6 asks that attribution to the original creators survive any
 refactor. Also dropped from the same passage: the Baby Pips 2010 origin of the
 prove-me-wrong challenge that the lesson's own homework reproduces (340-351).
 
@@ -2911,7 +2911,7 @@ quiz in the corpus**, below the chance rate. The one exception, **p1-06 at 75%**
 Sources read: all 6 `notes/2022-mentorship/ep-{08..13}.md` **and** all 6
 `transcripts/2022 Mentorship/…Episode N.txt` (256 KB), plus
 [`docs/s2-2022-mentorship-plan.md`](s2-2022-mentorship-plan.md) first per
-`CLAUDE.md` §7. One episode per lesson throughout, as in Part 1.
+`AGENTS.md` §7. One episode per lesson throughout, as in Part 1.
 
 Part 2 is the **densest quiz block in the corpus** — 49 questions across six
 lessons (8.2 each), against Section 1's 3.8. It is also the first batch where ICT
@@ -3857,7 +3857,7 @@ cross-reference rather than new sourcing.
 Sources read: all 6 `notes/2022-mentorship/ep-{14..19}.md` **and** all 6
 `transcripts/2022 Mentorship/…Episode N.txt` (**291 KB — the heaviest batch in
 the corpus**), plus [`docs/s2-2022-mentorship-plan.md`](s2-2022-mentorship-plan.md)
-first per `CLAUDE.md` §7. One episode per lesson throughout, as in Parts 1–2.
+first per `AGENTS.md` §7. One episode per lesson throughout, as in Parts 1–2.
 
 Part 3 is the batch with the widest internal spread of any so far: **ep14 is
 3.8 KB and ep19 is 133.9 KB**, a 35× range, and the lessons are sized to
@@ -4745,7 +4745,7 @@ plus 85 exam questions parse. It matters only as a measurement trap: a naive
 compact-no-space ones, which is how a manual quiz count can go wrong. The
 Method-notes regex handles all three, and Part 3 really does total 47.
 
-To be explicit, since `CLAUDE.md` §3 warns about formatter hazards in the meta
+To be explicit, since `AGENTS.md` §3 warns about formatter hazards in the meta
 files: **this is not one of them.** §3's hazard is a JS formatter inserting a `;`
 into `section.js` / `months.js` (block statements) or trailing a `;` onto an array
 literal — `build.py`'s `parse_objs` and `js_literal` already defend against both,
@@ -5445,7 +5445,7 @@ Clean, with one isolated deviation.
 - ids `p4-01`…`p4-06`, **five characters each** as the engine requires; `data-month="p4"` on all six; every `data-slug` prefix matches its lesson id; all three slots (`.fig-slot`, `.quiz`, `.lesson-footer`) present in all six.
 - Part 4 carries **no `(Lx)` cross-references at all**, so nothing can be dead.
 - **J24 · nit · `p4-05:37,47`** — **the two `.src` spans in Part 4 are the only two
-  in the corpus that are not lesson pointers.** `CLAUDE.md` §3 documents `.src` as
+  in the corpus that are not lesson pointers.** `AGENTS.md` §3 documents `.src` as
   *"an optional `<span class="src">(L4)</span>` **lesson pointer**"*, and of ~70
   uses across `content/` every other one is a reference (`(L2)`, `(P3 L3)`,
   `(L2, L5, L6, P3 L5–L6)`). p4-05 uses it twice for a **directional label** —
@@ -8408,7 +8408,7 @@ ES one. `p4-06:51` and `p6-08:75` both say $5, so the summary follows the
 three-to-one majority — recorded for batch N, not logged as a finding.
 
 **`content/s2-2022-mentorship/section.js` was checked for the stray-semicolon
-hazard `CLAUDE.md` §3 warns about and is clean**, unlike Section 1's. `build.py`
+hazard `AGENTS.md` §3 warns about and is clean**, unlike Section 1's. `build.py`
 and `verify.py` pass either way.
 
 **Corrections to this batch's own scoping estimates.** The summary has **48**
@@ -9089,7 +9089,7 @@ own headline.**
 
 Fourteen batches, **2026-08-07 to 2026-08-08**. **78 lessons, 451 quiz questions,
 2 revision summaries, 85 exam questions, ~2.4 MB of transcript and 78 note pages**
-read against `CLAUDE.md` §1 and §3.
+read against `AGENTS.md` §1 and §3.
 
 **259 findings — 6 blockers, 95 should-fix, 158 nits.**
 
@@ -9560,7 +9560,7 @@ There is nothing in any tier to flag as unfixable.
 #### One state-model correction, caught on the final check
 
 **`ict-exam`'s `picks` are keyed by question *index*, not by option text — only the
-*value* is text.** `CLAUDE.md` §3 reads *"`picks` are stored by **option text**,
+*value* is text.** `AGENTS.md` §3 reads *"`picks` are stored by **option text**,
 since options re-shuffle on every render"*, which is true of the value and easy to
 read as true of the key. `app.js:300` is `picks[qi] = o.text`.
 
@@ -9759,7 +9759,7 @@ lesson does. Tier 2's own fix — putting it in `p6-05` — is what made this le
 | Site | What changed |
 |---|---|
 | `verify.py` | New check. For each section carrying `summary.html` + `exam.js` + `section.js`, the question count the summary states in prose is parsed (`Final Exam …(\d+) questions`) and compared against the exam that actually renders, matched by `data-exam`. A summary stating **no** count passes; one stating a **wrong** count fails, as does a stated count with no exam behind it. |
-| `CLAUDE.md` §5 | Its bullet list of what `verify.py` checks gains the new line. |
+| `AGENTS.md` §5 | Its bullet list of what `verify.py` checks gains the new line. |
 
 **Negative-tested, not merely added.** `s1 summary.html`'s 45 was perturbed to 44
 and `verify.py` failed with `exam s1: summary.html says 44 question(s), exam.js
@@ -9987,7 +9987,7 @@ warning: content\s2-2022-mentorship\p3\p3-01: data-slug="p3-01-a-requested-execu
 **Why it qualified for repair rather than logging.** Three reasons, all of which
 had to hold:
 
-1. **It was the repo's only build warning**, and `CLAUDE.md` §5 records that CI
+1. **It was the repo's only build warning**, and `AGENTS.md` §5 records that CI
    runs `build.py` on every PR — so this was noise sitting in the one place a real
    regression would show up.
 2. **The source genuinely has no charts, so it is not a scrape gap.** `ep-14.md`
@@ -10057,7 +10057,7 @@ fixed — the summary's "40 questions" against the exam's 45 (**F7**) and the
   with `\{\s*q\s*:\s*"…"\s*,\s*o\s*:\s*\[…\]\s*,\s*a\s*:\s*(\d+)` and reports, per batch,
   how often the option at index `a` is the longest of the four and how often the
   max-min spread exceeds 10 characters. It is not committed (throwaway
-  exploration belongs in the scratchpad per `CLAUDE.md` §5); the regex above is
+  exploration belongs in the scratchpad per `AGENTS.md` §5); the regex above is
   enough to reconstruct it. **Report it D15's way, not A10's** — count a tie as
   *not* a tell (**C17**), and take the margin over the **second-longest** option
   rather than as a max-min spread (**D15**). D15's "median margin" column is

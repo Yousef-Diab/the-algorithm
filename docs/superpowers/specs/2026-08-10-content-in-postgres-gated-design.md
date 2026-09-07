@@ -25,7 +25,7 @@ This is a security requirement, and it dictates most of the architecture below.
 In particular it rules out static generation of gated lessons and public object
 URLs for gated media — both of which the current migration branch relies on.
 
-The project's own content rule (CLAUDE.md §1 — content comes purely from ICT's
+The project's own content rule (AGENTS.md §1 — content comes purely from ICT's
 mentorship notes and the transcripts) is unaffected by anything here and
 continues to apply. `transcripts/` and `notes/` are read-only source material
 for this work; nothing in this migration modifies or deletes them.
@@ -183,7 +183,7 @@ table, hanging off the `kind='exam'` row.
 
 Option shuffling stays a render-time concern (Fisher–Yates on load), as does
 the authoring rule that all four options be comparable in length — both remain
-exactly as CLAUDE.md §3 specifies.
+exactly as AGENTS.md §3 specifies.
 
 ### Media
 
@@ -340,12 +340,12 @@ images/{slug}-NN.png    → R2 upload + webp/avif derivatives + media rows
 ```
 
 `section.js` and `months.js` hold bare object literals that JS formatters
-mangle by design (CLAUDE.md §3), so they need the same tolerant key/value parse
+mangle by design (AGENTS.md §3), so they need the same tolerant key/value parse
 that `build.py`'s `parse_objs` performs — not `JSON.parse`, and not `eval`.
 Array literals (`quiz.js`, `exam.js`) may carry a trailing semicolon for the
 same reason.
 
-The HTML→blocks parser maps exactly the vocabulary CLAUDE.md §3 documents:
+The HTML→blocks parser maps exactly the vocabulary AGENTS.md §3 documents:
 `h3`; `h4` with its optional `.src` pointer; `ul`/`ol`; `.callout` in its three
 variants with the `.tag` span; `.kv` rows; `.flip-row`/`.flip`; and
 `.fig-slot[data-slug]`. The three render-time slots — `.quiz`,

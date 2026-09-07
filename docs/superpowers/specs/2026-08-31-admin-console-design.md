@@ -16,7 +16,7 @@ Give the single human admin a web UI for **reviewing drafts and publishing conte
 Project #2a built the write path: an agent can draft, and a human promotes via
 `pnpm content:promote`. That CLI takes a lesson id and moves `body_draft` into `body`. It shows the
 human nothing. So today the human gate — the control that §6 of the 2a spec names as *the real
-enforcement of CLAUDE.md §1* — approves prose that nobody has seen rendered. It is a rubber stamp.
+enforcement of AGENTS.md §1* — approves prose that nobody has seen rendered. It is a rubber stamp.
 
 This project makes the review real: the pending draft rendered **side by side with the live body,
 with the changed blocks marked**, and the four actions on the same page.
