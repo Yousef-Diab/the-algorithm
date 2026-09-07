@@ -14,7 +14,7 @@ The current Next.js app adds an optional timer to each lesson, then uses its exi
 
 ## Storage and release
 
-Apply `drizzle/0007_focus_rewards.sql` and `drizzle/0008_first_try_rewards.sql` through the normal migration journal **before deploying the new application**. They add the reward storage and checkpoint function, then add immutable first-attempt scoring. The initial migration gives existing published lesson completions their one-time 20 XP credit. Those launch credits count toward all-time XP and badges, but not today's activity. Existing completions do not receive first-attempt bonuses because their original attempt cannot be reconstructed.
+Apply `drizzle/0007_focus_rewards.sql`, `drizzle/0008_first_try_rewards.sql`, and `drizzle/0009_reconcile_reward_backfill.sql` through the normal migration journal **before deploying the new application**. They add reward storage and the checkpoint function, add immutable first-attempt scoring, and reconcile completions created during the staged rollout. Historical credits count toward all-time XP and badges, but not today's activity. Existing completions do not receive first-attempt or accuracy bonuses because their original attempts cannot be reconstructed.
 
 For the configured `.env.local` environment, the migration command is:
 
@@ -22,7 +22,7 @@ For the configured `.env.local` environment, the migration command is:
 node --env-file=.env.local node_modules/drizzle-kit/bin.cjs migrate
 ```
 
-This command changes the configured database. Migration `0007_focus_rewards` was applied on 2026-09-06 and migration `0008_first_try_rewards` was applied on 2026-09-07 to the `.env.local` database. All three reward tables, the immutable first-attempt fields, indexes, and checkpoint function were verified. The launch backfill created 38 completion credits totaling 760 XP; later checkpoint activity remains intact. Deployment remains separate. An older app can run with these additive tables present; reverting application code does not require deleting reward history.
+This command changes the configured database. Migration `0007_focus_rewards` was applied on 2026-09-06; migrations `0008_first_try_rewards` and `0009_reconcile_reward_backfill` were applied on 2026-09-07 to the `.env.local` database. All three reward tables, the immutable first-attempt fields, indexes, and checkpoint function were verified. The initial backfill created 38 completion credits totaling 760 XP. Reconciliation added four staged-rollout completion credits, leaving 42 events totaling 840 XP with no missing published completions or duplicate one-time events. Deployment remains separate. An older app can run with these additive tables present; reverting application code does not require deleting reward history.
 
 Do not grant browser/database RPC access to `claim_checkpoint`. The function uses invoker privileges; the authenticated server action establishes user identity and checks membership and lesson access before calling it. It locks one reward-state row and writes events in the same database transaction. Unique indexes protect one-time awards. The frontend never supplies XP, timestamps, or another player's identity.
 
@@ -40,6 +40,6 @@ Reward SQL tests execute the real migration/function and ranking queries against
 
 The authenticated production flow still needs a smoke test after the migration in the target environment. Existing authenticated E2E/integration suites can write configured account/data state and were not run against production for this change.
 
-Database status: migrations `0007` and `0008` were applied to the configured database. Existing XP ledger entries were preserved; earlier completions remain in the all-time standings without receiving reconstructed first-attempt bonuses.
+Database status: migrations `0007`, `0008`, and `0009` were applied to the configured database. Existing XP ledger entries were preserved; earlier completions remain in the all-time standings without receiving reconstructed first-attempt bonuses.
 
 Verified on 2026-09-07: 412 unit tests and four isolated browser tests passed. The production build (including TypeScript) passed. Lint reported no errors and one pre-existing unused-variable warning in `tests/unit/write.test.ts`.

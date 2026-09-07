@@ -64,6 +64,13 @@
       "when": 1788811156335,
       "tag": "0008_first_try_rewards",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1788813248529,
+      "tag": "0009_reconcile_reward_backfill",
+      "breakpoints": true
     }
   ]
 }

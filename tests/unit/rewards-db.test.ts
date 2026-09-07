@@ -24,9 +24,12 @@ beforeAll(async () => {
       ('00000000-0000-0000-0000-000000000003','a',2),
       ('00000000-0000-0000-0000-000000000004','a',3),
       ('00000000-0000-0000-0000-000000000005','a',0);`);
-  const files = readdirSync('drizzle').filter(n => /^000[78]_.*\.sql$/.test(n)).sort();
-  expect(files, 'initial and first-attempt reward migrations exist').toHaveLength(2);
-  for (const file of files) await pg.exec(readFileSync(`drizzle/${file}`, 'utf8'));
+  const files = readdirSync('drizzle').filter(n => /^000[789]_.*\.sql$/.test(n)).sort();
+  expect(files, 'reward migrations include staged-rollout reconciliation').toHaveLength(3);
+  for (const file of files.slice(0, 2)) await pg.exec(readFileSync(`drizzle/${file}`, 'utf8'));
+  // A completion can land between the initial backfill and application rollout.
+  await pg.exec(`INSERT INTO progress VALUES ('late','b',now());`);
+  await pg.exec(readFileSync(`drizzle/${files[2]}`, 'utf8'));
 }, 30000);
 afterAll(() => pg.close());
 const claim = async (user = 'learner') => (await q('select claim_checkpoint($1,$2) as xp', [user, 'a'])).rows[0] as {xp:number};
@@ -80,9 +83,11 @@ describe('transactional checkpoint rewards', () => {
     expect(await claim('other')).toEqual({xp:10});
     expect(await claim('other')).toEqual({xp:0});
   });
-  it('backfills legacy completion without counting it as current activity', async () => {
+  it('backfills launch and staged-rollout completions without counting them as current activity', async () => {
     expect((await q("select amount,legacy from xp_events where user_id='legacy'")).rows).toEqual([{amount:20,legacy:true}]);
     expect((await q("select count(*)::int as count from xp_events where user_id='legacy' and not legacy")).rows).toEqual([{count:0}]);
+    expect((await q("select amount,legacy from xp_events where user_id='late'")).rows).toEqual([{amount:20,legacy:true}]);
+    expect((await q("select completed_at is not null as completed from checkpoint_rewards where user_id='late' and lesson_id='b'")).rows).toEqual([{completed:true}]);
   });
   it('rejects non-lesson and unpublished checkpoint requests', async () => {
     await expect(q("select claim_checkpoint('learner','exam')")).rejects.toThrow(/lesson/i);

@@ -6,7 +6,7 @@
 **Spec:** ../specs/2026-09-06-focus-rewards-design.md
 
 ## Constraints
-No lesson splitting or content changes. XP comes only from validated quiz checkpoints and one migration backfill. Never use live database for tests. No deployment.
+No lesson splitting or content changes. XP comes only from validated quiz checkpoints and one-time migration backfills. Never use the live database for tests. No deployment.
 
 ## Tasks
 - [x] Reward storage: add schema tables, generate migration, add transactional SQL function and launch backfill. Test real SQL in disposable PGlite: incomplete quiz rejection, 20+10 awards, duplicate claims, seven-day review with fresh answers, reset and retry, user isolation, backfill exclusion.

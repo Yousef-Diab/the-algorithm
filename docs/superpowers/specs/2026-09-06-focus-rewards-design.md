@@ -8,7 +8,7 @@ Approved in conversation: preserve short lessons; one checkpoint at the end usin
 - Member-only all-time leaderboard with tied XP sharing rank, top 100 plus own rank. Columns: rank, name/avatar, level, XP, completed checkpoints. No email, answers, notes, or raw user ids in client payloads.
 - Default name comes from the account's name, with a pseudonym only for a missing/blank account name. Customized leaderboard names take precedence. Editable name and preset avatar; hide/show setting. Hidden users retain personal XP but are excluded before ranking.
 - Server authenticates every action and checks lesson access. Database function locks per-user/per-lesson reward state and inserts immutable events atomically. Fresh review requires every saved answer at or after the previous completion/review claim plus seven days. Bonus and completion events unique per user/lesson. Reject drafts, exams, empty and incomplete quizzes.
-- New reward tables and function via additive migration; no production migration or deployment during implementation. Tests run against disposable embedded Postgres, never the configured live database.
+- New reward tables and function use additive migrations. Tests run against disposable embedded Postgres, never the configured live database. The configured database migrations were applied separately at the user's request; deployment remains separate.
 - Failed persistence is visible with retry; no success message before server confirmation. Existing course material and notes are untouched.
 
 Implementation targets current Next.js/Neon app; README/CLAUDE legacy static instructions predate that app. No static lesson changes are required.
